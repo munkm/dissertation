@@ -61,3 +61,4 @@ Thumbs.db
 fix-access.sh
 doit2.sh
 Makefile
+build/
