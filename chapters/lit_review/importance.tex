@@ -1,0 +1,116 @@
+\section{Importance Functions for Variance Reduction}
+\label{sec:Importance}
+
+\subsection{The Concept of Importance}
+
+\subsection{The Adjoint Solution for Importance}
+\label{sec:AdjointImportance}
+
+The integral form of the forward, steady-state, neutron transport equation with an external source can be given by:
+\begin{multline}
+\hat\Omega \cdot \nabla \psi (\vec {r} ,E,\:\hat\Omega)+\Sigma _{ t }(\vec{r},E)\psi (\vec { r } ,E,\:\hat\Omega) = \\ 
+\int _{ 4\pi  } \int _{ 0 }^{ \infty  } \Sigma _{ s }(E'\rightarrow E, \hat\Omega'\rightarrow\hat\Omega)\psi (\vec { r } ,E',\: \hat\Omega')dE' \:d\hat\Omega' + q_{e}(\vec { r } ,E, \:\hat\Omega)
+\end{multline}
+\label{eq:F-NTE}
+
+Where $\vec { r }$, $E$, and $\hat\Omega$, are the direction, energy, and angle independent variables, and $\psi$ is the neutron flux, $\Sigma$ is the neutron interaction (scattering, absorption, total) cross section, and $q_{e}$ is the external source. In general, this equation tells us where particles are moving throughout the system that we define by equation \ref{eq:F-NTE}. Of note, the particles move in the scattering term from $E'$ to $E$, and from $\hat\Omega'$ to $\hat\Omega$. 
+
+The integral form of the adjoint, steady-state, neutron transport equation with an external source looks like:
+\begin{multline}
+-\hat\Omega \cdot \nabla \psi^{\dagger} (\vec {r} ,E,\:\hat\Omega)+\Sigma _{ t }(\vec{r},E)\psi^{\dagger}  (\vec { r } ,E,\:\hat\Omega)
+= \\  
+ \int _{ 4\pi  } \int _{ 0 }^{ \infty  } \Sigma _{ s }(E\rightarrow E', \hat\Omega\rightarrow\hat\Omega')\psi^{\dagger}  (\vec { r } ,E',\: \hat\Omega')dE' \:d\hat\Omega' + q_{e}^\dagger(\vec { r } ,E, \:\hat\Omega)
+\end{multline}
+\label{eq:A-NTE}
+
+Note here that the particles in the adjoint equation move from $E$ to $E'$, and from $\hat\Omega$ to $\hat\Omega'$, which indicates an upscattering in energy and a reversal of direction. The external source, too, is different, changing from $q_{e}$ to $q_{e}^\dagger$. For a simple source-detector problem, we set $q_{e}^\dagger$ to be $\Sigma _{ d }$, or the tally/detector response function for our system. Thus, the adjoint particles start at low energy at the detector location, move away from the adjoint source (the detector location), and scatter up in energy. 
+
+Kalos \cite{kalos_importance_1963, goertzel_monte_1958}
+
+Also Lux and Koblinger \cite{lux_monte_carlo}
+
+Coveyou, Cain and Yost \cite{coveyou_adjoint_1967} also 
+
+
+The motivated reader may also consider Lewins' book \cite{lewins_importance:_1965} as a
+useful introduction importance functions and the adjoint equation. Lewins' work was
+primarily oriented towards the use of the adjoint formulation in reactor physics and
+ perturbation theory, but this should not dissuade one from acquainting oneself with the 
+ adjoint formulation from this perspective. 
+
+
+
+\subsection{The Contributon Solution for Importance}
+\label{sec:ContributonImportance}
+
+Over a number of years, Williams \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study} developed contributon theory and corresponding spatial channel theory. In this area, Williams defined a pseudo-particle, the textit{contributon}, as a particle that carries response from the radiation source to a detector. Furthermore, the total number of contributons in a system are conserved by the textit{contributon conservation principle}: all contributons that are emitted from the source eventually arrive at the detector.  In his work, Williams noted that one could go so far as to track contributons, rather than real particles in monte carlo. Because every particle transported would eventually reach the detector, this would lead to a zero variance solution. However, the nature of solving the contributon equation with monte carlo (or any other transport mechanism) involves knowing the exact solution to the adjoint equation, and so relies on the same computational difficulty as solving the adjoint NTE exactly. 
+
+The equivalent contributon transport equation can be derived in a form analogous to the forward (eq. \ref{eq:F-NTE} ) and adjoint (eq. \ref{eq:A-NTE}) equations:
+
+Defining the contributon flux as:
+\begin{equation}
+\Psi (\vec {r} ,E,\:\hat\Omega) = \psi^{\dagger} (\vec {r} ,E,\:\hat\Omega) \psi(\vec {r} ,E,\:\hat\Omega)
+\end{equation}
+\label{eq.Cont-Flux}
+
+The contributon transport equation is:
+
+\begin{multline}
+\hat\Omega \cdot \nabla \Psi (\vec {r} ,E,\:\hat\Omega)
++\widetilde{\Sigma} _{ t }(\vec{r},E,\:\hat\Omega)\Psi (\vec { r } ,E,\:\hat\Omega) 
+= \\ 
+\int _{ 4\pi  } \int _{ 0 }^{ \infty  } 
+\widetilde{p}(\vec{r}, \hat\Omega', E'\rightarrow\hat\Omega, E)
+\widetilde{P}(\vec{r}, \hat\Omega',E')
+\widetilde{\Sigma} _{ t }(\vec{r}, E', \hat\Omega')
+\Psi (\vec { r } ,E',\: \hat\Omega')dE' \:d\hat\Omega' 
++ \hat p(\vec { r } ,E, \:\hat\Omega) R
+\end{multline}
+\label{eq:Cont-NTE}
+
+where the effective cross sections are given by:
+\begin{equation}
+\begin{aligned}
+\widetilde{\Sigma}_{t}(\vec{r}, E, \hat\Omega) &= \widetilde{\Sigma}_{s}(\vec{r}, E, \hat\Omega) + \widetilde{\Sigma}_{a}(\vec{r}, E, \hat\Omega) 
+\\
+&= \frac{\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',E'\rightarrow E'')}
+{\psi^{\dagger}(\vec{r}, E, \hat\Omega)}
++ \frac{Q^{\dagger}(\vec{r}, E, \hat\Omega)}{\psi^{\dagger}(\vec{r}, E, \hat\Omega)}
+\end{aligned}
+\end{equation}
+
+The scattering probability of a contributon at position $\vec{r}$, $E'$, and $\hat\Omega'$ is:
+\begin{equation}
+\widetilde{P}(\vec{r}, \hat\Omega',E') = \frac{\widetilde{\Sigma} _{ s }(\vec{r}, E', \hat\Omega')}{\widetilde{\Sigma} _{ t }(\vec{r}, E', \hat\Omega')}
+\end{equation}
+
+and
+\begin{equation}
+\widetilde{p}(\vec{r}, \hat\Omega', E'\rightarrow\hat\Omega, E) =
+\frac{\Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega,E'\rightarrow E) \psi^{\dagger} (\vec{r}, E, \hat\Omega)}
+{\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',E'\rightarrow E'')\psi^{\dagger} (\vec{r}, E'', \hat\Omega'')d\hat\Omega'' dE''}
+\end{equation}
+is the probability that a contributon scattering at $\vec{r}$, $E'$, and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$. 
+
+\begin{equation}
+\hat p(\vec{r}, E, \hat\Omega) =
+\frac{psi^{\dagger}(\vec{r}, E, \hat\Omega) Q(\vec{r},E,\hat\Omega)}
+{\int \int \int \psi^{\dagger}(\vec{r'},E',\hat\Omega')Q(\vec{r'},E',\hat\Omega') d\hat\Omega' dE' dV'}
+\end{equation}
+is the contributon source distribution.
+
+and
+\begin{equation}
+R = \int \int \int \psi^{\dagger}(\vec{r},E,\hat\Omega)Q(\vec{r},E,\hat\Omega) d\hat\Omega dE dV
+\end{equation}
+is the reaction rate.
+
+
+The derivation of eq. \ref{eq:Cont-NTE} and its corresponding variables is available in a number of the sources referenced in this section, so we will abstain from doing so at this time. 
+
+As mentioned in the previous section, the adjoint flux tells the user what the importance of a particle is to a response function. Conversely, the contributon flux tells the user what the importance of a particle is to the solution. Becker's thesis \cite{becker_hybrid_2009} aptly points out that this is illustrated most dramatically in a source-detector problem, where the forward source has little importance to the adjoint source, but does have importance to the problem solution. 
+
+Williams recognized the applications of the pseudo-particles, contributons, to shield design and optimization. In particular, Williams noted that variables relevant to contributon response were useful in determining transport paths through media \cite{williams_contributon_study, williams_SCC_shielding}. A study of the contributon density in a system could enlighten the user on locations where particles would preferentially be transported, and so designers could intelligently choose where to place detectors and material. In this way, the user could find the particles most influential to the response of the system. A region with high response is the most important to a detector tally. The variables of response described by williams are the the response potential, the response current, and the response vorticity \cite{williams_contributorn_1992}. 
+
+Contributon theory and spatial channel theory have been applied successfully to shielding analyses \cite{seydaliev_contributon_2008, williams_SCC_shielding} due to its ability to incorporate particle response throughout the entire system effectively. 
+

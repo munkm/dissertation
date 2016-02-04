@@ -1,0 +1,48 @@
+\section{Automated Angle-Informed Variance Reduction Methods}
+\label{sec:AngleVR}
+
+All of the previous methods performed better than analog monte carlo in generating variance-reduced solutions in particle transport for some subset of transport problems. 
+However, none of them incorporated angular biasing or angular information into their importance maps, which led to poor performance in problems with strong angular anisotropy. 
+A large problem subspace includes anisotropic behavior in the flux and/or in the problem
+ materials, which are difficult to analyze with the aforementioned hybrid methods. As a 
+ result, a subset of hybrid methods were developed to incorporate some degree of the flux anisotropy in variance reduction parameters. 
+ 
+ AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} utilizes a 
+
+%
+%
+%----------------------------------------------------------------------------------------
+Simple Angular CADIS \cite{peplow_consistent_2012} built off of existing implementations of CADIS and FW-CADIS by employing the method used by AVATAR and consistently biasing the transport of the problem. 
+
+%
+%
+%----------------------------------------------------------------------------------------
+In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a method by which photon transport could be biased in angle with an exponential transform adjustment factor. 
+In this study, the authors performed studies on three test problems with the exponential transform adjustment factor and with a synergistic angular bias and exponential transform adjustment. 
+In all studies, the synergistic biasing outperformed the exponential transform adjustment alone. 
+However, their method performed best in highly absorbing media. 
+The authors noted that this performance was due to the fact that the biasing could be made strong without undersampling scattering in the problem. 
+They also pointed out that while the weight window method was comparable in efficiency to the method described, their method avoided the choice of choosing importances and weight window values for biasing. Their method was limited to exclusively photon transport biasing, and not neutron transport; the authors were optimistic that the method could be extended to neutron transport. 
+
+LIFT \cite{turner_automatic_1997, turner_automatic_1997-1}
+
+MCNP Weight Window Generator \textbf{cite MCNP manual here}
+
+\subsection{Angle-Informed Local Variance Reduction}
+
+\subsection{Angle-Informed Global Variance Reduction}
+
+\subsection{Implementation and Performance of Angle-Informed Methods}
+\label{sec:results}
+
+In Mavric \cite{peplow_advanced_2007}
+
+An internal feature of MCNP, the deterministic adjoint weight window generator (DAWWG), utilizes the discret ordinates code PARTISN \cite{sweezy_automated_2005}. 
+
+ADVANTG \cite{mosher_new_2010, wagner_review_2011, bevill_new_2012}, which uses Denovo \cite{evans_denovo:_2010-1} and MCNP. 
+
+Tortilla \cite{somasundaram_implementation_2013}
+
+With spent fuel storage containers \cite{chen_surface_2011}
+
+IFSI site with MAVRIC \cite{sheu_dose_2011}

@@ -1,0 +1,121 @@
+\section{Monte Carlo Variance Reduction}
+
+\subsection{Variance Reduction Techniques}
+\label{sec:MCvar}
+
+To begin a discussion on variance reduction techniques for monte carlo particle transport, it will be prudent to first discuss the nature of variance reduction itself. 
+
+\textbf{describe the central limit theorem and how it relates to monte carlo statistics here }
+
+Estimate of the variance: 
+\begin{equation}
+S^{ 2 }=\sum _{ i=1 }^{ N }{ \frac { (x_{ i }-\bar { x } )^{ 2 } }{ N-1 }  } \cong \bar{x^2}-\bar{x}^2
+\end{equation}
+\label{eq:Var}
+
+The variance of the mean value, or variance of $\bar{x}$, follows as:
+\begin{equation}
+S^{ 2 }_{ \bar { x }  }=\frac{S^2}{N}
+\end{equation}
+\label{eq:VarMean}
+
+From \ref{eq:VarMean}, one can see that relationship between variance and N follows: 
+\begin{equation}
+S_{ \bar { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }  }
+\end{equation} 
+\label{eq:VarN}
+
+The relative error normalizes the variance by the mean value. 
+\begin{equation}
+R = \frac{S_{ \bar { x }  }}{\bar{x}}
+\end{equation}
+\label{eq:RelativeErr}
+
+S to R relation
+\begin{equation}
+S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
+\end{equation}
+\label{eq:S to R}
+
+The figure of merit (FOM) is often used as a success metric for variance reduction techniques. 
+This is because
+\begin{equation}
+FOM=\frac { 1 }{ R^{ 2 }T } 
+\end{equation}
+\label{eq:FOM}
+
+MCNP \cite{hendricks_mcnp_1985, brown_mcnp_2002} has a number of techniques for variance
+reduction included in its distribution. Overall, these variance reduction techniques fall
+ into four general categories: truncation methods, population control methods, modified 
+ sampling methods, and partially-deterministic methods. Of note for this discussion are 
+ population control methods and modified sampling methods, which are discussed in a number 
+ of the papers referenced herein. 
+
+Population control methods either increase the particle population by splitting or
+decrease the particle population by rouletting. Both splitting and roulette maintain a 
+fair game by adjusting the particle weights as splitting and rouletting are performed. 
+To use population control methods effectively as a variance reduction technique, splitting
+ is performed in high-importance regions and roulette is performed in low-importance
+  regions. MCNP's population control methods include geometry, energy and time splitting
+  and roulette, as well as a weight cutoff and weight windows. Weight windows utilize both
+ splitting and roulette to keep particles within a desired weight range. 
+
+Modified sampling methods adjust transport by sampling from a different probability 
+distribution function than the actual distribution for the problem. This is possible only
+ if, as with population control methods, the particle weights are adjusted accordingly. 
+ The new probability distribution function should bias particles in regions of high 
+ importance to the problem tallies. In MCNP, a number of modified sampling methods exist.
+ These include: the exponential transform, implicit capture, forced collisions, source 
+ biasing, and neutron-induced photon production biasing. 
+
+Truncation methods stop tracking particles in a region of phase-space that is of
+low-importance to the tally. These methods can be used in space (a vacuum boundary
+condition), energy (eliminate particles above or below a specified energy), or time (stop
+tracking after a given time). To effectively use these methods, the user must be aware of 
+particles' importance to a tally result. If particles that are important to a result are
+ eliminated with a truncation method, the tally will be underestimated, and the solution
+  will not incorporate the problem physics into the solution effectively. 
+  
+The remainder of this literature review will focus on efforts to utilize population 
+control methods and modified sampling methods for variance reduction.
+
+DESCRIBE WEIGHT WINDOWS HERE
+
+DESCRIBE SOURCE BIASING HERE
+
+\subsection{Automated Variance Reduction Using Monte Carlo}
+\label{sec:AutomatedVR}
+
+It is important, in utilizing any variance reduction technique, to ensure that a fair game
+is being played. The user must ensure that the fundamental nature of the problem is not 
+being changed by using a variance reduction technique, or the answer will not be 
+representative of the original problem. Automated variance reduction techniques aim to 
+eliminate this uncertainty for the user by estimating the importance of particles in some
+ way and then setting up variance reduction parameters automatically. 
+
+Early on, a number of methods explored automating some aspect of variance reduction for 
+Monte Carlo. Some of these methods used a fast, low-particle Monte Carlo transport run to gain an initial estimate for a cell's importance and generate variance reduction parameters from them to bias a more computationally-intensive run. Naturally, the variance reduction parameters generated by utilizing this technique were limited by the statistical uncertainty in the figures used to generate them. Furthermore, for deep-penetration particle transport, the variance reduction parameters for low flux regions were exceedingly difficult to generate.  
+
+With the advent of the weight window technique, Booth \cite{booth_automatic_1982} proposed 
+a method to calculate a cell's importance. In this method, Booth suggested estimating the cell's importance using monte carlo transport as:
+\begin{equation}
+Importance  = \frac{\text{score of particles leaving the cell}}{\text{weight leaving the cell}} 
+\end{equation}
+\label{eq:BoothImp}
+
+Booth went on to suggest that the importance generator could be used in a complementary nature to the weight window variance reduction technique available in MCNP at that time, where a weight window value inversely proportional to the variance could be used for variance reduction.
+In this case, the track weight times the expected score is approximately constant in the problem. 
+In test problems, the importance generator had estimated the problem cells' importances after only a few iterations. 
+
+Henricks \cite{hendricks_code-generated_1982}, concurrently to Booth, developed an automated geometry- and energy-dependent weight window generator for MCNP. 
+Hendricks' method differed from Booth's in that the weight window generation was nonspecific to a tally. 
+Rather, the generator populated all regions of phase space equally. 
+To do this, the generator set boundaries for the weight window bounds, $W_{low}$ and $W_{high}$. These were calculated based on the total weight entering and exiting the weight window target region. 
+Thus, the procedure 
+
+Tsang and Hoffman \cite{tsang_monte_1988}
+
+Hybrid methods, in particular, attempt to use the speed of a determinstic calculation to generate variance reduction parameters for Monte Carlo software. 
+
+As with any variance reduction technique, the goal to be achieved is a faster time to achieve a solution for a desired uncertainty, and to reduce the variance for the tally. 
+Thus the metrics for success are often the figure of merit (FOM) and the variance for the tally obtaining the solution. 

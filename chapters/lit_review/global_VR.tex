@@ -1,0 +1,69 @@
+\section{Automated Variance Reduction Methods for Global Solutions}
+\label{sec:GlobalVR}
+
+Cooper's Method: \cite{cooper_automated_2001}
+
+Becker's forward Method: \cite{becker_hybrid_2007}
+
+Becker's contributon method: \cite{becker_hybrid_2009}
+
+Van Wijk's method, like CADIS and FW-CADIS, is a variance reduction method designed to operate with little user input \cite{van_wijk_easy_2011}. 
+Van Wijk et al. applied their method to a PWR facility and observed a FOM increase by a factor of $>$200. 
+
+
+The Method of Automatic Generation of Importances by Calculation (MAGIC) is a global variance reduction technique \cite{davis_comparison_2011} proposed by Davis in 2011. 
+Rather than using a deterministic solution to obtain an estimate of the forward flux to generate an importance map, the MAGIC method uses an analog monte carlo run with multigroup cross section data and (optionally) a high energy cut-off.
+This initial analog run is used to generate initial importance map for a secondary run.
+This process iterates until several monte carlo simulations are run and a finalized importance map is generated. 
+In their paper, the authors compared three variants of MAGIC to FW-CADIS in ITER fusion energy systems. 
+These three variants used different weight window adjustments for importances: weight windows in cells based on existing weight information, weight windows in mesh cells based on flux information, and weight windows in cells based on population density. 
+Davis and colleagues concluded that the most effective method for variance reduction in their system was MAGIC's weight window in mesh based on flux information, where FW-CADIS' FOM was 65\% that of MAGIC's. 
+The authors did not make it clear how many iterations were required, on average, to generate the finalized weight window map or if the time to iteratively generate importance maps were included in the FOM. 
+It is unclear if only the final monte carlo simulation's runtime was used to calculate the FOM. 
+Furthermore, the authors did not clearly state how the biasing parameters were calculated, other than that they used flux, population density, or weight information. 
+
+
+FW-CADIS \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}
+
+adjoint source:
+simple:
+\begin{equation}
+{ q^+ } (P)=\frac{\sigma_d(\vec{r},E,\hat\Omega)}{R'(\vec{r})}
+\end{equation}
+\label{eq:adjointsourcesimple}
+
+complicated
+\begin{equation}
+{ q^{ + } }(P)=\frac { \sigma _{ d }(\vec { r } ,E,\hat { \Omega  } ) }{ \iint { \sigma _{ d }(\vec { r } ,E',\hat { \Omega  } ')\psi (\vec { r } ,E',\hat { \Omega  } ') } dE'd\hat { \Omega  } ' } \quad \quad \quad 
+\end{equation}
+\label{eq:adjointsourcecomplicated}
+
+adjoint spatial dependent global dose source:
+\begin{equation}
+{ q^{ + } }(\vec { r } ,E)=\frac { \sigma _{ d }(\vec { r } ,E) }{ \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }
+\end{equation}
+\label{eq:FWCadglobaldose}
+
+adjoint source spatial dependent global flux
+\begin{equation}
+{ q^{ + } }(\vec { r })=\frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }
+\end{equation}
+\label{eq:FWCadglobalflux}
+
+adjoint source energy and space global flux
+\begin{equation}
+{ q^{ + } }(\vec { r } ,E)=\frac { 1 }{\phi (\vec { r } ,E) }
+\end{equation}
+\label{eq:FWCadglobalflux2}
+
+Comparing these methods, \cite{peplow_comparison_2012} 
+
+%
+%
+%----------------------------------------------------------------------------------------
+While not particularly relevant to the immediate work described in this thesis, the MS-CADIS method used a sophisticated method to generate a variance-reduced source term for 
+photon does in a shutdown system. 
+
+However, MS-CADIS, like CADIS and FW-CADIS, employs exclusively energy- and space- based variance reduction methods. As a result, it still suffers from similar behaviors as CADIS and FW-CADIS in strongly anisotropic systems. 
+
+MS-CADIS \cite{ibrahim_multi-step_2014, ibrahim_analysis_2014}

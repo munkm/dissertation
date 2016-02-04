@@ -1,0 +1,8 @@
+To expand upon the need for hybrid methods for monte carlo variance reduction in problems with strong anisotropies, it is necessary to briefly describe the existing state of this field. The following literature review will describe pertinent background information that is relevant to this topic, and introduce the relevant work preceding this project. 
+First an overview of variance reduction for monte carlo radiation transport will be described in section \ref{sec:MCvar}.
+This will then transition in section \ref{sec:AutomatedVR} into a brief description of various efforts to automate variance reduction techniques. 
+Following that, section \ref{sec:Importance} will expand upon the importance of the adjoint solution of the neutron transport equation and how it can be used to generate variance reduction parameters for transport.
+From this point, we will transition from theory into existing implementations of variance reduction techniques used in modern software in the nuclear engineering community. This will begin in \ref{sec:CADIS} with a description of the consistent, adjoint-driven importance sampling, or CADIS, and forward-weighted CADIS (FW-CADIS) methods.
+CADIS and FW-CADIS, however, do not incorporate angle-informed biasing paremeters for variance reduction. 
+The following section, \ref{sec:AngleVR}, will detail the efforts to incorporate angular information into variance reduction methods for monte carlo. 
+We will then conclude in section \ref{sec:results} with how each of these methods performed in validation and scaling studies, and discuss the relative effectiveness of each method. 

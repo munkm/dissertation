@@ -1,0 +1,25 @@
+\section{Automated Variance Reduction Methods for Local Solutions}
+\label{sec:CADIS}
+
+CADIS \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003}
+
+\begin{subequations} 
+\label{CADISmethod}
+Biasing Parameters Used by CADIS: 
+\begin{equation}
+\hat{q}  = \frac{\phi^+(\vec {r} ,E)q(\vec {r} ,E)}{\iint\phi^+(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
+         = \frac{\phi^+(\vec {r} ,E)q(\vec {r} ,E)}{R}
+\end{equation}
+\label{eq:weightedsource}
+\begin{equation}
+w_0  = \frac{q}{\hat{q}} \\
+     = \frac{R}{\phi^{+}(\vec {r} ,E)} 
+\end{equation}
+\label{eq:startingweight}
+\begin{equation}
+\hat{w} = \frac{R}{\phi^{+}(\vec {r} ,E)} 
+\end{equation}
+\label{eq:WW}
+\end{subequations}
+
+Becker's contributon method: \cite{becker_hybrid_2009}
