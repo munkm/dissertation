@@ -1,25 +1,40 @@
 \section{Automated Variance Reduction Methods for Local Solutions}
 \label{sec:CADIS}
 
-CADIS \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003}
+\subsection{Theory}
+
+In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven Importance Sampling Method (CADIS) \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a tool for automatic variance reduction for local tallies in Monte Carlo. CADIS was unique in that built off of adjoint theory for variance reduction, and consistently biased the particle distribution and particle weights. In CADIS, a deterministic estimate of the adjoint problem is solved, where the adjoint source distribution $q^{\dagger}$ is the forward problem's detector or tally response function, or $\Sigma_{tally}$. The solution for $\phi^{\dagger} $ could be used to generate a biased source distribution for the forward problem:
 
 \begin{subequations} 
 \label{CADISmethod}
 Biasing Parameters Used by CADIS: 
 \begin{equation}
-\hat{q}  = \frac{\phi^+(\vec {r} ,E)q(\vec {r} ,E)}{\iint\phi^+(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
-         = \frac{\phi^+(\vec {r} ,E)q(\vec {r} ,E)}{R}
-\end{equation}
+\begin{split}
+\hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{\iint\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
+         & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}
+\end{\split}
 \label{eq:weightedsource}
-\begin{equation}
-w_0  = \frac{q}{\hat{q}} \\
-     = \frac{R}{\phi^{+}(\vec {r} ,E)} 
 \end{equation}
+The  starting weights of the particles sampled from the biased source distribution, $\hat{q}$ are:
+\begin{equation}
+\begin{split}
+w_0  & = \frac{q}{\hat{q}} \\
+     & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)} 
+\end{\split}
 \label{eq:startingweight}
-\begin{equation}
-\hat{w} = \frac{R}{\phi^{+}(\vec {r} ,E)} 
 \end{equation}
+and the target weights for the particle are:
+\begin{equation}
+\hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)} 
 \label{eq:WW}
+\end{equation}
 \end{subequations}
 
-Becker's contributon method: \cite{becker_hybrid_2009}
+The equations for $w$ and $w_0$ match; so particles are born at the same weight of the region they are born into, thus the problem limits excessive splitting and roulette at the particle births. 
+
+CADIS has been implemented in a number of software packages. Most notable are the MAVRIC and ADVANTG software packages from ORNL [REFERENCES]. 
+
+Becker's contributon method:
+ \cite{becker_hybrid_2009}
+
+\subsection{Implementation}

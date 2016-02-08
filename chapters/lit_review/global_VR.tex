@@ -1,7 +1,27 @@
 \section{Automated Variance Reduction Methods for Global Solutions}
 \label{sec:GlobalVR}
 
-Cooper's Method: \cite{cooper_automated_2001}
+The previous section detailed several methods that automate variance reduction for localized tallies. However, for global solutions these methods do not work well. The global tally suffers from a large range in variance across the physical problem space, and the solution is dependent on the flux distribution throughout the problem. Here several methods are described that provide automated variance reduction for global solutions or multiple tallies. 
+
+Cooper and Larsen developed a weight window technique to reduce the variance of Monte Carlo global solutions \cite{cooper_automated_2001}. In their work, Cooper and Larsen utilized a forward solution to the transport equation to generate paramaters for a modified Monte Carlo simulation where the particles are nearly uniformly distributed throughout the problem. By doing so, the variance in the scalar flux remained relatively constant throughout the problem, rather than rising significantly with increasing distance from the forward source. Cooper's "isotropic" weight windows dependent on $\vec{r}$ are given by:
+\begin{subequations}
+\label{coopers}
+\begin{equation}
+\bar{ww}(\vec{r}) = \frac{\phi(\vec{r})}{max \phi(\vec{r})}
+\end{equation}
+\begin{equation}
+ww(\vec{r})_{top} = \rho \bar{ww}(\vec{r})
+\end{equation}
+b, the linearly anisotropic factor, is
+\begin{equation}
+ww(\vec{r})_{bottom} = \frac{\bar{ww}(\vec{r})}{\rho}
+\end{equation}
+where $\rho$ is the weight window scaling factor
+\end{subequations}
+
+In practice, Cooper's algorithm was to iteratively switch between solving the diffusion equation with transport correctors (eddington factors); a process known as quasidiffusion, and with a Monte Carlo solution. An initial quasidiffusion solution was used to generate weight windows, and then after a time the Monte Carlo solution was used to generate updated eddington factors for the quasidiffusion solution. 
+
+Because Cooper's method depended on Monte Carlo to generate the eddington factors for the quasidiffusion problem, this method was limited by the iterative switch between the quasidiffusion solution and the Monte Carlo solution. The frequency by which this switching happens is entirely up to the user, but may drastically affect the efficiency of the method. Further, Cooper notes that we do not know at what point in time (for which number of particles N) the Monte Carlo solution becomes more accurate than the quasidiffusion solution, which is an important issue in choosing solution parameters. 
 
 Becker's forward Method: \cite{becker_hybrid_2007}
 
@@ -23,47 +43,41 @@ It is unclear if only the final monte carlo simulation's runtime was used to cal
 Furthermore, the authors did not clearly state how the biasing parameters were calculated, other than that they used flux, population density, or weight information. 
 
 
-FW-CADIS \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}
+Forward-Weighted CADIS, also developed by Hagighat and Wagner \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}, utilized Cooper's concept of using a forward deterministic calculation to evenly distribute particles throughout the problem subspace. However, Wagner et al took a different approach: by using a forward deterministic estimate of the flux or desired response as the adjoint source for an adjoint calculation, biasing parameters for global responses could be calculated. The adjoint source for the adjoint calculation thus depends on the desired response for the system. The generic description for the adjoint source is given by Eq. \eqref{adjointsourcesimple} and more specific parameters are given by Eqs. \eqref{FWCadglbaldose}-\eqref{FWCadglobalflux2}: 
 
-adjoint source:
-simple:
+\begin{subequations}
 \begin{equation}
-{ q^+ } (P)=\frac{\sigma_d(\vec{r},E,\hat\Omega)}{R'(\vec{r})}
+{ q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}
 \end{equation}
 \label{eq:adjointsourcesimple}
 
-complicated
+The adjoint source for the spatially dependent global dose, $\int \phi(\vec{r},E)\sigma_d(\vec{r},E) dE$:
 \begin{equation}
-{ q^{ + } }(P)=\frac { \sigma _{ d }(\vec { r } ,E,\hat { \Omega  } ) }{ \iint { \sigma _{ d }(\vec { r } ,E',\hat { \Omega  } ')\psi (\vec { r } ,E',\hat { \Omega  } ') } dE'd\hat { \Omega  } ' } \quad \quad \quad 
-\end{equation}
-\label{eq:adjointsourcecomplicated}
-
-adjoint spatial dependent global dose source:
-\begin{equation}
-{ q^{ + } }(\vec { r } ,E)=\frac { \sigma _{ d }(\vec { r } ,E) }{ \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }
+{ q^{\dagger} }(\vec { r } ,E)=\frac { \sigma _{ d }(\vec { r } ,E) }{ \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }
 \end{equation}
 \label{eq:FWCadglobaldose}
 
-adjoint source spatial dependent global flux
+The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E) dE $:
 \begin{equation}
-{ q^{ + } }(\vec { r })=\frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }
+{ q^{\dagger} }(\vec { r })=\frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }
 \end{equation}
 \label{eq:FWCadglobalflux}
 
-adjoint source energy and space global flux
+The adjoint source for the energy- and spatially- dependent flux $\phi(\vec{r},E)$: 
 \begin{equation}
-{ q^{ + } }(\vec { r } ,E)=\frac { 1 }{\phi (\vec { r } ,E) }
+{ q^{\dagger} }(\vec { r } ,E)=\frac { 1 }{\phi (\vec { r } ,E) }
 \end{equation}
 \label{eq:FWCadglobalflux2}
+\end{subequations}
 
 Comparing these methods, \cite{peplow_comparison_2012} 
 
 %
 %
 %----------------------------------------------------------------------------------------
-While not particularly relevant to the immediate work described in this thesis, the MS-CADIS method used a sophisticated method to generate a variance-reduced source term for 
-photon does in a shutdown system. 
+% While not particularly relevant to the immediate work described in this thesis, the MS-CADIS method used a sophisticated method to generate a variance-reduced source term for 
+% photon does in a shutdown system. 
 
-However, MS-CADIS, like CADIS and FW-CADIS, employs exclusively energy- and space- based variance reduction methods. As a result, it still suffers from similar behaviors as CADIS and FW-CADIS in strongly anisotropic systems. 
+%However, MS-CADIS, like CADIS and FW-CADIS, employs exclusively energy- and space- based variance reduction methods. As a result, it still suffers from similar behaviors as CADIS and FW-CADIS in strongly anisotropic systems. 
 
-MS-CADIS \cite{ibrahim_multi-step_2014, ibrahim_analysis_2014}
+%MS-CADIS \cite{ibrahim_multi-step_2014, ibrahim_analysis_2014}
