@@ -3,6 +3,8 @@
 
 \subsection{The Concept of Importance}
 
+
+
 \subsection{The Adjoint Solution for Importance}
 \label{sec:AdjointImportance}
 
@@ -35,15 +37,14 @@ Coveyou, Cain and Yost \cite{coveyou_adjoint_1967} also
 The motivated reader may also consider Lewins' book \cite{lewins_importance:_1965} as a
 useful introduction importance functions and the adjoint equation. Lewins' work was
 primarily oriented towards the use of the adjoint formulation in reactor physics and
- perturbation theory, but this should not dissuade one from acquainting oneself with the 
- adjoint formulation from this perspective. 
+ perturbation theory, but that does not eliminate its relevance to this topic. 
 
 
 
 \subsection{The Contributon Solution for Importance}
 \label{sec:ContributonImportance}
 
-Over a number of years, Williams \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study} developed contributon theory and corresponding spatial channel theory. In this area, Williams defined a pseudo-particle, the textit{contributon}, as a particle that carries response from the radiation source to a detector. Furthermore, the total number of contributons in a system are conserved by the textit{contributon conservation principle}: all contributons that are emitted from the source eventually arrive at the detector.  In his work, Williams noted that one could go so far as to track contributons, rather than real particles in monte carlo. Because every particle transported would eventually reach the detector, this would lead to a zero variance solution. However, the nature of solving the contributon equation with monte carlo (or any other transport mechanism) involves knowing the exact solution to the adjoint equation, and so relies on the same computational difficulty as solving the adjoint NTE exactly. 
+Over a number of years, Williams \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study} developed contributon theory and corresponding spatial channel theory. In this area, Williams defined a pseudo-particle, the textit{contributon}, as a particle that carries response from the radiation source to a detector. Furthermore, the total number of contributons in a system are conserved by the textit{contributon conservation principle}: all contributons that are emitted from the source eventually arrive at the detector.  In his work, Williams noted that one could go so far as to track contributons, rather than real particles in monte carlo. Because every particle transported would eventually reach the detector, this would lead to a zero variance solution. However, the nature of solving the contributon equation with monte carlo (or any other transport mechanism) involves knowing the exact solution to the adjoint equation, and so relies on the same computational obstacles as solving the adjoint NTE. 
 
 The equivalent contributon transport equation can be derived in a form analogous to the forward (eq. \ref{eq:F-NTE} ) and adjoint (eq. \ref{eq:A-NTE}) equations:
 
