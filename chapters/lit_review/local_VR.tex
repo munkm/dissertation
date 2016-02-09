@@ -12,7 +12,7 @@ Biasing Parameters Used by CADIS:
 \begin{split}
 \hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{\iint\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
          & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}
-\end{\split}
+\end{split}
 \label{eq:weightedsource}
 \end{equation}
 The  starting weights of the particles sampled from the biased source distribution, $\hat{q}$ are:
@@ -20,7 +20,7 @@ The  starting weights of the particles sampled from the biased source distributi
 \begin{split}
 w_0  & = \frac{q}{\hat{q}} \\
      & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)} 
-\end{\split}
+\end{split}
 \label{eq:startingweight}
 \end{equation}
 and the target weights for the particle are:
@@ -32,9 +32,39 @@ and the target weights for the particle are:
 
 The equations for $w$ and $w_0$ match; so particles are born at the same weight of the region they are born into, thus the problem limits excessive splitting and roulette at the particle births. 
 
-CADIS has been implemented in a number of software packages. Most notable are the MAVRIC and ADVANTG software packages from ORNL [REFERENCES]. 
+CADIS has been implemented in a number of software packages, which are summarized in Table [Table Reference Once Created]
 
-Becker's contributon method:
- \cite{becker_hybrid_2009}
+Becker's work in the mid- 2000s also explored generating biasing parameters for local source-detector problems \cite{becker_hybrid_2009}. In his work, Becker utilized a formulation of the contributon flux, as described in Eq. \eqref{eq.Cont-Flux} to optimize the flux at the forward detector location. The relevant equations are given by Eqs. \eqref{eq:beckerconributon} - \eqref{eq:beckeralpha}.
+\begin{subequations} 
+\label{eq.beckerlocal}
+Becker's local method utilizes a formulation of the energy- and space- dependent contributon flux: 
+\begin{equation}
+\phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E) 
+\label{eq:beckerconributon}
+\end{equation}
+and the spatially dependent contributon flux:
+\begin{equation}
+\tilde{\phi^c}(\vec{r}) = C_{norm}\int_0^{\infty } \phi^c(\vec{r},E) dE
+\label{eq:beckerconributonspace}
+\end{equation}
+where the normalization constant, $C_{norm}$ for a given detector volume $V_D$
+\begin{equation}
+C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}
+\end{equation}
+The space- and energy- dependent weight windows are given by: 
+\begin{equation}
+\bar{w}(\vec{r},E) = \frac{B(\vec{r}}{\phi^{\dagger}(\vec{r},E)}
+\label{eq:beckerlocalww}
+\end{equation}
+where 
+\begin{equation}
+B(\vec{r}) = \alpha(\vec{r}) \tilde{\phi^c}(\vec{r}) + 1 -  \alpha(\vec{r})
+\end{equation}
+and
+% \begin{equation}
+% \alpha(\vec{r}) = \left[ 1 + exp \left(  % \frac{\tilde{\phi^c_{max}}}{\tilde{\phi^c}(\vec{r})} - % \frac{\tilde{\phi^c}(\vec{r})}{\tilde{\phi^c_{max}} \right) \right]^{-1}
+% \label{eq:beckeralpha}
+%\end{equation}
+\end{subequations}
 
 \subsection{Implementation}
