@@ -5,7 +5,8 @@
 % The Current Maintainer of this work is Paul Vojta.
 
 \documentclass{ucbthesis}
-\usepackage{biblatex}
+\usepackage[sorting=none]{biblatex}
+% \usepackage[backend=bibtex]{biblatex}
 \usepackage[english]{babel}
 \usepackage{setspace}
 
@@ -34,10 +35,19 @@
 \usepackage[mathcal]{euscript}
 \usepackage{color}
 \usepackage{array}
-% \usepackage[pdftex]{hyperref}
+% \usepackage{hyperref}
 % \usepackage[parfill]{parskip}
 % \hypersetup{linkcolor=black, citecolor=black, urlcolor=black}
-
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{notoccite}
+\hypersetup{
+      colorlinks,
+      citecolor=black,
+      filecolor=black,
+      linkcolor=black,
+      urlcolor=black
+                    }
 
 % To compile this file, run "latex thesis", then "biber thesis"
 % (or "bibtex thesis", if the output from latex asks for that instead),
@@ -126,16 +136,19 @@ my work and helping me not explode during graduate school.
 
 % (Optional) \part{First Part}
 
-\include{chapters/intro/introduction}
-\include{chapters/lit_review/lit_review}
-\include{chapters/methodology/methodology}
-\include{chapters/characterization_tests/char_tests}
-\include{chapters/scaling_tests/scale_tests}
-\include{chapters/conclusions/conclusions}
+\input{chapters/intro/introduction}
+\input{chapters/lit_review/lit_review}
+\input{chapters/methodology/methodology}
+\input{chapters/characterization_tests/char_tests}
+\input{chapters/scaling_tests/scale_tests}
+\input{chapters/conclusions/conclusions}
 
-% \appendix
+\begin{appendix}
+\end{appendix}
 % \chapter{More Monticello Candidates}
 
+\nocite{*}
 \printbibliography
+% \bibliographystyle{ucbthesis}
 
 \end{document}

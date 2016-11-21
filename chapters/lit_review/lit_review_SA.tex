@@ -1,0 +1,60 @@
+\documentclass{ucbthesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[T1]{fontenc}         % Use T1 encoding instead of OT1
+\usepackage[utf8]{inputenc}      % Use UTF8 input encoding
+\usepackage{microtype}           % Improve typography
+\usepackage{booktabs}            % Publication quality tables
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mhchem}
+\usepackage{graphicx}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{subcaption}
+% \usepackage[demo]{graphicx} % the demo option is just for the example
+% \usepackage{capt-of}
+\usepackage[exponent-product=\cdot]{siunitx}
+\usepackage[colorlinks,breaklinks]{hyperref}
+\hypersetup{linkcolor=black, citecolor=black, urlcolor=black}
+
+\usepackage{lipsum}
+
+\def\equationautorefname{Eq.}
+\def\figureautorefname{Fig.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\title{An Angle-Informed Hybrid Method for CADIS and FW-CADIS}
+
+\author{Madicken Munk}
+\author{Rachel N. Slaybaugh}
+\affil{Department of Nuclear Engineering \\
+  University of California, Berkeley
+  3115B Etcheverry Hall, Berkeley, CA \\
+  madicken@berkeley.edu}
+
+\maketitle
+
+\chapter{Literature Review}
+\input{./chapters/lit_review/intro.tex}
+\input{./chapters/lit_review/var_reduct.tex}
+\input{./chapters/lit_review/importance.tex}
+\input{./chapters/lit_review/local_VR.tex}
+\input{./chapters/lit_review/global_VR.tex}
+\input{./chapters/lit_review/angle_VR.tex}
+% \input{./chapters/lit_review/implementation.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\baselineskip}{12pt}
+
+\bibliographystyle{ucbthesis}
+\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

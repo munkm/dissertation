@@ -2,7 +2,7 @@
 \label{sec:AngleVR}
 
 In a number of problems, the angular dependence of the flux is significant enough that biasing by space and energy, but not angle, as detailed in the previous sections, is not sufficient. As a 
-result, a subset of hybrid methods were developed to incorporate some degree of the flux anisotropy in variance reduction parameters. 
+result, a subset of hybrid methods were developed to incorporate some degree of the flux anisotropy in variance reduction parameters. Without explicitly calculating the angular flux, which is memory- and storage- intensive, many methods approached angular biasing without explicitly utilizing the angular flux. Initial approaches to angular biasing focused on approximating the angular flux $\psi$ as a separable function of the scalar flux and an angle-dependent multiplier.
  
  The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} method generates three-dimensional, space-, energy- and angule-dependent weight windows for monte carlo by utilizing a relatively course-mesh and few-angle deterministic calculation in THREEDANT [REFERENCE FOR CODE] and using Justine [REFERENCE FOR CODE] to generate Monte Carlo weight windows for MCNP. AVATAR avoided generating explicit angular fluxes with THREEDANT by assuming that the adjoint angular flux is symmetric about the average adjoint current vector, $J^{\dagger}$ : 
  
@@ -178,7 +178,7 @@ As mentioned in the previous section, Cooper's method was limited in that it use
 MCNP Weight Window Generator \textbf{cite MCNP manual here}
 
 \subsection{Implementation and Performance of Angle-Informed Methods}
-\label{sec:results}
+\label{sec:resultsangle}
 
 In Mavric \cite{peplow_advanced_2007}
 
