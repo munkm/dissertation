@@ -60,5 +60,6 @@ Thumbs.db
 #########################
 fix-access.sh
 doit2.sh
-Makefile
+Makefile_old
 build/
+compile/
