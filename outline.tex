@@ -1,0 +1,28 @@
+\documentclass{article}
+%\documentclass[%
+% paper=A4, twoside=true, openright, parskip=full, chapterprefix=true,
+% 11pt, headings=normal, % bibliography=totoc, listof=totoc,
+% ]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+% \usepackage{tocloft}
+% \usepackage[
+%      figuresep=colon,
+%      sansserif=false,
+%      hangfigurecaption=false,
+%      hangsection=true,
+%      hangsubsection=true,
+%      colorize=full,
+%      colortheme=bluemagenta,
+% ]{cleanthesis}
+% your preamble settings you wish to keep: fonts etc.
+\begin{document}
+\begingroup
+\section*{\contentsname}
+\makeatletter
+% \makeatother
+\input{./compile/thesis2.toc}
+% \input{./compile/thesis.toc}
+\makeatother
+\endgroup
+\end{document}
