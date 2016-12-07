@@ -1,0 +1,212 @@
+\section{Computational Success Metrics}
+\label{sec:successmetrics}
+\subsection{Anisotropy Quantification}
+
+As the $\Omega$-methods are analyzed, it will be important to determine the
+types of problems in which the methods are successful. In addition to describing
+the physics that induce anisotropy in the flux, quantifying the degree of
+anisotropy of the problem will be useful in characterizing the method. In this
+section, a number
+of methods by which the anisotropy can be quantified in these problems are
+proposed. A brief description of how these methods capture anisotropy in the
+problem is also included. While each method proposes a metric by which the
+problem can be compared, there are certainly other methods that one may propose
+that could be used as an alternative. The methods described in the following
+subsections were chosen to reflect a relatively low computational cost
+informative quantity.
+
+\subsubsection{The Scalar Contributon Ratio}
+
+If response is selected as an output option in ADVANTG, a silo file containing
+the contributon fluxes for each discretized cell in space and energy  is
+created after
+each simulation run. This is useful for problem analysis as the user may see
+preferential streaming paths for particles in the problem using this metric.
+However, the contributon flux generated in this process is given by the product
+of the scalar adjoint and forward fluxes (Eq. \eqref{eq:adv_contributon}).
+
+As mentioned in SECTIONREF HERE, the contributon flux can be calculated by using
+the product of the forward and adjoint fluxes. In methods like METHOD REFERENCE
+and METHOD REFERENCE, the scalar contributon flux is calculated by the product
+of the scalar adjoint and forward fluxes.
+
+\begin{equation}
+  \phi^{c}(\vec {r} ,E)  = \phi^{\dagger}(\vec {r} ,E)\phi(\vec {r} ,E)
+\label{eq:adv_contributon}
+\end{equation}
+
+A more precise calculation of the contributon flux could be generated from
+integrating the angular contributon flux over all angle.
+
+\begin{equation}
+  \begin{split}
+    \Phi^{c}(\vec {r} ,E)  & = \int_{\Omega}{\psi^{c}(\vec{r}, E,\Omega)}
+                               d\Omega \\
+             & = \int_{\Omega}{\psi^{\dagger}(\vec{r}, E, \hat\Omega)
+                 \psi(\vec{r}, E, \hat\Omega)} d\Omega
+  \end{split}
+\label{eq:full_contributon}
+\end{equation}
+
+Equation \ref{eq:full_contributon} incorporates the angular contributon flux
+to calculate the scalar contributon flux
+while Eq. \ref{eq:adv_contributon} utilizes the product of the scalar
+adjoint and forward fluxes to calculate the scalar contributon flux. While both
+equations give the contributon flux as a function of space and energy, the
+differences in their calculation is addressed in their notation, namely using
+$\phi^{c}$ or $\Phi^{c}$.
+
+\begin{equation}
+  M_{1} = \frac{\phi^{c}(\vec {r} ,E)}{\Phi^{c}(\vec {r} ,E)}
+  \label{eq:metric_one}
+\end{equation}
+
+The first measure of anisotropy quantification that will be investigated is the
+ratio between these two quantities, as described by Eq. \ref{eq:metric_one}.
+If the adjoint or forward angular flux is significantly
+peaked in $\Omega$, this will result in a deviation between $\phi^{c}$ and
+$\Phi^{c}$. The more isotropic the flux in $\vec{r}$ and $E$, the closer these
+values will be and the quantity will approach unity.
+
+\subsubsection{The Maximum to Average Flux Ratio}
+
+An alternative metric to quantify anisotropy is to calculate the ratio between
+the maximum and average angular $\Omega$-flux in each $\vec{r} , E$ voxel (Eq.
+\ref{eq:metric_two}).
+The higher this quantity, the more peaked the angular $\Omega$-flux is in $\Omega$.
+
+\begin{equation}
+  M_{2} = \frac{\psi_{\Omega, Max}^{\dagger}(\vec {r} ,E)}{\psi_{\Omega,
+                 Avg}^{\dagger}(\vec {r} ,E)}
+  \label{eq:metric_two}
+\end{equation}
+
+While \ref{eq:metric_two} directly measures the anisotropy in the problem using
+the $\Omega$-fluxes, it doesn't compare the difference between the fluxes used
+in the $\Omega$ adjoint and the standard adjoint methods. Metric two can be
+reformulated to incorporate this information using
+
+\begin{equation}
+  \begin{split}
+    M_{3} & = \frac{\frac{\psi_{\Omega, Max}^{\dagger}(\vec {r} ,E)}{\psi_{\Omega,
+                  Avg}^{\dagger}(\vec {r} ,E)}}{\frac{\psi_{\Omega,
+                  Max}(\vec {r} ,E)}{\psi_{\Omega, Avg}(\vec {r} ,E)}} \\
+          & = \frac{M_{2}}{\frac{\psi_{\Omega, Max}(\vec {r} ,E)}
+                  {\psi_{\Omega, Avg}(\vec {r} ,E)}}
+  \end{split}
+  \label{eq:metric_three}
+\end{equation}
+
+as a measure between these standard and $\Omega$ fluxes.
+This equation is a logical progression from \ref{eq:metric_two}. Here the ratio
+of the max to average -$\Omega$ fluxes are compared to the max to average of the
+original adjoint fluxes. In this metric more information on how perturbed the
+$\Omega$-flux is when compared to the original adjoint flux that is normally
+used in CADIS and FW-CADIS is reflected in the metric.
+As a result, a strongly anisotropic
+forward flux would significantly change the distribution of the $\Omega$-flux,
+thus deviating this ratio from unity. In a region where the forward flux is low,
+the $\Omega$ flux will match the original adjoint flux, and the value will be
+unity.
+
+Both equations \ref{eq:metric_two} and \ref{eq:metric_three} compare the maximum
+angular flux in a cell to the average flux in the same cell. Because the average
+angular flux is the normalization factor, the maximum flux in the cell is
+compared to some relative measure of the total flux behavior in that cell. If,
+for example, the flux has several directional peaks, the average will reflect
+that.
+
+\subsubsection{The Maximum to Minimum Flux Ratio}
+
+An additional metric to quantify anisotropy in the $\Omega$ flux distribution
+is to calculate the ratio between the maximum and minimum angular fluxes for
+each $\vec{r}, E$ voxel, as described in metric four \ref{eq:metric_four}. This
+quantity incorporates information about the
+behavior of the maximum relative to the local minimum angular flux in each cell.
+
+\begin{equation}
+  M_{4} = \frac{\psi_{\Omega, Max}^{\dagger}(\vec {r} ,E)}{\psi_{\Omega,
+                 Min}^{\dagger}(\vec {r} ,E)}
+  \label{eq:metric_four}
+\end{equation}
+
+This metric may be more appropriate to describe the anisotropy of the flux in
+cells where the distribution of flux values in the cell are not distributed in a
+manner where the average is a good measure for the global behavior of the flux
+in that cell. As with metric two \eqref{eq:metric_two}, metric four
+\eqref{eq:metric_four} only quantifies
+the anisotropy of the $\Omega$ flux relative to the $\Omega$-flux behavior in
+that cell. To compare it to the anisotropy of the flux in the standard adjoint
+problem, a ratio similiar to that of Eq. \ref{eq:metric_three} may be
+formulated:
+
+\begin{equation}
+  \begin{split}
+    M_{5} & = \frac{\frac{\psi_{\Omega, Max}^{\dagger}(\vec {r} ,E)}{\psi_{\Omega,
+                  Min}^{\dagger}(\vec {r} ,E)}}{\frac{\psi_{\Omega,
+                  Max}(\vec {r} ,E)}{\psi_{\Omega, Min}(\vec {r} ,E)}} \\
+        & = \frac{M_{4}}{\frac{\psi_{\Omega, Max}(\vec {r} ,E)}
+                  {\psi_{\Omega, Min}(\vec {r} ,E)}} .
+  \end{split}
+  \label{eq:metric_five}
+\end{equation}
+
+As with Eq. \ref{eq:metric_three}, Eq. \ref{eq:metric_five} uses a ratio from
+the standard adjoint formulation to normalize the anisotropy of the
+$\Omega$-flux. However, Eq. \ref{eq:metric_five} utilizes the maximum to minimum
+ratio of angular fluxes of both the $\Omega$- and adjoint fluxes. These two
+metrics will show the relative behavior of the flux in the cell, but because it
+does not incorporate any information about the total flux behavior within the
+cell, it may be very sensitive to the variance of the angular flux within the
+cell. Using the ratio of both the $\Omega$- and adjoint fluxes may
+help to smooth this if the variance of flux distributions within the $\Omega$-
+and standard adjoint is similar in an $\vec{r}, E$ voxel. However, if these two
+differ significantly, then metric five \eqref{eq:metric_five} may have a synergistic effect
+and will over emphasize the variance when quantifying the anisotropy of the
+cell.
+
+\subsubsection{The Contributon Flux Anisotropy}
+
+The last group of metrics that can be used to quantify anisotropy in the problem
+are formulated using the contributon angular flux. As with Eqs.
+\ref{eq:metric_two} and \ref{eq:metric_four}, Eqs \ref{eq:metric_six} and
+\ref{eq:metric_seven} utilize the ratio of the maximum to average and maximum to
+minimum angular fluxes to quantify anisotropy. In formulating these ratios with
+the contributon flux, however, the anisotropy of the angular flux is quantified.
+The difference in this formulation  will reveal regions of strong anisotropy
+in the contributon flux, rather than the $\Omega$-flux,
+which will help to inform in which regions both the forward and adjoint angular
+fluxes are anisotropic. Incorporating information into the metrics on where the
+forward angular flux is also anisotropic may make this metric more precise in
+predicting the $\Omega$-method success, as strong streaming directional
+importance in the forward flux will change the $\Omega$ method's performance,
+but is not explicitly captured in the other metrics.
+
+\begin{equation}
+  M_{6} = \frac{\psi^{c}_{Max}(\vec {r} ,E,\Omega)}{\psi^{c}_{Avg}(\vec {r}
+                ,E,\Omega)}
+  \label{eq:metric_six}
+\end{equation}
+
+\begin{equation}
+  M_{7} = \frac{\psi^{c}_{Max}(\vec {r} ,E,\Omega)}{\psi^{c}_{Min}(\vec {r}
+                ,E,\Omega)}
+  \label{eq:metric_seven}
+\end{equation}
+
+Metrics one through seven quantify anisotropy
+in the problem solved by using different parameters to capture the problem
+physics. These metrics will be compared to one another to determine which is the
+most consistently correlated with predicting the $\Omega$-method's success. A
+user may want to know if the $\Omega$-method will effectively generate variance
+reduction parameters for a Monte Carlo simulation, and this may be a
+prescriptive solution for that issue. However, all of these metrics do require
+full angular flux solutions for both the forward- and adjoint- problem, so some
+computational burden will be required to generate this solution metric for the
+problem. That said, because the Monte Carlo solution is more computationally
+demanding, generating these metrics from the deterministic solution should be
+substantially less.
+
+\subsection{Figure of Merit}
+\subsection{Timing}
+\subsection{Scalability}
