@@ -3,80 +3,81 @@
 \subsection{Variance Reduction Techniques}
 \label{sec:MCvar}
 
-To begin a discussion on variance reduction techniques for monte carlo particle transport, it is necessary to first discuss variance reduction itself. 
+To begin a discussion on variance reduction techniques for monte carlo particle transport,
+it is necessary to first discuss variance reduction itself.
 
 \textbf{describe the central limit theorem and how it relates to monte carlo statistics here }
 
-Estimate of the variance: 
+Estimate of the variance:
 \begin{equation}
 S^{ 2 }=\sum _{ i=1 }^{ N }{ \frac { (x_{ i }-\bar { x } )^{ 2 } }{ N-1 }  } \cong \bar{x^2}-\bar{x}^2
-\end{equation}
 \label{eq:Var}
+\end{equation}
 
 The variance of the mean value, or variance of $\bar{x}$, follows as:
 \begin{equation}
 S^{ 2 }_{ \bar { x }  }=\frac{S^2}{N}
-\end{equation}
 \label{eq:VarMean}
+\end{equation}
 
-From \ref{eq:VarMean}, one can see that relationship between variance and N follows: 
+From \ref{eq:VarMean}, one can see that relationship between variance and N follows:
 \begin{equation}
 S_{ \bar { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }  }
-\end{equation} 
 \label{eq:VarN}
+\end{equation}
 
-The relative error normalizes the variance by the mean value. 
+The relative error normalizes the variance by the mean value.
 \begin{equation}
 R = \frac{S_{ \bar { x }  }}{\bar{x}}
-\end{equation}
 \label{eq:RelativeErr}
+\end{equation}
 
 S to R relation
 \begin{equation}
 S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
-\end{equation}
 \label{eq:S to R}
+\end{equation}
 
-The figure of merit (FOM) is often used as a success metric for variance reduction techniques. 
+The figure of merit (FOM) is often used as a success metric for variance reduction techniques.
 This is because
 \begin{equation}
-FOM=\frac { 1 }{ R^{ 2 }T } 
-\end{equation}
+FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
+\end{equation}
 
 MCNP \cite{hendricks_mcnp_1985, brown_mcnp_2002} has a number of techniques for variance
 reduction included in its distribution. Overall, these variance reduction techniques fall
- into four general categories: truncation methods, population control methods, modified 
- sampling methods, and partially-deterministic methods. Of note for this discussion are 
- population control methods and modified sampling methods, which are discussed in a number 
- of the papers referenced herein. 
+into four general categories: truncation methods, population control methods, modified
+sampling methods, and partially-deterministic methods. Of note for this discussion are
+population control methods and modified sampling methods, which are discussed in a number
+of the papers referenced herein.
 
 Population control methods either increase the particle population by splitting or
-decrease the particle population by rouletting. Both splitting and roulette maintain a 
-fair game by adjusting the particle weights as splitting and rouletting are performed. 
+decrease the particle population by rouletting. Both splitting and roulette maintain a
+fair game by adjusting the particle weights as splitting and rouletting are performed.
 To use population control methods effectively as a variance reduction technique, splitting
  is performed in high-importance regions and roulette is performed in low-importance
   regions. MCNP's population control methods include geometry, energy and time splitting
   and roulette, as well as a weight cutoff and weight windows. Weight windows utilize both
- splitting and roulette to keep particles within a desired weight range. 
+ splitting and roulette to keep particles within a desired weight range.
 
-Modified sampling methods adjust transport by sampling from a different probability 
+Modified sampling methods adjust transport by sampling from a different probability
 distribution function than the actual distribution for the problem. This is possible only
- if, as with population control methods, the particle weights are adjusted accordingly. 
- The new probability distribution function should bias particles in regions of high 
+ if, as with population control methods, the particle weights are adjusted accordingly.
+ The new probability distribution function should bias particles in regions of high
  importance to the problem tallies. In MCNP, a number of modified sampling methods exist.
- These include: the exponential transform, implicit capture, forced collisions, source 
- biasing, and neutron-induced photon production biasing. 
+ These include: the exponential transform, implicit capture, forced collisions, source
+ biasing, and neutron-induced photon production biasing.
 
 Truncation methods stop tracking particles in a region of phase-space that is of
 low-importance to the tally. These methods can be used in space (a vacuum boundary
 condition), energy (eliminate particles above or below a specified energy), or time (stop
-tracking after a given time). To effectively use these methods, the user must be aware of 
+tracking after a given time). To effectively use these methods, the user must be aware of
 particles' importance to a tally result. If particles that are important to a result are
  eliminated with a truncation method, the tally will be underestimated, and the solution
-  will not incorporate the problem physics into the solution effectively. 
-  
-The remainder of this literature review will focus on efforts to utilize population 
+  will not incorporate the problem physics into the solution effectively.
+
+The remainder of this literature review will focus on efforts to utilize population
 control methods and modified sampling methods for variance reduction.
 
 DESCRIBE WEIGHT WINDOWS HERE
@@ -87,14 +88,14 @@ DESCRIBE SOURCE BIASING HERE
 \label{sec:AutomatedVR}
 
 It is important, in utilizing any variance reduction technique, to ensure that a fair game
-is being played. The user must ensure that the fundamental nature of the problem is not 
-being changed by using a variance reduction technique, or the answer will not be 
-representative of the original problem. Automated variance reduction techniques aim to 
+is being played. The user must ensure that the fundamental nature of the problem is not
+being changed by using a variance reduction technique, or the answer will not be
+representative of the original problem. Automated variance reduction techniques aim to
 eliminate this uncertainty for the user by estimating the importance of particles in some
- way and then setting up variance reduction parameters automatically. 
+ way and then setting up variance reduction parameters automatically.
 
-Early on, a number of methods explored automating some aspect of variance reduction for 
-Monte Carlo. Some of these methods used a fast, low-particle Monte Carlo transport run to gain an initial estimate for a cell's importance and generate variance reduction parameters from them to bias a more computationally-intensive run. Naturally, the variance reduction parameters generated by utilizing this technique were limited by the statistical uncertainty in the figures used to generate them. Furthermore, for deep-penetration particle transport, the variance reduction parameters for low flux regions were exceedingly difficult to generate.  
+Early on, a number of methods explored automating some aspect of variance reduction for
+Monte Carlo. Some of these methods used a fast, low-particle Monte Carlo transport run to gain an initial estimate for a cell's importance and generate variance reduction parameters from them to bias a more computationally-intensive run. Naturally, the variance reduction parameters generated by utilizing this technique were limited by the statistical uncertainty in the figures used to generate them. Furthermore, for deep-penetration particle transport, the variance reduction parameters for low flux regions were exceedingly difficult to generate.
 
-As with any variance reduction technique, the goal to be achieved is a faster time to achieve a solution for a desired uncertainty, and to reduce the variance for the tally. 
-Thus the metrics for success are often the figure of merit (FOM) and the variance for the tally obtaining the solution. 
+As with any variance reduction technique, the goal to be achieved is a faster time to achieve a solution for a desired uncertainty, and to reduce the variance for the tally.
+Thus the metrics for success are often the figure of merit (FOM) and the variance for the tally obtaining the solution.
