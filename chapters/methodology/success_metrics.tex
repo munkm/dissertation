@@ -1,6 +1,7 @@
 \section{Computational Success Metrics}
 \label{sec:successmetrics}
 \subsection{Anisotropy Quantification}
+\label{sec:anisotropy_quant}
 
 As the $\Omega$-methods are analyzed, it will be important to determine the
 types of problems in which the methods are successful. In addition to describing
@@ -17,7 +18,8 @@ informative quantity.
 
 \subsubsection{The Scalar Contributon Ratio}
 
-If response is selected as an output option in ADVANTG, a silo file containing
+The standard release of ADVANTG provides the contributon flux as an output
+option for the user. If response is selected as an output option, a silo file containing
 the contributon fluxes for each discretized cell in space and energy  is
 created after
 each simulation run. This is useful for problem analysis as the user may see
@@ -208,5 +210,103 @@ demanding, generating these metrics from the deterministic solution should be
 substantially less.
 
 \subsection{Figure of Merit}
-\subsection{Timing}
-\subsection{Scalability}
+
+The figure of merit (FOM) is a commonly used metric to measure Monte Carlo
+runtimes and to gauge the effectiveness of various hybrid methods. As discussed
+in section \ref{sec:MCvar}, the FOM relates the relative error of a solution to the
+time required required to achieve that variance. This was introduced in Eq.
+\ref{eq:FOM} as:
+\begin{equation*}
+  \text{FOM} = \frac{1}{R^{2}T} ,
+\end{equation*}
+where $T$ is the time and $R^{2}$ is the square of the relative error.
+
+\subsubsection{Relative Error}
+
+In tallies with multiple regions and/or energy bins, the FOM is normally calculated
+from the tally average relative error, or $R_avg$. This value is meaningful as
+it reflects the overall tally behavior. However, it is often important that all
+portions of the tally lie below a desired relative error threshold. A region
+with very low particle contribution may have a much higher relative error than
+the tally average, and may also converge much slower to a desired relative
+error. This results in a substantially different FOM than
+the tally average. In the results presented in later chapters, both relative
+errors will be used to calculate different FOMs, respectively
+\begin{subequations}
+  \begin{equation}
+    \text{FOM}_{avg} = \frac{1}{R_{avg}^{2}T}
+  \label{eq:FOMavg}
+  \end{equation}
+and
+  \begin{equation}
+    \text{FOM}_{max} = \frac{1}{R_{max}^{2}T} .
+  \label{eq:FOMmax}
+  \end{equation}
+  \label{eq:FOMerror}
+\end{subequations}
+
+In addition to reporting both FOMs for the entire problem, comparing the
+distribution of values of the relative error for problems will be a useful
+metric in method characterization. If, for example, FW-CADIS works successfully
+in a problem then the problem should have a relatively even uncertainty
+distribution for all cells. Comparing the distribution of relative errors
+between the analog case and the hybrid cases reveals whether the method is
+effectively generating variance reduction parameters for the entire problem or
+if it is more effective in particular regions.
+
+\subsubsection{Timing}
+
+The previous section described two different means by which the FOM could be
+calculated using different relative errors. The question that one must
+now consider is: what time should be used to
+calculate the FOM? In an analog Monte Carlo simulation, this time is the runtime
+of the Monte Carlo simulation, $T = T_{MC}$. In a hybrid method, one could choose
+either
+\begin{equation}
+  T_{Hybrid} = T_{MC} + T_{Deterministic}
+\label{eq:hybridtime}
+\end{equation}
+or
+\begin{equation}
+  T_{Hybrid} = T_{MC} .
+\end{equation}
+
+The FOM should remain a constant--with the exception of very early on in an MC
+calculation where statistics are very poor--for a problem. The issue with using
+Eq. \ref{eq:hybridtime} to calculate the FOM is that the deterministic runtime
+does not change the relative error of the Monte Carlo simulation. Thus, the FOM
+is not a constant throughout the Monte Carlo Simulation when using Eq.
+\ref{eq:hybridtime} as the time.
+However, it would be disingenuous to not include the deterministic runtime into
+reports for the hybrid method, as the total computational time required to
+achieve some desired relative error is ultimately what the user is seeking. As
+such, two reports of the FOM are included with the results for each simulation:
+\begin{subequations}
+  \begin{equation}
+    \text{FOM}_{MC} = \frac{1}{R^{2}T_{MC}}
+  \label{eq:FOMMC}
+  \end{equation}
+and
+  \begin{equation}
+    \text{FOM}_{Hybrid} = \frac{1}{R^{2}(T_{MC} + T_{Deterministc})} .
+  \label{eq:FOMHybrid}
+  \end{equation}
+  \label{eq:FOMtime}
+\end{subequations}
+Note that the deterministic time used in Eq. \ref{eq:FOMHybrid} is the time only
+to run the transport and generate source biasing and weight window values for
+each problem. It will not include the time used to quantify the anisotropy as
+outlined in section \ref{sec:anisotropy_quant}, as those parameters will be
+computationally demanding but not normally included in a hybrid method
+computation.
+
+In this section four different equations calculate the figure of merit were presented: two
+using different relative errors, and two using different quantities
+for time. In analyzing the method, all four will be presented as FOM$_{MC,avg}$,
+FOM$_{MC,max}$, FOM$_{Det,avg}$, and FOM$_{Det,max}$. Further, the improvement
+in the FOM for each problem will be reported as those values normalized by
+FOM$_{analog,avg}$ for the two FOMs calculated with the tally average relative
+error and FOM$_{analog,max}$ for the FOMs calculated with the tally maximum
+relative error. The success of the method will depend on its ability to improve
+all of the FOM values.
+
