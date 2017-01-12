@@ -2,6 +2,7 @@
 \label{sec:Importance}
 
 \subsection{The Concept of Importance}
+\label{sec:Importance}
 
 The effective use of variance reduction techniques can lead to a faster time to a desired solution and a reduced variance in the specified tally. However, specifying variance reduction parameters is not always a straightforward procedure. In simple geometries, a user might intuitively understand which regions of a problem may contribute more to a desired solution, but for more complex geometries, this may not be so obvious. Thus, the concept of importance is introduced: regions of the problem that are likely to contribute to a response have higher importance than those that do not. If an importance function for a system can be obtained, then that importance function can be strategically used in variance reduction techniques to optimize the monte carlo simulation.
 
@@ -12,7 +13,7 @@ A number of methods have been developed to obtain a measure of importance for ra
 With the advent of the weight window technique, Booth \cite{booth_automatic_1982} proposed
 a method to quantify a cell's importance within a Monte Carlo simulation. In this method, Booth suggested estimating the cell's importance using monte carlo transport as:
 \begin{equation}
-Importance  = \frac{\text{score of particles leaving the cell}}{\text{weight leaving the cell}}
+  Importance  = \frac{\text{score of particles leaving the cell}}{\text{weight leaving the cell}}
 \label{eq:BoothImp}
 \end{equation}
 
