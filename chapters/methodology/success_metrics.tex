@@ -30,48 +30,56 @@ created after
 each simulation run. This is useful for problem analysis as the user may see
 preferential streaming paths for particles in the problem using this metric.
 However, the contributon flux generated in this process is given by the product
-of the scalar adjoint and forward fluxes (Eq. \eqref{eq:adv_contributon}).
+of the scalar adjoint and forward fluxes (Eq. \ref{eq:adv_contributon}).
 
-As mentioned in SECTIONREF HERE, the contributon flux can be calculated by using
-the product of the forward and adjoint fluxes. In methods like METHOD REFERENCE
-and METHOD REFERENCE, the scalar contributon flux is calculated by the product
-of the scalar adjoint and forward fluxes.
-
+As mentioned in section \ref{sec:ContributonImportance}, the
+contributon flux can be calculated by using
+the product of the forward and adjoint fluxes. In standard software packages
+that calculate the contributon flux, like ADVANTG, the scalar contributon flux is calculated by the product
+of the scalar adjoint and forward fluxes. This can be written as
+%
 \begin{equation}
-  \phi^{c}(\vec {r} ,E)  = \phi^{\dagger}(\vec {r} ,E)\phi(\vec {r} ,E)
+  \phi^{c}(\vec {r} ,E)  = \phi^{\dagger}(\vec {r} ,E)\phi(\vec {r} ,E) .
 \label{eq:adv_contributon}
 \end{equation}
-
+%
 A more precise calculation of the contributon flux could be generated from
-integrating the angular contributon flux over all angle.
-
+integrating the angular contributon flux over all angle, as
+%
 \begin{equation}
   \begin{split}
     \Phi^{c}(\vec {r} ,E)  & = \int_{\Omega}{\psi^{c}(\vec{r}, E,\Omega)}
                                d\Omega \\
              & = \int_{\Omega}{\psi^{\dagger}(\vec{r}, E, \hat\Omega)
-                 \psi(\vec{r}, E, \hat\Omega)} d\Omega
+                 \psi(\vec{r}, E, \hat\Omega)} d\Omega .
   \end{split}
 \label{eq:full_contributon}
 \end{equation}
 
-Equation \ref{eq:full_contributon} incorporates the angular contributon flux
+Equation \ref{eq:full_contributon} integrates the angular contributon flux
 to calculate the scalar contributon flux
-while Eq. \ref{eq:adv_contributon} utilizes the product of the scalar
-adjoint and forward fluxes to calculate the scalar contributon flux. While both
+while Eq. \ref{eq:adv_contributon} performs this calculation by taking
+the product of the scalar
+adjoint and forward fluxes to obtain the scalar contributon flux. While both
 equations give the contributon flux as a function of space and energy, the
 differences in their calculation is addressed in their notation, namely using
-$\phi^{c}$ or $\Phi^{c}$. At present, ADVANTG only has access to the scalar
-fluxes, so \eqref{eq:full_contributon} was not an accessible option for a
-user. \\
+$\phi^{c}$ or $\Phi^{c}$. The standard release of ADVANTG only has
+access to the scalar
+fluxes, so Eq. \ref{eq:full_contributon} is not an accessible option for a
+user. Because the $\Omega$ calculations require full angular flux maps for the
+problems, the scalar contributon flux can be calculated with the latter
+formulation, rather than the former in the modified version developed to support
+this work.
 
-The first measure of anisotropy quantification that will be investigated is the
+The first measure of anisotropy quantification that will be evaluated is the
 ratio between these two quantities, as described by Eq. \ref{eq:metric_one}.
 The ratio between these two values is evaluated for every cell, $R$, and energy
 group, $E_N$.
 If the adjoint or forward angular flux is significantly
 peaked in $\Omega$, this will result in a deviation between $\phi^{c}$ and
-$\Phi^{c}$. The more isotropic the flux in $\vec{r}$ and $E$, the closer these
+$\Phi^{c}$, because there will be a multiplicative effect in the angular flux
+captured in $\Phi^{c}$ but not $\phi^{c}$. The more isotropic the
+flux in $\vec{r}$ and $E$, the closer these
 values will be and the quantity will approach unity.
 
 \begin{equation}
@@ -125,11 +133,11 @@ reformulated to incorporate this information using
 %
 \begin{equation}
   \begin{split}
-    M_{4} & = \bigg( \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
+    M_{4} & = \Bigg( \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
                   Avg}}}{\frac{\psi^{\dagger}_{
-                  Max}}{\psi^{\dagger}_{Avg}}} \bigg)_{\scalarvars} \\
-          & = \bigg(\frac{M_{3}}{\frac{\psi^{\dagger}_{Max}}
-                  {\psi^{\dagger}_{Avg}}} \bigg)_{\scalarvars}
+                  Max}}{\psi^{\dagger}_{Avg}}} \Bigg)_{\scalarvars} \\
+          & = \Bigg(\frac{M_{3}}{\frac{\psi^{\dagger}_{Max}}
+                  {\psi^{\dagger}_{Avg}}} \Bigg)_{\scalarvars}
   \end{split}
   \label{eq:metric_four}
 \end{equation}
