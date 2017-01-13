@@ -1,0 +1,148 @@
+\section{Theory: Angle-Informed Importance Maps for CADIS and FW-CADIS}
+\label{sec:methodtheory}
+
+A number of methods have been developed to generate variance reduction parameters
+for deep penetration radiation transporti problems. Section \ref{sec:omegabknd} will
+briefly review the
+relevant background work to support methods development of angle-informed variance reduction
+parameters. Note that this is merely a summary of that supporting work. A more
+thorough review of it is presented in Chapter \ref{sec:lit_review}. This work provided the foundation for the $\Omega$-methods, which
+will be introduced in the following section, \ref{sec:omegaintro}. In
+these sections the mathematical foundation for the $\Omega$-methods will be
+presented and accompanied by a discussion of how these methods deviate from the
+original formulations of CADIS and FW-CADIS, and other angle-informed methods.
+
+\subsection{Previous Work}
+\label{sec:omegabknd}
+
+As discussed in sections \ref{sec:CADIS}
+through \ref{sec:AngleVR}, the existing gold standard for automatically
+generating variance reduction parameters for deep penetration
+fixed-source radiation transport problems are
+CADIS and FW-CADIS. Both of these methods are very effective at
+generating variance reduction parameters for local and global solutions,
+respectively. However, CADIS and FW-CADIS were developed for optimization in
+space and energy, not angle.
+
+A number of angle-informed automatic variance reduction methods have been
+investigated in the past, most notably
+* AVATAR
+  * description of method
+  * pro/con summary
+* LIFT
+  * description of method
+  * pro/con summaryy
+
+In an attempt to adapt CADIS and FW-CADIS to include angular information into
+the VR parameters, Peplow et. al. formulated an adjustment to CADIS in the ORNL
+code suite \cite{peplow_consistent_2012}. Two different primary
+formulations were investigated:
+CADIS with directional source biasing, and CADIS without directional source
+biasing.
+
+In section \ref{sec:resultsangle} the success of earlier methods
+that were developed for automated variance reduction with angular information
+was evaluated.
+
+\subsection{The $\Omega$ Methods}
+\label{sec:omegaintro}
+
+The foundation of the $\Omega$-methods is built upon CADIS and FW-CADIS. Namely,
+the $\Omega$-methods will use a version of then adjoint scalar flux to
+consistently bias a monte carlo problem with the intention of reducing the
+variance. In section \ref{sec:Importance} the concept of importance was
+introduced. Notably, it was shown that the adjoint flux is a good marker for
+importance for particles to contribute to a tally. It was also shown that the
+product of the forward and adjoint flux generates a pseudo-particle flux called
+the contributon flux, where contributons are ``importance particles''.
+These importance particles can be used to show preferential flow paths from a
+source to a tally or desired location.
+
+By using a version of the adjoint scalar flux that has been formulated with the
+contributon flux, the direction of particle flow is then incorporated into the
+variance reduction parameters.
+
+\begin{equation}
+  \phi^{\dagger}_{\Omega}(\vec {r} ,E)  = \frac{\int_{\Omega}{\psi^{\dagger}
+                             (\vec{r}, E, \hat\Omega)
+                             \psi(\vec{r}, E, \hat\Omega)} d\Omega}
+                             {\int_{\Omega}\psi(\vec{r}, E, \hat\Omega) d\Omega}
+\label{eq:omega_basic}
+\end{equation}
+
+\subsubsection{CADIS-$\Omega$}
+\label{sec:cadomega}
+
+
+\begin{subequations}
+\label{CADISomegamethod}
+Biasing parameters used by CADIS-$\Omega$:
+\begin{equation}
+\begin{split}
+  \hat{q}  & = \frac{\phi_{\Omega}^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}
+               {\iint\phi_{\Omega}^{\dagger}(\vec {r} ,E)
+               q(\vec {r} ,E) dE d\vec{r}} \\
+           & = \frac{\phi_{\Omega}^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}
+\end{split}
+\end{equation}
+The  starting weights of the particles sampled from the
+biased source distribution, $\hat{q}$ are:
+\begin{equation}
+\begin{split}
+w_0  & = \frac{q}{\hat{q}} \\
+     & = \frac{R}{\phi_{\Omega}^{\dagger}(\vec {r} ,E)}
+\end{split}
+\end{equation}
+and the target weights for the particle are:
+\begin{equation}
+  \hat{w} = \frac{R}{\phi_{\Omega}^{\dagger}(\vec {r} ,E)}
+\end{equation}
+\label{eq:cadomega_eqns}
+\end{subequations}
+
+\subsubsection{FW-CADIS-$\Omega$}
+\label{sec:fwcadomega}
+
+FW-CADIS differs from CADIS in that it requires a forward deterministic
+calculation to generate $q^{\dagger}$, rather than setting
+$q^{\dagger}=\sigma_d$ as with standard CADIS. Depending on the type of global
+response desired, FW-CADIS runs a deterministic forward calculation to
+approximate the global response in the problem. The inverse of these responses
+is then used to generate the biased adjoint source distribution for the adjoint
+deterministic run. Therefore, the behavior of FW-CADIS-$\Omega$
+in the forward biasing
+portion of the calculation will remain the same as with FW-CADIS:
+
+\begin{subequations}
+\begin{equation}
+{ q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}
+\end{equation}
+
+The adjoint source for the spatially dependent global dose, $\int \phi(\vec{r},E)\sigma_d(\vec{r},E) dE$:
+\begin{equation}
+{ q^{\dagger} }(\vec { r } ,E)=\frac { \sigma _{ d }(\vec { r } ,E) }{ \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }
+\end{equation}
+
+The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E) dE $:
+\begin{equation}
+{ q^{\dagger} }(\vec { r })=\frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }
+\end{equation}
+
+The adjoint source for the energy- and spatially- dependent flux $\phi(\vec{r},E)$:
+\begin{equation}
+{ q^{\dagger} }(\vec { r } ,E)=\frac { 1 }{\phi (\vec { r } ,E) }
+\end{equation}
+\label{eq:fwcadomega_eqns}
+\end{subequations}
+
+One advantage of FW-CADIS-$\Omega$ is that, transport-focused, the
+$\Omega$-method is no more expensive than standard FW-CADIS. Because both
+versions require a forward and adjoint deterministic calculation, an extra
+transport step is not required as it is for CADIS-$\Omega$. This is attractive,
+but the nature of FW-CADIS might not be the most well-suited for the
+$\Omega$-methods. Because FW-CADIS attempts to evenly distribute particles
+throughout the problem using the forward-biased adjoint fluxes,
+the additional forward normalization with the $\Omega$-methods will likely skew
+the particle distribution in the problem, and it may place too great of
+importance on the forward-moving particles in generating the variance reduction
+parameters.
