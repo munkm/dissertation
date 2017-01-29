@@ -14,20 +14,25 @@ anisotropy of the problem will be useful in characterizing the method. In this
 section, a number
 of methods by which the anisotropy can be quantified in these problems are
 proposed. A brief description of how these methods capture anisotropy in the
-problem is also included. While each method proposes a metric by which the
-problem can be compared, there are certainly other methods that one may propose
+problem is also included. While each metric proposes an avenue by which the
+problem can be analyzed, there are certainly other methods that one may propose
 that could be used as an alternative. The methods described in the following
-subsections were chosen to reflect a relatively low computational cost
-informative quantity.
+subsections were chosen because they use data generated from the existing method
+while also avoiding incurring too much of a computational burden.
+% Maybe think of a better way to rephrase this last sentence? Not sure right now.
 
 \subsubsection{The Scalar Contributon Ratio}
 
+The hybrid methods software that will be used for this project is ADVANTG,
+developed at ORNL. Section \ref{sec:softare} explains how the software used
+interacts with other pieces of software
+and how they were modified to execute this method.
 The standard release of ADVANTG provides the contributon flux as an output
 option, which can then be used to analyze problem physics by a user.
 If this option selected as an output, a silo file containing
 the contributon fluxes for each discretized cell in space and energy  is
 created after
-each simulation run. This is useful for problem analysis as the user may see
+a run. This is useful for problem analysis as the user may see
 preferential streaming paths for particles in the problem using this metric.
 However, the contributon flux generated in this process is given by the product
 of the scalar adjoint and forward fluxes (Eq. \ref{eq:adv_contributon}).
@@ -56,12 +61,8 @@ integrating the angular contributon flux over all angle, as
 \label{eq:full_contributon}
 \end{equation}
 
-Equation \ref{eq:full_contributon} integrates the angular contributon flux
-to calculate the scalar contributon flux
-while Eq. \ref{eq:adv_contributon} performs this calculation by taking
-the product of the scalar
-adjoint and forward fluxes to obtain the scalar contributon flux. While both
-equations give the contributon flux as a function of space and energy, the
+Both equations \ref{eq:adv_contributon} and \ref{eq:full_contributon} calculate
+the contributon flux as a function of space and energy, but the
 differences in their calculation is addressed in their notation, namely using
 $\phi^{c}$ or $\Phi^{c}$. The standard release of ADVANTG only has
 access to the scalar
@@ -73,8 +74,8 @@ this work.
 
 The first measure of anisotropy quantification that will be evaluated is the
 ratio between these two quantities, as described by Eq. \ref{eq:metric_one}.
-The ratio between these two values is evaluated for every cell, $R$, and energy
-group, $E_N$.
+The ratio between these two values is evaluated for every cell, $x,y,z$, and energy
+group, $E_g$.
 If the adjoint or forward angular flux is significantly
 peaked in $\Omega$, this will result in a deviation between $\phi^{c}$ and
 $\Phi^{c}$, because there will be a multiplicative effect in the angular flux
@@ -95,8 +96,9 @@ flux in place of the standard adjoint scalar flux. Therefore the ratio between
 these two quantities would also provide a useful metric for comparing which
 regions have significantly differing bias parameters in standard-adjoint and
 omega-adjoint situations. This metric will deviate from unity if the forward
-flux is anisotropic. Equation \ref{eq:metric_two} generates this metric for
-every cell and every energy group in the problem.
+flux is anisotropic. This metric is calculated for
+every cell and every energy group in the problem, as shown in Eq.
+\ref{eq:metric_two}.
 
 \begin{equation}
   M_{2} = \bigg(\frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg)_{\scalarvars}
@@ -106,17 +108,17 @@ every cell and every energy group in the problem.
 \subsubsection{The Maximum to Average Flux Ratio}
 
 An alternative metric to quantify anisotropy is to calculate the ratio between
-the maximum and average angular contributon flux in each $\vec{r} , E$ voxel (Eq.
-\ref{eq:metric_three}).
+the maximum and average angular contributon flux in each $\vec{r} , E$ voxel.
 The higher this quantity, the more peaked the contributon flux is in $\Omega$.
 Note here that while using the $\Omega$-flux would seem like the natural choice,
 no angular information is directly accessible once the $\Omega$ scalar flux has
 been calculated. One can compare the standard adjoint scalar flux and the omega
 adjoint scalar flux and infer how anisotropic the flux in the cell might be, but
 due to the normalization that occurs in Eq. \ref{eq:omega_basic}, the
-variation of omega fluxes throughout $\Omega$ for a cell in $\scalarvars$ is not
-calculated. As such, we must rely on using the contributon flux as a next-best
-evaluator of that metric:
+variation of angular omega fluxes throughout $\Omega$ for a cell
+in $\scalarvars$ is not
+calculated. As such, the contributon flux must be relied
+upon as a next-best evaluator of that metric:
 %
 \begin{equation}
   M_{3} = \bigg(\frac{\psi^{c}_{Max}}{\psi^{c}_{
@@ -143,21 +145,25 @@ reformulated to incorporate this information using
 \end{equation}
 %
 as a measure between the anisotropies of the standard and contributon fluxes.
-This equation is a logical progression from and metric three and
-metric two. Here the ratio
-of the max to average contributon fluxes are compared to the max to average of the
-original adjoint fluxes. In this metric more information on how perturbed the
+This equation is a logical progression from metric two and
+metric three. This metric contains more information on how perturbed the
 contributon flux is when compared to the original adjoint flux that is normally
 used in CADIS and FW-CADIS.
 In the case of a strongly anisotropic
 forward flux, the forward flux  would significantly
 change the distribution of the contributon
-fluxes in a cell. This may also affect the maximum to average ratio
-of the contributon flux. However, by comparing the anisotropy in the contributon
-fluxes to those in the standard adjoint, the behavior of the anistoropies in
-both fluxes can be compared. For example, in regions where the forward flux is
+fluxes in a cell, but it would not affect the flux distribution of the standard
+adjoint angular fluxes. By comparing the anisotropy in the contributon
+fluxes to those in the standard adjoint, the perturbation of the omega flux by
+the forward flux
+in the cell can be evaluated. In regions where the forward flux is
 not anisotropic, then the contributon anisotropy ratio should approximately be
-the same as the standard adjoint anisotropy ratio. In regions where the adjoint
+the same as the standard adjoint anisotropy ratio.
+
+Further, becuase the
+contributon flux incorporates directionality of the forward and adjoint fluxes,
+the maximum to average ratio of the contributon flux can differ from the adjoint
+flux. In regions where the adjoint
 angular flux and the forward angular flux are traveling in the same direction,
 the contributon ratio should be greater than the adjoint ratio, and this metric
 will be greater than one. In regions where they are travelling in opposite or
@@ -166,9 +172,6 @@ state, and metric four will be less than unity. This metric
 provides substantially more information than metric two because
 it compares the behavior of the directional contributon and adjoint fluxes,
 rather than comparing the overall behavior of the flux in the cell.
-While this is attractive, this is also a fairly computationally
-expensive calculation and while it may provide significant information, it may
-not be worth the computational cost when compared to metrics two and three.
 
 Both equations \ref{eq:metric_three} and \ref{eq:metric_four} compare the maximum
 angular flux in a cell to the average flux in the same cell. Because the average
@@ -176,15 +179,21 @@ angular flux is the normalization factor, the maximum flux in the cell is
 compared to some relative measure of the total flux behavior in that cell. If,
 for example, the flux has several directional peaks, the average will reflect
 that.
+The fact that Eq. \ref{eq:metric_four} contains information on the global
+behavior in the contributon and average cell, the directionality of the fluxes,
+and the degree of isotropy of the forward flux is attractive. However,
+this is also a fairly computationally expensive calculation and it may
+not be worth the computational cost when compared to metrics two and three.
 
 \subsubsection{The Maximum to Minimum Flux Ratio}
 
 An additional metric to quantify anisotropy in the contributon flux distribution
 is to calculate the ratio between the maximum and minimum angular fluxes for
 each region of $\scalarvars$ phase-space, as described in metric
-four \ref{eq:metric_five}. This
+four, or Eq. \ref{eq:metric_five}. This
 quantity incorporates information about the
-behavior of the maximum relative to the local minimum angular flux in each cell.
+behavior of the local maximum relative to the local
+minimum angular flux in each cell.
 
 \begin{equation}
   M_{5} = \bigg(\frac{\psi^{c}_{Max}}{\psi^{c}_{
@@ -193,14 +202,13 @@ behavior of the maximum relative to the local minimum angular flux in each cell.
 \end{equation}
 
 This metric may be more appropriate to describe the anisotropy of the flux in
-cells where the distribution of flux values in the cell are not distributed in a
-manner where the average is a good measure for the global behavior of the flux
-in that cell. As with metric three \eqref{eq:metric_three}, metric five
+cells where the distribution of flux values in the cell are not well
+reflected by the average flux in the cell. As with metric three \eqref{eq:metric_three}, metric five
 \eqref{eq:metric_five} only quantifies
 the anisotropy of the contributon flux in the cell. There is no comparison or
-normalization to compare the anisotropy relative to another method. To
+normalization to compare the anisotropy with respect to another method. To
 compare it to the anisotropy of the flux in the standard adjoint
-problem, a ratio similiar to that of Eq. \ref{eq:metric_four} may be
+problem, a ratio similar to that of Eq. \ref{eq:metric_four} may be
 formulated:
 
 \begin{equation}
@@ -243,7 +251,7 @@ problem. The analysis of using these metrics will include some information of
 benefit to burden, which likely will come at the cost of time.
 That said, because the Monte Carlo solution is more computationally
 demanding, generating these metrics from the deterministic solution should be
-substantially less.
+substantially less of an obstacle.
 
 \subsection{Figure of Merit}
 
@@ -261,7 +269,7 @@ where $T$ is the time and $R^{2}$ is the square of the relative error.
 
 In tallies with multiple regions and/or energy bins, the FOM is normally calculated
 from the tally average relative error, or $R_{avg}$. This value is meaningful as
-it reflects the overall tally behavior. However, it is often important that all
+it reflects the overall tally behavior. However, it is often desirable that all
 portions of the tally lie below a desired relative error threshold. A region
 with very low particle contribution may have a much higher relative error than
 the tally average, and may also converge much slower to a desired relative
@@ -344,5 +352,5 @@ in the FOM for each problem will be reported as those values normalized by
 FOM$_{analog,avg}$ for the two FOMs calculated with the tally average relative
 error and FOM$_{analog,max}$ for the FOMs calculated with the tally maximum
 relative error. The success of the method will depend on its ability to improve
-all of the FOM values.
+each one of these FOM values.
 

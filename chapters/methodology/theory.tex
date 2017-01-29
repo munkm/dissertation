@@ -1,9 +1,10 @@
 \section{Theory: Angle-Informed Importance Maps for CADIS and FW-CADIS}
 \label{sec:methodtheory}
 
-A number of methods have been developed to generate variance reduction parameters
+There exists methods that have been developed to generate
+variance reduction parameters
 for deep penetration radiation transport problems with strong anisotropy in the
-flux. These methods have shown to have varying success, and many are not fully
+flux. These methods have shown to have varying success, and may not be fully
 automated. The solution proposed in this dissertation is a formulation that we
 have named the $\Omega$-methods. The foundational research
 on which the $\Omega$-methods are built will be briefly described to begin this
@@ -21,64 +22,76 @@ fixed-source radiation transport problems are
 CADIS and FW-CADIS. Both of these methods are very effective at
 generating variance reduction parameters for local and global solutions,
 respectively. However, CADIS and FW-CADIS were developed for optimization in
-space and energy, not angle.
-
-A number of angle-informed automatic variance reduction methods have been
+space and energy, not angle. As a result, solutions for problems with
+strong anisotropy in the flux are not always optimized with these methods,
+resulting in slow convergence times and low Figure of Merit (FOM) values.
+To address this, a number of angle-informed variance reduction
+methods have been
 investigated in the past, most notably AVATAR, LIFT, and a modified version of
-CADIS using AVATAR-type parameters.
+CADIS using AVATAR-type angular parameters.
 
 The AVATAR method
-\cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}, assumed that
+\cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} used an
+approximation of the angular flux--without explicitly calculating it--to
+generate angle-dependent weight windows. It operated under the approximation
+that
 the angular flux was separable and symmetric about the average current vector.
-Operating under this assumption, an approximation of the angular
-flux was calculated using
+The angular flux was then calculated using
 a product of a deterministically-obtained
-scalar flux and an exponential function--derived from the
-maximum entropy distribution--that was a function of the scalar flux and the
+scalar flux and an exponential function, derived from the
+maximum entropy distribution, that was a function of the scalar flux and the
 current. Space-, energy-, and angle-dependent weight windows for
-the monte carlo problem were then generated from the inverse of the angular
+the Monte Carlo problem were then generated from the inverse of the angular
 flux. AVATAR improved the FOM for sample problems from 2 to 5 times, but did not
 apply to problems where the flux was not azimuthally symmetric.
 
 The LIFT method \cite{turner_automatic_1997, turner_automatic_1997-1}, like
 AVATAR, calculated the angular flux for a region by assuming the angular flux
 was a product of the scalar flux and an exponential function. The angular flux
-values were then used to generate parameters for the exponential transform VR
+values were then used to generate values for the exponential transform variance
+reduction
 technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
 also generated weight window parameters. However, generating a full
 angle-dependent weight window map and running Monte Carlo transport with those
-weight windows was computationally limited, and the authors chose to only
+weight windows was computationally limiting, and the authors chose to only
 generate space- and energy- dependent weight windows. Turner showed that LIFT
 outperformed AVATAR for several example problems, but both methods performed
 poorly in voids and low-density regions.
 
 In an attempt to adapt CADIS and FW-CADIS to include angular information into
-the VR parameters, Peplow et. al. formulated an adjustment to CADIS in the ORNL
-code suite \cite{peplow_consistent_2012}. Two different primary
-formulations were investigated:
+the variance reduction parameters,
+Peplow et. al. formulated an adjustment to CADIS in the ORNL
+code suite \cite{peplow_consistent_2012}. Two different
+methods to generate weight windows and source biasing parameters
+were investigated:
 CADIS with directional source biasing, and CADIS without directional source
 biasing. These methods were referred to as Simple Angular CADIS. Like AVATAR and
 LIFT, Simple Angular CADIS approximated the angular flux as a product of the
 scalar flux and an exponential. Like AVATAR, the angular flux values
 were used to
-generate weight windows but also consistently generated source
+generate angle-dependent weight windows but also consistently generated source
 biasing parameters. For the method without
 directional source biasing, the biased source distribution matched that of the
 original CADIS, but the weight window values were directionally-dependent. The
 method with directional source biasing used the transform function to obtain
-directionally-dependent weight windows and source biasing. Peplow et. al. found
-that these methods generally increased the FOM by a factor of 1-5, but in some
+directionally-dependent weight windows and directional source biasing.
+Peplow and his colleagues found
+that these methods generally increased the FOM by a factor of 1-5 as compared to
+traditional CADIS, but in some
 cases decreased the FOM. This was attributed to the P$_1$ type assumption used
 to calculate the angular flux, which limited the physical applicability of the
-method.
+method, as it did with AVATAR.
 
 LIFT, AVATAR, and Simple Angular CADIS all showed that by including angular
 information into Monte Carlo variance reduction parameters the FOM can be
-improved. However, without explicitly using the angular flux solutions they were
-limited in which types of problems they were applicable. Further, LIFT and and
+improved. However, none of these methods used the actual angular flux to
+calculate the variance reduction parameters for the problem they were
+optimizing. Without explicitly using the angular flux solutions they were
+limited in which types of problems they were applicable, because some assumption
+of the degree of anisotropy of the flux was made. Further, LIFT and
 Simple Angular CADIS showed that by including substantial angular biasing in the
 weight windows in problems where the approximation to the angular flux is not
-sufficient, the FOM can decrease drastically, defeating the purpose of using
+sufficient, the FOM can decrease not unsubstantially, defeating the purpose of using
 these methods.
 
 \subsection{The $\Omega$ Methods}
@@ -86,8 +99,8 @@ these methods.
 
 The foundation of the $\Omega$-methods is built upon CADIS and FW-CADIS. As with
 both methods,
-the $\Omega$-methods will use a version of then adjoint scalar flux to
-consistently bias a monte carlo problem with the intention of reducing the
+the $\Omega$-methods will use a version of the adjoint scalar flux to
+consistently bias a Monte Carlo problem with the intention of reducing the
 variance. In section \ref{sec:Importance} the concept of importance was
 introduced. Notably, it was shown that the adjoint flux is a good marker for
 for the likelihood of particles to contribute to a tally, which is the
@@ -99,6 +112,7 @@ source to a tally or desired location.
 
 By using a version of the adjoint scalar flux that has been formulated with the
 contributon flux, the direction of particle flow will be incorporated into the
+importance map, and consequently also the
 variance reduction parameters. By using a variant of the adjoint scalar flux,
 the method will still maintain the importance relationship between particles and
 their proximity to the adjoint source location, or the forward response
@@ -115,10 +129,12 @@ scalar flux, is:
 \end{equation}
 %
 The $\Omega$-flux is a hybridization of the adjoint scalar flux and the contributon
-flux. Theoretically, it should inherit some of the advantages of
+flux. It is both a normalized contributon flux and a forward-weighted
+adjoint flux. Theoretically, it should inherit some of the advantages of
 each of the traditional
 adjoint and the contributon fluxes. Because it maintains dimensionality of the
-traditional adjoint scalar flux, it can be used as a quantity in both
+traditional adjoint scalar flux, it can be used in place of the standard adjoint
+scalar flux in both
 CADIS and FW-CADIS variance reduction parameter generation.
 
 \subsubsection{CADIS-$\Omega$}
@@ -176,9 +192,9 @@ is then used to generate the biased adjoint source distribution for the adjoint
 deterministic run. Therefore, the behavior of FW-CADIS-$\Omega$
 in the forward biasing
 portion of the calculation will remain the same as with FW-CADIS.
-
+%
 \begin{subequations}
-The generalized form for the forward source definition is given by the fraction
+The generalized form for the adjoint source definition is given by the fraction
 of the response in a region of phase space, P, over the total response in the
 problem, or
 \begin{equation*}
