@@ -1,9 +1,12 @@
 The following literature review aims to contextualize the work described in this dissertation within the realm of hybrid methods for neutron transport. In doing so, it will describe pertinent background information that is relevant to this topic, and introduce the relevant work preceding this project. 
-First a brief overview of variance reduction for monte carlo radiation transport will be described in section \ref{sec:MCvar}.
+First, a brief overview of variance reduction for Monte Carlo radiation transport will be described in Section \ref{sec:MCvar}.
 % Find a way to show the section numbers past the second digit. Otherwise when this renders sec: MCvar and sec:AutomatedVR render as the same number. 
-This will then transition in section \ref{sec:AutomatedVR} into a brief description of various efforts to automate variance reduction techniques within monte carlo. 
-Following that, section \ref{sec:Importance} will introduce the concept of importance and how that relates to the adjoint solution of the neutron transport equation and how it can be used to generate variance reduction parameters for transport.
-From this point, we will transition from theory into existing implementations of variance reduction techniques used in modern software in the nuclear engineering community. This will begin in \ref{sec:CADIS} with a description of the consistent, adjoint-driven importance sampling, or CADIS, and forward-weighted CADIS (FW-CADIS) methods.
+Section \ref{sec:AutomatedVR} will give a brief description of various efforts to automate variance reduction techniques within Monte Carlo. 
+Following that, Section \ref{sec:Importance} will introduce the concept of importance and how it relates to the adjoint solution of the neutron transport equation and how it can be used to generate variance reduction parameters for transport.
+
+From this point, we will transition from theory into existing implementations of variance reduction techniques used in modern software in the nuclear engineering community. This will begin in Section \ref{sec:CADIS} with a description of the consistent, adjoint-driven importance sampling, or CADIS, and forward-weighted CADIS (FW-CADIS) methods.
 CADIS and FW-CADIS, however, do not incorporate angle-informed biasing paremeters for variance reduction. 
-The following section, \ref{sec:AngleVR}, will detail the efforts to incorporate angular information into variance reduction methods for monte carlo. 
-We will then conclude in each section ( Sections \ref{sec:resultslocal}, \ref{sec:resultsglobal}, \ref{sec:resultsangle} ) with a description of the various software in which these methods have been described and how each of these methods performed in validation and scaling studies, and discuss the relative effectiveness of each method. 
+The following section, Section \ref{sec:AngleVR}, will detail the efforts to incorporate angular information into variance reduction methods for Monte Carlo. 
+Note that each method section concludes with a description of the various software in which the respective methods have been described, how each of these methods performed in validation and scaling studies, and offers discussion about the relative effectiveness of each method. 
+% I don't know what you mean by scaling studies here--is this demonstration or impact problems? Sorry to keep harping on that wording, but scaling studies really isn't the correct one. 
+% (Sections \ref{sec:resultslocal}, \ref{sec:resultsglobal}, \ref{sec:resultsangle})
