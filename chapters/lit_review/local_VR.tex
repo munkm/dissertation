@@ -3,43 +3,63 @@
 
 \subsection{Theory}
 
-In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven Importance Sampling Method (CADIS) \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a tool for automatic variance reduction for local tallies in Monte Carlo. CADIS was unique in that built off of adjoint theory for variance reduction, and consistently biased the particle distribution and particle weights. In CADIS, a deterministic estimate of the adjoint problem is solved, where the adjoint source distribution $q^{\dagger}$ is the forward problem's detector or tally response function, or $\Sigma_{tally}$. The solution for $\phi^{\dagger} $ could be used to generate a biased source distribution for the forward problem:
+In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven
+Importance Sampling Method (CADIS)
+\cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a
+tool for automatic variance reduction for local tallies in Monte Carlo. CADIS
+was unique in that built off of adjoint theory for variance reduction, and
+consistently biased the particle distribution and particle weights. In CADIS, a
+deterministic estimate of the adjoint problem is solved, where the adjoint
+source distribution $q^{\dagger}$ is the forward problem's detector or tally
+response function, or $\Sigma_{tally}$. The solution for $\phi^{\dagger} $ could
+be used to generate a biased source distribution for the forward problem:
 
-\begin{subequations} 
+\begin{subequations}
 \label{CADISmethod}
-Biasing Parameters Used by CADIS: 
+Biasing Parameters Used by CADIS:
 \begin{equation}
 \begin{split}
-\hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{\iint\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
+\hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r}
+,E)}{\iint\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
          & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}
 \end{split}
 \label{eq:weightedsource}
 \end{equation}
-The  starting weights of the particles sampled from the biased source distribution, $\hat{q}$ are:
+The  starting weights of the particles sampled from the biased source
+distribution, $\hat{q}$ are:
 \begin{equation}
 \begin{split}
 w_0  & = \frac{q}{\hat{q}} \\
-     & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)} 
+     & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)}
 \end{split}
 \label{eq:startingweight}
 \end{equation}
 and the target weights for the particle are:
 \begin{equation}
-\hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)} 
+\hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)}
 \label{eq:WW}
 \end{equation}
 \end{subequations}
 
-The equations for $w$ and $w_0$ match; so particles are born at the same weight of the region they are born into, thus the problem limits excessive splitting and roulette at the particle births. 
+The equations for $w$ and $w_0$ match; so particles are born at the same weight
+of the region they are born into, thus the problem limits excessive splitting
+and roulette at the particle births.
 
-CADIS has been implemented in a number of software packages, which are summarized in Table [Table Reference Once Created]
+CADIS has been implemented in a number of software packages, which are
+summarized in Table [Table Reference Once Created]
 
-Becker's work in the mid- 2000s also explored generating biasing parameters for local source-detector problems \cite{becker_hybrid_2009}. In his work, Becker utilized a formulation of the contributon flux, as described in Eq. \eqref{eq.Cont-Flux} to optimize the flux at the forward detector location. The relevant equations are given by Eqs. \eqref{eq:beckerconributon} - \eqref{eq:beckeralpha}.
-\begin{subequations} 
+Becker's work in the mid- 2000s also explored generating biasing parameters for
+local source-detector problems \cite{becker_hybrid_2009}. In his work, Becker
+utilized a formulation of the contributon flux, as described in Eq.
+\eqref{eq.Cont-Flux} to optimize the flux at the forward detector location. The
+relevant equations are given by Eqs. \eqref{eq:beckerconributon} -
+\eqref{eq:beckeralpha}.
+\begin{subequations}
 \label{eq.beckerlocal}
-Becker's local method utilizes a formulation of the energy- and space- dependent contributon flux: 
+Becker's local method utilizes a formulation of the energy- and space- dependent
+contributon flux:
 \begin{equation}
-\phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E) 
+\phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E)
 \label{eq:beckerconributon}
 \end{equation}
 and the spatially dependent contributon flux:
@@ -51,12 +71,12 @@ where the normalization constant, $C_{norm}$ for a given detector volume $V_D$
 \begin{equation}
 C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}
 \end{equation}
-The space- and energy- dependent weight windows are given by: 
+The space- and energy- dependent weight windows are given by:
 \begin{equation}
 \bar{w}(\vec{r},E) = \frac{B(\vec{r}}{\phi^{\dagger}(\vec{r},E)}
 \label{eq:beckerlocalww}
 \end{equation}
-where 
+where
 \begin{equation}
 B(\vec{r}) = \alpha(\vec{r}) \tilde{\phi^c}(\vec{r}) + 1 -  \alpha(\vec{r})
 \end{equation}

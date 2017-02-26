@@ -2,57 +2,69 @@
 \label{sec:AngleVR}
 
 In a number of problems, the angular dependence of the flux is significant enough that
-biasing by space and energy, but not angle, as detailed in the previous sections, is not
+biasing by space and energy, but not angle, as detailed in the previous
+sections, is not
 sufficient. As a result, a subset of hybrid methods were developed to incorporate some
 degree of the flux anisotropy in variance reduction parameters. Without explicitly
 calculating the angular flux, which is memory- and storage- intensive, many methods
-approached angular biasing without explicitly utilizing the angular flux. Initial approaches
+approached angular biasing without explicitly utilizing the angular flux.
+Initial approaches
 to angular biasing focused on approximating the angular flux $\psi$ as a separable
 function of the scalar flux and an angle-dependent multiplier.
 
 \subsection{AVATAR}
 
-The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} method generates
-three-dimensional, space-, energy- and angule-dependent weight windows for monte carlo by
-utilizing a relatively course-mesh and few-angle deterministic calculation in THREEDANT
-[REFERENCE FOR CODE] and using Justine [REFERENCE FOR CODE] to generate Monte Carlo weight
-windows for MCNP. AVATAR avoided generating explicit angular fluxes with THREEDANT by assuming
+The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}
+method generates
+three-dimensional, space-, energy- and angule-dependent weight windows for monte
+carlo by
+utilizing a relatively course-mesh and few-angle deterministic calculation in
+THREEDANT
+[REFERENCE FOR CODE] and using Justine [REFERENCE FOR CODE] to generate Monte
+Carlo weight
+windows for MCNP. AVATAR avoided generating explicit angular fluxes with
+THREEDANT by assuming
 that the adjoint angular flux is symmetric about the average adjoint current vector,
 $J^{\dagger}$ :
 
 \begin{subequations}
 \label{avatareqns}
 \begin{equation}
-\psi^{\dagger}(\hat \Omega \cdot n) = \phi^{\dagger} f(\hat\Omega \cdot n)
+  \psi^{\dagger}(\hat \Omega \cdot n) = \phi^{\dagger} f(\hat\Omega \cdot n)
 \end{equation}
 where
 \begin{equation}
-n = \frac{J^{\dagger}}{ \left\| J^{\dagger} \right\| }
+  n = \frac{J^{\dagger}}{ \left\| J^{\dagger} \right\| }
 \end{equation}
 and f is derived from the maximum entropy distribution:
 \begin{equation}
-f(\hat\Omega \cdot n) = \frac{\lambda e^{(\hat\Omega \cdot n)\lambda}} {2 \sinh {\lambda} }
+f(\hat\Omega \cdot n) = \frac{\lambda e^{(\hat\Omega \cdot n)\lambda}}
+                             {2 \sinh {\lambda} }
 \end{equation}
 and $\lambda$ is a function of the average cosine $\bar\mu$
 \begin{equation}
 \begin{split}
-\lambda  & = \frac{2.99821 \bar\mu - 2.2669248 {\bar\mu}^2 }{1 - 0.769332 \bar\mu -0.519928 {\bar\mu}^2 + 0.2691594 {\bar\mu}^3} \\
-        & = \frac{1}{1-\bar\mu} \\
+\lambda  & = \frac{2.99821 \bar\mu - 2.2669248 {\bar\mu}^2 }{1 - 0.769332
+             \bar\mu -0.519928 {\bar\mu}^2 + 0.2691594 {\bar\mu}^3} \\
+         & = \frac{1}{1-\bar\mu} \\
 \end{split}
 \end{equation}
 for $ 0 \le \bar\mu < 0.8001$ and $0.8001 \le \bar\mu < 1.0 $, respectively. Also,
 \begin{equation}
-\bar\mu(\vec{r} E) = \frac{\left\| J^{\dagger}(\vec{r} E) \right\|}{\phi^{\dagger}(\vec{r} E)}
+\bar\mu(\vec{r} E) = \frac{\left\| J^{\dagger}(\vec{r} E)
+                     \right\|}{\phi^{\dagger}(\vec{r} E)}
 \end{equation}
 \end{subequations}
 
 AVATAR's space- energy- and angle-dependent weight window could then be calculated by:
 \begin{equation}
-\bar {w} (\vec{r},E,\hat\Omega) = \frac{k}{\phi^{\dagger}(\vec{r},E) f(\hat\Omega \cdot n)}
+\bar {w} (\vec{r},E,\hat\Omega) = \frac{k}{\phi^{\dagger}(\vec{r},E)
+                                  f(\hat\Omega \cdot n)}
 \end{equation}
 where k was a constant that could be adjusted to match the source distribution.
 AVATAR exclusively generated weight windows, and did not attempt to bias the source
-distribution. Physically, the assumption behind AVATAR is that the adjoint angular flux
+distribution. Physically, the assumption behind AVATAR is that the adjoint
+angular flux
 is locally one-dimensional, so azimuthal symmetry is assumed.
 
 In implementation, the authors of AVATAR showed that AVATAR's angularly-dependent
@@ -66,16 +78,22 @@ strength manually.
 
 \subsection{Simple Angular CADIS}
 
-Simple Angular CADIS \cite{peplow_consistent_2012} built off of existing implementations
-of CADIS and FW-CADIS by employing the method used by AVATAR and consistently biasing the
-source distribution with the weight windows. In their work, Peplow et al implemented their
-work in MAVRIC [CODE REFERENCE] to incorporate directionally-dependent weight windows
+Simple Angular CADIS \cite{peplow_consistent_2012} built off of existing
+implementations
+of CADIS and FW-CADIS by employing the method used by AVATAR and consistently
+biasing the
+source distribution with the weight windows. In their work, Peplow et al
+implemented their
+work in MAVRIC [CODE REFERENCE] to incorporate directionally-dependent weight
+windows
 both with- and without directionally-dependent source biasing.
 
-The Simple Angular CADIS approach includes the azimuthal distribution in its approximation
+The Simple Angular CADIS approach includes the azimuthal distribution in its
+approximation
 of the angular flux, such that:
 \begin{equation}
-\psi^{\dagger}(\vec{r}, E, \hat \Omega) \cong \phi^{\dagger}(\vec{r}, E) \frac{1}{2\pi} f(\hat\Omega \cdot n)
+\psi^{\dagger}(\vec{r}, E, \hat \Omega) \cong \phi^{\dagger}(\vec{r}, E)
+\frac{1}{2\pi} f(\hat\Omega \cdot n)
 \end{equation}
 and the angle-dependent weight windows are then given by:
 \begin{equation}
@@ -83,15 +101,18 @@ and the angle-dependent weight windows are then given by:
                                   f(\hat\Omega \cdot n)}
 \end{equation}
 
-For the first method, with directionally-dependent weight windows and without directional
+For the first method, with directionally-dependent weight windows and without
+directional
 source biasing, the biasing parameters are:
 \begin{subequations}
 \label{SA-CADIS1}
 \begin{equation}
 \begin{split}
 \hat{q}(\vec{r},E,\hat\Omega) & = \frac{1}{R} q(\vec{r},E) \phi^{\dagger}
-                                  (\vec{r},E) \frac{1}{2 \pi} q(\hat\Omega \cdot \hat d)\\
-                              & = \hat{q}(\vec{r},E) \frac{1}{2 \pi} q(\hat\Omega \cdot \hat d)
+                                  (\vec{r},E) \frac{1}{2 \pi} q(\hat\Omega \cdot
+                                  \hat d)\\
+                              & = \hat{q}(\vec{r},E) \frac{1}{2 \pi}
+                              q(\hat\Omega \cdot \hat d)
 \end{split}
 \end{equation}
 \begin{equation}
@@ -110,12 +131,16 @@ w_0  & = \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
 \end{split}
 \end{equation}
 \end{subequations}
-Note that the biased source distribution, $\hat{q}(\vec{r},E,\hat\Omega)$, is a function of
-the biased source distribution from traditional space- energy- CADIS and of the original
-directional source distribution; which is why this method has directional weight windows,
+Note that the biased source distribution, $\hat{q}(\vec{r},E,\hat\Omega)$, is a
+function of
+the biased source distribution from traditional space- energy- CADIS and of the
+original
+directional source distribution; which is why this method has directional weight
+windows,
 but not directional source biasing.
 
-For the second method, with directionally-dependent weight windows and with directional
+For the second method, with directionally-dependent weight windows and with
+directional
 source biasing, the biasing parameters are given by:
 
 \begin{subequations}
@@ -124,8 +149,10 @@ source biasing, the biasing parameters are given by:
 \begin{split}
 \hat{q}(\vec{r},E,\hat\Omega) & = \frac{1}{Rc} q(\vec{r},E,\hat\Omega)
                                   \phi^{\dagger}(\vec{r},E,\hat\Omega) \\
-                              & = \left[ \frac{1}{R}q(\vec{r},E) \phi^{\dagger}(\vec{r},E)
-                                  \right] \left[\frac{1}{c}\frac{1}{2 \pi} q(\hat\Omega
+                              & = \left[ \frac{1}{R}q(\vec{r},E)
+                                \phi^{\dagger}(\vec{r},E)
+                                  \right] \left[\frac{1}{c}\frac{1}{2 \pi}
+                                    q(\hat\Omega
                                   \cdot \hat d) \frac{1}{2 \pi}
                                   f (\hat\Omega \cdot n_0)\right]  \\
                              & = \hat{q}(\vec{r},E) \left[\frac{1}{c}\frac{1}{2 \pi}
@@ -147,16 +174,22 @@ w_0  &= \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
 \begin{split}
 \bar{w} (\vec{r},E,\hat\Omega)  &= \frac{R}{\phi^{\dagger}(\vec{r},E)}
                                    \frac{2 \pi c}{f(\hat\Omega \cdot n_0)} \\
-                                &= \bar{w}(\vec{r},E) \frac{2 \pi c}{f(\hat\Omega \cdot n)}
+                                &= \bar{w}(\vec{r},E) \frac{2 \pi
+                                    c}{f(\hat\Omega \cdot n)}
 \end{split}
 \end{equation}
 \end{subequations}
 
-To test these two modifications of CADIS, the authors ran a number of test problems and
-compared them against standard implementations of CADIS and analog monte carlo runs. Simple
-angular CADIS with- and without- source biasing showed improvement for some problems, but not
-others. Notably, the modified CADIS methods performed well in a simple duct streaming problem,
-but for many problems did not sufficiently increase the FOM to compensate for the increase in
+To test these two modifications of CADIS, the authors ran a number of test
+problems and
+compared them against standard implementations of CADIS and analog monte carlo
+runs. Simple
+angular CADIS with- and without- source biasing showed improvement for some
+problems, but not
+others. Notably, the modified CADIS methods performed well in a simple duct
+streaming problem,
+but for many problems did not sufficiently increase the FOM to compensate for
+the increase in
 calculation time to generate the variance reduction parameters.
 
 %
@@ -165,37 +198,54 @@ calculation time to generate the variance reduction parameters.
 
 \subsubsection{Angular Biasing Using the Exponential Transform}
 
-In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a method by which
-photon transport could be biased in angle with an exponential transform adjustment factor.
-In this study, the authors performed studies on three test problems with the exponential
-transform adjustment factor and with a synergistic angular bias and exponential transform
+In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a
+method by which
+photon transport could be biased in angle with an exponential transform
+adjustment factor.
+In this study, the authors performed studies on three test problems with the
+exponential
+transform adjustment factor and with a synergistic angular bias and exponential
+transform
 adjustment.
-In all studies, the synergistic biasing outperformed the exponential transform adjustment
+In all studies, the synergistic biasing outperformed the exponential transform
+adjustment
 alone.
 However, their method performed best in highly absorbing media.
-The authors noted that this performance was due to the fact that the biasing could be made
+The authors noted that this performance was due to the fact that the biasing
+could be made
 strong without undersampling scattering in the problem.
-They also pointed out that while the weight window method was comparable in efficiency to the
-method described, their method avoided the choice of choosing importances and weight window
-values for biasing. Their method was limited to exclusively photon transport biasing, and not
-neutron transport; the authors were optimistic that the method could be extended to neutron
+They also pointed out that while the weight window method was comparable in
+efficiency to the
+method described, their method avoided the choice of choosing importances and
+weight window
+values for biasing. Their method was limited to exclusively photon transport
+biasing, and not
+neutron transport; the authors were optimistic that the method could be extended
+to neutron
 transport.
 
-The LIFT \cite{turner_automatic_1997} method, developed by Turner and Larsen, is a modification
-of the zero variance solution that utilizes a deterministic calculation to generate biasing
-parameters for the exponential transform and weight window variance reduction techniques.
-First, the adjoint angular flux is approximated, piecewise continuous in space in angle,
+The LIFT \cite{turner_automatic_1997} method, developed by Turner and Larsen, is
+a modification
+of the zero variance solution that utilizes a deterministic calculation to
+generate biasing
+parameters for the exponential transform and weight window variance reduction
+techniques.
+First, the adjoint angular flux is approximated, piecewise continuous in space
+in angle,
 with the following equations:
 
 \begin{subequations}
 \label{LIFT}
 \begin{equation}
-\psi^{\dagger}_{g,n} (\vec{r},\Omega) \approx \phi^{\dagger}_{g,n}V_n \left[ \beta_{g,n}
+\psi^{\dagger}_{g,n} (\vec{r},\Omega) \approx
+                \phi^{\dagger}_{g,n}V_n \left[ \beta_{g,n}
                 \frac{\sigma_{s_0,g \rightarrow g,n} b_{g,n}(\Omega)}{\sigma_{t,g,n} -
                 \rho_{g,n}\cdot \Omega} e^{\rho_{g,n}\cdot (r-r_n)} \right]
 \end{equation}
-where the physical system is comprised of $V_n$ regions, and $\psi^{\dagger}_{g,n}$ is the
-approximation of the angular flux for group g and region n. Further, $\beta$, the normalization
+where the physical system is comprised of $V_n$ regions, and
+$\psi^{\dagger}_{g,n}$ is the
+approximation of the angular flux for group g and region n. Further, $\beta$,
+the normalization
 factor is given by:
 \begin{equation}
 \beta_{g,n} = \frac{1}{\int_{V_n} e^{\rho_{g,n} \cdot (r-r_n)} dr \int_{4\pi}
@@ -210,42 +260,61 @@ b_{g,n}(\hat\Omega) = 1 + 3\mu_{g\rightarrow g,n}\frac{\sigma_{t,g,n} -
 \end{equation}
 and the biasing parameter is given by
 \begin{equation}
-\rho_{g,n} = \sigma_{t,g,n} \lambda_{g,n}
+  \rho_{g,n} = \sigma_{t,g,n} \lambda_{g,n}
 \end{equation}
 \end{subequations}
 
-The first equation in this series is an adjustment of the exponential transform. However,
-rather than relying upon an isotropic scattering law, like earlier implementations, the LIFT
-method adjusts the transform to instead be linearly anisotropic in angle. The parameters
+The first equation in this series is an adjustment of the exponential transform.
+However,
+rather than relying upon an isotropic scattering law, like earlier
+implementations, the LIFT
+method adjusts the transform to instead be linearly anisotropic in angle. The
+parameters
 $\beta_{g,n}$, $b_{g,n}$ and $rho_{g,n}$ are calculated from values obtained from the
 deterministic calculation and are used to calculate $\psi^{\dagger}_{g,n}$.
 
-In addition to utilizing the exponential transform to bias the particles in angle, the LIFT
-method also utilized weight windows for particle weight adjustment. However, the computational
-cost of generating angle-dependent weight windows from the previous equations led the authors
+In addition to utilizing the exponential transform to bias the particles in
+angle, the LIFT
+method also utilized weight windows for particle weight adjustment. However, the
+computational
+cost of generating angle-dependent weight windows from the previous equations
+led the authors
 to choose space-energy exclusive weight windows. The weight window target values were
-calculated to be inversely proportional to the adjoint solution, as with other methods.
+calculated to be inversely proportional to the adjoint solution, as with other
+methods.
 \begin{equation}
-ww_{center,g,n} = \frac{\phi^{\dagger}_{g,src}}{\phi^{\dagger}_{g,n}}
+  ww_{center,g,n} = \frac{\phi^{\dagger}_{g,src}}{\phi^{\dagger}_{g,n}}
 \end{equation}
 
-Turner compared a number of variants of LIFT \cite{turner_automatic_1997-1} against AVATAR to
-determine the efficiency of LIFT. In his investigation, Turner compared LIFT and AVATAR using
-approximations for the adjoint solution with diffusion and $S_N$ transport calculations, and
-various methods to calculate weight window paramaters, including utilizing LIFT combined
-with AVATAR's weight window parameters. In most cases, LIFT outperformed AVATAR. In problems
-with voids and low-density regions, the efficiency of the LIFT method decreased, but so did
-AVATAR. However, an important note that Turner mentioned was that a while increasing the
-accuracy of the deterministic solution may decrease the variance, it is not necessarily the
-best for the FOM. This is a valuable lesson for all automated variance reduction methods: an
-overly accurate solution for the adjoint problem may reduce the variance but come at such
+Turner compared a number of variants of LIFT \cite{turner_automatic_1997-1}
+against AVATAR to
+determine the efficiency of LIFT. In his investigation, Turner compared LIFT and
+AVATAR using
+approximations for the adjoint solution with diffusion and $S_N$ transport
+calculations, and
+various methods to calculate weight window paramaters, including utilizing LIFT
+combined
+with AVATAR's weight window parameters. In most cases, LIFT outperformed AVATAR.
+In problems
+with voids and low-density regions, the efficiency of the LIFT method decreased,
+but so did
+AVATAR. However, an important note that Turner mentioned was that a while
+increasing the
+accuracy of the deterministic solution may decrease the variance, it is not
+necessarily the
+best for the FOM. This is a valuable lesson for all automated variance reduction
+methods: an
+overly accurate solution for the adjoint problem may reduce the variance but
+come at such
 a high computational cost that it will decrease the FOM.
 
 [Kendra's addition to LIFT]
 
-Cooper and Larsen, in addition to generating global isotropic weight windows, as described
+Cooper and Larsen, in addition to generating global isotropic weight windows, as
+described
 in the previous section, also developed angle-dependent weight windows
-\cite{cooper_automated_2001}. Here, the forward angular flux is calculated in a similar
+\cite{cooper_automated_2001}. Here, the forward angular flux is calculated in a
+similar
 manner as the AVATAR method:
 \begin{subequations}
 \label{LIFT}
@@ -264,9 +333,12 @@ B can be calculated with
 \lambda(\vec{r}) = coth B(\vec{r}) - \frac{1}{B(\vec{r})}
 \end{equation}
 Cooper noted that $\lambda(\vec{r})$ could be estimated with either the scalar fluxes
-and currents from the quasidiffusion calculation, or with the scalar fluxes and currents
-from the Monte Carlo solution. Cooper noted that because Monte Carlo robustly calculated
-these values, it was the more optimal choice. Knowing how to calculate these parameters
+and currents from the quasidiffusion calculation, or with the scalar fluxes and
+currents
+from the Monte Carlo solution. Cooper noted that because Monte Carlo robustly
+calculated
+these values, it was the more optimal choice. Knowing how to calculate these
+parameters
 from the deterministic calculation, the angular weight window can be calculated with:
 \begin{equation}
 ww_{i,j} (\hat\Omega)= \frac{\psi_{i,j}(\vec{r},\hat\Omega)} {max\phi_{i',j'}/4\pi}
@@ -277,7 +349,8 @@ As mentioned in the previous section, Cooper's method was limited in that it use
 iterative quasidiffusion / Monte Carlo solution to generate the biasing parameters for
 the problem. This method was not automated; and the ideal frequency between iterations
 was never explored. However, Cooper showed that the angularly dependent weight windows
-significantly improved the figure of merit as compared to analog Monte Carlo. Further, the
+significantly improved the figure of merit as compared to analog Monte Carlo.
+Further, the
 angular weight windows performed slightly better than the isotropic weight windows in
 evenly distributing the problems in problems with anisotropy.
 MCNP Weight Window Generator \textbf{cite MCNP manual here}
@@ -287,9 +360,12 @@ MCNP Weight Window Generator \textbf{cite MCNP manual here}
 
 In Mavric \cite{peplow_advanced_2007}
 
-An internal feature of MCNP, the deterministic adjoint weight window generator (DAWWG), utilizes the discrete ordinates code PARTISN \cite{sweezy_automated_2005}.
+An internal feature of MCNP, the deterministic adjoint weight window generator
+(DAWWG), utilizes the discrete ordinates code PARTISN
+\cite{sweezy_automated_2005}.
 
-ADVANTG \cite{mosher_new_2010, wagner_review_2011, bevill_new_2012}, which uses Denovo \cite{evans_denovo:_2010-1} and MCNP.
+ADVANTG \cite{mosher_new_2010, wagner_review_2011, bevill_new_2012}, which uses
+Denovo \cite{evans_denovo:_2010-1} and MCNP.
 
 Tortilla \cite{somasundaram_implementation_2013}
 
