@@ -1,14 +1,42 @@
 \section{Monte Carlo Variance Reduction}
-
-\subsection{Variance Reduction Techniques}
 \label{sec:MCvar}
 
-To begin a discussion on variance reduction techniques for Monte Carlo particle
-transport,
-it is necessary to first discuss variance reduction itself.
+Monte Carlo methods for radiation transport are used in the nuclear
+engineering community for a wide spectrum of application problems. Without any
+variance reduction techniques, Monte Carlo radiation transport aims to emulate
+the transport of a particle from birth, through physical interaction, to death
+by randomly sampling probabilities particle birth, scattering, and absorption
+for that particle.
+The process of simulating a single particle
+is repeated millions of times, which is analogous to transporting
+millions of particles throughout the problem. When the user achieves a
+sufficient
+number of particles to sample to reach the desired statistical precision, the
+simulation will be complete. However, this naive approach to simulating each
+particle, no matter whether it is likely to contribute to the tallied result,
+can be extraordinarily computationally inefficient depending on the problem. A
+user could waste time simulating millions of unusable particles and still not
+reach the desired statistical precision for the tally in question. Variance
+reduction techniques were developed to address this issue. In general, these
+techniques bias the Monte Carlo transport to more effectively
+contribute to a particular result, while not fundamentally changing the nature
+of the problem being solved.
 
-\textbf{describe the central limit theorem and how it relates to Monte Carlo
-statistics here }
+\subsection{Statistical Background}
+\label{subsec:StatBkgnd}
+
+Variance reduction techniques are rooted in statistics, so we will begin our
+discussion of variance reduction techniques with a brief primer on the
+statistical background relevant to Monte Carlo radiation transport. At its
+heart, Monte Carlo transport simulates the transport of many randomly sampled
+particles, and when those particles reach a region of interest, they are scored.
+The statistical precision of the tally
+will reflect the total number of particles that were sampled in- or at- this
+region. The reliability of the answer obtained in this region is then dependent
+on these particles, and the amount of time taken to move those particles on
+their respective random walks through space.
+
+\subsubsection{Population Statistics}
 
 Estimate of the variance:
 \begin{equation}
@@ -41,6 +69,14 @@ S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
 \label{eq:S to R}
 \end{equation}
 
+\subsubsection{The Central Limit Theorem}
+
+For
+\textbf{describe the central limit theorem and how it relates to Monte Carlo
+statistics here }
+
+\subsubsection{Other Relevant Monte Carlo Factors}
+
 The figure of merit (FOM) is often used as a success metric for variance
 reduction techniques.
 This is because
@@ -49,22 +85,39 @@ FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
 \end{equation}
 
+\subsection{Variance Reduction Methods for Monte Carlo Radiation Transport}
+\label{subsec:MCVR}
 MCNP \cite{hendricks_mcnp_1985, brown_mcnp_2002} has a number of techniques for
 variance
-reduction included in its distribution. Overall, these variance reduction
+reduction that are accessible to users. Overall, these variance reduction
 techniques fall
 into four general categories: truncation methods, population control methods, modified
-sampling methods, and partially-deterministic methods. Of note for this discussion are
+sampling methods, and partially-deterministic methods. Of importance for this discussion are
 population control methods and modified sampling methods, which are discussed in
 a number
-of the papers referenced herein.
+of the papers referenced herein. Truncation methods and partially-deterministic
+methods are also very useful, but do not contribute to and
+are not the focus of this work.
 
-Population control methods either increase the particle population by splitting or
-decrease the particle population by rouletting. Both splitting and roulette maintain a
-fair game by adjusting the particle weights as splitting and rouletting are performed.
+Note that while this
+discussion will tend to focus towards MCNP's variance reduction methods, these
+methods are by no means limited to this single software package. Indeed, a
+number of other Monte Carlo radiation transport packages also include these
+methods.
+
+Population control methods adjust the particle population in the problem to
+obtain better sampling in regions of interest by either splitting or rouletting.
+Splitting is a method by which the particle population can be increased by
+splitting a single higher-weight particle into several lower-weight particles.
+Rouletting, conversely, reduces the particle population by stochastically
+killing particles. Particles that survive a rouletting routine have their weight
+adjusted higher.
+Both splitting and roulette maintain a
+fair game by adjusting the particle weights as splitting and rouletting are
+performed; the sum of the child particle weights is the same as the parent
+weight as it entered the routine.
 To use population control methods effectively as a variance reduction technique,
-splitting
- is performed in high-importance regions and roulette is performed in
+splitting is performed in high-importance regions and roulette is performed in
  low-importance
   regions. MCNP's population control methods include geometry, energy and time
   splitting
@@ -95,15 +148,16 @@ result are
  solution
   will not incorporate the problem physics into the solution effectively.
 
-The remainder of this literature review will focus on efforts to utilize population
-control methods and modified sampling methods for variance reduction.
-
 DESCRIBE WEIGHT WINDOWS HERE
 
 DESCRIBE SOURCE BIASING HERE
 
-\subsection{Automated Variance Reduction Using Monte Carlo}
-\label{sec:AutomatedVR}
+The remainder of this literature review will focus on efforts to utilize population
+control methods and modified sampling methods for variance reduction.
+
+\subsection{Automated Variance Reduction Methods for Monte Carlo Radiation
+Transport}
+\label{subsec:AutomatedMCVR}
 
 It is important, in utilizing any variance reduction technique, to ensure that a
 fair game
