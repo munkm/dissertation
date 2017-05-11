@@ -104,11 +104,11 @@ The Method of Automatic Generation of Importances by Calculation (MAGIC) is a
 global variance reduction technique \cite{davis_comparison_2011} proposed by
 Davis in 2011.
 Rather than using a deterministic solution to obtain an estimate of the forward
-flux to generate an importance map, the MAGIC method uses an analog monte carlo
+flux to generate an importance map, the MAGIC method uses an analog Monte Carlo
 run with multigroup cross section data and (optionally) a high energy cut-off.
 This initial analog run is used to generate initial importance map for a
 secondary run.
-This process iterates until several monte carlo simulations are run and a
+This process iterates until several Monte Carlo simulations are run and a
 finalized importance map is generated.
 In their paper, the authors compared three variants of MAGIC to FW-CADIS in ITER
 fusion energy systems.
@@ -122,7 +122,7 @@ information, where FW-CADIS' FOM was 65\% that of MAGIC's.
 The authors did not make it clear how many iterations were required, on average,
 to generate the finalized weight window map or if the time to iteratively
 generate importance maps were included in the FOM.
-It is unclear if only the final monte carlo simulation's runtime was used to
+It is unclear if only the final Monte Carlo simulation's runtime was used to
 calculate the FOM.
 Furthermore, the authors did not clearly state how the biasing parameters were
 calculated, other than that they used flux, population density, or weight

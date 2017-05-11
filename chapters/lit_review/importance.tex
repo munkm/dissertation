@@ -13,12 +13,12 @@ complex geometries, this may not be so obvious. Thus, the concept of importance
 is introduced: regions of the problem that are likely to contribute to a
 response have higher importance than those that do not. If an importance
 function for a system can be obtained, then that importance function can be
-strategically used in variance reduction techniques to optimize the monte carlo
+strategically used in variance reduction techniques to optimize the Monte Carlo
 simulation.
 
 A number of methods have been developed to obtain a measure of importance for
 radiation transport problems. Here a selection of these methods will be
-presented: first, obtaining a measure of importance with monte carlo sampling;
+presented: first, obtaining a measure of importance with Monte Carlo sampling;
 second, utilizing the adjoint equation to measure importance; and lastly,
 utilizing the contributon solution for importance quantification.
 
@@ -27,7 +27,7 @@ utilizing the contributon solution for importance quantification.
 With the advent of the weight window technique, Booth
 \cite{booth_automatic_1982} proposed
 a method to quantify a cell's importance within a Monte Carlo simulation. In
-this method, Booth suggested estimating the cell's importance using monte carlo
+this method, Booth suggested estimating the cell's importance using Monte Carlo
 transport as:
 \begin{equation}
   Importance  = \frac{\text{score of particles leaving the cell}}
@@ -181,10 +181,10 @@ that carries response from the radiation source to a detector. Furthermore, the
 total number of contributons in a system are conserved by the textit{contributon
 conservation principle}: all contributons that are emitted from the source
 eventually arrive at the detector.  In his work, Williams noted that one could
-go so far as to track contributons, rather than real particles in monte carlo.
+go so far as to track contributons, rather than real particles in Monte Carlo.
 Because every particle transported would eventually reach the detector, this
 would lead to a zero variance solution. However, the nature of solving the
-contributon equation with monte carlo (or any other transport mechanism)
+contributon equation with Monte Carlo (or any other transport mechanism)
 involves knowing the exact solution to the adjoint equation, and so relies on
 the same computational obstacles as solving the adjoint NTE.
 

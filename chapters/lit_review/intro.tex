@@ -1,14 +1,16 @@
 The following literature review aims to contextualize the work described in this
 dissertation within the realm of hybrid methods for deep-penetration
 neutron transport. In doing
-so, it will describe pertinent theoretical information that is relevant to this
-topic. This will be supplemented by a discussion of the various efforts
-to use these methods practically and the degree to which those methods succeeded.
-First a brief overview of variance reduction for monte carlo radiation transport
+so, the pertinent theoretical information that is relevant to this
+topic will be described.
+This will be supplemented by a discussion of the various efforts to implement
+these methods for applied probelms, and the degree to which those efforts
+succeeded.
+First, a brief overview of variance reduction for Monte Carlo radiation transport
 will be described in section \ref{sec:MCvar}.
-This will then transition in section \ref{sec:AutomatedVR} into an elaboration
-of various efforts to automate variance reduction techniques within monte carlo.
-Following that, section \ref{sec:Importance} will introduce the concept of
+Then, section \ref{sec:AutomatedVR} will expand on the
+various efforts to automate variance reduction techniques in Monte Carlo.
+Section \ref{sec:Importance} follows with an introduction of the concept of
 importance and how that relates to variance reduction. This section will also
 focus specifically on how the adjoint solution of the neutron transport equation
 relates to importance.
@@ -16,11 +18,11 @@ From this point, the chapter will transition
 from theory into existing implementations
 of variance reduction techniques used in modern software in the nuclear
 engineering community. This will begin in \ref{sec:CADIS} with a description of
-the consistent, adjoint-driven importance sampling, or CADIS, and
-forward-weighted CADIS (FW-CADIS) methods.
-The following section, \ref{sec:AngleVR}, will detail the efforts to incorporate
+the consistent, adjoint-driven importance sampling method, or CADIS, and
+the forward-weighted CADIS (FW-CADIS) method in section \ref{sec:GlobalVR}.
+The following section, \ref{sec:AngleVR}, details the efforts to incorporate
 angular information into variance reduction methods for Monte Carlo.
-The sections on CADIS, FW-CADIS, and angle-specific variance reduction
-techniques will be concluded with with a description of the
+Sections \ref{sec:CADIS}-\ref{sec:AngleVR} will each be
+concluded with with a description of the
 various software in which these methods have been implemented and the degree to
-which they have been successful.
+which they improved the variance reduction for their applications.
