@@ -71,14 +71,14 @@ adjoint source are equally important. In this way, the adjusted flux
 incorporates features from both the adjoint- and contributon- fluxes.
 
 The adjusted adjoint scalar flux quantity, or the $\Omega$-adjoint
-scalar flux, is:
+scalar flux, is
 %
 \begin{equation}
   \phi^{\dagger}_{\Omega}(\vec {r} ,E)  = \frac{\int_{\Omega}{\psi^{\dagger}
                              (\vec{r}, E, \hat\Omega)
-                             \psi(\vec{r}, E, \hat\Omega)} d\Omega}
+                             \psi(\vec{r}, E, \hat\Omega)} d\hat{\Omega}}
                              {\int_{\Omega}\psi(\vec{r}, E, \hat\Omega)
-                           d\Omega}.
+                             d\hat{\Omega}}.
 \label{eq:omega_basic}
 \end{equation}
 %
@@ -130,14 +130,14 @@ The  starting weights of the particles sampled from the
 biased source distribution, $\hat{q}$ are given by
 \begin{equation}
 \begin{split}
-  w_{0, \Omega)  & = \frac{q}{\hat{q}_{\Omega}} \\
+  w_{0, \Omega}  & = \frac{q}{\hat{q}_{\Omega}} \\
   & = \frac{R_{\Omega}}{\phi_{\Omega}^{\dagger}(\vec {r} ,E)} ,
 \end{split}
 \end{equation}
 %
-and the new target weights for the particle are:
+and the new target weights for the particle are
 \begin{equation}
-  \hat{w}_{\Omega} = \frac{R_{\Omega}}{\phi_{\Omega}^{\dagger}(\vec {r} ,E)} .
+  \hat{w}_{\Omega} = \frac{R_{\Omega}}{\phi_{\Omega}^{\dagger}(\vec{r} ,E)} .
 \end{equation}
 \label{eq:cadomega_eqns}
 \end{subequations}
