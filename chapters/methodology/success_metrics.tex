@@ -35,9 +35,9 @@ created after
 a run. This is useful for problem analysis as the user may see
 preferential streaming paths for particles in the problem using this metric.
 However, the contributon flux generated in this process is given by the product
-of the scalar adjoint and forward fluxes (Eq. \ref{eq:adv_contributon}).
+of the scalar adjoint and forward fluxes (Eq. \eqref{eq:adv_contributon}).
 
-As mentioned in section \ref{sec:ContributonImportance}, the
+As mentioned in Section \ref{sec:ContributonImportance}, the
 contributon flux can be calculated by using
 the product of the forward and adjoint fluxes. In standard software packages
 that calculate the contributon flux, like ADVANTG, the scalar contributon flux is calculated by the product
@@ -61,19 +61,19 @@ integrating the angular contributon flux over all angle, as
 \label{eq:full_contributon}
 \end{equation}
 
-Both equations \ref{eq:adv_contributon} and \ref{eq:full_contributon} calculate
+Both equations \eqref{eq:adv_contributon} and \eqref{eq:full_contributon} calculate
 the contributon flux as a function of space and energy, but the
 differences in their calculation is addressed in their notation, namely using
 $\phi^{c}$ or $\Phi^{c}$. The standard release of ADVANTG only has
 access to the scalar
-fluxes, so Eq. \ref{eq:full_contributon} is not an accessible option for a
+fluxes, so Eq. \eqref{eq:full_contributon} is not an accessible option for a
 user. Because the $\Omega$ calculations require full angular flux maps for the
 problems, the scalar contributon flux can be calculated with the latter
 formulation, rather than the former in the modified version developed to support
 this work.
 
 The first measure of anisotropy quantification that will be evaluated is the
-ratio between these two quantities, as described by Eq. \ref{eq:metric_one}.
+ratio between these two quantities, as described by Eq. \eqref{eq:metric_one}.
 The ratio between these two values is evaluated for every cell, $x,y,z$, and energy
 group, $E_g$.
 If the adjoint or forward angular flux is significantly
@@ -98,7 +98,7 @@ regions have significantly differing bias parameters in standard-adjoint and
 omega-adjoint situations. This metric will deviate from unity if the forward
 flux is anisotropic. This metric is calculated for
 every cell and every energy group in the problem, as shown in Eq.
-\ref{eq:metric_two}.
+\eqref{eq:metric_two}.
 %
 \begin{equation}
   M_{2} = \frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg\rvert_{\scalarvars}
@@ -143,7 +143,7 @@ Note here that while using the $\Omega$-flux would seem like the natural choice,
 no angular information is directly accessible once the $\Omega$ scalar flux has
 been calculated. One can compare the standard adjoint scalar flux and the omega
 adjoint scalar flux and infer how anisotropic the flux in the cell might be, but
-due to the normalization that occurs in Eq. \ref{eq:omega_basic}, the
+due to the normalization that occurs in Eq. \eqref{eq:omega_basic}, the
 variation of angular omega fluxes throughout $\Omega$ for a cell
 in $\scalarvars$ is not
 calculated. As such, the contributon flux must be relied
@@ -155,7 +155,7 @@ upon as a next-best evaluator of that metric:
   \label{eq:metric_three}
 \end{equation}
 
-While \ref{eq:metric_three} directly measures the anisotropy in the problem using
+While \eqref{eq:metric_three} directly measures the anisotropy in the problem using
 the angular contributon fluxes, it doesn't compare the difference
 between the fluxes used
 in the $\Omega$-  and the standard adjoint methods. Metric three
@@ -202,13 +202,13 @@ provides substantially more information than metric two because
 it compares the behavior of the directional contributon and adjoint fluxes,
 rather than comparing the overall behavior of the flux in the cell.
 
-Both equations \ref{eq:metric_three} and \ref{eq:metric_four} compare the maximum
+Both equations \eqref{eq:metric_three} and \eqref{eq:metric_four} compare the maximum
 angular flux in a cell to the average flux in the same cell. Because the average
 angular flux is the normalization factor, the maximum flux in the cell is
 compared to some relative measure of the total flux behavior in that cell. If,
 for example, the flux has several directional peaks, the average will reflect
 that.
-The fact that Eq. \ref{eq:metric_four} contains information on the global
+The fact that Eq. \eqref{eq:metric_four} contains information on the global
 behavior in the contributon and average cell, the directionality of the fluxes,
 and the degree of isotropy of the forward flux is attractive. However,
 this is also a fairly computationally expensive calculation and it may
@@ -219,7 +219,7 @@ not be worth the computational cost when compared to metrics two and three.
 An additional metric to quantify anisotropy in the contributon flux distribution
 is to calculate the ratio between the maximum and minimum angular fluxes for
 each region of $\scalarvars$ phase-space, as described in metric
-four, or Eq. \ref{eq:metric_five}. This
+four, or Eq. \eqref{eq:metric_five}. This
 quantity incorporates information about the
 behavior of the local maximum relative to the local
 minimum angular flux in each cell.
@@ -237,7 +237,7 @@ reflected by the average flux in the cell. As with metric three \eqref{eq:metric
 the anisotropy of the contributon flux in the cell. There is no comparison or
 normalization to compare the anisotropy with respect to another method. To
 compare it to the anisotropy of the flux in the standard adjoint
-problem, a ratio similar to that of Eq. \ref{eq:metric_four} may be
+problem, a ratio similar to that of Eq. \eqref{eq:metric_four} may be
 formulated:
 
 \begin{equation}
@@ -251,9 +251,9 @@ formulated:
   \label{eq:metric_six}
 \end{equation}
 
-As with Eq. \ref{eq:metric_four}, Eq. \ref{eq:metric_six} uses a ratio from
+As with Eq. \eqref{eq:metric_four}, Eq. \eqref{eq:metric_six} uses a ratio from
 the standard adjoint formulation to normalize the anisotropy of the
-contributon flux. However, Eq. \ref{eq:metric_six} is consistent with Eq.
+contributon flux. However, Eq. \eqref{eq:metric_six} is consistent with Eq.
 \eqref{eq:metric_five} and normalizes using the maximum to minimum
 ratio of angular fluxes of the adjoint. These two
 metrics will show the relative behavior of the flux in the cell, but because it
@@ -286,9 +286,9 @@ substantially less of an obstacle.
 
 The figure of merit (FOM) is a commonly used metric to measure Monte Carlo
 runtimes and to gauge the effectiveness of various hybrid methods. As discussed
-in section \ref{sec:MCvar}, the FOM relates the relative error of a solution to the
+in Section \ref{sec:MCvar}, the FOM relates the relative error of a solution to the
 time required required to achieve that variance. This was introduced in Eq.
-\ref{eq:FOM} as:
+\eqref{eq:FOM} as:
 \begin{equation*}
   \text{FOM} = \frac{1}{R^{2}T} ,
 \end{equation*}
@@ -346,10 +346,10 @@ or
 
 The FOM should remain a constant--with the exception of very early on in an MC
 calculation where statistics are very poor--for a problem. The issue with using
-Eq. \ref{eq:hybridtime} to calculate the FOM is that the deterministic runtime
+Eq. \eqref{eq:hybridtime} to calculate the FOM is that the deterministic runtime
 does not change the relative error of the Monte Carlo simulation. Thus, the FOM
 is not a constant throughout the Monte Carlo Simulation when using Eq.
-\ref{eq:hybridtime} as the time.
+\eqref{eq:hybridtime} as the time.
 However, it would be disingenuous to not include the deterministic runtime into
 reports for the hybrid method, as the total computational time required to
 achieve some desired relative error is ultimately what the user is seeking. As
@@ -366,10 +366,10 @@ and
   \end{equation}
   \label{eq:FOMtime}
 \end{subequations}
-Note that the deterministic time used in Eq. \ref{eq:FOMHybrid} is the time only
+Note that the deterministic time used in Eq. \eqref{eq:FOMHybrid} is the time only
 to run the transport and generate source biasing and weight window values for
 each problem. It will not include the time used to quantify the anisotropy as
-outlined in section \ref{sec:anisotropy_quant}, as those parameters will be
+outlined in Section \ref{sec:anisotropy_quant}, as those parameters will be
 computationally demanding but not normally included in a hybrid method
 computation.
 
