@@ -85,7 +85,7 @@ values will be and the quantity will approach unity.
 
 \begin{equation}
   % M_{1} = \frac{\phi^{c}_{\vec {r} ,E}}{\Phi^{c}_{\vec {r} ,E}}
-  M_{1} = \bigg(\frac{\phi^{c}}{\Phi^{c}}\bigg)_{\scalarvars}
+  M_{1} = \frac{\phi^{c}}{\Phi^{c}}\bigg\rvert_{\scalarvars}
   \label{eq:metric_one}
 \end{equation}
 
@@ -99,11 +99,40 @@ omega-adjoint situations. This metric will deviate from unity if the forward
 flux is anisotropic. This metric is calculated for
 every cell and every energy group in the problem, as shown in Eq.
 \ref{eq:metric_two}.
-
+%
 \begin{equation}
-  M_{2} = \bigg(\frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg)_{\scalarvars}
+  M_{2} = \frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg\rvert_{\scalarvars}
   \label{eq:metric_two}
 \end{equation}
+%
+Metrics one and two both reasonably appear to compute the anisotropy in the flux
+using versions of the contributon and adjoint fluxes, respectively. However, by
+expanding the $\Omega$-adjoint scalar flux in Metric two,
+%
+\begin{align*}
+% \begin{equation*}
+%  \begin{split*}
+  M_{2} & = \frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
+  & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
+      d\hat{\Omega}}{\int_{\Omega}{\psi(\hat\Omega) d\hat{\Omega}}}
+           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
+\intertext{integrating the forward angular flux over all angle,} \\
+  & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
+      d\hat{\Omega}}{\phi}
+           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
+\intertext{and rearranging the terms,}\\
+  & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
+      d\hat{\Omega}}{\phi \phi^{\dagger}}\bigg\rvert_{\scalarvars}\\
+  & = \frac{\Phi^{c}}{\phi^{c}}\bigg\rvert_{\scalarvars}\\
+  & = \frac{1}{M_{1}}\bigg\rvert_{\scalarvars},
+%  \end{split*}
+% \end{equation*}
+\end{align*}
+%
+it becomes evident that the ratio of adjoint fluxes is the inverse of the scalar
+contributon ratio. As a result, metric one will not be used in the analyses of
+the characterization problems.
+
 
 \subsubsection{The Maximum to Average Flux Ratio}
 
@@ -121,25 +150,25 @@ calculated. As such, the contributon flux must be relied
 upon as a next-best evaluator of that metric:
 %
 \begin{equation}
-  M_{3} = \bigg(\frac{\psi^{c}_{Max}}{\psi^{c}_{
-          Avg}}\bigg)_{\scalarvars}  .
+  M_{3} = \frac{\psi^{c}_{Max}}{\psi^{c}_{
+          Avg}}\bigg\rvert_{\scalarvars}  .
   \label{eq:metric_three}
 \end{equation}
 
 While \ref{eq:metric_three} directly measures the anisotropy in the problem using
 the angular contributon fluxes, it doesn't compare the difference
 between the fluxes used
-in the $\Omega$-  and the standard adjoint methods. Metric \ref{eq:metric_three}
+in the $\Omega$-  and the standard adjoint methods. Metric three
 can be
 reformulated to incorporate this information using
 %
 \begin{equation}
   \begin{split}
-    M_{4} & = \Bigg( \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
+    M_{4} & = \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
                   Avg}}}{\frac{\psi^{\dagger}_{
-                  Max}}{\psi^{\dagger}_{Avg}}} \Bigg)_{\scalarvars} \\
-          & = \Bigg(\frac{M_{3}}{\frac{\psi^{\dagger}_{Max}}
-                  {\psi^{\dagger}_{Avg}}} \Bigg)_{\scalarvars}
+                  Max}}{\psi^{\dagger}_{Avg}}} \Bigg\rvert_{\scalarvars} \\
+          & = \frac{M_{3}}{\frac{\psi^{\dagger}_{Max}}
+                  {\psi^{\dagger}_{Avg}}} \Bigg\rvert_{\scalarvars}
   \end{split}
   \label{eq:metric_four}
 \end{equation}
@@ -196,8 +225,8 @@ behavior of the local maximum relative to the local
 minimum angular flux in each cell.
 
 \begin{equation}
-  M_{5} = \bigg(\frac{\psi^{c}_{Max}}{\psi^{c}_{
-          Min}}\bigg)_{\scalarvars}  .
+  M_{5} = \frac{\psi^{c}_{Max}}{\psi^{c}_{
+          Min}}\bigg\rvert_{\scalarvars}  .
   \label{eq:metric_five}
 \end{equation}
 
@@ -213,11 +242,11 @@ formulated:
 
 \begin{equation}
   \begin{split}
-    M_{6} & = \Bigg( \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
+    M_{6} & =  \frac{\frac{\psi^{c}_{Max}}{\psi^{c}_{
                   Min}}}{\frac{\psi^{\dagger}_{
-                  Max}}{\psi^{\dagger}_{Min}}} \Bigg)_{\scalarvars} \\
-          & = \Bigg(\frac{M_{5}}{\frac{\psi^{\dagger}_{Max}}
-                  {\psi^{\dagger}_{Min}}} \Bigg)_{\scalarvars}  .
+                  Max}}{\psi^{\dagger}_{Min}}} \Bigg\rvert_{\scalarvars} \\
+          & = \frac{M_{5}}{\frac{\psi^{\dagger}_{Max}}
+                  {\psi^{\dagger}_{Min}}} \Bigg\rvert_{\scalarvars}  .
   \end{split}
   \label{eq:metric_six}
 \end{equation}
