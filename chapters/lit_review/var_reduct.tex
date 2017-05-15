@@ -3,20 +3,21 @@
 
 Monte Carlo methods for radiation transport are used in the nuclear
 engineering community for a wide spectrum of application problems. Without any
-variance reduction techniques, Monte Carlo radiation transport aims to emulate
+variance reduction techniques, Monte Carlo methods aim to emulate
 the transport of a particle from birth, through physical interaction, to death
-by randomly sampling probabilities particle birth, scattering, and absorption
-for that particle.
-The process of simulating a single particle
+by randomly sampling probabilities particle production, elastic and inelastic
+scattering, and absorption for that particle.
+This process of transporting a single particle
 is repeated millions of times, which is analogous to transporting
 millions of particles throughout the problem. When the user achieves a
 sufficient
-number of particles to sample to reach the desired statistical precision, the
+number of particles to sample to reach the desired statistical precision for
+the region of interest, the
 simulation will be complete. However, this naive approach to simulating each
 particle, no matter whether it is likely to contribute to the tallied result,
 can be extraordinarily computationally inefficient depending on the problem. A
 user could waste time simulating millions of unusable particles and still not
-reach the desired statistical precision for the tally in question. Variance
+reach the desired statistical precision for the tally. Variance
 reduction techniques were developed to address this issue. In general, these
 techniques bias the Monte Carlo transport to more effectively
 contribute to a particular result, while not fundamentally changing the nature
@@ -27,14 +28,16 @@ of the problem being solved.
 
 Variance reduction techniques are rooted in statistics, so we will begin our
 discussion of variance reduction techniques with a brief primer on the
-statistical background relevant to Monte Carlo radiation transport. At its
-heart, Monte Carlo transport simulates the transport of many randomly sampled
-particles, and when those particles reach a region of interest, they are scored.
-The statistical precision of the tally
+statistical background relevant to Monte Carlo radiation transport. Monte Carlo
+methods transports many randomly sampled
+particles, and when those particles reach a region of interest, they are scored
+in a tally. The statistical precision of the tally
 will reflect the total number of particles that were sampled in- or at- this
-region. The reliability of the answer obtained in this region is then dependent
-on these particles, and the amount of time taken to move those particles on
-their respective random walks through space.
+region or surface.
+The reliability of the answer obtained in this region is then dependent
+on the quantity of these particles,
+and the amount of time taken to move the particles on
+their respective random walks through space to the region.
 
 \subsubsection{Population Statistics}
 
@@ -92,26 +95,31 @@ variance
 reduction that are accessible to users. Overall, these variance reduction
 techniques fall
 into four general categories: truncation methods, population control methods, modified
-sampling methods, and partially-deterministic methods. Of importance for this discussion are
+sampling methods, and partially-deterministic methods. Of importance for this
+project are
 population control methods and modified sampling methods, which are discussed in
 a number
 of the papers referenced herein. Truncation methods and partially-deterministic
 methods are also very useful, but do not contribute to and
-are not the focus of this work.
+are not the focus of this work, so will only be touched upon briefly.
 
 Note that while this
-discussion will tend to focus towards MCNP's variance reduction methods, these
+discussion will tend to focus towards the variance reduction methods in MCNP,
+these
 methods are by no means limited to this single software package. Indeed, a
 number of other Monte Carlo radiation transport packages also include these
 methods.
 
 Population control methods adjust the particle population in the problem to
-obtain better sampling in regions of interest by either splitting or rouletting.
+obtain better sampling in regions of interest by preferentially increasing or
+decreasing the particle population.
+These methods
+are called splitting and rouletting.
 Splitting is a method by which the particle population can be increased by
 splitting a single higher-weight particle into several lower-weight particles.
 Rouletting, conversely, reduces the particle population by stochastically
 killing particles. Particles that survive a rouletting routine have their weight
-adjusted higher.
+adjusted higher, thereby conserving weight in the routine.
 Both splitting and roulette maintain a
 fair game by adjusting the particle weights as splitting and rouletting are
 performed; the sum of the child particle weights is the same as the parent
@@ -119,11 +127,12 @@ weight as it entered the routine.
 To use population control methods effectively as a variance reduction technique,
 splitting is performed in high-importance regions and roulette is performed in
  low-importance
-  regions. MCNP's population control methods include geometry, energy and time
-  splitting
-  and roulette, as well as a weight cutoff and weight windows. Weight windows
-  utilize both
- splitting and roulette to keep particles within a desired weight range.
+  regions. Population control methods can be applied to
+  include geometry, energy and time,
+  as well as a weight cutoff.
+
+Rouletting and splitting can be combined in a
+  single method, generally referred to as weight windows.
 
 Modified sampling methods adjust transport by sampling from a different probability
 distribution function than the actual distribution for the problem. This is
