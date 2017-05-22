@@ -74,15 +74,34 @@ S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
 
 \subsubsection{The Central Limit Theorem}
 
-For
-\textbf{describe the central limit theorem and how it relates to Monte Carlo
-statistics here }
+The central limit theorem states that:
 
-\subsubsection{Other Relevant Monte Carlo Factors}
+Put central limit equation here
 
-The figure of merit (FOM) is often used as a success metric for variance
+Mention law of large numbers
+
+The central limit tells us that the sample mean follows a normal
+distribution, regardless of the distribution of the underlying sample. This
+means that no matter what distribution is being sampled, the sampled mean will
+have this expected behavior. As a result, we know that the estimate of the mean,
+the standard deviation, and the variance of the distribution will follow
+statistics associated with a normal distribution.
+
+\subsubsection{The Figure of Merit}
+
+The equations in the preceeding sections describe how to estimate the statistics
+of a population given a finite number of samples. In Monte Carlo radiation transport, a
+user seeks to estimate some response, the relative error associated with that
+response solution, and time that it takes to obtain those values.
+
+ADD DERIVATION OF FOM HERE
+
+The figure of merit (FOM) \eqref{eq:FOM}
+is the relationship between the relative error and the
+transport time. Because it describes the relationship between these two
+parameters, it is often used as a success metric for variance
 reduction techniques.
-This is because
+
 \begin{equation}
 FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
@@ -92,7 +111,7 @@ FOM=\frac { 1 }{ R^{ 2 }T }
 \label{subsec:MCVR}
 MCNP \cite{hendricks_mcnp_1985, brown_mcnp_2002} has a number of techniques for
 variance
-reduction that are accessible to users. Overall, these variance reduction
+reduction that are accessible to users. These variance reduction
 techniques fall
 into four general categories: truncation methods, population control methods, modified
 sampling methods, and partially-deterministic methods. Of importance for this
@@ -100,20 +119,18 @@ project are
 population control methods and modified sampling methods, which are discussed in
 a number
 of the papers referenced herein. Truncation methods and partially-deterministic
-methods are also very useful, but do not contribute to and
-are not the focus of this work, so will only be touched upon briefly.
-
-Note that while this
+methods do not contribute to and are not the focus of this work,
+so will only be touched upon briefly. Note that while this
 discussion will tend to focus towards the variance reduction methods in MCNP,
 these
-methods are by no means limited to this single software package. Indeed, a
+methods are by no means limited to this single software package. A
 number of other Monte Carlo radiation transport packages also include these
 methods.
 
 Population control methods adjust the particle population in the problem to
 obtain better sampling in regions of interest by preferentially increasing or
 decreasing the particle population.
-These methods
+The first two types of population control methods that will be discussed
 are called splitting and rouletting.
 Splitting is a method by which the particle population can be increased by
 splitting a single higher-weight particle into several lower-weight particles.
@@ -125,25 +142,124 @@ fair game by adjusting the particle weights as splitting and rouletting are
 performed; the sum of the child particle weights is the same as the parent
 weight as it entered the routine.
 To use population control methods effectively as a variance reduction technique,
-splitting is performed in high-importance regions and roulette is performed in
+splitting is performed in high-importance regions to increase the particle
+count, and thus the sampling, in important regions. Conversely, roulette is
+performed in
  low-importance
-  regions. Population control methods can be applied to
-  include geometry, energy and time,
+  regions to reduce the particle population in regions that are unimportant to
+  the tally result.
+Splitting and roulette can be applied to include geometry, energy and time,
   as well as a weight cutoff.
 
 Rouletting and splitting can be combined in a
-  single method, generally referred to as weight windows.
+single method, generally referred to as weight windows. Figure \ref{fig:ww-mcnp}
+illustrates the different processes a particle may go through when entering a
+weight window.
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{./chapters/lit_review/ww-mcnp.png}
+  \caption[Weight window illustration]{Cartoon illustration of a weight window,
+    adapted from \cite{brown_mcnp_2002}}
+  \label{fig:ww-mcnp}
+\end{figure}
+%
+The first particle we see entering the weight window is a single, high-weight
+particle. The weight of this particle is above the weight window bounds, so as
+it enters the weight window it is split into multiple particles whose weight is
+within the window bounds. The second particle entering the window is within the
+weight window bounds, so it retains its weight and is not split or rouletted.
+The last two particles entering the window have weights lower than the bound.
+They undergo a rouletting routine and one particle is killed and the surviving
+particle is increased in weight. As these particles leave the window, all of
+them have weights within the range of the window. This will reduce the variance
+of the particles contributing to a tally in that region. However, the user is
+faced with calculating a significant number of parameters to
+determine weight windows for the entire problem. In the best case with an
+experienced user, this may just take time. With an inexperienced user or a
+difficult problem this can
+be insurmountable, and may be too difficult to do without some automated
+assistance.
+
+It should be noted that
+while splitting and roulette can be performed on a single variable--energy,
+space, or time--the weight window is either energy-space
+dependent or space-time dependent. Further, the weight window will split or
+roulette depending on the particle weight entering the window. Splitting and
+roulette on their own either increase or decrease the particle weight
+proportional to $I'/I$ no matter what the entering particle weight is. As a
+result, poorly chosen splitting or roulette parameters on their own can still
+have significant tally variance, because particle weights may still span a wide
+range.
 
 Modified sampling methods adjust transport by sampling from a different probability
 distribution function than the actual distribution for the problem. This is
-possible only
- if, as with population control methods, the particle weights are adjusted
+possible if, as with population control methods, the particle weights are adjusted
  accordingly.
  The new probability distribution function should bias particles in regions of high
  importance to the problem tallies. In MCNP, a number of modified sampling
  methods exist.
- These include: the exponential transform, implicit capture, forced collisions, source
+ These include the exponential transform, implicit capture, forced collisions, source
  biasing, and neutron-induced photon production biasing.
+
+The exponential transform modifies particle transport from the analog problem by
+artificially modifying the macroscopic cross section, and thus the
+distrance-to-collision, to move particles in important directions. In directions
+of higher importance, the cross section is reduced, and particles can flow more
+freely. In directions of lower importance, the cross section is increased, and
+particles more frequently interact, thereby increasing their probability of
+directional change or absorption. The transformed cross section used by the
+exponential transform is defined by
+%
+\begin{equation*}
+  \Sigma_t^* = \Sigma_t(1-p\mu) ,
+\end{equation*}
+%
+where $\Sigma_t^*$ is the transformed total cross section, $\Sigma_t$ is the
+true total cross section, $p$ is the transform parameter, and $\mu$ is the
+cosine of the angle between the preferred direction and the particle's transport
+direction [MCNP MANUAL CITATION] \cite{hendricks_mcnp_1985}.
+
+Because the particle's transport is adjusted in the exponential transform, the
+particle weight must be adjusted accordingly. This is given by
+%
+\begin{equation*}
+  \begin{split}
+  w^* &= \frac{\Sigma_t e^{-\Sigma_t s}}{\Sigma_t^* e^{-\Sigma_t^* s}} \\
+      &= \frac{e^{-\rho \Sigma_t \mu s}}{1-p\mu}, \\
+  \end{split}
+\end{equation*}
+%
+where $s$ is the phase space of particle residence. This weight adjustment
+ensures that the particle weight is conserved throughout transport, even as
+the cross section is altered. Because the cross section in the problem is both
+energy and material dependent (depending on the geometry), the exponential
+transform will be dependent on space and energy, and particles will be biased in
+both. While a powerful method, the exponential transform is quite difficult to
+use and if $p$ is chosen poorly, this method can perform quite poorly. Further,
+the user has to know quite a bit about the problem physics and material to choose an
+optimal quantity for $p$.
+
+Source biasing, rather than preferentially adjusting particles' directionality
+by way of adjusting the cross sections, biases particles from their origin.
+Source biasing has the option to bias particles in energy, direction, and space
+(if the source is volumetric). This allows the user to choose importance
+separately for each variable. First, the source variable (let us consider
+energy for the moment) is defined as a series of bins or a function. Second, the bins are
+assigned probabilities of occurence according to their importance. An energy bin
+with a high importance will be assigned a high probability of occurence, and a
+bin with low importance will be assigned a low probability of occurence. As
+particles are born in the bins with higher importances, they will have their
+weights adjusted to the inverse of their probability of occurence, or $w^* =
+p/p^*$. Here $p$ refers to the probability density function for the source
+particles; it bears no relation to the exponential transform factor.
+
+Source biasing is a very simple method that can reduce the solution variance
+significantly. However, if a user chooses bin sizes or a function that does not
+properly reflect the particles importances in the problem, the source will be
+poorly sampled. As a result, sampling may be very inefficient and the figure of
+merit will decrease. In MCNP, if poor parameters are chosen for this method, the
+user will be given a warning.
 
 Truncation methods stop tracking particles in a region of phase-space that is of
 low-importance to the tally. These methods can be used in space (a vacuum boundary
@@ -153,22 +269,10 @@ tracking after a given time). To effectively use these methods, the user must be
 aware of
 particles' importance to a tally result. If particles that are important to a
 result are
- eliminated with a truncation method, the tally will be underestimated, and the
- solution
-  will not incorporate the problem physics into the solution effectively.
+ eliminated with a truncation method, the tally will lack the contribution from
+ that particle's phase-space, and will be underestimated as a result.
 
-DESCRIBE WEIGHT WINDOWS HERE
-
-DESCRIBE SOURCE BIASING HERE
-
-The remainder of this literature review will focus on efforts to utilize population
-control methods and modified sampling methods for variance reduction.
-
-\subsection{Automated Variance Reduction Methods for Monte Carlo Radiation
-Transport}
-\label{subsec:AutomatedMCVR}
-
-It is important, in utilizing any variance reduction technique, to ensure that a
+It is important, in using any variance reduction technique, to ensure that a
 fair game
 is being played. The user must ensure that the fundamental nature of the problem
 is not
@@ -177,14 +281,21 @@ representative of the original problem. Automated variance reduction techniques 
 eliminate this uncertainty for the user by estimating the importance of
 particles in some
  way and then setting up variance reduction parameters automatically.
+The remainder of this literature review will focus on efforts to
+automate population
+control methods and modified sampling methods for variance reduction.
 
-Early on, a number of methods explored automating some aspect of variance
+\subsection{Automated Variance Reduction Methods for Monte Carlo Radiation
+Transport}
+\label{subsec:AutomatedMCVR}
+
+A number of methods have automated some aspect of variance
 reduction for
 Monte Carlo. Some of these methods used a fast, low-particle Monte Carlo
 transport run to gain an initial estimate for a cell's importance and generate
 variance reduction parameters from them to bias a more computationally-intensive
 run. Naturally, the variance reduction parameters generated by utilizing this
-technique were limited by the statistical uncertainty in the figures used to
+technique are limited by the statistical uncertainty in the regions used to
 generate them. Furthermore, for deep-penetration particle transport, the
 variance reduction parameters for low flux regions were exceedingly difficult to
 generate.
