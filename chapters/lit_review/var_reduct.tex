@@ -28,8 +28,11 @@ of the problem being solved.
 
 Variance reduction techniques are rooted in statistics, so we will begin our
 discussion of variance reduction techniques with a brief primer on the
-statistical background relevant to Monte Carlo radiation transport. Monte Carlo
-methods transports many randomly sampled
+statistical background relevant to Monte Carlo radiation transport. Sections
+\ref{subsubsec:PopStat} through \ref{subsubsec:FOM} are summarized from
+\cite{lewis_computational_1984} and \cite{mcnp_manual_v1}.
+Monte Carlo
+methods transport many randomly sampled
 particles, and when those particles reach a region of interest, they are scored
 in a tally. The statistical precision of the tally
 will reflect the total number of particles that were sampled in- or at- this
@@ -40,26 +43,45 @@ and the amount of time taken to move the particles on
 their respective random walks through space to the region.
 
 \subsubsection{Population Statistics}
+\label{subsubsec:PopStat}
 
-Estimate of the variance:
+First, using $N$ randomly sampled particles, the estimate of the true mean value
+($\bar{x}$) is given as
+\begin{equation}
+  \hat{x} = \frac{\sum_{i=1}^{N}{x_i}}{N} ,
+\end{equation}
+where $x_i$ is the i$^{th}$ event. $\hat{x}$ is the sample mean, or the
+estimated value of $\bar{x}$
+based on the $N$ number of samples that were used to calculate $\hat{x}$.
+$\hat{x}$ in itself is a useful measure, but determining the spread of values
+about $\hat{x}$ is also an important measure. This is called the variance. The
+true variance of the distribution is
+\begin{equation}
+  \sigma^{2}\big( x \big) = \bar{x^2} - \bar{x}^2 ,
+\end{equation}
+and the standard deviation is the square root of the variance
+\begin{equation}
+  \sigma\big(x \big) = \big( \bar{x^2} - \bar{x}^2 \big)^{1/2}.
+\end{equation}
+The sample variance follows as
 \begin{equation}
 S^{ 2 }=\sum _{ i=1 }^{ N }{ \frac { (x_{ i }-\bar { x } )^{ 2 } }{ N-1 }  }
-             \cong \bar{x^2}-\bar{x}^2
+             \cong \bar{x^2}-\bar{x}^2 .
 \label{eq:Var}
 \end{equation}
-
-The variance of the mean value, or variance of $\bar{x}$, follows as:
+$S^2$ is the sample estimate of the true variance, $\sigma^2$. The variance
+tells the observer how spread the values are about the mean.
+The variance of the estimate of the mean value ($\bar{x}$), follows as:
 \begin{equation}
 S^{ 2 }_{ \bar { x }  }=\frac{S^2}{N}
 \label{eq:VarMean}
 \end{equation}
-
-From \ref{eq:VarMean}, one can see that relationship between variance and N follows:
+From \ref{eq:VarMean}, one can see that relationship between variance and N is
 \begin{equation}
-S_{ \bar { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }  }
+S_{ \bar { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }}.
 \label{eq:VarN}
 \end{equation}
-
+$S_{\bar{x}}$ is the standard error of the estimate of the sample mean.
 The relative error normalizes the variance by the mean value.
 \begin{equation}
 R = \frac{S_{ \bar { x }  }}{\bar{x}}
@@ -73,6 +95,7 @@ S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
 \end{equation}
 
 \subsubsection{The Central Limit Theorem}
+\label{subsubsec:CLT}
 
 The central limit theorem states that:
 
@@ -81,13 +104,15 @@ Put central limit equation here
 Mention law of large numbers
 
 The central limit tells us that the sample mean follows a normal
-distribution, regardless of the distribution of the underlying sample. This
+distribution, regardless of the distribution of the underlying sample, as the
+number of samples approaches infinity. This
 means that no matter what distribution is being sampled, the sampled mean will
 have this expected behavior. As a result, we know that the estimate of the mean,
 the standard deviation, and the variance of the distribution will follow
 statistics associated with a normal distribution.
 
 \subsubsection{The Figure of Merit}
+\label{subsubsec:FOM}
 
 The equations in the preceeding sections describe how to estimate the statistics
 of a population given a finite number of samples. In Monte Carlo radiation transport, a
@@ -270,7 +295,11 @@ aware of
 particles' importance to a tally result. If particles that are important to a
 result are
  eliminated with a truncation method, the tally will lack the contribution from
- that particle's phase-space, and will be underestimated as a result.
+ that particle's phase-space, and will be underestimated as a result. Further,
+ as discussed in Section \ref{subsubsec:CLT}, the central limit theorem only
+ holds assuming that the histories tracked are random and independent.
+ Truncating particles of high importance remove the independence from the
+ sampling, and the estimate of the response will be wrong.
 
 It is important, in using any variance reduction technique, to ensure that a
 fair game
