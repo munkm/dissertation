@@ -45,14 +45,26 @@ their respective random walks through space to the region.
 \subsubsection{Population Statistics}
 \label{subsubsec:PopStat}
 
-First, using $N$ randomly sampled particles, the estimate of the true mean value
-($\bar{x}$) is given as
+In radiation transport, one desires to estimate some response in phase-space.
+This response is the average behavior of the physical interactions in some
+differential phase-space in energy, space, or time. If the probability density
+function $f(x)$ for the response is known exactly,
+then the response in $dx$ can be calculated exactly by the true
+mean, or
+\begin{equation}
+  \bar{x} = \int_{-\infty}^{\infty} xf(x) dx .
+\end{equation}
+Rarely $f(x)$ is known
+exactly, so instead it is sampled.
+Using $N$ randomly sampled particles, the estimate of the true mean value is given as
 \begin{equation}
   \hat{x} = \frac{\sum_{i=1}^{N}{x_i}}{N} ,
 \end{equation}
 where $x_i$ is the i$^{th}$ event. $\hat{x}$ is the sample mean, or the
 estimated value of $\bar{x}$
-based on the $N$ number of samples that were used to calculate $\hat{x}$.
+based on the $N$ number of samples that were used to calculate $\hat{x}$. As $N
+\rightarrow \infty$, $\hat{x}$ will $\rightarrow \bar{x}$, which is given by the
+Strong Law of Large Numbers \cite{mcnp_manual_v1}.
 $\hat{x}$ in itself is a useful measure, but determining the spread of values
 about $\hat{x}$ is also an important measure. This is called the variance. The
 true variance of the distribution is
@@ -63,74 +75,167 @@ and the standard deviation is the square root of the variance
 \begin{equation}
   \sigma\big(x \big) = \big( \bar{x^2} - \bar{x}^2 \big)^{1/2}.
 \end{equation}
-The sample variance follows as
+The variance of the sampled distribution differs, as a finite number of samples
+are used to calculate $\bar{x}$ and $\sigma$. The sample variance is defined by:
 \begin{equation}
-S^{ 2 }=\sum _{ i=1 }^{ N }{ \frac { (x_{ i }-\bar { x } )^{ 2 } }{ N-1 }  }
-             \cong \bar{x^2}-\bar{x}^2 .
+S^{ 2 }=\sum _{ i=1 }^{ N }{ \frac { (x_{ i }-\hat { x } )^{ 2 } }{ N-1 }  }
+             \cong \widehat{x^2}-\hat{x}^2 ,
 \label{eq:Var}
 \end{equation}
-$S^2$ is the sample estimate of the true variance, $\sigma^2$. The variance
-tells the observer how spread the values are about the mean.
-The variance of the estimate of the mean value ($\bar{x}$), follows as:
+where
 \begin{equation}
-S^{ 2 }_{ \bar { x }  }=\frac{S^2}{N}
+  \widehat{x^2} = \frac{1}{N}\sum_{i=1}^{N} x_i^2 ,
+\end{equation}
+and the sample standard deviation is given by
+\begin{equation}
+  S = \big( \widehat{x^2}-\hat{x}^2 \big)^{(1/2)} .
+\end{equation}
+For \eqref{eq:Var} to hold true, the number of N samples must be large.
+$S^2$ is the sample estimate of the true variance, $\sigma^2$. The variance
+tells the observer how spread the sampled values are about the mean.
+The variance of the estimate of the mean value about $\bar{x}$ is:
+\begin{equation}
+S^{ 2 }_{ \hat { x }  }=\frac{S^2}{N}.
 \label{eq:VarMean}
 \end{equation}
-From \ref{eq:VarMean}, one can see that relationship between variance and N is
+From \eqref{eq:VarMean}, one can see that relationship between the sample standard
+deviation and the standard error of $\hat{x}$ about $\bar{x}$, which is
 \begin{equation}
-S_{ \bar { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }}.
+S_{ \hat { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }}.
 \label{eq:VarN}
 \end{equation}
-$S_{\bar{x}}$ is the standard error of the estimate of the sample mean.
-The relative error normalizes the variance by the mean value.
+$S_{\hat{x}}$ is the standard error of the estimate of the sample mean.
+The relative error normalizes the standard error by estimate of the mean
 \begin{equation}
-R = \frac{S_{ \bar { x }  }}{\bar{x}}
+R = \frac{S_{ \hat { x }  }}{\hat{x}} .
 \label{eq:RelativeErr}
 \end{equation}
-
-S to R relation
+As a result, $S$, $R$, and $N$ follow the relationship
 \begin{equation}
-S^2\:\propto\: R^2\:\propto\:\frac{1}{N}
+S^2\:\propto\: R^2\:\propto\:\frac{1}{N} .
 \label{eq:S to R}
 \end{equation}
 
 \subsubsection{The Central Limit Theorem}
 \label{subsubsec:CLT}
 
-The central limit theorem states that:
-
-Put central limit equation here
-
-Mention law of large numbers
+Suppose that $\hat{x}$ is calculated from several independent random particles
+to estimate $\bar{x}$. At what point does one conclude that $\hat{x}$ sufficiently
+reflects $\bar{x}$?
+The central limit theorem (CLT) \cite{lewis_computational_1984, mcnp_manual_v1}
+is a very powerful supplement to the quantities
+described in Section \ref{subsubsec:PopStat}. The CLT states that for large N,
+$\hat{x}$ will have a limiting distribution $f_N(\hat{x})$, and that distribution will be a
+normal distribution
+\begin{equation}
+  f_N\big(\hat{x}\big) \approx \frac{1}{\sqrt{2\pi} \sigma(\hat{x})}\
+           \exp\Bigg[ \frac{-\big( \hat{x}- \bar{x}\big)^2}{2\sigma^2(\hat{x})} \Bigg],\
+           \quad N \rightarrow \infty.
+  \label{eq:CLT1}
+\end{equation}
+The standard deviation of $\hat{x}$ can be related to the standard deviation of
+the samples by
+\begin{equation}
+  \sigma(\hat{x}) = \frac{\sigma(x)}{\sqrt{N}}.
+\end{equation}
+Replacing this in Eq. \eqref{eq:CLT1}
+\begin{equation}
+  f_N\big(\hat{x}\big) \approx \sqrt{\frac{N}{2*\pi}} \frac{1}{\sigma(x)}\
+           \exp\Bigg[ \frac{-N\big( \hat{x}- \bar{x}\big)^2}{2\sigma^2(x)} \Bigg],\
+           \quad N \rightarrow \infty
+  \label{eq:CLT2}
+\end{equation}
+allows us to use known values for $\hat{x}$ and an approximation of $\sigma(x)$
+using $S$ to determine the probability density function of the sample means
+$f_N(\hat{x})$. Because $f_N(\hat{x})$ is a normal distribution, we can find the
+probability that $\hat{x}$ lies in $\bar{x} \pm \epsilon$ with
+\begin{equation}
+  P\big\{\bar{x} - \epsilon < \hat{x} \leq \bar{x} + \epsilon\big\} = \
+   \int_{\bar{x}-\epsilon}^{\bar{x}+\epsilon}f_N\big( \hat{x} \big) d\hat{x}.
+\end{equation}
+This ends up as
+\begin{equation}
+  P\big\{\bar{x} - \epsilon < \hat{x} \leq \bar{x} + \epsilon\big\} = \
+    \erf\Big[\sqrt{\frac{N}{2}} \frac{\epsilon}{\sigma(x)}\Big],
+\end{equation}
+and for large N this can be evaluated as
+\begin{equation}
+  P\big\{\bar{x} - M \sigma(x) < \hat{x} \leq \bar{x} + M \sigma(x) \big\} =
+  \begin{cases}
+    .683, & M = 1, \\
+    .954, & M = 2, \\
+    .997, & M = 3
+  \end{cases}  .
+\end{equation}
 
 The central limit tells us that the sample mean follows a normal
 distribution, regardless of the distribution of the underlying sample, as the
 number of samples approaches infinity. This
 means that no matter what distribution is being sampled, the sampled mean will
-have this expected behavior. As a result, we know that the estimate of the mean,
-the standard deviation, and the variance of the distribution will follow
-statistics associated with a normal distribution.
+have this expected behavior. As a result, given a calculated value for
+$\hat{x}$, and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known.
+Further, the central limit theorem shows that this distribution is approached
+very quickly as N increases, with most problems only requiring $N > 30$
+\cite{lewis_computational_1984}. Note
+that N is not the total number of samples, but the number of samples required to
+calculate each mean. Further, as with all of the quantities in Section
+\ref{subsubsec:PopStat}, each $x_i$ is assumed to be randomly sampled and
+independent of other $x_i$. If some region of phase space is omitted
+accidentally, these values will not be reflective of the true $f(x)$, and so
+$\hat{x}$ will not approximate $\bar{x}$.
 
 \subsubsection{The Figure of Merit}
 \label{subsubsec:FOM}
 
-The equations in the preceeding sections describe how to estimate the statistics
-of a population given a finite number of samples. In Monte Carlo radiation transport, a
+The equations in the preceding sections describe how to estimate the statistics
+of a population given a finite number of samples. In radiation transport, a
 user seeks to estimate some response, the relative error associated with that
-response solution, and time that it takes to obtain those values.
-
-ADD DERIVATION OF FOM HERE
-
+response solution, and time that it takes to obtain those values. Equation
+\eqref{eq:S to R} described the relationship between the sample variance, the
+relative error, and the number of particles as
+\begin{equation*}
+S^2\:\propto\: R^2\:\propto\:\frac{1}{N} .
+\end{equation*}
+The relationship between the relative error $R$ and the number of particles $N$
+\begin{equation*}
+  R^2\:\propto\:\frac{1}{N}
+\end{equation*}
+will be some constant value (C)
+\begin{equation*}
+ C_1 = R^2N .
+\end{equation*}
+As a problem is simulated, the number of particles run, $N$, will increase
+proportionally to the computational transport time run, $T$. Therefore, the
+relationship between $R$ and $T$ should also be a constant.
+\begin{equation*}
+  C_2 = R^2T
+\end{equation*}
 The figure of merit (FOM) \eqref{eq:FOM}
-is the relationship between the relative error and the
-transport time. Because it describes the relationship between these two
-parameters, it is often used as a success metric for variance
-reduction techniques.
-
+is the most commonly reported metric that this relationship is reported. It is
+widely used in quantifying the effects of variance reduction methods.
+Because it uses the inverse quantity of the relative error and time, a
+``good'' result would be obtained from a low relative error in a short amount of
+time, resulting in a high-value FOM.
 \begin{equation}
 FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
 \end{equation}
+Further, a user may desire to determine how long a problem must be run to obtain
+a desired relative error. In that case, Equation \eqref{eq:FOM} can simply be
+rearranged to
+\begin{equation*}
+  R = \frac{1}{(FOM*T)^{1/2}} .
+\end{equation*}
+
+The figure of merit is a very useful tool that can be used to easily obtain
+tally results for a specific problem, but it still is limited by statistical
+precision in calculating $R$.
+It is worth noting that early on in a transport simulation,
+when too few N have been run to
+effectively capture $S$ or $\hat{x}$, the Figure of Merit will oscillate.
+Eventually it will converge on a relatively constant value. This behavior can
+also be used to determine whether one has sufficiently sampled the
+region in which they are quantifying the response.
 
 \subsection{Variance Reduction Methods for Monte Carlo Radiation Transport}
 \label{subsec:MCVR}
@@ -185,7 +290,7 @@ weight window.
   \centering
   \includegraphics[width=0.5\textwidth]{./chapters/lit_review/ww-mcnp.png}
   \caption[Weight window illustration]{Cartoon illustration of a weight window,
-    adapted from \cite{brown_mcnp_2002}}
+    adapted from \cite{brown_mcnp_2002, mcnp_manual_v2}}
   \label{fig:ww-mcnp}
 \end{figure}
 %
@@ -243,7 +348,7 @@ exponential transform is defined by
 where $\Sigma_t^*$ is the transformed total cross section, $\Sigma_t$ is the
 true total cross section, $p$ is the transform parameter, and $\mu$ is the
 cosine of the angle between the preferred direction and the particle's transport
-direction [MCNP MANUAL CITATION] \cite{hendricks_mcnp_1985}.
+direction \cite{mcnp_manual_v1, mcnp_manual_v2, hendricks_mcnp_1985}.
 
 Because the particle's transport is adjusted in the exponential transform, the
 particle weight must be adjusted accordingly. This is given by
