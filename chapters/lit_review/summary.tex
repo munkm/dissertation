@@ -1,0 +1,55 @@
+\section*{Summary of the Literature}
+\label{sec:litsummary}
+
+The AVATAR method
+\cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} used an
+approximation of the angular flux--without explicitly calculating it--to
+generate angle-dependent weight windows. It operated under the approximation
+that
+the angular flux was separable and symmetric about the average current vector.
+The angular flux was then calculated using
+a product of a deterministically-obtained
+scalar flux and an exponential function, derived from the
+maximum entropy distribution, that was a function of the scalar flux and the
+current. Space-, energy-, and angle-dependent weight windows for
+the Monte Carlo problem were then generated from the inverse of the angular
+flux. AVATAR improved the FOM for sample problems from 2 to 5 times, but did not
+apply to problems where the flux was not azimuthally symmetric.
+
+The LIFT method \cite{turner_automatic_1997, turner_automatic_1997-1}, like
+AVATAR, calculated the angular flux for a region by assuming the angular flux
+was a product of the scalar flux and an exponential function. The angular flux
+values were then used to generate values for the exponential transform variance
+reduction
+technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
+also generated weight window parameters. However, generating a full
+angle-dependent weight window map and running Monte Carlo transport with those
+weight windows was computationally limiting, and the authors chose to only
+generate space- and energy- dependent weight windows. Turner showed that LIFT
+outperformed AVATAR for several example problems, but both methods performed
+poorly in voids and low-density regions.
+
+In an attempt to adapt CADIS and FW-CADIS to include angular information into
+the variance reduction parameters,
+Peplow et. al. formulated an adjustment to CADIS in the ORNL
+code suite \cite{peplow_consistent_2012}. Two different
+methods to generate weight windows and source biasing parameters
+were investigated:
+CADIS with directional source biasing, and CADIS without directional source
+biasing. These methods were referred to as Simple Angular CADIS. Like AVATAR and
+LIFT, Simple Angular CADIS approximated the angular flux as a product of the
+scalar flux and an exponential. Like AVATAR, the angular flux values
+were used to
+generate angle-dependent weight windows but also consistently generated source
+biasing parameters. For the method without
+directional source biasing, the biased source distribution matched that of the
+original CADIS, but the weight window values were directionally-dependent. The
+method with directional source biasing used the transform function to obtain
+directionally-dependent weight windows and directional source biasing.
+Peplow and his colleagues found
+that these methods generally increased the FOM by a factor of 1-5 as compared to
+traditional CADIS, but in some
+cases decreased the FOM. This was attributed to the P$_1$ type assumption used
+to calculate the angular flux, which limited the physical applicability of the
+method, as it did with AVATAR.
+
