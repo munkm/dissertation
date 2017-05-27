@@ -150,17 +150,35 @@ using $S$ to determine the probability density function of the sample means
 $f_N(\hat{x})$. Because $f_N(\hat{x})$ is a normal distribution, we can find the
 probability that $\hat{x}$ lies in $\bar{x} \pm \epsilon$ with
 \begin{equation}
-  P\big\{\bar{x} - \epsilon < \hat{x} \leq \bar{x} + \epsilon\big\} = \
-   \int_{\bar{x}-\epsilon}^{\bar{x}+\epsilon}f_N\big( \hat{x} \big) d\hat{x}.
+  P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
+   \int_{\bar{x}-\varepsilon}^{\bar{x}+\varepsilon}f_N\big( \hat{x} \big) d\hat{x}.
+   \label{eq:probmean}
 \end{equation}
-This ends up as
+Placing our definition for the distribution of $\hat{x}$ $f_N(\hat{x})$ into Eq.
+\eqref{eq:probmean}, changing the limits of integration, and changing the
+variables such that $t = \sqrt{N/2}*(\hat{x}-\bar{x})/\sigma(x)$, this becomes
 \begin{equation}
-  P\big\{\bar{x} - \epsilon < \hat{x} \leq \bar{x} + \epsilon\big\} = \
-    \erf\Big[\sqrt{\frac{N}{2}} \frac{\epsilon}{\sigma(x)}\Big],
+  P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
+  \frac{2}{\sqrt{\pi}} \int_0^{(\sqrt{N/2})(\varepsilon/\sigma(x))} e^{-t^2} dt
 \end{equation}
-and for large N this can be evaluated as
+Recalling the definition of the error function, ends up as
 \begin{equation}
-  P\big\{\bar{x} - M \sigma(x) < \hat{x} \leq \bar{x} + M \sigma(x) \big\} =
+  P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
+    \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big].
+\end{equation}
+Then, using the calculated estimation for $\sigma(x)$ $S$, and also from Eq.
+\eqref{eq:VarN} that $S_{\hat{x}}= S/\sqrt{N}$, the error function reduces to be
+a function of $\varepsilon$ and $S_{\hat{x}}$ only
+\begin{equation}
+    \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big] = \
+    \erf\Big[\sqrt{\frac{1}{2}} \frac{\varepsilon}{S_{\hat{x}}}\Big] .
+\end{equation}
+Should $\varepsilon$ be chosen to be a function of $S_{\hat{x}}$, the error
+function reduces further and becomes merely an evaluation as multiples (M), of
+$S_{\hat{x}}$ and $\sqrt{1/2}$. For the first few multiples of the standard
+error, this is evaluated as
+\begin{equation}
+  P\big\{\bar{x} - M S_{\hat{x}} < \hat{x} \leq \bar{x} + M S_{\hat{x}} \big\} =
   \begin{cases}
     .683, & M = 1, \\
     .954, & M = 2, \\
@@ -173,16 +191,24 @@ distribution, regardless of the distribution of the underlying sample, as the
 number of samples approaches infinity. This
 means that no matter what distribution is being sampled, the sampled mean will
 have this expected behavior. As a result, given a calculated value for
-$\hat{x}$, and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known.
+$\hat{x}$, and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known
+and calculable.
 Further, the central limit theorem shows that this distribution is approached
 very quickly as N increases, with most problems only requiring $N > 30$
 \cite{lewis_computational_1984}. Note
 that N is not the total number of samples, but the number of samples required to
-calculate each mean. Further, as with all of the quantities in Section
+calculate each mean.
+However, for the central limit theorem to hold a number of
+requirements must be satisfied. Ss with all of the quantities in Section
 \ref{subsubsec:PopStat}, each $x_i$ is assumed to be randomly sampled and
 independent of other $x_i$. If some region of phase space is omitted
 accidentally, these values will not be reflective of the true $f(x)$, and so
-$\hat{x}$ will not approximate $\bar{x}$.
+$\hat{x}$ will not approximate $\bar{x}$. Further, for $S$ to be a
+good approximation of $\sigma(x)$, a large number of N samples must contribute
+to the calculation of $\hat{x}$. Further, the central limit theorem assumes that
+$f(x)$ is a probability density function that can be sampled and has a variance
+that exists. As a result, one must be reasonably sure that all of these
+requirements are satisfied if using Monte Carlo sampling methods.
 
 \subsubsection{The Figure of Merit}
 \label{subsubsec:FOM}
@@ -288,7 +314,7 @@ weight window.
 %
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{./chapters/lit_review/ww-mcnp.png}
+  \includegraphics[width=0.5\textwidth]{./chapters/lit_review/figures/ww-mcnp.png}
   \caption[Weight window illustration]{Cartoon illustration of a weight window,
     adapted from \cite{brown_mcnp_2002, mcnp_manual_v2}}
   \label{fig:ww-mcnp}
