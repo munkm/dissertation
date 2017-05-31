@@ -12,9 +12,10 @@ regions of a problem may contribute more to a desired solution, but for more
 complex geometries, this may not be so obvious. Thus, the concept of importance
 is introduced: regions of the problem that are likely to contribute to a
 response have higher importance than those that do not. If an importance
-function for a system can be obtained, then that importance function can be
+function for a system can be obtained computationally, then that importance
+function can be
 strategically used in variance reduction techniques to optimize the Monte Carlo
-simulation.
+calculations.
 
 A number of methods have been developed to obtain a measure of importance for
 radiation transport problems. Here a selection of these methods will be
@@ -26,7 +27,8 @@ utilizing the contributon solution for importance quantification.
 
 With the advent of the weight window technique, Booth
 \cite{booth_automatic_1982} proposed
-a method to quantify a cell's importance within a Monte Carlo simulation. In
+a method to quantify a cell's importance within a Monte Carlo simulation to
+complement automatic weight window generation. In
 this method, Booth suggested estimating the cell's importance using Monte Carlo
 transport as:
 \begin{equation}
@@ -35,10 +37,16 @@ transport as:
 \label{eq:BoothImp}
 \end{equation}
 
-Booth went on to suggest that this importance generator could be used in a
-complementary nature to the weight window variance reduction technique available
-in MCNP at that time, where a weight window target value is inversely
-proportional to the importance could be used for variance reduction.
+This estimation of importance would then be used to set
+weight window target values inversely proportional to the importance.
+In this case, the track weight times the expected score is approximately
+constant in the problem.
+While this
+particular calculation of the importance requires only a forward calculation of
+the problem, it was referred to as the forward-adjoint importance generator
+\cite{booth_automatic_1982, booth_deep_1982, booth_importance_1984}, because the
+bookeeping tracked by Eq. \eqref{eq:BoothImp} was a forward-approximation of the
+adjoint.
 In this case, the track weight times the expected score is approximately
 constant in the problem.
 In test problems, the importance generator had estimated the problem cells'
@@ -56,7 +64,7 @@ not reported in his paper. However, Hendricks' method likely proved to be
 optimized for global tally calculations, while Booth's was for localized
 tallies.
 
-However, both Booth and Henricks' methods were reliant on the statistical
+However, both Booth and Hendricks' methods were reliant on the statistical
 precision of the cells sampled to generate their weight window paramaters. For
 deep-penetration problems, obtaining a "good" estimate of the cell importances
 many mean free paths from the forward source likely took many iterations. With
@@ -68,7 +76,7 @@ computationally inefficient way to calculate importance in a problem.
 
 \subsubsection{Theory}
 
-Utilizing the solution of the adjoint formulation of the neutron transport
+Using the solution of the adjoint formulation of the neutron transport
 equation is, perhaps, one of the most widely recognized methods to utilize as an
 importance function.
 
