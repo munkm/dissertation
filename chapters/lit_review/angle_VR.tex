@@ -6,23 +6,85 @@ biasing by space and energy, but not angle, as detailed in the previous
 sections, is not
 sufficient. As a result, a subset of hybrid methods were developed to incorporate some
 degree of the flux anisotropy in variance reduction parameters. Without explicitly
-calculating the angular flux, which is memory- and storage- intensive, many methods
-approached angular biasing without explicitly utilizing the angular flux.
+calculating the angular flux, which is memory- and storage- intensive, methods
+attempted to approximate the angular flux using other information more readily
+accessible to them.
 Initial approaches
 to angular biasing focused on approximating the angular flux $\psi$ as a separable
 function of the scalar flux and an angle-dependent multiplier.
+These approximations were then used to generate biasing
+parameters dependent on angle for highly angular-dependent problems.
 
 \subsection{AVATAR}
 
 The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}
-method generates
+(Automatic Variance and Time of Analysis Reduction) method generates
 three-dimensional, space-, energy- and angle-dependent weight windows for Monte
 Carlo by
 utilizing a relatively course-mesh and few-angle deterministic calculation in
-THREEDANT
-[REFERENCE FOR CODE] and using Justine [REFERENCE FOR CODE] to generate Monte
-Carlo weight
-windows for MCNP. AVATAR avoided generating explicit angular fluxes with
+THREEDANT, approximating the angular flux as a function of the scalar flux, and
+then subsequently passing those flux values through a postprocessing
+code, Justine, to generate
+weight windows for MCNP \cite{mcnp_manual_v1}. The AVATAR approach to
+determining the angular flux used an approximation of the angular flux based on
+the maximum entropy distribution, which will be briefly summarized in Section
+\ref{subsubsec:ITheory}.
+
+\subsubsection{Information Theory}
+\label{subsubsec:ITheory}
+
+First, the entropy of a given set of discrete values $x_i (i=1,2, \cdots n)$
+with the corresponding probability distribution $p_i = p(x_i)$, the entropy of
+$p$ is defined as
+\begin{equation}
+  H(p) = - K \Sigma_i p_i \ln p_i .
+  \label{eq:entropy}
+\end{equation}
+where K is a positive constant. A proof that this is indeed the associated
+maximal entropy associated with all $p_i$ is given in
+\cite{jaynes_information_1957}.
+For a continuous probability density function $p(x)$ over the interval I, the
+entropy of the continuous function is
+\begin{equation}
+  H(p) = - K \int_I\ p(x) \ln p(x) dx .
+\end{equation}
+
+Jaynes \cite{jaynes_information_1957} built off of these definitions
+of entropy by showing that the maximum
+entropy probability distribution function is given by
+\begin{equation}
+  p_i= \exp \big[ - \big( \lambda_0 + \lambda_1f_1(x_1) + \cdots + \lambda_m f_m(x_i) \
+    \big) \big] ,
+\end{equation}
+and the entropy of this distribution is given by
+\begin{equation}
+  S_{max} = \lambda_0 + \lambda_1 \big\langle f_1 (x) \big\rangle + \cdots + \
+  \lambda_m \big\langle f_m(x) \big\rangle .
+\end{equation}
+In this case, the constant K from Eq. \eqref{eq:entropy} has been set to 1.
+The maximum entropy approach to calculating a probability distribution function
+is an attractive option given limited information about that
+distribution. This method's power lies in that it
+deduces a function given limited information, but does not place too great of an
+importance on missing or unwarranted information. Furthermore, a distribution
+ascertained from this methodology will encompass all distributions with smaller
+entropies that satisfy the same constraints. Thus it provides the most widely
+applicable probability distribution function for the system that has been
+defined.
+
+Moskalev showed that by using the maximum entropy approach, a function could be
+reconstructed from a (truncated) Legendre expansion
+\cite{moskalev_reconstruction_1993}. This is particularly
+applicable to radiation transport, because often scattering terms are truncated
+Legendre expansions.
+
+Walters and Wareing \cite{walters_nonlinear_1994, walters_accurate_1996} showed
+that the source definition for a transport problem could be approximated using
+Moskalev's approach \cite{moskalev_reconstruction_1993}.
+
+\subsubsection{AVATAR Implementation}
+
+AVATAR avoided generating explicit angular fluxes with
 THREEDANT by assuming
 that the adjoint angular flux is symmetric about the average adjoint current vector,
 $J^{\dagger}$ :
@@ -31,6 +93,7 @@ $J^{\dagger}$ :
 \label{avatareqns}
 \begin{equation}
   \psi^{\dagger}(\hat \Omega \cdot n) = \phi^{\dagger} f(\hat\Omega \cdot n)
+  \label{eq:Av1}
 \end{equation}
 where
 \begin{equation}
@@ -53,9 +116,17 @@ for $ 0 \le \bar\mu < 0.8001$ and $0.8001 \le \bar\mu < 1.0 $, respectively. Als
 \begin{equation}
 \bar\mu(\vec{r} E) = \frac{\left\| J^{\dagger}(\vec{r} E)
                      \right\|}{\phi^{\dagger}(\vec{r} E)}
+  \label{eq:Av4}
 \end{equation}
+\label{eq:AvEqns}
 \end{subequations}
 
+This methodology was based directly on the work of Walters and Wareing; a
+thorough derivation of these Eqs. \eqref{eq:Av1} through \eqref{eq:Av4} can be
+found in Appendix A of \cite{walters_accurate_1996}.
+
+From the approximation of the angular flux described in Eqs. \eqref{eq:AvEqns},
+angle-dependent weight windows could be constructed.
 AVATAR's space- energy- and angle-dependent weight window could then be calculated by:
 \begin{equation}
 \bar {w} (\vec{r},E,\hat\Omega) = \frac{k}{\phi^{\dagger}(\vec{r},E)
@@ -66,6 +137,8 @@ AVATAR exclusively generated weight windows, and did not attempt to bias the sou
 distribution. Physically, the assumption behind AVATAR is that the adjoint
 angular flux
 is locally one-dimensional, so azimuthal symmetry is assumed.
+
+\subsubsection{AVATAR Results}
 
 In implementation, the authors of AVATAR showed that AVATAR's angularly-dependent
 weight windows improved the FOM (from 2- to 5-times) for a multiple-tally well-logging
