@@ -33,8 +33,13 @@ the maximum entropy distribution, which will be briefly summarized in Section
 \subsubsection{Information Theory}
 \label{subsubsec:ITheory}
 
-First, the entropy of a given set of discrete values $x_i (i=1,2, \cdots n)$
-with the corresponding probability distribution $p_i = p(x_i)$, the entropy of
+First, for a given set of discrete values $x_i (i=1,2, \cdots n)$
+that are passed to a function, $f(x)$, the expectation value of that function is given
+by
+\begin{equation}
+  \big\langle f(x) \big\rangle = \sum_{i=1}^n p_if(x_i).
+\end{equation}
+For the probability distribution $p_i = p(x_i)$, $(i=1,2, \cdots n)$ the entropy of
 $p$ is defined as
 \begin{equation}
   H(p) = - K \Sigma_i p_i \ln p_i .
@@ -48,10 +53,28 @@ entropy of the continuous function is
 \begin{equation}
   H(p) = - K \int_I\ p(x) \ln p(x) dx .
 \end{equation}
+To maximize either of these distributions, while also maintaining that $\Sigma
+p_i = 1$, one can use Lagrangian multipliers $\lambda$ and $\mu$
+\begin{equation}
+  p_i = e^{-\lambda-\mu f(x_i)} .
+\end{equation}
+This can be solved using
+\begin{subequations}
+  \begin{equation}
+    \big\langle f(x) \big\rangle = - \frac{\partial}{\partial \mu} \ln Z(\mu)
+  \end{equation}
+  \begin{equation}
+    \lambda = \ln\big[Z(\mu)\big]
+  \end{equation}
+  where
+  \begin{equation}
+    Z(\mu) = \Sigma_i e^{-\mu f(x_i)} .
+  \end{equation}
+\end{subequations}
 
-Jaynes \cite{jaynes_information_1957} built off of these definitions
-of entropy by showing that the maximum
-entropy probability distribution function is given by
+Jaynes \cite{jaynes_information_1957} showing that the maximum
+entropy probability distribution function corresponding to the previous
+equations is given by
 \begin{equation}
   p_i= \exp \big[ - \big( \lambda_0 + \lambda_1f_1(x_1) + \cdots + \lambda_m f_m(x_i) \
     \big) \big] ,
@@ -61,6 +84,7 @@ and the entropy of this distribution is given by
   S_{max} = \lambda_0 + \lambda_1 \big\langle f_1 (x) \big\rangle + \cdots + \
   \lambda_m \big\langle f_m(x) \big\rangle .
 \end{equation}
+
 In this case, the constant K from Eq. \eqref{eq:entropy} has been set to 1.
 The maximum entropy approach to calculating a probability distribution function
 is an attractive option given limited information about that
@@ -72,16 +96,74 @@ entropies that satisfy the same constraints. Thus it provides the most widely
 applicable probability distribution function for the system that has been
 defined.
 
-Moskalev showed that by using the maximum entropy approach, a function could be
-reconstructed from a (truncated) Legendre expansion
+Moskalev showed that by using the maximum entropy approach, a distribution function
+could be reconstructed from a (truncated) Legendre expansion
 \cite{moskalev_reconstruction_1993}. This is particularly
 applicable to radiation transport, because often scattering terms are truncated
-Legendre expansions.
+Legendre expansions. In his application, Moskalev derived a generalized form of
+reconstructing a probability distribution from a truncated expansion, where the
+true function represented by a Legendre polynomial series
+\begin{equation}
+  f(L,\mu) = \sum_{l=0}^L -\frac{2l+1}{2} f_l P_l(\mu)
+\end{equation}
+could be associated with an adjusted function (obtained from maximizing the
+entropy of the known values)
+\begin{equation}
+  \tilde{f}(L,\mu) = \exp \big( \sum_{l=0}^{L} \lambda_l P_l(\mu) \big)
+\end{equation}
+such that
+\begin{equation}
+  (f,P_l) = (\tilde{f}, P_l); \quad l = 0, \cdots, L .
+\end{equation}
+Where $\lambda_l$ are the Lagrange multipliers, $\tilde{f}$ and $f$ are
+$\epsilon \phi$, and are assumed to be a function of $\mu$ such that $f(\mu)
+\geq 0, \mu \epsilon [-1, 1]$.
+These generalized equations were then applied to
+group-to-group scattering probability distribution functions, as well as
+reconstructing a $L=3$ function. The reconstruction showed agreement except near
+the extrema of $\mu$.
 
 Walters and Wareing \cite{walters_nonlinear_1994, walters_accurate_1996} showed
-that the source definition for a transport problem could be approximated using
-Moskalev's approach \cite{moskalev_reconstruction_1993}.
+that the angle-dependent source definition for a transport problem
+could be approximated using Moskalev's approach \cite{moskalev_reconstruction_1993}.
+Further, they showed that for a source distribution expanded in the zeroth and first
+order Legendre polynomials,
+\begin{equation}
+  s_m(x) = \big[ s_0 + s_1 P_1(x)\big]
+\end{equation}
+the source distribution derived from the maximum entropy distribution was found
+to be
+\begin{equation}
+  \tilde{s}(x) = \frac{\lambda_{1,k}}{\sinh (\lambda_{1,j})} \
+  e^{\lambda_{1,j}P_1(x)} .
+\end{equation}
+$\tilde{s}$ has normalized Legendre moments $s_0$ and $s_1$. $\lambda_{1,j}$ can
+be found from
+\begin{equation}
+  s_1 = 3\bigg[ \coth(\lambda_{1,j} - \frac{1}{\lambda_{1,j}})\bigg] .
+  \label{eq:WW_lambda}
+\end{equation}
 
+Walters and Wareing \cite{walters_accurate_1996} suggested that in place of
+solving Eq. \eqref{eq:WW_lambda} for $\lambda_{1,j}$, that a rational polynomial
+be used in place of it to reduce computational time in this computation. The
+suggested polynomial for $0 \leq \lambda_{1,j} \leq 5$ was:
+\begin{equation}
+  \lambda_{1,j} = \cfrac{2.99821 (\frac{s_{1,j}}{3}) - 2.2669248 \
+                  (\frac{s_{1,j}}{3})^2}                        \
+                       {1-0.769332 (\frac{s_{1,j}}{3}) -        \
+                       0.519928(\frac{s_{1,j}}{3})^2            \
+                       + 0.2691594 (\frac{s_{1,j}}{3})^3}
+\end{equation}
+and for $\lambda \geq 5$:
+\begin{equation}
+  \lambda_{1,j} = \frac{1}{1-\bar\mu}
+\end{equation}
+
+In their application, Walters and Wareing found that this method was accurate
+over a fairly course mesh for the problems analyzed. However, their analysis was
+limited to one-dimensional problems. As mesh size grew finer, the method
+performed as well as other schemes.
 \subsubsection{AVATAR Implementation}
 
 AVATAR avoided generating explicit angular fluxes with
