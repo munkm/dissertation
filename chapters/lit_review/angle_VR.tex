@@ -15,7 +15,9 @@ function of the scalar flux and an angle-dependent multiplier.
 These approximations were then used to generate biasing
 parameters dependent on angle for highly angular-dependent problems.
 
-\subsection{AVATAR}
+\subsection{Angular Biasing with Weight Windows}
+
+\subsubsection{AVATAR}
 
 The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}
 (Automatic Variance and Time of Analysis Reduction) method generates
@@ -27,11 +29,10 @@ then subsequently passing those flux values through a postprocessing
 code, Justine, to generate
 weight windows for MCNP \cite{mcnp_manual_v1}. The AVATAR approach to
 determining the angular flux used an approximation of the angular flux based on
-the maximum entropy distribution, which will be briefly summarized in Section
-\ref{subsubsec:ITheory}.
+the maximum entropy distribution, which will be briefly summarized in the next
+few paragraphs.
 
-\subsubsection{Information Theory}
-\label{subsubsec:ITheory}
+\subsubsection*{Information Theory}
 
 First, for a given set of discrete values $x_i (i=1,2, \cdots n)$
 that are passed to a function, $f(x)$, the expectation value of that function is given
@@ -124,64 +125,106 @@ reconstructing a $L=3$ function. The reconstruction showed agreement except near
 the extrema of $\mu$.
 
 Walters and Wareing \cite{walters_nonlinear_1994, walters_accurate_1996} showed
-that the angle-dependent source definition for a transport problem
-could be approximated using Moskalev's approach \cite{moskalev_reconstruction_1993}.
-Further, they showed that for a source distribution expanded in the zeroth and first
-order Legendre polynomials,
+that the angle-dependent source definition for a discrete ordinates transport problem
+could be calculated using Moskalev's approach
+\cite{moskalev_reconstruction_1993}. In their method, they used this approach to
+reconstruct the source distribution of particles in each cell from the source
+moments. For standard methods, the source in a cell expanded in Legendre moments is
+\begin{equation}
+  S_m(x) = S_{m,j}\bigg[ P_0(x) + \frac{S_{m,j}^x}{S_{m,j}}P_1(x)\bigg]
+\end{equation}
+where $S_{m,j}$ is the average source in cell j, direction m, $S_{m,j}^x$ is the
+$P_1(x)$ moment of the source and the $P_0$ and $P_1$ are the associated
+Legendre polynomials. Using a normalized source distribution $s_m(x)$ where
+\begin{equation*}
+  S_m(x) = s_m(x) S_{m,j},
+\end{equation*}
+the normalized distribution is
 \begin{equation}
   s_m(x) = \big[ s_0 + s_1 P_1(x)\big]
 \end{equation}
-the source distribution derived from the maximum entropy distribution was found
+where $s_0$ and $s_1$ are the zeroth and first Legendre moments of the source.
+The source distribution derived from the maximum entropy distribution was found
 to be
 \begin{equation}
   \tilde{s}(x) = \frac{\lambda_{1,k}}{\sinh (\lambda_{1,j})} \
   e^{\lambda_{1,j}P_1(x)} .
 \end{equation}
-$\tilde{s}$ has normalized Legendre moments $s_0$ and $s_1$. $\lambda_{1,j}$ can
-be found from
+$\tilde{s}$ has normalized Legendre moments $s_0$ and $s_1$ that match
+$s_m(x)$. Because $\tilde{s}$ satisfies the information that can be obtained
+about $s_m$, it can be used to reconstruct $S_m(x)$ by way of
+\begin{equation}
+  S_m(x) = \tilde{s}_m(x)S_{m,j}.
+\label{eq:Walt_reconstruct}
+\end{equation}
+$\lambda_{1,j}$ can be found from
 \begin{equation}
   s_1 = 3\bigg[ \coth(\lambda_{1,j} - \frac{1}{\lambda_{1,j}})\bigg] .
   \label{eq:WW_lambda}
 \end{equation}
+It should be noted that the same methodology that Walters and Wareing use to reconstruct the source
+distribution from the source moments can be used to reconstruct the angular flux
+in cells based on moments of the angular flux (i.e. the scalar flux and
+current) \cite{walters_nonlinear_1994}.
 
-Walters and Wareing \cite{walters_accurate_1996} suggested that in place of
+In their paper, Walters and Wareing \cite{walters_accurate_1996} suggested that in place of
 solving Eq. \eqref{eq:WW_lambda} for $\lambda_{1,j}$, that a rational polynomial
-be used in place of it to reduce computational time in this computation. The
+be used in place of it to reduce computational time. The
 suggested polynomial for $0 \leq \lambda_{1,j} \leq 5$ was:
+\newcommand{\lamvar}{\dfrac{s_{1,j}}{3}}
 \begin{equation}
-  \lambda_{1,j} = \cfrac{2.99821 (\frac{s_{1,j}}{3}) - 2.2669248 \
-                  (\frac{s_{1,j}}{3})^2}                        \
-                       {1-0.769332 (\frac{s_{1,j}}{3}) -        \
-                       0.519928(\frac{s_{1,j}}{3})^2            \
-                       + 0.2691594 (\frac{s_{1,j}}{3})^3}
+  \lambda_{1,j} =  \dfrac{2.99821 (\lamvar) - 2.2669248 (\lamvar)^2 }{1 - 0.769332
+             (\lamvar) -0.519928 (\lamvar)^2 + 0.2691594 (\lamvar)^3} \\
 \end{equation}
 and for $\lambda \geq 5$:
 \begin{equation}
   \lambda_{1,j} = \frac{1}{1-\bar\mu}
 \end{equation}
+A full derivation of Eq. \eqref{eq:WW_lambda} and how it satisfies the maximum
+entropy requirements can be found in Appendix A of \cite{walters_accurate_1996}.
 
 In their application, Walters and Wareing found that this method was accurate
-over a fairly course mesh for the problems analyzed. However, their analysis was
+over a fairly course mesh for the problems analyzed, and the computed fluxes
+remined positive over the solution space. When compared to other methods, this
+approach performed much better over coarse meshes. However, the analysis was
 limited to one-dimensional problems. As mesh size grew finer, the method
-performed as well as other schemes.
-\subsubsection{AVATAR Implementation}
+performed similarly to other methods. However, near vacuum boundary conditions
+$\lambda_{1,j} \rightarrow \infty$ at the cell boundary, causing issues in
+calculating the flux in these cells.
 
+\subsubsection*{AVATAR Implementation}
+
+AVATAR used a deterministic
+
+AVATAR built off of the methodology described by Walters and Wareing
+\cite{walters_nonlinear_1994, walters_accurate_1996}, but instead of
+reconstructing the source distribution inside the cell, the maximum entropy
+method was used to reconstruct the angular fluxes. Thus the angular flux, $\psi$
+was reconstructed with the scalar flux, $\phi$ and the current, $J$.
 AVATAR avoided generating explicit angular fluxes with
 THREEDANT by assuming
 that the adjoint angular flux is symmetric about the average adjoint current vector,
 $J^{\dagger}$ :
-
 \begin{subequations}
 \label{avatareqns}
 \begin{equation}
-  \psi^{\dagger}(\hat \Omega \cdot n) = \phi^{\dagger} f(\hat\Omega \cdot n)
+  \psi^{\dagger}(\hat\Omega) = \psi^{\dagger}(\hat\Omega\cdot n)
   \label{eq:Av1}
 \end{equation}
 where
 \begin{equation}
-  n = \frac{J^{\dagger}}{ \left\| J^{\dagger} \right\| }
+  n = \frac{J^{\dagger}}{ \left\| J^{\dagger} \right\| }.
 \end{equation}
-and f is derived from the maximum entropy distribution:
+Note that $n, J, \psi,$ and $\phi$ all have implied dependence on $(\vec{r},
+E)$.
+The angular flux could then be reconstructed assuming that the angular flux is a
+product of the scalar flux and some angle-dependent function
+\begin{equation}
+  \psi^{\dagger}(\hat \Omega \cdot n) = \phi^{\dagger} f(\hat\Omega \cdot n).
+  \label{eq:Av2}
+\end{equation}
+Note that Eq. \eqref{eq:Av2} takes the form of Eq. \eqref{eq:Walt_reconstruct}.
+Thus f is derived from the maximum entropy distribution:
 \begin{equation}
 f(\hat\Omega \cdot n) = \frac{\lambda e^{(\hat\Omega \cdot n)\lambda}}
                              {2 \sinh {\lambda} }
@@ -192,56 +235,67 @@ and $\lambda$ is a function of the average cosine $\bar\mu$
 \lambda  & = \frac{2.99821 \bar\mu - 2.2669248 {\bar\mu}^2 }{1 - 0.769332
              \bar\mu -0.519928 {\bar\mu}^2 + 0.2691594 {\bar\mu}^3} \\
          & = \frac{1}{1-\bar\mu} \\
+  \label{eq:Av3}
 \end{split}
 \end{equation}
-for $ 0 \le \bar\mu < 0.8001$ and $0.8001 \le \bar\mu < 1.0 $, respectively. Also,
+for $ 0 \le \bar\mu < 0.8001$ and $0.8001 \le \bar\mu < 1.0 $, respectively.
+Also, $\mu$ is given by
 \begin{equation}
 \bar\mu(\vec{r} E) = \frac{\left\| J^{\dagger}(\vec{r} E)
-                     \right\|}{\phi^{\dagger}(\vec{r} E)}
+                     \right\|}{\phi^{\dagger}(\vec{r} E)}.
   \label{eq:Av4}
 \end{equation}
 \label{eq:AvEqns}
 \end{subequations}
+Equations \eqref{eq:Av3} and \eqref{eq:Av4} are exact in both isotropic and
+streaming conditions \cite{van_riper_generation_1995}.
 
-This methodology was based directly on the work of Walters and Wareing; a
-thorough derivation of these Eqs. \eqref{eq:Av1} through \eqref{eq:Av4} can be
-found in Appendix A of \cite{walters_accurate_1996}.
-
-From the approximation of the angular flux described in Eqs. \eqref{eq:AvEqns},
-angle-dependent weight windows could be constructed.
-AVATAR's space- energy- and angle-dependent weight window could then be calculated by:
+Using the calculation of the angular flux described in Eqs. \eqref{eq:Av1}
+through \eqref{eq:Av4}, angle-dependent weight windows could be constructed.
+AVATAR's space- energy- and angle-dependent weight window was calculated by:
 \begin{equation}
 \bar {w} (\vec{r},E,\hat\Omega) = \frac{k}{\phi^{\dagger}(\vec{r},E)
                                   f(\hat\Omega \cdot n)}
 \end{equation}
 where k was a constant that could be adjusted to match the source distribution.
-AVATAR exclusively generated weight windows, and did not attempt to bias the source
+In the case of AVATAR, k was used as a normalization factor to ensure that
+source particles are born with weights within the weight window.
+AVATAR exclusively generated weight windows, and did not attempt to consistently
+bias the source
 distribution. Physically, the assumption behind AVATAR is that the adjoint
 angular flux
 is locally one-dimensional, so azimuthal symmetry is assumed.
 
-\subsubsection{AVATAR Results}
+\subsubsection*{AVATAR Results}
 
-In implementation, the authors of AVATAR showed that AVATAR's angularly-dependent
-weight windows improved the FOM (from 2- to 5-times) for a multiple-tally well-logging
-problem compared to the MCNP weight window generator. The user input for AVATAR was
-also minimal, but did require that the user specify the adjoint source spectrum and
-strength manually.
+The authors of AVATAR showed that AVATAR's angularly-dependent
+weight windows improved the FOM (from 5- to 7-times) for a multiple-tally well-logging
+problem compared to the MCNP weight window generator. Additionally, because AVATAR
+was not fully automated, the user had to have knowledge on the use of the $S_N$
+deterministic solver in addition to the Monte Carlo methods they were trying to
+optimize. As a result, the user needed to adequately prepare the deterministic
+inputs, correctly specify the adjoint source for the deterministic solve, and
+then pass these values to postprocessing software \cite{peplow_consistent_2012}.
 %
 %
 %----------------------------------------------------------------------------------------
 
-\subsection{Simple Angular CADIS}
+\subsubsection{Simple Angular CADIS}
 
 Simple Angular CADIS \cite{peplow_consistent_2012} built off of existing
 implementations
-of CADIS and FW-CADIS by employing the method used by AVATAR and consistently
+of CADIS and FW-CADIS by but attempted to incorporate angular information in the
+methods without explicitly using angular flux solutions from the deterministic
+solution. This was done by employing the method used by AVATAR and consistently
 biasing the
-source distribution with the weight windows. In their work, Peplow et al
-implemented their
-work in MAVRIC [CODE REFERENCE] to incorporate directionally-dependent weight
-windows
-both with- and without directionally-dependent source biasing.
+source distribution with the weight windows (recall that the original
+implementation of AVATAR did not have consistent source biasing).
+In their work, Peplow et al. implemented their
+work in MAVRIC [CODE REFERENCE] with two different approaches:
+directionally-dependent weight windows with- and without directionally-dependent
+source biasing.
+
+\subsubsection*{Theory}
 
 The Simple Angular CADIS approach includes the azimuthal distribution in its
 approximation
@@ -335,6 +389,8 @@ w_0  &= \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
 \end{equation}
 \end{subequations}
 
+\subsubsection*{Results}
+
 To test these two modifications of CADIS, the authors ran a number of test
 problems and
 compared them against standard implementations of CADIS and analog Monte Carlo
@@ -351,7 +407,7 @@ calculation time to generate the variance reduction parameters.
 %
 %----------------------------------------------------------------------------------------
 
-\subsubsection{Angular Biasing Using the Exponential Transform}
+\subsection{Angular Biasing Using the Exponential Transform}
 
 In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a
 method by which
