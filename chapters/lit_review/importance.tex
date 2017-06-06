@@ -40,7 +40,10 @@ transport as:
 This estimation of importance would then be used to set
 weight window target values inversely proportional to the importance.
 In this case, the track weight times the expected score is approximately
-constant in the problem.
+constant in the problem. Choosing this inverse relationship between the weight
+window and importance is common practice in variance reduction, and is often a
+good choice because it is nearly optimal over a broad range of the problem
+phase-space \cite{booth_common_2012}.
 While this
 particular calculation of the importance requires only a forward calculation of
 the problem, it was referred to as the forward-adjoint importance generator
@@ -165,7 +168,8 @@ calculate the adjoint fluxes for their shielding problems. The results from this
 claculation were then used to generate biasing parameters for Monte Carlo;
 specifically they aimed at generating parameters for energy biasing, source
 biasing, russian roulette and splitting, and next event estimation
-probabilities. They implemented their work in the SAS4 module in SCALE; it was
+probabilities. They implemented their work in the SAS4 module in SCALE
+\cite{SCALE6_1}; it was
 one of the earlier implementations of a fully automated biasing procedure for
 Monte Carlo.
 % Maybe I want to make a new generic "Automated VR" section that comes before the local, global, and angle sections. I could introduce the MCNP WWgenerator, and earlier work like Tsang and Hoffman's.....

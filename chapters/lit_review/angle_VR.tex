@@ -2,20 +2,23 @@
 \label{sec:AngleVR}
 
 In a number of problems, the angular dependence of the flux is significant enough that
-biasing by space and energy, but not angle, as detailed in the previous
-sections, is not
+biasing by space and energy, but not angle  is not
 sufficient. As a result, a subset of hybrid methods were developed to incorporate some
 degree of the flux anisotropy in variance reduction parameters. Without explicitly
 calculating the angular flux, which is memory- and storage- intensive, methods
 attempted to approximate the angular flux using other information more readily
-accessible to them.
+accessible to them. These approaches broadly can be categorized as methods that
+bias using population control methods (such as weight windows),
+and methods that bias with modified
+sampling methods (such as the exponential transform).
 Initial approaches
-to angular biasing focused on approximating the angular flux $\psi$ as a separable
+to angular biasing focused on approximating the angular flux, $\psi$,
+as a separable
 function of the scalar flux and an angle-dependent multiplier.
-These approximations were then used to generate biasing
+These approximations of the flux were then used to generate biasing
 parameters dependent on angle for highly angular-dependent problems.
 
-\subsection{Angular Biasing with Weight Windows}
+\subsection{Angular Biasing with Population Control Methods}
 
 \subsubsection{AVATAR}
 
@@ -23,7 +26,7 @@ The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}
 (Automatic Variance and Time of Analysis Reduction) method generates
 three-dimensional, space-, energy- and angle-dependent weight windows for Monte
 Carlo by
-utilizing a relatively course-mesh and few-angle deterministic calculation in
+using a relatively course-mesh and few-angle deterministic calculation in
 THREEDANT, approximating the angular flux as a function of the scalar flux, and
 then subsequently passing those flux values through a postprocessing
 code, Justine, to generate
@@ -252,12 +255,12 @@ streaming conditions \cite{van_riper_generation_1995}.
 
 Using the calculation of the angular flux described in Eqs. \eqref{eq:Av1}
 through \eqref{eq:Av4}, angle-dependent weight windows could be constructed.
-AVATAR's space- energy- and angle-dependent weight window was calculated by:
+AVATAR's space- energy- and angle-dependent weight window is given by
 \begin{equation}
 \bar {w} (\vec{r},E,\hat\Omega) = \frac{k}{\phi^{\dagger}(\vec{r},E)
-                                  f(\hat\Omega \cdot n)}
+                                  f(\hat\Omega \cdot n)},
 \end{equation}
-where k was a constant that could be adjusted to match the source distribution.
+where k is a constant that can be adjusted to match the source distribution.
 In the case of AVATAR, k was used as a normalization factor to ensure that
 source particles are born with weights within the weight window.
 AVATAR exclusively generated weight windows, and did not attempt to consistently
@@ -270,12 +273,38 @@ is locally one-dimensional, so azimuthal symmetry is assumed.
 
 The authors of AVATAR showed that AVATAR's angularly-dependent
 weight windows improved the FOM (from 5- to 7-times) for a multiple-tally well-logging
-problem compared to the MCNP weight window generator. Additionally, because AVATAR
+problem compared to the MCNP weight window generator. AVATAR was also compared
+to other methods in subsequent papers \cite{evans_enhanced_1998}. In an
+update of the MCNP weight window generator, AVATAR was compared to variants of
+the weight window generator and performed had a FOM of 79 while variants of the
+weight window generator had FOMS ranging from 105 to 119
+\cite{evans_enhanced_1998}. However, they required
+multiple iterations of Monte Carlo transport to converge on weight window values
+while AVATAR did not. Total runtimes for iteratively converging on weight window
+values were in the 200- to 300- minute range, while AVATAR took roughly 5
+minutes to converge on weight window values for the problem.
+
+The MCNP weight window generator has also been adapted to use weight window
+values seeded by a solution from AVATAR \cite{evans_enhanced_1998}. This method
+had FOMs comparable to the default MCNP weight window generator, but only
+required 1 iteration to converge, rather than 3. This reduced the total
+transport runtime from roughly 260 minutes to 140 minutes, but still required
+user experience and input to adequately set up and prepare the deterministic
+input for AVATAR.
+
+The method used by AVATAR to produce angle-dependent weight windows successfully
+incorporated angular information into variance reduction parameters for Monte Carlo
+with very little additional computational burden. However, because AVATAR
 was not fully automated, the user had to have knowledge on the use of the $S_N$
 deterministic solver in addition to the Monte Carlo methods they were trying to
 optimize. As a result, the user needed to adequately prepare the deterministic
 inputs, correctly specify the adjoint source for the deterministic solve, and
-then pass these values to postprocessing software \cite{peplow_consistent_2012}.
+then pass these values to postprocessing software \cite{peplow_consistent_2012,
+evans_enhanced_1998}. The FOMs reported with AVATAR did not incorporate the
+additional time required for user setup and preparation of inputs, which may be
+significant. Though more computationally efficient than the weight window generator,
+this aspect of AVATAR may be too substantive of an obstacle for new-user
+approachability. Further, it leaves more room for user-induced error.
 %
 %
 %----------------------------------------------------------------------------------------
@@ -284,25 +313,33 @@ then pass these values to postprocessing software \cite{peplow_consistent_2012}.
 
 Simple Angular CADIS \cite{peplow_consistent_2012} built off of existing
 implementations
-of CADIS and FW-CADIS by but attempted to incorporate angular information in the
-methods without explicitly using angular flux solutions from the deterministic
-solution. This was done by employing the method used by AVATAR and consistently
+of CADIS and FW-CADIS but incorporated angular information in the
+methods. Simple Angular CADIS did so without explicitly using
+angular flux solutions from the deterministic solution.
+This was done by reconstructing the angular flux in the same manner employed by
+AVATAR and then consistently
 biasing the
-source distribution with the weight windows (recall that the original
-implementation of AVATAR did not have consistent source biasing).
+source distribution with the weight windows with the same methodology as CADIS
+and FW-CADIS. Recall that the original
+implementation of AVATAR did not have consistent source biasing.
 In their work, Peplow et al. implemented their
-work in MAVRIC [CODE REFERENCE] with two different approaches:
-directionally-dependent weight windows with- and without directionally-dependent
-source biasing.
+work in MAVRIC, a hybrid methods software package distributed with the SCALE
+codebase \cite{SCALE6_1}. The Simple Angular CADIS method took two different
+approaches to variance reduction:
+directionally-dependent weight windows with directionally-dependent source
+biasiaing and directionally-dependent weight windows without directional source
+biasing.
 
 \subsubsection*{Theory}
 
 The Simple Angular CADIS approach includes the azimuthal distribution in its
 approximation
 of the angular flux, such that:
+
 \begin{equation}
 \psi^{\dagger}(\vec{r}, E, \hat \Omega) \cong \phi^{\dagger}(\vec{r}, E)
 \frac{1}{2\pi} f(\hat\Omega \cdot n)
+\label{eq:AvAngflux}
 \end{equation}
 and the angle-dependent weight windows are then given by:
 \begin{equation}
@@ -394,15 +431,75 @@ w_0  &= \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
 To test these two modifications of CADIS, the authors ran a number of test
 problems and
 compared them against standard implementations of CADIS and analog Monte Carlo
-runs. Simple
-angular CADIS with- and without- source biasing showed improvement for some
-problems, but not
-others. Notably, the modified CADIS methods performed well in a simple duct
-streaming problem,
-but for many problems did not sufficiently increase the FOM to compensate for
-the increase in
-calculation time to generate the variance reduction parameters.
+runs. For a spherical boat test problem, Simple Angular CADIS without
+directional biasing improved the FOM by a factor of 2 to 3. Note that because
+the source in is monodirectional, directional source biasing was not compared.
+Simple Angular CADIS with- and without- directional source biasing improved the
+FOM for active interrogation sample problems and for simple duct streaming
+problems. They did not improve the FOMs for sample problems using a neutron
+porosity tool or a gamma-ray litho-density tool.
 
+The range in performance for
+angle-dependent problems was explained by the authors as a failure of the
+angular flux approximation to capture the true distribution of the angular flux.
+Because Simple Angular CADIS uses the same approximation in calculating the
+angular flux (Eq. \eqref{eq:AvAngflux}) as AVATAR, it is limited in the types of anisotropy
+that it can capture. As a result, the biasing parameters for a problem may not
+adequately reflect the flux distribution, depending on whether its behavior has
+been captured effectively by the P$_1$ expansion.
+
+The authors also noted that because the weight window is dependent on
+space/energy/angle the source birth weights only matched
+the weight window target value at a specific point in the weight window region.
+If the weight window covered a substantial region of phase-space, this could
+result in particle birth weights that do not adequately correspond to the
+importance of the region that they are born into, resulting in increased runtime
+and a less efficient calculation.
+
+\subsubsection{Cooper's Weight Windows}
+Cooper and Larsen, in addition to generating global isotropic weight windows, as
+described
+in Section \ref{sec:GlobalVR}, also developed angle-dependent weight windows
+\cite{cooper_automated_2001}. Here, the forward angular flux is calculated in a
+similar
+manner as the AVATAR method:
+\begin{subequations}
+\label{LIFT}
+\begin{equation}
+\psi(\vec{r},\hat\Omega) \approx A(\vec{r})e^{\vec{B}_r \cdot \hat\Omega}
+\end{equation}
+where $A(\vec{r})$ and $\vec{B}(\vec{r})$ are given by:
+\begin{equation}
+A(\vec{r}) = \frac{\phi(\vec{r})}{4 \pi}\frac{B(\vec{r})}{sinh B(\vec{r})}
+\end{equation}
+\begin{equation}
+\vec{B}(\vec{r}) = B(\vec{r}) \frac{\vec{\lambda}}{\left| \vec{\lambda} \right|}
+\end{equation}
+B can be calculated with
+\begin{equation}
+\lambda(\vec{r}) = coth B(\vec{r}) - \frac{1}{B(\vec{r})}
+\end{equation}
+Cooper noted that $\lambda(\vec{r})$ could be estimated with either the scalar fluxes
+and currents from the quasidiffusion calculation, or with the scalar fluxes and
+currents
+from the Monte Carlo solution. Cooper noted that because Monte Carlo robustly
+calculated
+these values, it was the more optimal choice. Knowing how to calculate these
+parameters
+from the deterministic calculation, the angular weight window can be calculated with:
+\begin{equation}
+ww_{i,j} (\hat\Omega)= \frac{\psi_{i,j}(\vec{r},\hat\Omega)} {max\phi_{i',j'}/4\pi}
+\end{equation}
+\end{subequations}
+
+As mentioned in the previous section, Cooper's method was limited in that it used an
+iterative quasidiffusion / Monte Carlo solution to generate the biasing parameters for
+the problem. This method was not automated; and the ideal frequency between iterations
+was never explored. However, Cooper showed that the angularly dependent weight windows
+significantly improved the figure of merit as compared to analog Monte Carlo.
+Further, the
+angular weight windows performed slightly better than the isotropic weight windows in
+evenly distributing the problems in problems with anisotropy.
 %
 %
 %----------------------------------------------------------------------------------------
@@ -435,7 +532,9 @@ neutron transport; the authors were optimistic that the method could be extended
 to neutron
 transport.
 
-The LIFT \cite{turner_automatic_1997} method, developed by Turner and Larsen, is
+\subsubsection{LIFT}
+
+The LIFT \cite{turner_automatic_1997, turner_automatic_1997-1} method, developed by Turner and Larsen, is
 a modification
 of the zero variance solution that utilizes a deterministic calculation to
 generate biasing
@@ -521,57 +620,14 @@ a high computational cost that it will decrease the FOM.
 
 [Kendra's addition to LIFT]
 
-Cooper and Larsen, in addition to generating global isotropic weight windows, as
-described
-in the previous section, also developed angle-dependent weight windows
-\cite{cooper_automated_2001}. Here, the forward angular flux is calculated in a
-similar
-manner as the AVATAR method:
-\begin{subequations}
-\label{LIFT}
-\begin{equation}
-\psi(\vec{r},\hat\Omega) \approx A(\vec{r})e^{\vec{B}_r \cdot \hat\Omega}
-\end{equation}
-where $A(\vec{r})$ and $\vec{B}(\vec{r})$ are given by:
-\begin{equation}
-A(\vec{r}) = \frac{\phi(\vec{r})}{4 \pi}\frac{B(\vec{r})}{sinh B(\vec{r})}
-\end{equation}
-\begin{equation}
-\vec{B}(\vec{r}) = B(\vec{r}) \frac{\vec{\lambda}}{\left| \vec{\lambda} \right|}
-\end{equation}
-B can be calculated with
-\begin{equation}
-\lambda(\vec{r}) = coth B(\vec{r}) - \frac{1}{B(\vec{r})}
-\end{equation}
-Cooper noted that $\lambda(\vec{r})$ could be estimated with either the scalar fluxes
-and currents from the quasidiffusion calculation, or with the scalar fluxes and
-currents
-from the Monte Carlo solution. Cooper noted that because Monte Carlo robustly
-calculated
-these values, it was the more optimal choice. Knowing how to calculate these
-parameters
-from the deterministic calculation, the angular weight window can be calculated with:
-\begin{equation}
-ww_{i,j} (\hat\Omega)= \frac{\psi_{i,j}(\vec{r},\hat\Omega)} {max\phi_{i',j'}/4\pi}
-\end{equation}
-\end{subequations}
-
-As mentioned in the previous section, Cooper's method was limited in that it used an
-iterative quasidiffusion / Monte Carlo solution to generate the biasing parameters for
-the problem. This method was not automated; and the ideal frequency between iterations
-was never explored. However, Cooper showed that the angularly dependent weight windows
-significantly improved the figure of merit as compared to analog Monte Carlo.
-Further, the
-angular weight windows performed slightly better than the isotropic weight windows in
-evenly distributing the problems in problems with anisotropy.
-MCNP Weight Window Generator \textbf{cite MCNP manual here}
+MCNP Weight Window Generator \cite{mcnp_manual_v1}
 
 
 
 \subsection{Implementation and Performance of Angle-Informed Methods}
 \label{sec:resultsangle}
 
-In Mavric \cite{peplow_advanced_2007}
+In Mavric \cite{SCALE6_2} \cite{peplow_advanced_2007}
 
 An internal feature of MCNP, the deterministic adjoint weight window generator
 (DAWWG), utilizes the discrete ordinates code PARTISN

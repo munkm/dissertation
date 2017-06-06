@@ -523,14 +523,16 @@ extended beyond the initial space- and energy- implementation described in
 booth's paper. It now has the ability to automatically generate space- energy-
 and angle- weight windows. The importance generator in MCNP also has been
 extended to time-importance, and those values can be used for splitting or
-roulette parameters \cite{brown_mcnp_2002}. As with Booth and Hendricks'
+roulette parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
+independent from the MCNP geometry \cite{evans_enhanced_1998}.
+It As with Booth and Hendricks'
 original implementations, this updated weight window generator still relies on
 adequate sampling to obtain sufficient weight window parameters. When additional
 degrees of freedom, like angle-dependence, are added, this means that the time
 to converge on those parameters will take even longer. The weight window
 generator also only allows for a single tally to be optimized at once, so
 multiple tallies cannot be optimized simultaneously. Last, the weight window
-generator still requires significant user input and updating to seed the weight
+generator still requires user input and updating to seed the weight
 window solution. The user must choose the meshing of the problem and have some
 intuition as to how the problem should be subdivided. Depending on user
 experience, the weight window generator can have differences in the FOM from 2
