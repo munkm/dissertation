@@ -1,6 +1,15 @@
 \section{Automated Variance Reduction Methods for Local Solutions}
 \label{sec:localVR}
 
+The next several sections (\ref{sec:localVR} through \ref{sec:AngleVR})
+will describe different ways that importance functions
+can be applied to variance reduction methods in practice. Local variance
+reduction methods are those that optimize a tally response in a localized region
+of the problem phase-space. These problems may be the physically intuitive,
+where a person standing $x$ meters away from a source may wish to know their
+personal dose rate. In this section, automated variance reduction methods that
+have been designed for such localized response optimization are described.
+
 \subsection{CADIS}
 \label{sec:CADIS}
 
@@ -85,8 +94,10 @@ where
 B(\vec{r}) = \alpha(\vec{r}) \tilde{\phi^c}(\vec{r}) + 1 -  \alpha(\vec{r})
 \end{equation}
 and
-% \begin{equation}
-% \alpha(\vec{r}) = \left[ 1 + exp \left(  % \frac{\tilde{\phi^c_{max}}}{\tilde{\phi^c}(\vec{r})} - % \frac{\tilde{\phi^c}(\vec{r})}{\tilde{\phi^c_{max}} \right) \right]^{-1}
-% \label{eq:beckeralpha}
-%\end{equation}
+\begin{equation}
+  \alpha (\vec{r}) = \bigg[ 1 + \exp \big(  \frac{\tilde{\phi}^c_{max}} \
+  {\tilde{\phi}^c(\vec{r})} - \frac{\tilde{\phi}^c(\vec{r})} \
+  {\tilde{\phi}^c_{max}} \big) \bigg]^{-1} \
+  \label{eq:beckeralpha}
+\end{equation}
 \end{subequations}

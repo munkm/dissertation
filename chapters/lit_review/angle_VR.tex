@@ -2,7 +2,7 @@
 \label{sec:AngleVR}
 
 In a number of problems, the angular dependence of the flux is significant enough that
-biasing by space and energy, but not angle  is not
+biasing by space and energy exclusively is not
 sufficient. As a result, a subset of hybrid methods were developed to incorporate some
 degree of the flux anisotropy in variance reduction parameters. Without explicitly
 calculating the angular flux, which is memory- and storage- intensive, methods
@@ -16,7 +16,9 @@ to angular biasing focused on approximating the angular flux, $\psi$,
 as a separable
 function of the scalar flux and an angle-dependent multiplier.
 These approximations of the flux were then used to generate biasing
-parameters dependent on angle for highly angular-dependent problems.
+parameters dependent on angle for highly angular-dependent problems. In this
+section, methods that generate variance reduction parameters dependent on angle
+or that include angular information will be described.
 
 \subsection{Angular Biasing with Population Control Methods}
 

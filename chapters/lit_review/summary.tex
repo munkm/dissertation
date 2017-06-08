@@ -1,9 +1,18 @@
 \section{Summary}
 \label{sec:litsummary}
 
+Variance reduction methods exist for Monte Carlo methods to
+achieve a more desirable answer in a
+shorter amount of time. Automated variance reduction methods have been designed
+to aid users in generating variance reduction parameters where it might not be
+intuitive or obvious what variance reduction parameters are best for a problem.
+The most successful variance reduction methods construct or estimate an
+importance function for the desired response from a preliminary calculation.
+This importance function may be derived from the adjoint solution to the
+transport equation, or it may be derived from contributon theory.
 The methods described in Sections \ref{sec:localVR} through \ref{sec:AngleVR}
 have been implemented and tested in a number of software packages. The problem
-space over which they have been tested is extensive, and shows that a large
+space over which they have been applied is extensive, and shows that a large
 subset of application problems can be successfully simulated with the assistance
 of existing variance reduction techniques. Local variance reduction methods can
 be used to reduce the variance in source-detector problems where the detector
@@ -17,8 +26,9 @@ parameters is significant. Here the existing state of automated variance
 reduction methods and the applications on which they have been tested will be
 summarized.
 
-Numerous hybrid methods packages for radiation shielding exist.
-The CADIS and FW-CADIS are distributed with Mavric \cite{SCALE6_1,
+Numerous hybrid methods packages for deep-penetration radiation transport and
+shielding exist today.
+The CADIS and FW-CADIS methods are distributed with Mavric \cite{SCALE6_1,
 peplow_advanced_2007} and
 ADVANTG \cite{mosher_automated_2009} from Oak Ridge National Laboratry, and Tortilla
 \cite{somasundaram_implementation_2013},
@@ -31,47 +41,12 @@ Generator (DAWWG) from Los Alamos National Laboratory
 from a deterministic solve in
 PARTISN \cite{alcouffe_partisn_2002}
 to generate biasing parameters for MCNP, and also includes AVATAR
-functionality.
-
-An internal feature of MCNP, the deterministic adjoint weight window generator
-(DAWWG), utilizes the discrete ordinates code PARTISN
-\cite{sweezy_automated_2005} to generate space- energy- and angle- dependent
-weight windows. The angle-dependent weight windows are done with the same
-methodology as AVATAR \cite{sweezy_automated_2005, van_riper_generation_1995}.
-In their work, Sweezy and colleagues compared
-DAWWG to the standard MCNP WWG on an oil well logging problem, a shielding
-problem, and a dogleg neutron void problem. The deterministic weight window
-generator obtained similar FOMS as the standard WWG for the first two problems,
-but in a fraction of the time. However, for the dogleg void problem, which
-exhibited strong angular dependence in the neutron flux,
-the authors noted that DAWWG was not as effective as the
-standard MCNP WWG. This was attributed to ray effects from the $S_N$ transport
-influencing the weight windows obtained by DAWWG, which is not an issue for the
-standard WWG.
-
-ADVANTG \cite{mosher_automated_2009}
-has been and is currently actively
-developed at Oak Ridge National Laboratory \cite{mosher_new_2010,
-wagner_review_2011, bevill_new_2012} for automated variance reduction of
-the Monte Carlo transport package, MCNP \cite{mcnp_manual_v2}.
-ADVANTG uses the deterministic
-transport code Denovo \cite{evans_denovo:_2010-1} to perform the forward and
-adjoint calculations for CADIS and FW-CADIS. At its inception, ADVANTG was used
-to analyze various threat-detection nonproliferation problems
-\cite{mosher_automated_2009}, and FOM improvements were on the order of $10^2$
-to $10^4$ when compared with analog Monte Carlo. However, Mosher et al. noted
-that the methods struggled with problems exhibiting strongly anisotropic
-behavior. In particular, they noted that low-density materials and strongly
-directional sources posed issues.
-
-A variety of automated variance reduction methods, including CADIS and LIFT have
-been implemented into the Attila / Tortilla deterministic and hybrid transport
-code packages \cite{somasundaram_implementation_2013}. These were used on several
-nonproliferation test problems. For the most part, LIFT and LIFT combined with
-weight windows outperformed CADIS' weight windows and source biasing, indicating
-that the addition of angular information was of benefit for these more realistic
-nonproliferation application
-problems.
+functionality. MCNP \cite{mcnp_manual_v1} is distributed with a weight window
+generator (WWG) that uses a preliminary Monte Carlo solution to estimate an
+importance function for the problem. Though this list is not complete, this
+illustrates the ubiquity and need of hybrid methods for the analysis of
+realistic problems today. In the analysis of realistic problems, ensuring that a
+``good'' answer is achieved is necessary for safety and security.
 
 CADIS and FW-CADIS have been used for a number of studies on spent fuel storage
 facilities.
@@ -95,6 +70,46 @@ a single cask, when applied to a storage bed of 30 casks MAVRIC was able to
 generate VR parameters which was unfeasible for the other two methods. These
 studies demonstrated that CADIS and FW-CADIS are desirable methods for which to
 obtain global and three-dimensional variance reduction parameters for realistic
+problems.
+
+ADVANTG \cite{mosher_automated_2009}
+has been and is currently actively
+developed at Oak Ridge National Laboratory \cite{mosher_new_2010,
+wagner_review_2011, bevill_new_2012} for automated variance reduction of
+the Monte Carlo transport package, MCNP \cite{mcnp_manual_v2}.
+ADVANTG uses the deterministic
+transport code Denovo \cite{evans_denovo:_2010} to perform the forward and
+adjoint calculations for CADIS and FW-CADIS. At its inception, ADVANTG was used
+to analyze various threat-detection nonproliferation problems
+\cite{mosher_automated_2009}, and FOM improvements were on the order of $10^2$
+to $10^4$ when compared with analog Monte Carlo. However, Mosher et al. noted
+that the methods struggled with problems exhibiting strongly anisotropic
+behavior. In particular, they noted that low-density materials and strongly
+directional sources posed issues.
+
+An internal feature of MCNP, the deterministic adjoint weight window generator
+(DAWWG), utilizes the discrete ordinates code PARTISN
+\cite{sweezy_automated_2005} to generate space- energy- and angle- dependent
+weight windows. The angle-dependent weight windows are done with the same
+methodology as AVATAR \cite{sweezy_automated_2005, van_riper_generation_1995}.
+Sweezy and colleagues compared
+DAWWG to the standard MCNP WWG on an oil well logging problem, a shielding
+problem, and a dogleg neutron void problem. The deterministic weight window
+generator obtained similar FOMS as the standard WWG for the first two problems,
+but in a fraction of the time. However, for the dogleg void problem, which
+exhibited strong angular dependence in the neutron flux,
+the authors noted that DAWWG was not as effective as the
+standard MCNP WWG. This was attributed to ray effects from the $S_N$ transport
+influencing the weight windows obtained by DAWWG, which is not an issue for the
+standard WWG.
+
+A variety of automated variance reduction methods, including CADIS and LIFT have
+been implemented into the Attila / Tortilla deterministic and hybrid transport
+code packages \cite{somasundaram_implementation_2013}. These were used on several
+nonproliferation test problems. For the most part, LIFT and LIFT combined with
+weight windows outperformed CADIS' weight windows and source biasing, indicating
+that the addition of angular information was of benefit for these more realistic
+nonproliferation application
 problems.
 
 The AVATAR method
@@ -159,7 +174,8 @@ and beds \cite{sheu_dose_2011}, and other nonproliferation applications
 parameters generated by CADIS or FW-CADIS were sufficient for the problem
 application. Other problems that had strong angular dependence or geometric
 complexity the parameters were insufficient \cite{chen_surface_2011,
-somasundaram_implementation_2013}. This can be remedied with additional angular
+somasundaram_implementation_2013, peplow_consistent_2012}.
+This can be remedied with additional angular
 information in the variance reduction parameters, such as LIFT
 \cite{somasundaram_implementation_2013}, but the benefits of consistent source
 biasing are lost in this case. Alternatively, the angular flux can be
@@ -168,7 +184,7 @@ reconstructed in a manner similar to AVATAR
 weight windows, but this approximates the angular flux to be linearly
 anisotropic in angle (from the $P_1$ reconstruction), and is also dependent on
 the deterministic calculation not having apparitions in the flux from ray
-effects \cite{sweezy_automated_2005}. Although numerous remedies have been
+effects \cite{sweezy_automated_2005}. Although numerous methods have been
 proposed and implemented to obtain adequate angle-informed variance reduction
 parameters for application problems, they have limited applicability
 \cite{peplow_consistent_2012} and determining in which problems they will be

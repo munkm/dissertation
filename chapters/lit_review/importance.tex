@@ -69,7 +69,7 @@ tallies.
 
 However, both Booth and Hendricks' methods were reliant on the statistical
 precision of the cells sampled to generate their weight window paramaters. For
-deep-penetration problems, obtaining a "good" estimate of the cell importances
+deep-penetration problems, obtaining a ``good'' estimate of the cell importances
 many mean free paths from the forward source likely took many iterations. With
 large fluctuations between iterations, this could be a very slow and
 computationally inefficient way to calculate importance in a problem.
@@ -137,7 +137,7 @@ for the adjoint equation is just as computationally expensive as an exact
 solution to the forward equation, so instead an approximation is used to
 optimize Monte Carlo simulations.
 
-Also Lux and Koblinger \cite{lux_monte_carlo}
+Also Lux and Koblinger \cite{lux_monte_1991}
 
 \subsubsection{Implementation}
 
@@ -160,9 +160,9 @@ the exponential transform and for collision biasing based on the adjoint
 solution as a measure of importance. They implemented their results in the
 TRIPOLI-3 software.
 
-Tsang and Hoffman \cite{tsang_monte_1988} built off of the parameters derived by
+Tang and Hoffman \cite{tang_monte_1988} built off of the parameters derived by
 Coveyou et al \cite{coveyou_adjoint_1967} to generate variance reduction
-parameters automatically for fuel cask dose rate analyses. In their work, Tsang
+parameters automatically for fuel cask dose rate analyses. In their work, Tang
 and Hoffman utilized a one-dimensional discrete ordinates code XSDRNPM-S to
 calculate the adjoint fluxes for their shielding problems. The results from this
 claculation were then used to generate biasing parameters for Monte Carlo;
@@ -172,11 +172,13 @@ probabilities. They implemented their work in the SAS4 module in SCALE
 \cite{SCALE6_1}; it was
 one of the earlier implementations of a fully automated biasing procedure for
 Monte Carlo.
-% Maybe I want to make a new generic "Automated VR" section that comes before the local, global, and angle sections. I could introduce the MCNP WWgenerator, and earlier work like Tsang and Hoffman's.....
+% Maybe I want to make a new generic "Automated VR" section that comes before
+% the local, global, and angle sections. I could introduce the MCNP WWgenerator,
+% and earlier work like Tang and Hoffman's.....
 
 
 The motivated reader may also consider Lewins' book
-\cite{lewins_importance:_1965} as a
+\cite{lewins_importance_1965} as a
 useful introduction importance functions and the adjoint equation. Lewins' work was
 primarily oriented towards the use of the adjoint formulation in reactor physics and
 perturbation theory, but that does not eliminate its relevance to this topic.

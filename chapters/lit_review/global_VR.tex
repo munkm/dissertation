@@ -1,6 +1,9 @@
 \section{Automated Variance Reduction Methods for Global Solutions}
 \label{sec:GlobalVR}
 
+Variance reduction methods for global solutions are designed to obtain an even
+distribution of error across several tallies or a tally map that spans the
+entire problem phase-space.
 The previous section detailed several methods that automate variance reduction
 for localized tallies. However, for global solutions these methods do not work
 well. The global tally suffers from a large range in variance across the
@@ -11,7 +14,8 @@ general principle that these methods follow is that by distributing particles
 evenly throughout the Monte Carlo problem, a global tally will have
 approximately the same sample size in each region, resulting in a uniform
 variance across the tally. This often requires a forward deterministic solution
-to determine the density of forward particles throughout the problem. The
+to determine the density of forward particles throughout the problem, and then
+using that forward distribution to aid in generating an importance map. The
 methods described here use this solution to generate a variety of variance
 reduction parameters for Monte Carlo, with varying results.
 
@@ -20,7 +24,8 @@ reduction parameters for Monte Carlo, with varying results.
 
 Cooper and Larsen developed a weight window technique to reduce the variance of
 Monte Carlo global solutions \cite{cooper_automated_2001} using a calculation of
-the forward flux from solutions obtained from diffusion, quasidiffusion, or pure
+the forward flux from solutions obtained from diffusion, quasidiffusion
+\cite{miften_quasi-diffusion_1993}, or pure
 Monte Carlo. In their work, Cooper
 and Larsen utilized a forward solution to the transport equation to generate
 weight window values to uniformly distribute particles throughout the problem.
@@ -28,7 +33,7 @@ By doing so, the variance in the
 scalar flux remained relatively constant throughout the problem for a
 problem-wide tally, rather than
 rising significantly with increasing distance from the forward source. Cooper's
-"isotropic" weight windows (named because they were not dependent on $\hat\Omega$ )
+``isotropic'' weight windows (named because they were not dependent on $\hat\Omega$ )
 dependent on $\vec{r}$ are given by:
 \begin{subequations}
 \label{coopers}
@@ -51,7 +56,8 @@ the problem ends up being roughly constant.
 In practice, Cooper's algorithm was to iteratively switch between solving the
 diffusion equation with transport correctors (Eddington factors described by
 \cite{goldin_quasi-diffusion_1964}); a process
-known as quasidiffusion, and with a Monte Carlo solution. An initial
+known as quasidiffusion \cite{goldin_quasi-diffusion_1964,
+miften_quasi-diffusion_1993}, and with a Monte Carlo solution. An initial
 quasidiffusion solution was used to generate weight windows, and then after a
 time the Monte Carlo solution was used to generate updated eddington factors for
 the quasidiffusion solution.
@@ -75,7 +81,7 @@ without directional biasing: \cite{becker_hybrid_2007, becker_hybrid_2009}.
 \begin{subequations}
 \label{eq.beckerglobal}
 Becker's global method utilizes a formulation of the energy- and space-
-dependent contributon flux like eqs. \eqref{beckerconributon} and
+dependent contributon flux like eqs. \eqref{eq:beckerconributon} and
 \eqref{eq:beckerconributonspace}, but defines the spatial parameter as:
 $B(\vec{r})$:
 \begin{equation}
@@ -88,19 +94,20 @@ distribution depending on the response desired for the calculation:
 \end{equation}
 \begin{equation}
   q^{\dagger}(\vec{r},E) = \frac{\sigma_d(\vec{r},E)}
-                                {\int_0^{\inf} \sigma_d(\vec{r},E) dE}
+                                {\int_0^{\infty} \sigma_d(\vec{r},E) dE}
 \end{equation}
 The space- and energy- dependent weight windows are:
 \begin{equation}
-  \bar{w}(\vec{r},E) = \frac{B(\vec{r}}{\phi^{\dagger}(\vec{r},E)}
+  \bar{w}(\vec{r},E) = \frac{B(\vec{r})}{\phi^{\dagger}(\vec{r},E)}
 \label{eq:beckerglobalww}
 \end{equation}
 \end{subequations}
 
-Becker's method is similar to both Cooper's earlier method, but like FW-CADIS,
+Becker's method is similar to both Cooper's earlier method, but like FW-CADIS
+(Section \ref{subsec:FWCADIS}),
 the global response weight window is proportional to the forward response, i.e.
 \begin{equation}
-  \bar{w}(\vec{r},E) \propto \frac{\int sigma(\vec{r},E) phi (\vec{r},E) dE}
+  \bar{w}(\vec{r},E) \propto \frac{\int \sigma(\vec{r},E) \phi (\vec{r},E) dE}
                                   {\sigma (\vec{r},E)}
 \end{equation}
 rather than the forward flux
@@ -110,9 +117,10 @@ rather than the forward flux
  as it is with Cooper's method.
 
  In implementation, both Becker's global method and Cooper's global method
- undersampled the source (in comparison to FW-CADIS) for a specified calculation
- time. However, Becker's method sampled 1/3 the number of particles that
- Cooper's method did. Becker's method, however, did obtain better relative
+ undersampled the source (in comparison to FW-CADIS, which will be described in
+ Section \ref{subsec:FWCADIS}) for a specified calculation
+ time. However, Becker's method sampled ~1/3 the number of particles that
+ Cooper's method did. Notably, Becker's method did obtain better relative
  uncertainties for low values in the problem.
 
 \subsection{FW-CADIS}
@@ -125,7 +133,7 @@ calculation where the adjoint source is defined at the problem boundary, aimed
 at moving particles outward. The second method used standard CADIS but instead
 defined each cell as equally important. The last method, called Forward-Weighted
 CADIS (FW-CADIS), distributed the adjoint source across mesh cells as an inverse
-relation to the forward response of the cell. In their work, Peplow et al found
+relation to the forward response of the cell. In their work, Peplow et al. found
 that the first method had large uncertainties in areas of the problem distant
 from the boundary; the second method, performed slightly better than analog, but
 not significantly, and the third method had the most uniform uncertainty
@@ -133,16 +141,16 @@ distribution.
 
 FW-CADIS
 \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}
-was the most successful in that it built off of existing theory, namely Cooper's
+built off of existing theory, namely Cooper's
 concept of using a forward deterministic calculation to evenly distribute
 particles throughout the problem subspace, to obtain global tallies. However,
-Wagner et al took a different approach than Cooper: by using a forward
+Wagner et al. took a different approach than Cooper: by using a forward
 deterministic estimate of the flux or desired response as the adjoint source for
 an adjoint calculation, biasing parameters for global responses could be
 calculated. The adjoint source for the adjoint calculation thus depends on the
 desired response for the system. The generic description for the adjoint source
-is given by Eq. \eqref{adjointsourcesimple} and more specific parameters are
-given by Eqs. \eqref{FWCadglbaldose}-\eqref{FWCadglobalflux2}:
+is given by Eq. \eqref{eq:adjointsourcesimple} and more specific parameters are
+given by Eqs. \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}:
 
 \begin{subequations}
 \begin{equation}
