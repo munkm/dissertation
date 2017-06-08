@@ -6,39 +6,57 @@ for localized tallies. However, for global solutions these methods do not work
 well. The global tally suffers from a large range in variance across the
 physical problem space, and the solution is dependent on the flux distribution
 throughout the problem. Here several methods are described that provide
-automated variance reduction for global solutions or multiple tallies.
+automated variance reduction for global solutions or multiple tallies. The
+general principle that these methods follow is that by distributing particles
+evenly throughout the Monte Carlo problem, a global tally will have
+approximately the same sample size in each region, resulting in a uniform
+variance across the tally. This often requires a forward deterministic solution
+to determine the density of forward particles throughout the problem. The
+methods described here use this solution to generate a variety of variance
+reduction parameters for Monte Carlo, with varying results.
+
+\subsection{Cooper's Isotropic Weight Windows}
+\label{subsec:CooperGlobal}
 
 Cooper and Larsen developed a weight window technique to reduce the variance of
-Monte Carlo global solutions \cite{cooper_automated_2001}. In their work, Cooper
+Monte Carlo global solutions \cite{cooper_automated_2001} using a calculation of
+the forward flux from solutions obtained from diffusion, quasidiffusion, or pure
+Monte Carlo. In their work, Cooper
 and Larsen utilized a forward solution to the transport equation to generate
-paramaters for a modified Monte Carlo simulation where the particles are nearly
-uniformly distributed throughout the problem. By doing so, the variance in the
-scalar flux remained relatively constant throughout the problem, rather than
+weight window values to uniformly distribute particles throughout the problem.
+By doing so, the variance in the
+scalar flux remained relatively constant throughout the problem for a
+problem-wide tally, rather than
 rising significantly with increasing distance from the forward source. Cooper's
-"isotropic" weight windows dependent on $\vec{r}$ are given by:
+"isotropic" weight windows (named because they were not dependent on $\hat\Omega$ )
+dependent on $\vec{r}$ are given by:
 \begin{subequations}
 \label{coopers}
 \begin{equation}
   \bar{ww}(\vec{r}) = \frac{\phi(\vec{r})}{max \phi(\vec{r})}
+  \label{eq:coopertarget}
 \end{equation}
 \begin{equation}
   ww(\vec{r})_{top} = \rho \bar{ww}(\vec{r})
 \end{equation}
-b, the linearly anisotropic factor, is
 \begin{equation}
   ww(\vec{r})_{bottom} = \frac{\bar{ww}(\vec{r})}{\rho}
 \end{equation}
-where $\rho$ is the weight window scaling factor
+where $\rho$ is the weight window scaling factor.
 \end{subequations}
+Note that by setting the weight window target value to be inversely
+proportional to the total flux in the cell, the density of particles throughout
+the problem ends up being roughly constant.
 
 In practice, Cooper's algorithm was to iteratively switch between solving the
-diffusion equation with transport correctors (eddington factors); a process
+diffusion equation with transport correctors (Eddington factors described by
+\cite{goldin_quasi-diffusion_1964}); a process
 known as quasidiffusion, and with a Monte Carlo solution. An initial
 quasidiffusion solution was used to generate weight windows, and then after a
 time the Monte Carlo solution was used to generate updated eddington factors for
 the quasidiffusion solution.
 
-Because Cooper's method depended on Monte Carlo to generate the eddington
+Because Cooper's method depended on Monte Carlo to generate the Eddington
 factors for the quasidiffusion problem, this method was limited by the iterative
 switch between the quasidiffusion solution and the Monte Carlo solution. The
 frequency by which this switching happens is entirely up to the user, but may
@@ -46,6 +64,9 @@ drastically affect the efficiency of the method. Further, Cooper notes that we
 do not know at what point in time (for which number of particles N) the Monte
 Carlo solution becomes more accurate than the quasidiffusion solution, which is
 an important issue in choosing solution parameters.
+
+\subsection{Becker's Global Weight Windows}
+\label{subsec:BeckerGlobal}
 
 Becker, in addition to developing a local VR method, developed a global space-
 energy- weight correction method both with (Section \ref{sec:AngleVR}) and
@@ -92,41 +113,10 @@ rather than the forward flux
  undersampled the source (in comparison to FW-CADIS) for a specified calculation
  time. However, Becker's method sampled 1/3 the number of particles that
  Cooper's method did. Becker's method, however, did obtain better relative
- uncertainties for low values in the problem [cite ORNL internal document].
+ uncertainties for low values in the problem.
 
-Van Wijk's method, like CADIS and FW-CADIS, is a variance reduction method
-designed to operate with little user input \cite{van_wijk_easy_2011}.
-Van Wijk et al. applied their method to a PWR facility and observed a FOM
-increase by a factor of $>$200.
-
-
-The Method of Automatic Generation of Importances by Calculation (MAGIC) is a
-global variance reduction technique \cite{davis_comparison_2011} proposed by
-Davis in 2011.
-Rather than using a deterministic solution to obtain an estimate of the forward
-flux to generate an importance map, the MAGIC method uses an analog Monte Carlo
-run with multigroup cross section data and (optionally) a high energy cut-off.
-This initial analog run is used to generate initial importance map for a
-secondary run.
-This process iterates until several Monte Carlo simulations are run and a
-finalized importance map is generated.
-In their paper, the authors compared three variants of MAGIC to FW-CADIS in ITER
-fusion energy systems.
-These three variants used different weight window adjustments for importances:
-weight windows in cells based on existing weight information, weight windows in
-mesh cells based on flux information, and weight windows in cells based on
-population density.
-Davis and colleagues concluded that the most effective method for variance
-reduction in their system was MAGIC's weight window in mesh based on flux
-information, where FW-CADIS' FOM was 65\% that of MAGIC's.
-The authors did not make it clear how many iterations were required, on average,
-to generate the finalized weight window map or if the time to iteratively
-generate importance maps were included in the FOM.
-It is unclear if only the final Monte Carlo simulation's runtime was used to
-calculate the FOM.
-Furthermore, the authors did not clearly state how the biasing parameters were
-calculated, other than that they used flux, population density, or weight
-information.
+\subsection{FW-CADIS}
+\label{subsec:FWCADIS}
 
 In 2007, Peplow, Blakeman, and Wagner \cite{peplow_advanced_2007} proposed three
 methods by which variance reduction could be decreased in global mesh tallies in
@@ -183,9 +173,55 @@ The adjoint source for the energy- and spatially- dependent flux $\phi(\vec{r},E
 
 Comparing these methods, \cite{peplow_comparison_2012}
 
-\subsection{Implementation and Performance of Global Methods}
-\label{sec:resultsglobal}
+\subsection{Other Notable Methods}
+Baker and Larsen showed that the exponential transform can be used to generate
+VR parameters for global low-variance solutions in Monte Carlo
+\cite{baker_localexponential_1993}. In this work, Baker used a forward diffusion
+solution to generate parameters for a combination of VR techniques: implicit
+capture and weight cutoff, geometry splitting / Russian roulette and implicit
+capture and a weight cutoff, and the exponential transform combined with
+implicit capture and a weight cutoff. The exponential transform method was then
+compared to the other combinations of VR techniques to quantify its success.
+In their work, Baker and Larsen found that
+this approach did not work well for highly scattering problems, where geometry
+splitting and Russian roulette were generally better options. Their work did not
+focus on generating weight window values, nor was it tested on deep-penetration
+shielding problems.
 
+
+Van Wijk's method, like CADIS and FW-CADIS, is a variance reduction method
+designed to operate with little user input \cite{van_wijk_easy_2011}.
+Van Wijk et al. applied their method to a PWR facility and observed a FOM
+increase by a factor of $>$200.
+
+
+The Method of Automatic Generation of Importances by Calculation (MAGIC) is a
+global variance reduction technique \cite{davis_comparison_2011} proposed by
+Davis in 2011.
+Rather than using a deterministic solution to obtain an estimate of the forward
+flux to generate an importance map, the MAGIC method uses an analog Monte Carlo
+run with multigroup cross section data and (optionally) a high energy cut-off.
+This initial analog run is used to generate initial importance map for a
+secondary run.
+This process iterates until several Monte Carlo simulations are run and a
+finalized importance map is generated.
+In their paper, the authors compared three variants of MAGIC to FW-CADIS in ITER
+fusion energy systems.
+These three variants used different weight window adjustments for importances:
+weight windows in cells based on existing weight information, weight windows in
+mesh cells based on flux information, and weight windows in cells based on
+population density.
+Davis and colleagues concluded that the most effective method for variance
+reduction in their system was MAGIC's weight window in mesh based on flux
+information, where FW-CADIS' FOM was 65\% that of MAGIC's.
+The authors did not make it clear how many iterations were required, on average,
+to generate the finalized weight window map or if the time to iteratively
+generate importance maps were included in the FOM.
+It is unclear if only the final Monte Carlo simulation's runtime was used to
+calculate the FOM.
+Furthermore, the authors did not clearly state how the biasing parameters were
+calculated, other than that they used flux, population density, or weight
+information.
 %
 %
 %----------------------------------------------------------------------------------------

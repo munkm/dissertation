@@ -1,7 +1,8 @@
 \section{Automated Variance Reduction Methods for Local Solutions}
-\label{sec:CADIS}
+\label{sec:localVR}
 
-\subsection{Theory}
+\subsection{CADIS}
+\label{sec:CADIS}
 
 In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven
 Importance Sampling Method (CADIS)
@@ -48,6 +49,9 @@ and roulette at the particle births.
 CADIS has been implemented in a number of software packages, which are
 summarized in Table [Table Reference Once Created]
 
+\subsection{Becker's Local Weight Windows}
+\label{sec:beckerlocal}
+
 Becker's work in the mid- 2000s also explored generating biasing parameters for
 local source-detector problems \cite{becker_hybrid_2009}. In his work, Becker
 utilized a formulation of the contributon flux, as described in Eq.
@@ -86,6 +90,3 @@ and
 % \label{eq:beckeralpha}
 %\end{equation}
 \end{subequations}
-
-\subsection{Implementation and Performance of Local Methods}
-\label{sec:resultslocal}

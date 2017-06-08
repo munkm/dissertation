@@ -21,6 +21,7 @@ parameters dependent on angle for highly angular-dependent problems.
 \subsection{Angular Biasing with Population Control Methods}
 
 \subsubsection{AVATAR}
+\label{subsec:AVATAR}
 
 The AVATAR \cite{van_riper_generation_1995, van_riper_avatarautomatic_1997}
 (Automatic Variance and Time of Analysis Reduction) method generates
@@ -231,6 +232,7 @@ Thus f is derived from the maximum entropy distribution:
 \begin{equation}
 f(\hat\Omega \cdot n) = \frac{\lambda e^{(\hat\Omega \cdot n)\lambda}}
                              {2 \sinh {\lambda} }
+  \label{eq:Av25}
 \end{equation}
 and $\lambda$ is a function of the average cosine $\bar\mu$
 \begin{equation}
@@ -244,8 +246,8 @@ and $\lambda$ is a function of the average cosine $\bar\mu$
 for $ 0 \le \bar\mu < 0.8001$ and $0.8001 \le \bar\mu < 1.0 $, respectively.
 Also, $\mu$ is given by
 \begin{equation}
-\bar\mu(\vec{r} E) = \frac{\left\| J^{\dagger}(\vec{r} E)
-                     \right\|}{\phi^{\dagger}(\vec{r} E)}.
+\bar\mu(\vec{r}, E) = \frac{\left\| J^{\dagger}(\vec{r}, E)
+                     \right\|}{\phi^{\dagger}(\vec{r}, E)}.
   \label{eq:Av4}
 \end{equation}
 \label{eq:AvEqns}
@@ -327,53 +329,74 @@ work in MAVRIC, a hybrid methods software package distributed with the SCALE
 codebase \cite{SCALE6_1}. The Simple Angular CADIS method took two different
 approaches to variance reduction:
 directionally-dependent weight windows with directionally-dependent source
-biasiaing and directionally-dependent weight windows without directional source
+biasing and directionally-dependent weight windows without directional source
 biasing.
 
 \subsubsection*{Theory}
 
-The Simple Angular CADIS approach includes the azimuthal distribution in its
-approximation
-of the angular flux, such that:
-
+The Simple Angular CADIS approach, like AVATAR, uses a reconstruction of the
+angular flux derived from the maximum entropy distribution (Section
+\ref{subsec:AVATAR}). In Simple Angular CADIS, the authors approximated the
+angular flux such that
+%
 \begin{equation}
 \psi^{\dagger}(\vec{r}, E, \hat \Omega) \cong \phi^{\dagger}(\vec{r}, E)
-\frac{1}{2\pi} f(\hat\Omega \cdot n)
+\frac{1}{2\pi} f(\hat\Omega \cdot \hat n).
 \label{eq:AvAngflux}
 \end{equation}
-and the angle-dependent weight windows are then given by:
+Note that this differs from AVATAR's reconstruction of the angular flux,
+Eq. \eqref{eq:Av1}, by a factor of $1/2\pi$. As it was only dependent on
+$\mu$, AVATAR's original approach assumed azimuthal symmetry, but did not
+incorporate any factor of integration into the angular flux reconstruction. By
+including the azimuthal integration factor of $1/2\pi$, this version of
+$\psi^{\dagger}$ satisfies
+\begin{equation*}
+  \phi^{\dagger}(\vec{r}, E) = \int \phi^{\dagger} \frac{1}{2\pi} f(\hat\Omega
+  \cdot \hat n) d \hat\Omega .
+\end{equation*}
+The corresponding angle-dependent weight windows are then given by:
 \begin{equation}
 \bar {w} (\vec{r},E,\hat\Omega) = \frac{2 \pi k}{\phi^{\dagger}(\vec{r},E)
                                   f(\hat\Omega \cdot n)}
 \end{equation}
+$f(\hat\Omega \cdot \hat n)$ is given by the same equations
+\eqref{eq:Av25}, \eqref{eq:Av3}, \eqref{eq:Av4} as AVATAR.
 
-For the first method, with directionally-dependent weight windows and without
+For the variant method with directionally-dependent weight windows and without
 directional
-source biasing, the biasing parameters are:
+source biasing, the biasing parameters are given by Eqs. \eqref{SA-CADIS1}.
 \begin{subequations}
 \label{SA-CADIS1}
+The biased source distribution, $\hat{q}(\vec{r},E,\hat\Omega)$,
+is given by a combination of the standard CADIS
+biased source, $\phi^{\dagger}(\vec{r},E)$ and the original directional
+source distribution, $q(\hat\Omega \cdot \hat d)$ such that
 \begin{equation}
 \begin{split}
 \hat{q}(\vec{r},E,\hat\Omega) & = \frac{1}{R} q(\vec{r},E) \phi^{\dagger}
                                   (\vec{r},E) \frac{1}{2 \pi} q(\hat\Omega \cdot
                                   \hat d)\\
                               & = \hat{q}(\vec{r},E) \frac{1}{2 \pi}
-                              q(\hat\Omega \cdot \hat d)
+                              q(\hat\Omega \cdot \hat d).
 \end{split}
 \end{equation}
+The direction $\hat d$ is sampled using the original directional source
+distribution $q(\hat\Omega \cdot \hat d)$.
+The birth weight matches standard CADIS with
 \begin{equation}
 \begin{split}
 w_0  & = \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
-     & = \frac{R}{\phi^{+}(\vec {r} ,E)}
+     & = \frac{R}{\phi^{+}(\vec {r} ,E)},
 \end{split}
 \end{equation}
+and the weight window target value is given by
 \begin{equation}
 \begin{split}
 \bar{w} (\vec{r},E,\hat\Omega)  & = \frac{R}{\phi^{\dagger}(\vec{r},E)}
                                     \frac{f(\hat{\Omega_0}\cdot n(\vec{r_0}, E_0))}
                                     {f(\hat\Omega \cdot n)} \\
                                 & = \bar{w}(\vec{r},E) \frac{f(\hat{\Omega_0}\cdot
-                                    n(\vec{r_0}, E_0))}{f(\hat\Omega \cdot n)}
+                                    n(\vec{r_0}, E_0))}{f(\hat\Omega \cdot n)}.
 \end{split}
 \end{equation}
 \end{subequations}
@@ -387,10 +410,15 @@ but not directional source biasing.
 
 For the second method, with directionally-dependent weight windows and with
 directional
-source biasing, the biasing parameters are given by:
-
+source biasing, the biasing parameters are given by the equations summarized in
+Eqs. \eqref{SA-CADIS2}.
 \begin{subequations}
 \label{SA-CADIS2}
+
+The biased source distribution is given by a combination of the
+space-energy biased source distribution, the original directional source
+distribution, and a directionally-dependent biased source distribution,
+$f(\hat\Omega \cdot \hat{n_0})$ such that
 \begin{equation}
 \begin{split}
 \hat{q}(\vec{r},E,\hat\Omega) & = \frac{1}{Rc} q(\vec{r},E,\hat\Omega)
@@ -403,28 +431,36 @@ source biasing, the biasing parameters are given by:
                                   f (\hat\Omega \cdot n_0)\right]  \\
                              & = \hat{q}(\vec{r},E) \left[\frac{1}{c}\frac{1}{2 \pi}
                                  q(\hat\Omega \cdot \hat d) \frac{1}{2 \pi}
-                                 f(\hat\Omega \cdot n_0) \right]
+                                 f(\hat\Omega \cdot n_0) \right].
 \end{split}
 \end{equation}
+The constant $c$ is given by
 \begin{equation}
 c = \int{\frac{1}{2 \pi} q(\hat\Omega \cdot \hat d) \frac{1}{2 \pi}
-    f (\hat\Omega \cdot n_0} d\hat\Omega
+    f (\hat\Omega \cdot n_0)} d\hat\Omega.
 \end{equation}
+The birth weights are also a function of direction, where
 \begin{equation}
 \begin{split}
 w_0  &= \frac{q(\vec{r},E,\hat\Omega)}{\hat{q}(\vec{r},E,\hat\Omega)} \\
-     &= \frac{R}{\phi^{+}(\vec {r} ,E)} \frac{2 \pi c}{f(\hat\Omega \cdot n_0)}
+     &= \frac{R}{\phi^{+}(\vec {r} ,E)} \frac{2 \pi c}{f(\hat\Omega \cdot n_0)},
 \end{split}
 \end{equation}
+as are the target weights
 \begin{equation}
 \begin{split}
 \bar{w} (\vec{r},E,\hat\Omega)  &= \frac{R}{\phi^{\dagger}(\vec{r},E)}
                                    \frac{2 \pi c}{f(\hat\Omega \cdot n_0)} \\
                                 &= \bar{w}(\vec{r},E) \frac{2 \pi
-                                    c}{f(\hat\Omega \cdot n)}
+                                    c}{f(\hat\Omega \cdot n)}.
 \end{split}
 \end{equation}
 \end{subequations}
+
+Details about how the aforementioned equations were practically implemented are
+detailed in \cite{peplow_consistent_2012}. The motivated reader may explore this
+reference for details on the calculation of $\lambda$, $\bar{\mu}$,
+$\left\| J^{\dagger}(\vec{r}, E)\right\|$ and $f(\hat\Omega \cdot \hat{n_0})$
 
 \subsubsection*{Results}
 
@@ -454,57 +490,94 @@ the weight window target value at a specific point in the weight window region.
 If the weight window covered a substantial region of phase-space, this could
 result in particle birth weights that do not adequately correspond to the
 importance of the region that they are born into, resulting in increased runtime
-and a less efficient calculation.
+and a more computationally-intensive calculation.
 
 \subsubsection{Cooper's Weight Windows}
-Cooper and Larsen, in addition to generating global isotropic weight windows, as
+Cooper and Larsen, in addition to generating global isotropic weight windows
+from a deterministic forward solution, as
 described
-in Section \ref{sec:GlobalVR}, also developed angle-dependent weight windows
+in Section \ref{subsec:CooperGlobal}, also developed angle-dependent weight windows
 \cite{cooper_automated_2001}. Here, the forward angular flux is calculated in a
 similar
-manner as the AVATAR method:
+manner as the AVATAR method where the angular flux is a product of the scalar
+flux and an angle-dependent function. In this case, the adjustment factor also
+includes a factor of $4\pi$,
 \begin{subequations}
-\label{LIFT}
+\label{cooperangle}
 \begin{equation}
-\psi(\vec{r},\hat\Omega) \approx A(\vec{r})e^{\vec{B}_r \cdot \hat\Omega}
+  \psi(\vec{r},\hat\Omega) \approx A(\vec{r})e^{\vec{B}(\vec{r}) \cdot \hat\Omega},
+  \label{eq:cooper1}
 \end{equation}
 where $A(\vec{r})$ and $\vec{B}(\vec{r})$ are given by:
 \begin{equation}
 A(\vec{r}) = \frac{\phi(\vec{r})}{4 \pi}\frac{B(\vec{r})}{sinh B(\vec{r})}
 \end{equation}
 \begin{equation}
-\vec{B}(\vec{r}) = B(\vec{r}) \frac{\vec{\lambda}}{\left| \vec{\lambda} \right|}
+  \vec{B}(\vec{r}) = B(\vec{r}) \frac{\vec{\lambda}(\vec{r})}{\left|
+    \vec{\lambda}(\vec{r}) \right|}
 \end{equation}
-B can be calculated with
+and
 \begin{equation}
-\lambda(\vec{r}) = coth B(\vec{r}) - \frac{1}{B(\vec{r})}
+\lambda(\vec{r}) = coth B(\vec{r}) - \frac{1}{B(\vec{r})}.
 \end{equation}
+If both $A(\vec{r})$ and $\vec{B}(\vec{r})$ are inserted into the equation for
+$\psi(\vec{r}, \hat\Omega)$, Eq. \eqref{eq:cooper1},
+the formulation will be very similar to AVATAR's
+reconstruction of the angular flux. However, Cooper's method differed from
+AVATAR in the calculation of $\lambda(\vec{r})$.
 Cooper noted that $\lambda(\vec{r})$ could be estimated with either the scalar fluxes
-and currents from the quasidiffusion calculation, or with the scalar fluxes and
-currents
-from the Monte Carlo solution. Cooper noted that because Monte Carlo robustly
-calculated
-these values, it was the more optimal choice. Knowing how to calculate these
-parameters
-from the deterministic calculation, the angular weight window can be calculated with:
+and currents from a fairly low-cost quasidiffusion calculation,
 \begin{equation}
-ww_{i,j} (\hat\Omega)= \frac{\psi_{i,j}(\vec{r},\hat\Omega)} {max\phi_{i',j'}/4\pi}
+  \begin{split}
+    \lambda_i(\vec{r})  & = \frac{J_i(\vec{r})}{\phi(\vec{r})} \\
+                        & = \frac{1}{\Sigma_{tr}(\vec{r})\phi(\vec{r})}
+                       \frac{\partial}{\partial r_j} E_{ij}(\vec{r})
+                       \phi(\vec{r})
+  \end{split}
+\end{equation}
+or with the scalar fluxes and
+currents directly
+from the Monte Carlo solution. Recall that $E_{ij}(\vec{r})$ is the eddington
+factor described in Section \ref{subsec:CooperGlobal}.
+Cooper noted that because Monte Carlo robustly
+calculated
+these values, it was the more optimal choice. After obtaining these values from
+the deterministic calculation, Cooper's angle-dependent weight window could be
+calculated with
+\begin{equation}
+ww_{i,j} (\hat\Omega)= \frac{\psi_{i,j}(\vec{r},\hat\Omega)} {max\phi_{i',j'}/4\pi}.
 \end{equation}
 \end{subequations}
 
-As mentioned in the previous section, Cooper's method was limited in that it used an
+As mentioned in Section \ref{subsec:CooperGlobal}, Cooper's method was limited in that it used an
 iterative quasidiffusion / Monte Carlo solution to generate the biasing parameters for
 the problem. This method was not automated; and the ideal frequency between iterations
-was never explored. However, Cooper showed that the angularly dependent weight windows
+was never explored. However, Cooper showed in example two-dimensional problems
+that the angularly dependent weight windows
 significantly improved the figure of merit as compared to analog Monte Carlo.
+The distributions of the FOM and the resulting tally were also much smoother
+with the approach described in their work.
 Further, the
 angular weight windows performed slightly better than the isotropic weight windows in
-evenly distributing the problems in problems with anisotropy.
+evenly distributing the particles, even in problems where the anisotropy was not
+significant. However, like
+AVATAR, this method is limited in the types of anisotropy it can quantify due to
+the approximations it uses to reconstruct the angular flux. In generating the
+estimates for $\vec{\lambda}$, the authors found that using a quasidiffusion
+estimate was more efficient than using Monte Carlo estimates, likely because the
+estimates of the factors could be periodically updated as the solution
+iteratively converged.
 %
 %
 %----------------------------------------------------------------------------------------
 
 \subsection{Angular Biasing Using the Exponential Transform}
+
+\subsubsection{Early Work}
+
+Dwivedi \cite{dwivedi_new_1982} showed
+
+Gupta and Dwivedi \cite{gupta_sampling_1985} showed
 
 In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a
 method by which
@@ -536,7 +609,8 @@ transport.
 
 The LIFT \cite{turner_automatic_1997, turner_automatic_1997-1} method, developed by Turner and Larsen, is
 a modification
-of the zero variance solution that utilizes a deterministic calculation to
+of the zero variance solution (see Section \ref{sec:ContributonImportance})
+that uses a deterministic calculation to
 generate biasing
 parameters for the exponential transform and weight window variance reduction
 techniques.
@@ -577,7 +651,7 @@ and the biasing parameter is given by
 The first equation in this series is an adjustment of the exponential transform.
 However,
 rather than relying upon an isotropic scattering law, like earlier
-implementations, the LIFT
+implementations of the exponential transform, the LIFT
 method adjusts the transform to instead be linearly anisotropic in angle. The
 parameters
 $\beta_{g,n}$, $b_{g,n}$ and $rho_{g,n}$ are calculated from values obtained from the
@@ -602,7 +676,7 @@ determine the efficiency of LIFT. In his investigation, Turner compared LIFT and
 AVATAR using
 approximations for the adjoint solution with diffusion and $S_N$ transport
 calculations, and
-various methods to calculate weight window paramaters, including utilizing LIFT
+various methods to calculate weight window parameters, including utilizing LIFT
 combined
 with AVATAR's weight window parameters. In most cases, LIFT outperformed AVATAR.
 In problems
@@ -618,28 +692,14 @@ overly accurate solution for the adjoint problem may reduce the variance but
 come at such
 a high computational cost that it will decrease the FOM.
 
-[Kendra's addition to LIFT]
-
-MCNP Weight Window Generator \cite{mcnp_manual_v1}
-
-
-
-\subsection{Implementation and Performance of Angle-Informed Methods}
-\label{sec:resultsangle}
-
-In Mavric \cite{SCALE6_2} \cite{peplow_advanced_2007}
-
-An internal feature of MCNP, the deterministic adjoint weight window generator
-(DAWWG), utilizes the discrete ordinates code PARTISN
-\cite{sweezy_automated_2005}.
-
-ADVANTG \cite{mosher_new_2010, wagner_review_2011, bevill_new_2012}, which uses
-Denovo \cite{evans_denovo:_2010-1} and MCNP.
-
-Tortilla \cite{somasundaram_implementation_2013}
-
-With spent fuel storage containers \cite{chen_surface_2011}
-
-IFSI site with MAVRIC \cite{sheu_dose_2011}
+More recently, Keady and Larsen showed that LIFT could be improved upon further
+by using cell-averaged currents and fluxes rather than cell-edge values for
+angular biasing \cite{keady_modified_2015}. By using this modified variation of
+LIFT, material interfaces do not create strong flux discontinuties on cell
+edges, resulting in a solution that is both smoother and more realistic.
+Results were presented for a
+one-dimensional monoenergetic slab problem with material interfaces. The
+modified version of LIFT outperformed both the original LIFT and Monte Carlo
+weight windows generated with forward deterministic weight windows.
 
 
