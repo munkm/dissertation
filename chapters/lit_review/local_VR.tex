@@ -2,13 +2,18 @@
 \label{sec:localVR}
 
 The next several sections (\ref{sec:localVR} through \ref{sec:AngleVR})
-will describe different ways that importance functions
+will describe different ways that deterministically obtained importance
+functions
 can be applied to variance reduction methods in practice. Local variance
 reduction methods are those that optimize a tally response in a localized region
-of the problem phase-space. These problems may be the physically intuitive,
+of the problem phase-space. These types of problems may be the most immediately
+physically intuitive to a user,
 where a person standing $x$ meters away from a source may wish to know their
-personal dose rate. In this section, automated variance reduction methods that
+personal dose rate. In this section, notable
+automated deterministcally-driven variance reduction methods that
 have been designed for such localized response optimization are described.
+Recall that Booth's importance generator (Section \ref{subsec:AutomatedMCVR})
+was designed for localized tally results.
 
 \subsection{CADIS}
 \label{sec:CADIS}
@@ -17,46 +22,108 @@ In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven
 Importance Sampling Method (CADIS)
 \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a
 tool for automatic variance reduction for local tallies in Monte Carlo. CADIS
-was unique in that built off of adjoint theory for variance reduction, and
-consistently biased the particle distribution and particle weights. In CADIS, a
-deterministic estimate of the adjoint problem is solved, where the adjoint
-source distribution $q^{\dagger}$ is the forward problem's detector or tally
-response function, or $\Sigma_{tally}$. The solution for $\phi^{\dagger} $ could
-be used to generate a biased source distribution for the forward problem:
+was unique in used the adjoint solution from a deterministic solution to
+consistently bias the particle distribution and particle weights. Earlier
+methods had not ensured the consistency between source biasing and particle
+births.
+
+To begin, one seeks to reduce the variance in a tally response in a Monte Carlo
+calculation. The total response for a system with a defined source distribution
+$q(\vec{r}, E, \hat{\Omega})$ is
+\begin{subequations}
+\begin{equation}
+  R_{tally} = \int_{4\pi} \int_{V} \int_{E} \psi(\vec{r}, E, \hat{\Omega})
+  \Sigma_{tally}(\vec{r},E, \hat\Omega) dE dV d\Omega ,
+\end{equation}
+which can be simplified using $P$ as a designator of all phase-space, $\vec{r},
+E, \hat{\Omega}$, or
+\begin{equation}
+  R_{tally} = \int_P \psi(P) \Sigma_{tally}(P) dP .
+\end{equation}
+\end{subequations}
+$\psi$ is the angular flux and $\Sigma_{tally}$ is the effective tally
+response function. To solve the adjoint equation, an adjoint source
+$q^{\dagger}$ must be defined. For a given adjoint problem,
+the adjoint source is
+set to be the tally or detector response function from the forward problem,
+or $q^{\dagger} = \Sigma_{tally}$. The response function then becomes a product
+of the forward flux and the adjoint source, or
+\begin{equation}
+  R = \int_P \psi(P) q^{\dagger}(P) dP.
+  \label{eq:response1}
+\end{equation}
+By using the adjoint identity
+\begin{equation}
+  \langle \psi H^{\dagger} \psi^{\dagger} \rangle =
+  \langle \psi^{\dagger} H \psi \rangle ,
+\end{equation}
+Equation \eqref{eq:response1} can also be written to be a function of the
+adjoint flux and the forward source distribution
+\begin{equation}
+  R = \int_P \psi^{\dagger}(P) q(P) dP .
+  \label{eq:response2}
+\end{equation}
+
+CADIS used Eqs. \eqref{eq:response1} and \eqref{eq:response2} as calculations of the
+problem response. By using the solution for the adjoint scalar
+flux, $\phi^{\dagger}$, obtained from a deterministic calculation
+and knowing the adjoint source distribution, $q^{\dagger}$ for the same problem,
+source biasing and weight window variance reduction parameters could be obtained
+for the forward Monte Carlo calculation. Note that the original CADIS equations
+are based on space and energy ($\vec{r}, E$) dependence, but not angle, so
+$\phi^{\dagger}$ can be used rather than $\psi^{\dagger}$. This does not mean
+that CADIS is not applicable to angle. It was merely a choice made by the
+developers given the computational resources required to calculate and store
+full angular flux datasets, and the inefficiency that using angular fluxes might
+pose for problems where angle dependence is not paramount.
 
 \begin{subequations}
 \label{CADISmethod}
-Biasing Parameters Used by CADIS:
+To generate the biased source distribution for the Monte Carlo calculation,
+$\hat{q}$,
+should be related to it's contribution to inducing a response in the tally or
+detector. It follows, then, that the biased source distribution is the ratio of
+the contribution of a cell to a tally response to the tally response induced
+from the entire problem. Thus, the biased source distribution
+is a function of the adjoint scalar
+flux and the forward source distribtion $q$ in region $\vec{r}, E$,
+and the total response $R$
 \begin{equation}
 \begin{split}
 \hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r}
 ,E)}{\iint\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E) dE d\vec{r}} \\
-         & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}
+         & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r} ,E)}{R}.
 \end{split}
 \label{eq:weightedsource}
 \end{equation}
 The  starting weights of the particles sampled from the biased source
-distribution, $\hat{q}$ are:
+distribution, $\hat{q}$ must be adjusted to account for the biased source
+distribtution. As a result, the starting weights
+are a function of the biased source distribution and the
+original forward source distribution:
 \begin{equation}
 \begin{split}
 w_0  & = \frac{q}{\hat{q}} \\
-     & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)}
+     & = \frac{R}{\phi^{\dagger}(\vec {r} ,E)}.
 \end{split}
 \label{eq:startingweight}
 \end{equation}
-and the target weights for the particle are:
+Note that when Eq. \eqref{eq:weightedsource} is placed into Eq.
+\eqref{eq:startingweight}, the starting weight is a fucntion of the the total
+problem response and the adjoint scalar flux in $\vec{r}, E$.
+The target weights for the biased particles are given by
 \begin{equation}
-\hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)}
+\hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)},
 \label{eq:WW}
 \end{equation}
 \end{subequations}
-
-The equations for $w$ and $w_0$ match; so particles are born at the same weight
-of the region they are born into, thus the problem limits excessive splitting
-and roulette at the particle births.
-
-CADIS has been implemented in a number of software packages, which are
-summarized in Table [Table Reference Once Created]
+where the target weight $\hat{w}$ is also a function of the total response and
+the adjoint scalar flux in region $\vec{r}, E$.
+The equations for $\hat{w}$ and $w_0$ match; so particles are born at the same weight
+of the region they are born into. Consequently, the problem limits
+excessive splitting
+and roulette at the particle births, in addition to consistently biasing the
+particle source distribution and weights.
 
 \subsection{Becker's Local Weight Windows}
 \label{sec:beckerlocal}
@@ -86,7 +153,7 @@ C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}
 \end{equation}
 The space- and energy- dependent weight windows are given by:
 \begin{equation}
-\bar{w}(\vec{r},E) = \frac{B(\vec{r}}{\phi^{\dagger}(\vec{r},E)}
+  \bar{w}(\vec{r},E) = \frac{B(\vec{r})}{\phi^{\dagger}(\vec{r},E)}
 \label{eq:beckerlocalww}
 \end{equation}
 where

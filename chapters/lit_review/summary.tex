@@ -1,5 +1,7 @@
-\section{Summary}
+\section{Variance Reduction for Application Problems}
 \label{sec:litsummary}
+%not exactly sure what to call this last section still. I need to summarize
+%results and also summarize the literature. Hmmm.
 
 Variance reduction methods exist for Monte Carlo methods to
 achieve a more desirable answer in a
@@ -26,11 +28,15 @@ parameters is significant. Here the existing state of automated variance
 reduction methods and the applications on which they have been tested will be
 summarized.
 
-Numerous hybrid methods packages for deep-penetration radiation transport and
-shielding exist today.
-The CADIS and FW-CADIS methods are distributed with Mavric \cite{SCALE6_1,
+Presently, numerous hybrid methods packages that use the methods described in
+the preceeding sections are available. These packages are targeted towards
+deep-penetration radiation transport and shielding applications.
+The CADIS and FW-CADIS methods are distributed with MAVRIC \cite{SCALE6_1,
 peplow_advanced_2007} and
-ADVANTG \cite{mosher_automated_2009} from Oak Ridge National Laboratry, and Tortilla
+ADVANTG \cite{mosher_automated_2009} from Oak Ridge National Laboratry, which
+use the discrete ordinates code Denovo \cite{evans_denovo:_2010} to accelerate
+the Monte Carlo codes Monaco \cite{SCALE6_1} and MCNP\cite{mcnp_manual_v1},
+respectively. CADIS and FW-CADIS are also available in Tortilla
 \cite{somasundaram_implementation_2013},
 the hybrid methods software using the deterministic code Attilla
 \cite{lucas_applications_2004}. Tortilla also includes a version of LIFT and
@@ -44,9 +50,11 @@ to generate biasing parameters for MCNP, and also includes AVATAR
 functionality. MCNP \cite{mcnp_manual_v1} is distributed with a weight window
 generator (WWG) that uses a preliminary Monte Carlo solution to estimate an
 importance function for the problem. Though this list is not complete, this
-illustrates the ubiquity and need of hybrid methods for the analysis of
-realistic problems today. In the analysis of realistic problems, ensuring that a
-``good'' answer is achieved is necessary for safety and security.
+illustrates the present ubiquity and need of hybrid methods for the analysis of
+realistic problems. In the analysis of realistic problems, ensuring that a
+``good'' answer is achieved is necessary for safety and security. In the next
+few paragraphs, how each these methods have been applied to application problems
+will be explored. The degree to which each is successful will also be discussed.
 
 CADIS and FW-CADIS have been used for a number of studies on spent fuel storage
 facilities.
@@ -85,7 +93,9 @@ to analyze various threat-detection nonproliferation problems
 to $10^4$ when compared with analog Monte Carlo. However, Mosher et al. noted
 that the methods struggled with problems exhibiting strongly anisotropic
 behavior. In particular, they noted that low-density materials and strongly
-directional sources posed issues.
+directional sources posed issues. This indicated that while CADIS and FW-CADIS
+are very strong methods, they have limitations in highly angle-dependent
+applications.
 
 An internal feature of MCNP, the deterministic adjoint weight window generator
 (DAWWG), utilizes the discrete ordinates code PARTISN
@@ -105,40 +115,13 @@ standard WWG.
 
 A variety of automated variance reduction methods, including CADIS and LIFT have
 been implemented into the Attila / Tortilla deterministic and hybrid transport
-code packages \cite{somasundaram_implementation_2013}. These were used on several
+code packages \cite{somasundaram_implementation_2013}. These methods
+were used on several
 nonproliferation test problems. For the most part, LIFT and LIFT combined with
 weight windows outperformed CADIS' weight windows and source biasing, indicating
 that the addition of angular information was of benefit for these more realistic
 nonproliferation application
 problems.
-
-The AVATAR method
-\cite{van_riper_generation_1995, van_riper_avatarautomatic_1997} used an
-approximation of the angular flux--without explicitly calculating it--to
-generate angle-dependent weight windows. It operated under the approximation
-that
-the angular flux was separable and symmetric about the average current vector.
-The angular flux was then calculated using
-a product of a deterministically-obtained
-scalar flux and an exponential function, derived from the
-maximum entropy distribution, that was a function of the scalar flux and the
-current. Space-, energy-, and angle-dependent weight windows for
-the Monte Carlo problem were then generated from the inverse of the angular
-flux. AVATAR improved the FOM for sample problems from 2 to 5 times, but did not
-apply to problems where the flux was not azimuthally symmetric.
-
-The LIFT method \cite{turner_automatic_1997, turner_automatic_1997-1}, like
-AVATAR, calculated the angular flux for a region by assuming the angular flux
-was a product of the scalar flux and an exponential function. The angular flux
-values were then used to generate values for the exponential transform variance
-reduction
-technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
-also generated weight window parameters. However, generating a full
-angle-dependent weight window map and running Monte Carlo transport with those
-weight windows was computationally limiting, and the authors chose to only
-generate space- and energy- dependent weight windows. Turner showed that LIFT
-outperformed AVATAR for several example problems, but both methods performed
-poorly in voids and low-density regions.
 
 In an attempt to adapt CADIS and FW-CADIS to include angular information into
 the variance reduction parameters,
@@ -165,12 +148,15 @@ to calculate the angular flux, which limited the physical applicability of the
 method, as it did with AVATAR.
 
 CADIS and FW-CADIS have shown to be the existing ``gold standard'' of local- and
-global- variance reduction methods for large application problems.
+global- variance reduction methods for large application problems, a selection
+of which were described in the preceeding paragraphs.
 These problems include active interrogation of cargo containers
 \cite{mosher_automated_2009}, spent fuel storage casks \cite{chen_surface_2011,
 radulescu_dose_2013}
 and beds \cite{sheu_dose_2011}, and other nonproliferation applications
-\cite{somasundaram_implementation_2013}. In some of these problems, the
+\cite{somasundaram_implementation_2013}. For additional
+applications, one may refer to \cite{wagner_review_2011}.
+In some of these problems, the
 parameters generated by CADIS or FW-CADIS were sufficient for the problem
 application. Other problems that had strong angular dependence or geometric
 complexity the parameters were insufficient \cite{chen_surface_2011,
