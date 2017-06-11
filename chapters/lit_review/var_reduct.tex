@@ -237,11 +237,11 @@ relationship between $R$ and $T$ should also be a constant.
   C_2 = R^2T
 \end{equation*}
 The figure of merit (FOM) \eqref{eq:FOM}
-is the most commonly reported metric that this relationship is reported. It is
-widely used in quantifying the effects of variance reduction methods.
+is the most commonly reported metric using this relationship that is reported.
+It is widely used in quantifying the effects of variance reduction methods.
 Because it uses the inverse quantity of the relative error and time, a
 ``good'' result would be obtained from a low relative error in a short amount of
-time, resulting in a high-value FOM.
+time, resulting in a high numerical value FOM.
 \begin{equation}
 FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
@@ -463,9 +463,12 @@ This has been addressed by using Monte Carlo to sample the problem in an initial
 calculation to determine more favorable variance reduction parameters automatically.
 Booth and Hendricks,
 recognizing that choosing optimal weight window values for energy- and space-
-dependent weight windows was difficult even for experienced users proposed a
+dependent weight windows was difficult even for experienced users proposed two
+tools for Monte Carlo variance reduction in parallel. The first was a
 Monte Carlo importance generator \cite{booth_automatic_1982} that could be used
-to select weight window values automatically for a given problem
+to make informed decisions on cell importances throughout the problem. The
+second method, a Monte Carlo generated weight window generator,
+calculated the weight window values automatically for a given problem
 \cite{hendricks_code-generated_1982}.
 The importance generator estimated a cell's importance
 by tracking the weights of the particles in the cell, or
@@ -474,7 +477,8 @@ by tracking the weights of the particles in the cell, or
                      {\text{weight leaving the cell}}.
 \label{eq:BoothImp}
 \end{equation}
-and then used these importances to select weight window parameters
+The weight window generator calculated weight window values with
+\begin{subequations}
 \begin{equation}
   W_{i,low} = \frac{1}{kN}\big(\Sigma W_{i,in} + \Sigma W_{i,out} \big)
 \end{equation}
@@ -486,11 +490,13 @@ and then used these importances to select weight window parameters
   \end{cases}  .
   \label{eq:hendricksWW}
 \end{equation}
+\end{subequations}
 where $W_{i,low}$ and $W_{i,high}$ are the weight window lower and upper weight
 bounds respectively, $W_{i,in}$ and $W_{i,out}$ are the total weight entering
 and leaving the cell, $N$ is the number of source particles, and $k$ is some weight
-window width (a constant). In his
-paper, Booth notes that the weight window target value was chosen so that the
+window width (a constant that Hendricks set to 5). In his
+paper, Booth notes that the weight window target value derived from the
+importance generator was chosen so that the
 track weight times the expected score in the tally region (for unit track
 weight) was approximately constant. Booth's importance generator saw
 improvements in the FOM between 1.5-8x when compared to the analog run for the
@@ -522,13 +528,13 @@ The MCNP \cite{mcnp_manual_v1, brown_mcnp_2002} weight window generator has been
 extended beyond the initial space- and energy- implementation described in
 booth's paper. It now has the ability to automatically generate space- energy-
 and angle- weight windows. The importance generator in MCNP also has been
-extended to time-importance, and those values can be used for splitting or
+extended to time-importance, the values of which can be used for splitting or
 roulette parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
 independent from the MCNP geometry \cite{evans_enhanced_1998}.
-It As with Booth and Hendricks'
+As with Booth and Hendricks'
 original implementations, this updated weight window generator still relies on
 adequate sampling to obtain sufficient weight window parameters. When additional
-degrees of freedom, like angle-dependence, are added, this means that the time
+degrees of freedom, like angle-dependence, are added, the time
 to converge on those parameters will take even longer. The weight window
 generator also only allows for a single tally to be optimized at once, so
 multiple tallies cannot be optimized simultaneously. Last, the weight window
