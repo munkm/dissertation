@@ -1,110 +1,130 @@
 \section{Importance Functions for Variance Reduction}
 \label{sec:Importance}
 
-\subsection{The Concept of Importance}
-\label{sec:Importance}
-
 The effective use of variance reduction techniques can lead to a faster time to
 a desired solution and a reduced variance in the specified tally. However,
 specifying variance reduction parameters is not always a straightforward
 procedure. In simple geometries, a user might intuitively understand which
 regions of a problem may contribute more to a desired solution, but for more
-complex geometries, this may not be so obvious. Thus, the concept of importance
-is introduced: regions of the problem that are likely to contribute to a
-response have higher importance than those that do not. If an importance
+complex geometries, this may not be so obvious.
+In the following subsections, the theory in determining which regions of a
+problem are important to eliciting a tally response will be described.
+The first topic discussed will be
+the concept of importance and obtaining a measure of importance with
+Monte Carlo sampling.
+Second, the adjoint equation and its relation to importance will be introduced.
+Last, the contributon solution and how its relation to tally responses is
+reviewed.
+
+\subsection{The Concept of Importance}
+\label{sec:Importance}
+
+The concept of importance is, in essence, a means of defining which regions of
+a problem that are likely to contribute to a
+response and which are less likely to contribute to a response. The regions
+that are more likely to generate a response will have a
+higher importance than those that do not. As one might imagine, this may be
+intuitively deduced for a simple problem, but in a more complex problem
+that might not be possible.
+If an importance
 function for a system can be obtained computationally, then that importance
 function can be
-strategically used in variance reduction techniques to optimize the Monte Carlo
+strategically used in variance reduction techniques to speed up the Monte Carlo
 calculations.
 
-A number of methods have been developed to obtain a measure of importance for
-radiation transport problems. Here a selection of these methods will be
-presented: first, obtaining a measure of importance with Monte Carlo sampling;
-second, utilizing the adjoint equation to measure importance; and lastly,
-utilizing the contributon solution for importance quantification.
-
-\subsubsection{Quantifying Importance with Monte Carlo}
-
-With the advent of the weight window technique, Booth
+As described in Section \ref{subsec:AutomatedMCVR}, Booth
 \cite{booth_automatic_1982} proposed
-a method to quantify a cell's importance within a Monte Carlo simulation to
-complement automatic weight window generation. In
+a method to quantify a cell's importance within a Monte Carlo simulation
+(Eq. \eqref{eq:BoothImp}). In
 this method, Booth suggested estimating the cell's importance using Monte Carlo
 transport as:
-\begin{equation}
+\begin{equation*}
   Importance  = \frac{\text{score of particles leaving the cell}}
-                     {\text{weight leaving the cell}}
-\label{eq:BoothImp}
-\end{equation}
+                     {\text{weight leaving the cell}}.
+\end{equation*}
+This particular calculation of importance
+follows from the intuitive explanation for importance in the preceding
+paragraph. Recall from Section \ref{subsec:MCVR} that in variance reduction
+methods, the population of particles is increased in important regions such that
+the number of samples or particles contributing to a tally increases, but the
+total problem weight is conserved. More important regions should have many
+lower-weight particles to reduce the tally variance. Using Booth's bookkeeping
+method for estimating regional importance,
+if a cell has a greater weight leaving the cell than the number
+of particles, that means that the relative contribution of that cell to the
+tally is likely to be lower than other regions. If, instead, the number of
+particles leaving the cell is greater than the weight leaving the cell, then
+that region is more important to the tally response, because that particle
+population is higher than other cells.
 
-This estimation of importance would then be used to set
+While this
+estimation of the importance requires only a Monte Carlo forward calculation of
+the problem, it was referred to as the forward-adjoint importance generator
+\cite{booth_automatic_1982, booth_deep_1982, booth_importance_1984}, because the
+bookeeping tracked by Eq. \eqref{eq:BoothImp} was a forward-approximation of the
+adjoint. Adjoint theory and how it relates to importance will be discussed in
+Section
+\ref{sec:AdjointImportance}.
+Booth's estimation of importance was used to generate
 weight window target values inversely proportional to the importance.
 In this case, the track weight times the expected score is approximately
 constant in the problem. Choosing this inverse relationship between the weight
 window and importance is common practice in variance reduction, and is often a
 good choice because it is nearly optimal over a broad range of the problem
 phase-space \cite{booth_common_2012}.
-While this
-particular calculation of the importance requires only a forward calculation of
-the problem, it was referred to as the forward-adjoint importance generator
-\cite{booth_automatic_1982, booth_deep_1982, booth_importance_1984}, because the
-bookeeping tracked by Eq. \eqref{eq:BoothImp} was a forward-approximation of the
-adjoint.
-In this case, the track weight times the expected score is approximately
-constant in the problem.
-In test problems, the importance generator had estimated the problem cells'
-importances after only a few iterations.
 
-Henricks \cite{hendricks_code-generated_1982}, concurrently to Booth, developed
-an automated geometry- and energy-dependent weight window generator for MCNP.
-Hendricks' method differed from Booth's in that the weight window generation was
-nonspecific to a tally.
-Rather, the generator populated all regions of phase space equally.
-To do this, the generator set boundaries for the weight window bounds, $W_{low}$
-and $W_{high}$, which were calculated based on the total weight entering and
-exiting the weight window target region. The specifics of this calculation were
-not reported in his paper. However, Hendricks' method likely proved to be
-optimized for global tally calculations, while Booth's was for localized
-tallies.
-
-However, both Booth and Hendricks' methods were reliant on the statistical
-precision of the cells sampled to generate their weight window paramaters. For
+It should be noted that Booth's method was reliant on the statistical
+precision of the cells sampled to generate their importances. For
 deep-penetration problems, obtaining a ``good'' estimate of the cell importances
-many mean free paths from the forward source likely took many iterations. With
-large fluctuations between iterations, this could be a very slow and
-computationally inefficient way to calculate importance in a problem.
+many mean free paths from the forward source took several iterations. With
+large fluctuations between iterations, this had the potential to
+be a very slow and
+computationally inefficient way to calculate importance in a problem. Using a
+solution of the adjoint that is equally valid across all of the problem space
+would be more ideal for deep-penetration problems.
 
 \subsection{The Adjoint Solution for Importance}
 \label{sec:AdjointImportance}
 
+Using the solution of the adjoint formulation of the neutron transport
+equation is one of the most widely recognized methods for generating
+an importance function. This subsection will begin with a brief summary of
+adjoint theory. A discussion on how
+the adjoint solution differs physically from the forward solution for a
+particular problem will follow. Last, some early investigations on how the
+adjoint
+and importance are related will be summarized.
+
 \subsubsection{Theory}
 
-Using the solution of the adjoint formulation of the neutron transport
-equation is, perhaps, one of the most widely recognized methods to utilize as an
-importance function.
-
-The integral form of the forward, steady-state, neutron transport equation with
-an external source can be given by:
+In previous sections we have reviewed the statistical precision of Monte
+Carlo-based methods, and how sampled results from Monte Carlo can be sped up
+with variance reduction methods. We have also briefly addressed the forward- and
+the adjoint- solutions for a particular problem. In neutron transport, the
+integral form of the forward, steady-state, particle transport equation can be
+defined as:
 \begin{multline}
 \hat\Omega \cdot \nabla \psi
         (\vec {r} ,E,\:\hat\Omega)+\Sigma _{ t }
         (\vec{r},E)\psi (\vec { r } ,E,\:\hat\Omega) = \\
         \int _{ 4\pi  } \int _{ 0 }^{ \infty  } \Sigma _{ s }(E'\rightarrow E,
         \hat\Omega'\rightarrow\hat\Omega)\psi (\vec { r } ,E',\: \hat\Omega')dE'
-        \:d\hat\Omega' + q_{e}(\vec { r } ,E, \:\hat\Omega)
+        \:d\hat\Omega' + q_{e}(\vec { r } ,E, \:\hat\Omega),
 \label{eq:F-NTE}
 \end{multline}
-
-Where $\vec { r }$, $E$, and $\hat\Omega$, are the direction, energy, and angle
-independent variables, and $\psi$ is the neutron flux, $\Sigma$ is the neutron
+where $\vec { r }$, $E$, and $\hat\Omega$, are the direction, energy, and angle
+independent variables totalling seven dimensions in total,
+$\psi$ is the neutron flux, $\Sigma$ is the neutron
 interaction (scattering, absorption, total) cross section, and $q_{e}$ is the
-external source. In general, this equation tells us where particles are moving
+external fixed source. This equation tells us where particles are moving
 throughout the system that we define by equation \ref{eq:F-NTE}. Of note, the
-particles move in the scattering term from $E'$ to $E$, and from $\hat\Omega'$
-to $\hat\Omega$.
+particles move in the scattering term from $E'$ into $E$, and from $\hat\Omega'$
+into $\hat\Omega$. Thus, for a particular problem with a given $q_{e}$,
+particles start at the location of $q_e$ and move throughout the system,
+either downscattering in energy, being absorbed by the problem materials, or
+inducing a response at the tally location.
 
-The integral form of the adjoint, steady-state, neutron transport equation with
-an external source can be expressed as:
+The adjoint equation of the same form, in contrast, can be expressed as:
 \begin{multline}
 -\hat\Omega \cdot \nabla \psi^{\dagger}
         (\vec {r} ,E,\:\hat\Omega)+\Sigma _{ t }
@@ -112,32 +132,53 @@ an external source can be expressed as:
        = \\
         \int _{ 4\pi  } \int _{ 0 }^{ \infty  } \Sigma _{ s }(E\rightarrow E',
         \hat\Omega\rightarrow\hat\Omega')\psi^{\dagger}  (\vec { r } ,E',\:
-        \hat\Omega')dE' \:d\hat\Omega' + q_{e}^\dagger(\vec { r } ,E, \:\hat\Omega)
+        \hat\Omega')dE' \:d\hat\Omega' + q_{e}^\dagger(\vec { r } ,E,
+        \:\hat\Omega).
 \label{eq:A-NTE}
 \end{multline}
-
-% Make sure to emphasize somewhere that adjoint = importance, and the weights in
-% MC need to be inversely proportional to importance (to make sure lots of
-% sampling happens).
-
-Note here that the particles in the adjoint equation move from $E$ to $E'$, and
-from $\hat\Omega$ to $\hat\Omega'$, which indicates an upscattering in energy
+Note here that the particles in the adjoint equation move from $E$ into $E'$, and
+from $\hat\Omega$ into $\hat\Omega'$, which indicates an upscattering in energy
 and a reversal of direction. The external source, too, is different, changing
 from $q_{e}$ to $q_{e}^\dagger$. For a simple source-detector problem, we set
 $q_{e}^\dagger$ to be $\Sigma _{ d }$, or the tally/detector response function
-for our system. Thus, the adjoint particles start at low energy at the detector
+for the system. Therefore the adjoint particles start at low energy at the detector
 location, move away from the adjoint source (the detector location), and scatter
 up in energy.
 
-Goertzel \cite{goertzel_monte_1958} and Kalos \cite{kalos_importance_1963} first
-showed that the solution to the adjoint equation was related to importance.
-Further, they showed that if the adjoint solution is known exactly, the forward
-problem could be solved with zero variance. Of course, finding an exact solution
-for the adjoint equation is just as computationally expensive as an exact
-solution to the forward equation, so instead an approximation is used to
-optimize Monte Carlo simulations.
+The adjoint solution is used in nuclear engineering for a number of
+applications, including reactor physics and perturbation theory
+\cite{lewins_importance_1965, lewins_developments_1968,
+greenspan_developments_1976, lux_monte_1991}.
+However, Goertzel and Kalos' early work recognized its
+application for deep-penetration radiation shielding applications.
+Goertzel and Kalos \cite{goertzel_monte_1958}
+showed analytically
+that the exact adjoint solution, if used as an importance or weighting
+function for the forward Monte Carlo calculation, will result in a zero variance
+solution for the forward Monte Carlo problem. Further, Kalos
+\cite{kalos_importance_1963} showed in a 1D infinite hydrogen slab problem that
+an analytically-derived adjoint importance function significantly helped neutron
+transport for deep-penetration problems.
 
-Also Lux and Koblinger \cite{lux_monte_1991}
+Goertzel and Kalos' finding that an exact adjoint can lead to a zero variance
+solution means that if a single particle is transported with the adjoint
+weighting function, its score will be the same as the total system response.
+Only a single particle is required to get an exact solution for the forward
+problem. Naturally, this is prohibitive, because one obtaining
+an exact adjoint solution is just as computationally expensive as getting
+an exact forward solution. As a result, one seeks to obtain a good estimate of the
+adjoint solution based on computational limitations. A good importance estimate
+should help reduce the variance in a reasonable amount of time, and be
+relatively computationally inexpensive. A Monte Carlo solution can
+provide a continuous solution over the problem phase-space. However, as
+discussed in Section \ref{subsec:MCVR}, the quality of this adjoint solution
+relies on the number of samples used to calculate it and that may take a
+significant amount of time. A deterministic solution
+offers equal solution confidence across the entire problem, but it is
+discretized
+in space, energy, and angle. For deep-penetration importance functions, we will
+opt for deterministically-obtained solutions due to the solution's equally
+distributed validity.
 
 \subsubsection{Implementation}
 
@@ -149,9 +190,10 @@ simple one-dimensional problem. They reiterated that the adjoint solution is a
 good estimate for importance, but should not be calculated explicitly, and
 rather estimated by a simpler model. The adjoint function is not necessarily the
 most optimal importance function; however, it is likely the closest and most
-obtainable estimate of importance that can be calculated. Further, they
+obtainable estimate of importance that can be calculated
+\cite{coveyou_adjoint_1967}. They
 concluded that source biasing by the solution to the adjoint equation or by the
-expected response is an optimal choice for Monte Carlo variance reduction, as it
+expected response is an best choice for Monte Carlo variance reduction, as it
 can be used independently of any other variance reduction technique, and
 provides good results.
 
@@ -165,24 +207,13 @@ Coveyou et al \cite{coveyou_adjoint_1967} to generate variance reduction
 parameters automatically for fuel cask dose rate analyses. In their work, Tang
 and Hoffman utilized a one-dimensional discrete ordinates code XSDRNPM-S to
 calculate the adjoint fluxes for their shielding problems. The results from this
-claculation were then used to generate biasing parameters for Monte Carlo;
+calculation were then used to generate biasing parameters for Monte Carlo;
 specifically they aimed at generating parameters for energy biasing, source
-biasing, russian roulette and splitting, and next event estimation
+biasing, Russian roulette and splitting, and next event estimation
 probabilities. They implemented their work in the SAS4 module in SCALE
 \cite{SCALE6_1}; it was
 one of the earlier implementations of a fully automated biasing procedure for
 Monte Carlo.
-% Maybe I want to make a new generic "Automated VR" section that comes before
-% the local, global, and angle sections. I could introduce the MCNP WWgenerator,
-% and earlier work like Tang and Hoffman's.....
-
-
-The motivated reader may also consider Lewins' book
-\cite{lewins_importance_1965} as a
-useful introduction importance functions and the adjoint equation. Lewins' work was
-primarily oriented towards the use of the adjoint formulation in reactor physics and
-perturbation theory, but that does not eliminate its relevance to this topic.
-
 
 \subsection{The Contributon Solution for Importance}
 \label{sec:ContributonImportance}
@@ -304,3 +335,17 @@ shielding analyses \cite{seydaliev_contributon_2008, williams_SCC_shielding} due
 to its ability to incorporate particle response throughout the entire system
 effectively.
 
+The past few subsections have described the different means by which importance
+can be defined or quantified for a particular problem.
+As discussed in Section \ref{sec:Importance}, generating an importance function
+with Monte Carlo is limited in that the quality of the importance map is only as
+good as the regions that are sampled. For deep-penetration problems, it may be
+prohibitively difficult to obtain adequate importance sampling with traditional
+Monte Carlo methods. Deterministically-obtained importance functions, however,
+offer the benefit of a solution that is equally valid across all of the problem
+solution-space. This is because the deterministic solution's precision is
+limited to convergence criteria, not sampling of individual particles. Using a
+deterministic solution is often faster and much less computationally-intensive
+than Monte Carlo for importance sampling. As a result, many hybrid methods opt
+to use deterministically-obtained importance functions to generate variance
+reduction parameters for Monte Carlo.
