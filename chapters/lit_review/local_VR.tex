@@ -27,45 +27,10 @@ consistently bias the particle distribution and particle weights. Earlier
 methods had not ensured the consistency between source biasing and particle
 births.
 
-To begin, one seeks to reduce the variance in a tally response in a Monte Carlo
-calculation. The total response for a system with a defined source distribution
-$q(\vec{r}, E, \hat{\Omega})$ is
-\begin{subequations}
-\begin{equation}
-  R_{tally} = \int_{4\pi} \int_{V} \int_{E} \psi(\vec{r}, E, \hat{\Omega})
-  \Sigma_{tally}(\vec{r},E, \hat\Omega) dE dV d\Omega ,
-\end{equation}
-which can be simplified using $P$ as a designator of all phase-space, $\vec{r},
-E, \hat{\Omega}$, or
-\begin{equation}
-  R_{tally} = \int_P \psi(P) \Sigma_{tally}(P) dP .
-\end{equation}
-\end{subequations}
-$\psi$ is the angular flux and $\Sigma_{tally}$ is the effective tally
-response function. To solve the adjoint equation, an adjoint source
-$q^{\dagger}$ must be defined. For a given adjoint problem,
-the adjoint source is
-set to be the tally or detector response function from the forward problem,
-or $q^{\dagger} = \Sigma_{tally}$. The response function then becomes a product
-of the forward flux and the adjoint source, or
-\begin{equation}
-  R = \int_P \psi(P) q^{\dagger}(P) dP.
-  \label{eq:response1}
-\end{equation}
-By using the adjoint identity
-\begin{equation}
-  \langle \psi H^{\dagger} \psi^{\dagger} \rangle =
-  \langle \psi^{\dagger} H \psi \rangle ,
-\end{equation}
-Equation \eqref{eq:response1} can also be written to be a function of the
-adjoint flux and the forward source distribution
-\begin{equation}
-  R = \int_P \psi^{\dagger}(P) q(P) dP .
-  \label{eq:response2}
-\end{equation}
-
-CADIS used Eqs. \eqref{eq:response1} and \eqref{eq:response2} as calculations of the
-problem response. By using the solution for the adjoint scalar
+Recall from  Eqs. \eqref{eq:response1} and \eqref{eq:response2} that the total
+system response can be expressed as either an integral of the product of the
+adjoint flux and the forward source, or from the product of the forward flux and
+the adjoint source. By using the solution for the adjoint scalar
 flux, $\phi^{\dagger}$, obtained from a deterministic calculation
 and knowing the adjoint source distribution, $q^{\dagger}$ for the same problem,
 source biasing and weight window variance reduction parameters could be obtained

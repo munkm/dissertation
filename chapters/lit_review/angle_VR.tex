@@ -200,8 +200,10 @@ calculating the flux in these cells.
 
 \subsubsection*{AVATAR Implementation}
 
-AVATAR used a deterministic
-
+AVATAR used a deterministically-obtained solution of the adjoint scalar flux and
+adjoint currents to
+reconstruct the angular flux distribution and use those fluxes to generate
+weight windows.
 AVATAR built off of the methodology described by Walters and Wareing
 \cite{walters_nonlinear_1994, walters_accurate_1996}, but instead of
 reconstructing the source distribution inside the cell, the maximum entropy
@@ -621,6 +623,10 @@ biasing, and not
 neutron transport; the authors were optimistic that the method could be extended
 to neutron
 transport.
+Both, Niemal, and Vergnaud \cite{both_automated_1990} derived VR parameters for
+the exponential transform and for collision biasing based on the adjoint
+solution as a measure of importance. They implemented their results in the
+TRIPOLI-3 software.
 
 \subsubsection{LIFT}
 
