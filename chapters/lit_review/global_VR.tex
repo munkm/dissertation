@@ -51,7 +51,8 @@ where $\rho$ is the weight window scaling factor.
 \end{subequations}
 Note that by setting the weight window target value to be inversely
 proportional to the total flux in the cell, the density of particles throughout
-the problem ends up being roughly constant.
+the problem ends up being roughly constant. Also note from Eq.
+\eqref{eq:coopertarget} that the weight windows are dependent on space only.
 
 In practice, Cooper's algorithm was to iteratively switch between solving the
 diffusion equation with transport correctors (Eddington factors described by

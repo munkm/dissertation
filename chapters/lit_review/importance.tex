@@ -298,14 +298,19 @@ Monte Carlo.
 \subsection{The Contributon Solution for Importance}
 \label{sec:ContributonImportance}
 
-Over a number of years, Williams
-\cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}
-developed contributon theory and corresponding spatial channel theory. In this
-realm, Williams defined a pseudo-particle, the textit{contributon}, as a particle
-that carries response from the radiation source to a detector. Furthermore, the
+Contributon theory is another useful metric that can be used as a measure of
+importance
+\cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
+However, contributon theory quantifies importance differently than
+adjoint theory. In contributon transport, a pseudo-particle, the
+texit{contributon}, is defined. The contributon carries response in the problem
+system from the radiation source to a dectector. The
 total number of contributons in a system are conserved by the textit{contributon
 conservation principle}: all contributons that are emitted from the source
-eventually arrive at the detector.  In his work, Williams noted that one could
+eventually arrive at the detector. Much of the work in this realm has been done
+by Williams and collaborators
+\cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
+Williams noted that one could
 go so far as to track contributons, rather than real particles in Monte Carlo.
 Because every particle transported would eventually reach the detector, this
 would lead to a zero variance solution. However, the nature of solving the
@@ -313,9 +318,14 @@ contributon equation with Monte Carlo (or any other transport mechanism)
 involves knowing the exact solution to the adjoint equation, and so relies on
 the same computational obstacles as solving the adjoint NTE.
 
-The equivalent contributon transport equation can be derived in a form analogous
-to the forward (Eq. \ref{eq:F-NTE} ) and adjoint (Eq. \ref{eq:A-NTE}) equations:
-Defining the contributon flux as:
+The contributon transport equation can be derived in a form analogous
+to the forward (Eq. \ref{eq:F-NTE} ) and adjoint (Eq. \ref{eq:A-NTE}) equations.
+The derivation of Eq. \ref{eq:Cont-NTE} and its corresponding variables is
+available in a number of the sources referenced in this section, so we will
+abstain from doing so at this time.
+The angular contributon flux is defined
+as the product of the forward- and
+adjoint- angular- fluxes:
 \begin{equation}
 \Psi (\vec {r} ,E,\:\hat\Omega) = \psi^{\dagger} (\vec {r} ,E,\:\hat\Omega)
         \psi(\vec {r} ,E,\:\hat\Omega)
@@ -361,7 +371,8 @@ and
        {\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',E'\rightarrow
        E'')\psi^{\dagger} (\vec{r}, E'', \hat\Omega'')d\hat\Omega'' dE''}
 \end{equation}
-is the probability that a contributon scattering at $\vec{r}$, $E'$, and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$.
+is the probability that a contributon scattering at $\vec{r}$, $E'$,
+and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$.
 \begin{equation}
 \hat p(\vec{r}, E, \hat\Omega) =
 \frac{psi^{\dagger}(\vec{r}, E, \hat\Omega) Q(\vec{r},E,\hat\Omega)}
@@ -374,13 +385,10 @@ R = \int \int \int \psi^{\dagger}(\vec{r},E,\hat\Omega)Q(\vec{r},E,\hat\Omega)
     d\hat\Omega dE dV
 \end{equation}
 is the reaction rate.
-The derivation of eq. \ref{eq:Cont-NTE} and its corresponding variables is
-available in a number of the sources referenced in this section, so we will
-abstain from doing so at this time.
 
 As mentioned in the previous section, the adjoint flux is an indicator of a
 particle's importance to inducing a response. Conversely, the contributon
-flux tells the user what the importance of a particle is to the solution.
+flux describes what the importance of a particle is to the solution.
 Becker's thesis \cite{becker_hybrid_2009} aptly points out that this is
 illustrated most dramatically in a source-detector problem, where the forward
 source has little importance to the adjoint source, but does have importance to
