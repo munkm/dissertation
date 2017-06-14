@@ -75,10 +75,10 @@ an important issue in choosing solution parameters.
 \subsection{Becker's Global Weight Windows}
 \label{subsec:BeckerGlobal}
 
-Becker, in addition to developing a local VR method, developed a global space-
+Becker, in addition to developing a local VR method as discussed in Section
+\ref{sec:beckerlocal}, developed a global space-
 energy- weight correction method both with (Section \ref{sec:AngleVR}) and
-without directional biasing: \cite{becker_hybrid_2007, becker_hybrid_2009}.
-
+without directional biasing \cite{becker_hybrid_2007, becker_hybrid_2009}.
 \begin{subequations}
 \label{eq.beckerglobal}
 Becker's global method utilizes a formulation of the energy- and space-
@@ -104,18 +104,16 @@ The space- and energy- dependent weight windows are:
 \end{equation}
 \end{subequations}
 
-Becker's method is similar to both Cooper's earlier method, but like FW-CADIS
+Becker's method is similar to both Cooper's earlier method and FW-CADIS in that
+it distributes response evenly throughout the problem. However, like FW-CADIS
 (Section \ref{subsec:FWCADIS}),
-the global response weight window is proportional to the forward response, i.e.
+the global response weight window is proportional to the forward response,
 \begin{equation}
   \bar{w}(\vec{r},E) \propto \frac{\int \sigma(\vec{r},E) \phi (\vec{r},E) dE}
                                   {\sigma (\vec{r},E)}
 \end{equation}
-rather than the forward flux
-\begin{equation}
-  \bar{w}(\vec{r},E) \propto \phi(\vec{r},E)
-\end{equation}
- as it is with Cooper's method.
+rather than the forward flux as it is with Cooper's method, where
+$\bar{w}(\vec{r},E) \propto \phi(\vec{r},E)$ .
 
  In implementation, both Becker's global method and Cooper's global method
  undersampled the source (in comparison to FW-CADIS, which will be described in
@@ -131,8 +129,10 @@ In 2007, Peplow, Blakeman, and Wagner \cite{peplow_advanced_2007} proposed three
 methods by which variance reduction could be decreased in global mesh tallies in
 deep-penetration radiation transport problems. The first method, using a CADIS
 calculation where the adjoint source is defined at the problem boundary, aimed
-at moving particles outward. The second method used standard CADIS but instead
-defined each cell as equally important. The last method, called Forward-Weighted
+at moving particles outward to the problem edges.
+The second method used standard CADIS but instead
+defined each cell as equally important, so the adjoint source was defined
+equally throughout the problem phase-space. The last method, called Forward-Weighted
 CADIS (FW-CADIS), distributed the adjoint source across mesh cells as an inverse
 relation to the forward response of the cell. In their work, Peplow et al. found
 that the first method had large uncertainties in areas of the problem distant
@@ -148,39 +148,54 @@ particles throughout the problem subspace, to obtain global tallies. However,
 Wagner et al. took a different approach than Cooper: by using a forward
 deterministic estimate of the flux or desired response as the adjoint source for
 an adjoint calculation, biasing parameters for global responses could be
-calculated. The adjoint source for the adjoint calculation thus depends on the
+calculated in the same way as CADIS. Additionally, these biasing parameters
+would be consistenly biased in the same manner as CADIS.
+
+The adjoint source for the adjoint calculation is dependent on the
 desired response for the system. The generic description for the adjoint source
 is given by Eq. \eqref{eq:adjointsourcesimple} and more specific parameters are
-given by Eqs. \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}:
-
+given by Eqs. \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}. First, we
+can describe a general form of the adjoint source definition for all
+phase-space, $P$, as:
 \begin{subequations}
 \begin{equation}
-  { q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}
+  { q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}.
 \end{equation}
 \label{eq:adjointsourcesimple}
-
-The adjoint source for the spatially dependent global dose, $\int
-\phi(\vec{r},E)\sigma_d(\vec{r},E) dE$:
+Thus the adjoint source definition is dependent on the detector (or tally)
+cross-section and whatever response is being calculated in the system. Depending
+on whether the response is a flux or a dose rate, the adjoint source will
+differ. For example,
+the adjoint source for the spatially dependent global dose, $\int
+\phi(\vec{r},E)\sigma_d(\vec{r},E) dE$ is:
 \begin{equation}
   { q^{\dagger} }(\vec { r } ,E)= \frac { \sigma _{ d }(\vec { r } ,E) }
-       { \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }
+       { \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }.
 \end{equation}
 \label{eq:FWCadglobaldose}
-
-The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E) dE $:
+The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E)
+dE $ is:
 \begin{equation}
-  { q^{\dagger} }(\vec { r }) = \frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }
+  { q^{\dagger} }(\vec { r }) = \frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }.
 \end{equation}
 \label{eq:FWCadglobalflux}
-
-The adjoint source for the energy- and spatially- dependent flux $\phi(\vec{r},E)$:
+Last,
+the adjoint source for the energy- and spatially- dependent flux
+$\phi(\vec{r},E)$ can be defined as:
 \begin{equation}
-  { q^{\dagger} }(\vec { r } ,E) = \frac { 1 }{\phi (\vec { r } ,E) }
+  { q^{\dagger} }(\vec { r } ,E) = \frac { 1 }{\phi (\vec { r } ,E) }.
 \end{equation}
 \label{eq:FWCadglobalflux2}
 \end{subequations}
 
-Comparing these methods, \cite{peplow_comparison_2012}
+The process followed by FW-CADIS is to initially run a deterministic forward
+calculation to obtain the foward response. The solution from the deterministic
+forward problem is then used to set the source distribution for the adjoint
+solution. A second deterministic calculation is run to obtain the adjoint
+solution. The adjoint solution is then used to generate variance reduction
+parameters in the same manner as CADIS.
+
+Initial implementations of CADIS
 
 \subsection{Other Notable Methods}
 Baker and Larsen showed that the exponential transform can be used to generate
@@ -197,12 +212,22 @@ splitting and Russian roulette were generally better options. Their work did not
 focus on generating weight window values, nor was it tested on deep-penetration
 shielding problems.
 
-
-Van Wijk's method, like CADIS and FW-CADIS, is a variance reduction method
-designed to operate with little user input \cite{van_wijk_easy_2011}.
+Van Wijk's method, like many of the hybrid methods discussed in this section,
+is a variance reduction method
+designed to operate with little user input \cite{van_wijk_easy_2011}. Van Wijk
+et al. described an automated weight window generator that used iterative Monte
+Carlo calculations of the forward flux to generate weight window values. The
+weight window target values could be determined based on either a flux-centered
+scheme like Cooper's (eq. \eqref{eq:coopertarget})
+or by using a ratio of the square roots of the fluxes. The
+second method is a combination of Cooper's weight window target value and
+knowing that the relative error in a region
+is proportional to the square root of the number
+of particles.
 Van Wijk et al. applied their method to a PWR facility and observed a FOM
-increase by a factor of $>$200.
-
+increase by a factor of $>$200 when compared to analog Monte Carlo. However, as
+with other Monte Carlo-generated VR parameters, for deep-penetration problems
+this approach can be computationally prohibitive.
 
 The Method of Automatic Generation of Importances by Calculation (MAGIC) is a
 global variance reduction technique \cite{davis_comparison_2011} proposed by
@@ -231,12 +256,32 @@ calculate the FOM.
 Furthermore, the authors did not clearly state how the biasing parameters were
 calculated, other than that they used flux, population density, or weight
 information.
-%
-%
-%----------------------------------------------------------------------------------------
-% While not particularly relevant to the immediate work described in this thesis, the MS-CADIS method used a sophisticated method to generate a variance-reduced source term for
-% photon does in a shutdown system.
 
-%However, MS-CADIS, like CADIS and FW-CADIS, employs exclusively energy- and space- based variance reduction methods. As a result, it still suffers from similar behaviors as CADIS and FW-CADIS in strongly anisotropic systems.
+Peplow et al. \cite{peplow_comparison_2012} compared the performance of
+Cooper's method, Van Wijk's method, Becker's method, and FW-CADIS
+across a number of shielding calculations. For a simple shielding
+problem, FW-CADIS had the shortest runtime, which included the forward and
+adjoint deterministic times, and had a FOM 80x higher than the analog
+calculation, and more than 3x the next best hybrid method. Van Wijk's method was
+the only method other than FW-CADIS to pass all statistical convergence checks
+for the problem, but its reported FOM was lower than Becker's method and than
+FW-CADIS. In a second deep penetration shielding problem, FW-CADIS was the
+only method
+that passed all statistical convergence checks. FW-CADIS also had the highest
+reported FOM for this problem. The timing for all of the methods were
+comparable. Peplow et al. also ran two ``challenge'' problems. As with the first
+two problems, FW-CADIS outperformed the other methods and passed all statistical
+checks. Becker's method was
+consistently comparable to FW-CADIS in reported FOMs, but only passed all of the
+statistical checks in a single challenge problem. Becker's method also performed
+relatively better than the other methods in deep-penetration challenge problems.
 
-%MS-CADIS \cite{ibrahim_multi-step_2014, ibrahim_analysis_2014}
+The ubiquity and continued development of global variance reduction methods
+illustrates the need and desire for them in the nuclear engineering community.
+Some of the
+methods discussed in this section--including Becker's global weight windows,
+Cooper's weight windows, Van Wijk's method, and FW-CADIS--have
+been applied to a number of nuclear
+application problems. All of them reduce the time to a ``good'' solution when
+compared to analog Monte Carlo. When compared against one another, FW-CADIS
+consistently outperforms the other methods.
