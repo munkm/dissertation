@@ -13,7 +13,8 @@ personal dose rate. In this section, notable
 automated deterministically-driven variance reduction methods that
 have been designed for such localized response optimization are described.
 Recall that Booth's importance generator (Section \ref{subsec:AutomatedMCVR})
-was designed for localized tally results.
+was also designed for localized tally results, but will not be elaborated upon
+here.
 
 \subsection{CADIS}
 \label{sec:CADIS}
@@ -22,26 +23,23 @@ In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven
 Importance Sampling Method (CADIS)
 \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a
 tool for automatic variance reduction for local tallies in Monte Carlo. CADIS
-was unique in used the adjoint solution from a deterministic solution to
+was unique in that it used the adjoint solution from a deterministic solution to
 consistently bias the particle distribution and particle weights. Earlier
 methods had not ensured the consistency between source biasing and particle
-births.
+births. CADIS was applied to a large number of application problems and
+performed well in reducing the variance for local tallies
+\cite{wagner_review_2011}. The next several paragraphs will present and discuss
+the theory supporting CADIS.
 
+In trying to reduce the variance for a local tally, we aim to encourage particle
+movement towards the tally or detector location. In other words, we seek to
+encourage particles to induce a detector response while discouraging them from
+moving through unimportant regions in the problem.
 Recall from  Eqs. \eqref{eq:response1} and \eqref{eq:response2} that the total
 system response can be expressed as either an integral of the product of the
 adjoint flux and the forward source, or from the product of the forward flux and
-the adjoint source. By using the solution for the adjoint scalar
-flux, $\phi^{\dagger}$, obtained from a deterministic calculation
-and knowing the adjoint source distribution, $q^{\dagger}$ for the same problem,
-source biasing and weight window variance reduction parameters could be obtained
-for the forward Monte Carlo calculation. Note that the original CADIS equations
-are based on space and energy ($\vec{r}, E$) dependence, but not angle, so
-$\phi^{\dagger}$ can be used rather than $\psi^{\dagger}$. This does not mean
-that CADIS is not applicable to angle. It was merely a choice made by the
-developers given the computational resources required to calculate and store
-full angular flux datasets, and the inefficiency that using angular fluxes might
-pose for problems where angle dependence is not paramount.
-
+the adjoint source. Also recall that the adjoint solution is a measure for
+response importance.
 \begin{subequations}
 \label{CADISmethod}
 To generate the biased source distribution for the Monte Carlo calculation,
@@ -49,7 +47,7 @@ $\hat{q}$,
 should be related to it's contribution to inducing a response in the tally or
 detector. It follows, then, that the biased source distribution is the ratio of
 the contribution of a cell to a tally response to the tally response induced
-from the entire problem. Thus, the biased source distribution
+from the entire problem. Thus, the biased source distribution for CADIS
 is a function of the adjoint scalar
 flux and the forward source distribtion $q$ in region $\vec{r}, E$,
 and the total response $R$
@@ -90,31 +88,58 @@ excessive splitting
 and roulette at the particle births, in addition to consistently biasing the
 particle source distribution and weights.
 
+CADIS supports adjoint theory by showing that using the
+solution for the adjoint scalar
+flux, $\phi^{\dagger}$, source biasing and weight window
+variance reduction parameters can be calculated and used successfully
+for the forward Monte Carlo calculation. CADIS showed improvements in the FOM
+when compared to analog Monte Carlo on the order of $10^2$ to $10^3$,
+and on the order of 5
+when compared to ``expert'' determined or automatically-generated weight
+windows \cite{wagner_automated_1998, wagner_automated_2002}. For more complex
+problems, improvements in the FOM were on the order of $10^1$
+\cite{wagner_automatic_1997, wagner_automated_1998}.
+Note that the original CADIS equations
+are based on space and energy ($\vec{r}, E$) dependence, but not angle, so
+$\phi^{\dagger}$ can be used rather than $\psi^{\dagger}$. This does not mean
+that CADIS is not applicable to angle. It was merely a choice made by the
+developers given the computational resources required to calculate and store
+full angular flux datasets, and the inefficiency that using angular fluxes might
+pose for problems where angle dependence is not paramount.
+
 \subsection{Becker's Local Weight Windows}
 \label{sec:beckerlocal}
 
 Becker's work in the mid- 2000s also explored generating biasing parameters for
-local source-detector problems \cite{becker_hybrid_2009}. In his work, Becker
-utilized a formulation of the contributon flux, as described in Eq.
+local source-detector problems \cite{becker_hybrid_2009}. Becker noted that in
+traditional weight window generating methods, some estimation of the adjoint
+flux is used to bias a forward Monte Carlo calculation. The product of this
+weight window biasing and the forward Monte Carlo transport ultimately
+distributed particles in the problem similarly to the contributon flux.
+In his work, Becker
+used a formulation of the contributon flux, as described in Eq.
 \eqref{eq.Cont-Flux} to optimize the flux at the forward detector location. The
 relevant equations are given by Eqs. \eqref{eq:beckerconributon} -
 \eqref{eq:beckeralpha}.
 \begin{subequations}
 \label{eq.beckerlocal}
-Becker's local method utilizes a formulation of the energy- and space- dependent
-contributon flux:
+The scalar contributon flux $\phi^c$, which is a function of space and energy
+is calculated with a product of the forward and
+adjoint fluxes, where
 \begin{equation}
-\phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E)
+\phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E).
 \label{eq:beckerconributon}
 \end{equation}
-and the spatially dependent contributon flux:
+This is then integrated over all energy to obtain a spatially-dependent
+contributon flux
 \begin{equation}
-\tilde{\phi^c}(\vec{r}) = C_{norm}\int_0^{\infty } \phi^c(\vec{r},E) dE
+\tilde{\phi^c}(\vec{r}) = C_{norm}\int_0^{\infty } \phi^c(\vec{r},E) dE,
 \label{eq:beckerconributonspace}
 \end{equation}
 where the normalization constant, $C_{norm}$ for a given detector volume $V_D$
+is
 \begin{equation}
-C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}
+C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}.
 \end{equation}
 The space- and energy- dependent weight windows are given by:
 \begin{equation}
@@ -126,10 +151,19 @@ where
 B(\vec{r}) = \alpha(\vec{r}) \tilde{\phi^c}(\vec{r}) + 1 -  \alpha(\vec{r})
 \end{equation}
 and
+\newcommand{\firs}{\cfrac{\tilde{\phi}^c_{max}}{\tilde{\phi}^c(\vec{r})}}
+\newcommand{\seco}{\cfrac{\tilde{\phi}^c(\vec{r})}{\tilde{\phi}^c_{max}}}
 \begin{equation}
-  \alpha (\vec{r}) = \bigg[ 1 + \exp \big(  \frac{\tilde{\phi}^c_{max}} \
-  {\tilde{\phi}^c(\vec{r})} - \frac{\tilde{\phi}^c(\vec{r})} \
-  {\tilde{\phi}^c_{max}} \big) \bigg]^{-1} \
+  \alpha (\vec{r}) = \bigg[ 1 + \exp \bigg( \firs - \seco \bigg) \bigg]^{-1} .
   \label{eq:beckeralpha}
 \end{equation}
 \end{subequations}
+
+Becker found that this methodology for local solution variance reduction
+compared similarly to CADIS for a large challenge problem comprised of nested
+cubes. The particle density throughout the problem ended up to be similar
+between CADIS and Becker's local weight window. The FOMS also were relatively
+similar, but were reported only with Monte Carlo calculation runtimes. Note that
+Becker's method requires both a forward and an adjoint
+calculation to calculate the contributon fluxes, while CADIS requires only an
+adjoint calculation.

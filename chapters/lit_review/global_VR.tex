@@ -15,9 +15,10 @@ evenly throughout the Monte Carlo problem, a global tally will have
 approximately the same sample size in each region, resulting in a uniform
 variance across the tally. This often requires a forward deterministic solution
 to determine the density of forward particles throughout the problem, and then
-using that forward distribution to aid in generating an importance map. The
-methods described here use this solution to generate a variety of variance
-reduction parameters for Monte Carlo, with varying results.
+using that forward distribution to aid in generating an importance map. This
+section will go over the theory behind a number of existing global variance
+reduction methods. The section will be concluded with a summary of how they
+performed and in which problems they succeeded.
 
 \subsection{Cooper's Isotropic Weight Windows}
 \label{subsec:CooperGlobal}
@@ -79,31 +80,44 @@ Becker, in addition to developing a local VR method as discussed in Section
 \ref{sec:beckerlocal}, developed a global space-
 energy- weight correction method both with (Section \ref{sec:AngleVR}) and
 without directional biasing \cite{becker_hybrid_2007, becker_hybrid_2009}.
-\begin{subequations}
 \label{eq.beckerglobal}
-Becker's global method utilizes a formulation of the energy- and space-
-dependent contributon flux like eqs. \eqref{eq:beckerconributon} and
-\eqref{eq:beckerconributonspace}, but defines the spatial parameter as:
-$B(\vec{r})$:
+Becker's global method uses a formulation of the space-dependent
+contributon flux, as with the local weight windows described in Section
+\ref{sec:beckerlocal}. For reference, those are
+defined in Eqs. \eqref{eq:beckerconributon} and
+\eqref{eq:beckerconributonspace}. Becker defines the spatially-dependent
+contributon flux parameter as
+$B(\vec{r})$, where
 \begin{equation}
-  B(\vec{r}) = \tilde{\phi^c}(\vec{r})
+  B(\vec{r}) = \tilde{\phi^c}(\vec{r}).
 \end{equation}
 Similarly to FW-CADIS, Becker's method defines a different adjoint source
 distribution depending on the response desired for the calculation:
+\begin{subequations}
+to optimize the flux the adjoint source is set to
 \begin{equation}
-  q^{\dagger}(\vec{r},E) = \frac{1}{\phi(\vec{r},E)}
+  q^{\dagger}(\vec{r},E) = \frac{1}{\phi(\vec{r},E)},
 \end{equation}
+or if the detector response is desired then
 \begin{equation}
   q^{\dagger}(\vec{r},E) = \frac{\sigma_d(\vec{r},E)}
-                                {\int_0^{\infty} \sigma_d(\vec{r},E) dE}
+  {\int_0^{\infty} \phi(\vec{r},E) \sigma_d(\vec{r},E) dE}
 \end{equation}
-The space- and energy- dependent weight windows are:
+can be used instead.
+\end{subequations}
+The space- and energy- dependent weight windows are then a function of the
+contributon flux and the
 \begin{equation}
   \bar{w}(\vec{r},E) = \frac{B(\vec{r})}{\phi^{\dagger}(\vec{r},E)}
 \label{eq:beckerglobalww}
 \end{equation}
-\end{subequations}
 
+The process followed by Becker's global method uses two deterministic
+calculations to generate weight windows for the Monte Carlo calculation. First,
+the forward flux is calculated with deterministic transport. The forward flux
+is used to construct the adjoint source distribution. After the adjoint solution
+is run, the contributon flux is calculated. The contributon flux and the adjoint
+flux are then used to construct the weight windows.
 Becker's method is similar to both Cooper's earlier method and FW-CADIS in that
 it distributes response evenly throughout the problem. However, like FW-CADIS
 (Section \ref{subsec:FWCADIS}),
@@ -115,12 +129,12 @@ the global response weight window is proportional to the forward response,
 rather than the forward flux as it is with Cooper's method, where
 $\bar{w}(\vec{r},E) \propto \phi(\vec{r},E)$ .
 
- In implementation, both Becker's global method and Cooper's global method
- undersampled the source (in comparison to FW-CADIS, which will be described in
- Section \ref{subsec:FWCADIS}) for a specified calculation
- time. However, Becker's method sampled ~1/3 the number of particles that
- Cooper's method did. Notably, Becker's method did obtain better relative
- uncertainties for low values in the problem.
+In implementation both Becker's global method and Cooper's global method
+undersampled the source (in comparison to FW-CADIS, which will be described in
+Section \ref{subsec:FWCADIS}) for a specified calculation
+time. However, Becker's method sampled ~1/3 the number of particles that
+Cooper's method did. Notably, Becker's method did obtain better relative
+uncertainties for low flux-regions in the problem.
 
 \subsection{FW-CADIS}
 \label{subsec:FWCADIS}
@@ -136,20 +150,21 @@ equally throughout the problem phase-space. The last method, called Forward-Weig
 CADIS (FW-CADIS), distributed the adjoint source across mesh cells as an inverse
 relation to the forward response of the cell. In their work, Peplow et al. found
 that the first method had large uncertainties in areas of the problem distant
-from the boundary; the second method, performed slightly better than analog, but
-not significantly, and the third method had the most uniform uncertainty
+from the boundary; the second method performed slightly, but not significantly,
+better than analog, and the third method had the most uniform uncertainty
 distribution.
 
 FW-CADIS
 \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}
-built off of existing theory, namely Cooper's
-concept of using a forward deterministic calculation to evenly distribute
-particles throughout the problem subspace, to obtain global tallies. However,
-Wagner et al. took a different approach than Cooper: by using a forward
-deterministic estimate of the flux or desired response as the adjoint source for
-an adjoint calculation, biasing parameters for global responses could be
-calculated in the same way as CADIS. Additionally, these biasing parameters
-would be consistenly biased in the same manner as CADIS.
+built off of a combination of the work by Cooper in addition to CADIS.
+Like Becker's method, FW-CADIS used a forward deterministic calculation to
+determine the source distribution for the adjoint calculation. Unlike Becker's
+method which used contributon fluxes to construct weight windows,
+CADIS used adjoint fluxes as the basis of the weight window values. Similar to
+Cooper's method, CADIS used the forward calculation to determine how to
+evenly distribute particles throughout the problem. Like CADIS, FW-CADIS used
+the adjoint solution from the deterministic calculation to generate consistent
+source biasing, weight windows, and particle birth weights.
 
 The adjoint source for the adjoint calculation is dependent on the
 desired response for the system. The generic description for the adjoint source
@@ -157,7 +172,6 @@ is given by Eq. \eqref{eq:adjointsourcesimple} and more specific parameters are
 given by Eqs. \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}. First, we
 can describe a general form of the adjoint source definition for all
 phase-space, $P$, as:
-\begin{subequations}
 \begin{equation}
   { q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}.
 \end{equation}
@@ -168,9 +182,10 @@ on whether the response is a flux or a dose rate, the adjoint source will
 differ. For example,
 the adjoint source for the spatially dependent global dose, $\int
 \phi(\vec{r},E)\sigma_d(\vec{r},E) dE$ is:
+\begin{subequations}
 \begin{equation}
   { q^{\dagger} }(\vec { r } ,E)= \frac { \sigma _{ d }(\vec { r } ,E) }
-       { \int { \sigma _{ d }(\vec { r } ,E)\psi (\vec { r } ,E,) } dE }.
+       { \int { \sigma _{ d }(\vec { r } ,E)\phi (\vec { r } ,E,) } dE }.
 \end{equation}
 \label{eq:FWCadglobaldose}
 The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E)
@@ -195,9 +210,8 @@ solution. A second deterministic calculation is run to obtain the adjoint
 solution. The adjoint solution is then used to generate variance reduction
 parameters in the same manner as CADIS.
 
-Initial implementations of CADIS
-
 \subsection{Other Notable Methods}
+
 Baker and Larsen showed that the exponential transform can be used to generate
 VR parameters for global low-variance solutions in Monte Carlo
 \cite{baker_localexponential_1993}. In this work, Baker used a forward diffusion
@@ -212,11 +226,16 @@ splitting and Russian roulette were generally better options. Their work did not
 focus on generating weight window values, nor was it tested on deep-penetration
 shielding problems.
 
-Van Wijk's method, like many of the hybrid methods discussed in this section,
-is a variance reduction method
-designed to operate with little user input \cite{van_wijk_easy_2011}. Van Wijk
-et al. described an automated weight window generator that used iterative Monte
-Carlo calculations of the forward flux to generate weight window values. The
+While the aforementioned methods in this section and the previous section use
+deterministically-obtained solutions to generate importance maps, it should be
+noted that not all methods use this approach. Booth and Hendricks' methods used
+initial Monte Carlo calculations to reduce the relative error in tallies. Two
+methods in the global variance reduction realm are notable in that they use
+Monte Carlo estimates of the flux to generate variance reduction parameters
+\cite{van_wijk_easy_2011, davis_comparison_2011}.
+Van Wijk et al. \cite{van_wijk_easy_2011} described an automated weight
+window generator that used a Monte
+Carlo calculation of the forward flux to generate weight window values. The
 weight window target values could be determined based on either a flux-centered
 scheme like Cooper's (eq. \eqref{eq:coopertarget})
 or by using a ratio of the square roots of the fluxes. The
@@ -227,35 +246,33 @@ of particles.
 Van Wijk et al. applied their method to a PWR facility and observed a FOM
 increase by a factor of $>$200 when compared to analog Monte Carlo. However, as
 with other Monte Carlo-generated VR parameters, for deep-penetration problems
-this approach can be computationally prohibitive.
-
-The Method of Automatic Generation of Importances by Calculation (MAGIC) is a
-global variance reduction technique \cite{davis_comparison_2011} proposed by
-Davis in 2011.
-Rather than using a deterministic solution to obtain an estimate of the forward
-flux to generate an importance map, the MAGIC method uses an analog Monte Carlo
-run with multigroup cross section data and (optionally) a high energy cut-off.
-This initial analog run is used to generate initial importance map for a
-secondary run.
-This process iterates until several Monte Carlo simulations are run and a
-finalized importance map is generated.
-In their paper, the authors compared three variants of MAGIC to FW-CADIS in ITER
-fusion energy systems.
+this approach relies on adequate sampling of all phase-space, which could be
+computationally prohibitive.
+The Method of Automatic Generation of Importances by Calculation (MAGIC) method
+was proposed in parallel by Davis and Turner \cite{davis_comparison_2011}.
+As with Van Wijk's method, the MAGIC method uses an analog forward Monte Carlo
+run--potentially with several iterations--to generate weight windows. The initial
+Monte Carlo runs used to generate the importance map were sped up by
+using multigroup cross section data and energy cutoffs. MAGIC
+converged on a finalized importance map by iteratively running several coarser
+Monte Carlo calculations.
+In their paper, Davis and Hendricks compared three variants of MAGIC
+to FW-CADIS in ITER fusion energy systems.
 These three variants used different weight window adjustments for importances:
 weight windows in cells based on existing weight information, weight windows in
 mesh cells based on flux information, and weight windows in cells based on
 population density.
-Davis and colleagues concluded that the most effective method for variance
-reduction in their system was MAGIC's weight window in mesh based on flux
-information, where FW-CADIS' FOM was 65\% that of MAGIC's.
+It was concluded that the most effective method for variance
+reduction of those proposed in the paper
+was MAGIC's weight window in mesh based on flux
+information. In this case FW-CADIS' FOM was 65\% that of MAGIC's. This compared
+similarly to Van Wijk's method, where the flux-based results continued improving
+the FOM as the computational time increased.
 The authors did not make it clear how many iterations were required, on average,
 to generate the finalized weight window map or if the time to iteratively
-generate importance maps were included in the FOM.
-It is unclear if only the final Monte Carlo simulation's runtime was used to
-calculate the FOM.
-Furthermore, the authors did not clearly state how the biasing parameters were
-calculated, other than that they used flux, population density, or weight
-information.
+generate importance maps were included in the FOM. While FW-CADIS' FOM was lower
+than MAGIC's, FW-CADIS had the highest fraction of cell voxels with very low
+relative errors.
 
 Peplow et al. \cite{peplow_comparison_2012} compared the performance of
 Cooper's method, Van Wijk's method, Becker's method, and FW-CADIS
@@ -281,7 +298,7 @@ illustrates the need and desire for them in the nuclear engineering community.
 Some of the
 methods discussed in this section--including Becker's global weight windows,
 Cooper's weight windows, Van Wijk's method, and FW-CADIS--have
-been applied to a number of nuclear
-application problems. All of them reduce the time to a ``good'' solution when
+been applied to large application problems and compared to other methods.
+All of the methods reduce the time to a ``good'' solution when
 compared to analog Monte Carlo. When compared against one another, FW-CADIS
 consistently outperforms the other methods.
