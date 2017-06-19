@@ -467,11 +467,11 @@ control methods and modified sampling methods for variance reduction.
 Transport}
 \label{subsec:AutomatedMCVR}
 
-Section \ref{subsec:MCVR} described the methods that one may use to reduce the
+Section \ref{subsec:MCVR} described some methods that one could use to reduce the
 variance in Monte Carlo radiation transport tallies. These methods, if used
 correctly, can significantly increase the transport efficiency in a Monte Carlo
 simulation. However, correct use of these methods often requires intelligent
-selection of variance reduction parameters, which is a non-trivial task. Users
+selection of variance reduction parameters, which is a non-trivial task. Users have
 found themselves often performing several trial runs before choosing final
 quantities for the VR parameters in their problems, which was computationally
 inefficient and still required significant knowledge of Monte Carlo and variance
@@ -481,21 +481,21 @@ This has been addressed by using Monte Carlo to sample the problem in an initial
 calculation to determine more favorable variance reduction parameters automatically.
 Booth and Hendricks,
 recognizing that choosing optimal weight window values for energy- and space-
-dependent weight windows was difficult even for experienced users proposed two
+dependent weight windows was difficult even for experienced users, proposed two
 tools for Monte Carlo variance reduction in parallel. The first was a
 Monte Carlo importance generator \cite{booth_automatic_1982} that could be used
 to make informed decisions on cell importances throughout the problem. The
 second method, a Monte Carlo generated weight window generator,
-calculated the weight window values automatically for a given problem
+calculates the weight window values automatically for a given problem
 \cite{hendricks_code-generated_1982}.
-The importance generator estimated a cell's importance
+The importance generator estimates a cell's importance
 by tracking the weights of the particles in the cell, or
 \begin{equation}
   Importance  = \frac{\text{score of particles leaving the cell}}
                      {\text{weight leaving the cell}}.
 \label{eq:BoothImp}
 \end{equation}
-The weight window generator calculated weight window values with
+The weight window generator calculates weight window values with
 \begin{subequations}
 \begin{equation}
   W_{i,low} = \frac{1}{kN}\big(\Sigma W_{i,in} + \Sigma W_{i,out} \big)
@@ -503,22 +503,26 @@ The weight window generator calculated weight window values with
 \begin{equation}
   W_{i,high} =
   \begin{cases}
-    k*W_{i,low} & \text{if } W_{i,low} \neq 0, \\
-    \infty & \text{if } W_{i,low} = 0.
-  \end{cases}  .
+    k*W_{i,low} & \text{if } W_{i,low} \neq 0 \\
+    \infty & \text{if } W_{i,low} = 0
+  \end{cases}  \:,
   \label{eq:hendricksWW}
 \end{equation}
 \end{subequations}
 where $W_{i,low}$ and $W_{i,high}$ are the weight window lower and upper weight
 bounds respectively, $W_{i,in}$ and $W_{i,out}$ are the total weight entering
 and leaving the cell, $N$ is the number of source particles, and $k$ is some weight
-window width (a constant that Hendricks set to 5). In his
+window width (a constant that Hendricks set to 5). 
+
+In his
 paper, Booth notes that the weight window target value derived from the
 importance generator was chosen so that the
 track weight times the expected score in the tally region (for unit track
 weight) was approximately constant. Booth's importance generator saw
 improvements in the FOM between 1.5-8x when compared to the analog run for the
-test problem presented. Booth and Hendricks combined these two methods to
+test problem presented. 
+
+Booth and Hendricks combined these two methods to
 automate weight window generation based on phase-space importance
 \cite{booth_deep_1982, booth_importance_1984}. They showed that the combination
 of the importance estimator and the weight window generator was a successful way
@@ -544,21 +548,23 @@ generate, resulting in unfavorable VR parameters.
 
 The MCNP \cite{mcnp_manual_v1, brown_mcnp_2002} weight window generator has been
 extended beyond the initial space- and energy- implementation described in
-booth's paper. It now has the ability to automatically generate space- energy-
+Booth's paper. It now has the ability to automatically generate space- energy-
 and angle- weight windows. The importance generator in MCNP also has been
 extended to time-importance, the values of which can be used for splitting or
-roulette parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
+rouletting parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
 independent from the MCNP geometry \cite{evans_enhanced_1998}.
+
 As with Booth and Hendricks'
 original implementations, this updated weight window generator still relies on
 adequate sampling to obtain sufficient weight window parameters. When additional
 degrees of freedom, like angle-dependence, are added, the time
 to converge on those parameters will take even longer. The weight window
 generator also only allows for a single tally to be optimized at once, so
-multiple tallies cannot be optimized simultaneously. Last, the weight window
+multiple tallies cannot be optimized simultaneously. Finally, the weight window
 generator still requires user input and updating to seed the weight
 window solution. The user must choose the meshing of the problem and have some
-intuition as to how the problem should be subdivided. Depending on user
-experience, the weight window generator can have differences in the FOM from 2
-to 10 times \cite{van_riper_generation_1995}.
+intuition as to how the problem should be subdivided. %Depending on user
+%experience, the weight window generator can have differences in the FOM from 2
+%to 10 times \cite{van_riper_generation_1995}.
+% RNS: improvement? decrease? This seems like it's unlikely to be accurate for all problems... I'd leave it out?
 
