@@ -289,10 +289,11 @@ methods do not contribute to and are not the focus of this work,
 so will only be touched upon briefly. Note that while this
 discussion will tend to focus towards the variance reduction methods in MCNP,
 these
-methods are by no means limited to this single software package. A
-number of other Monte Carlo radiation transport packages also include these
-methods.
+methods are by no means limited to this single software package. %A
+%number of other Monte Carlo radiation transport packages also include these
+%methods. RNS: not needed
 
+% RNS: May want to either create another layer of subsection or bold the names of the vr straregies to help them stand out / be delineated. 
 Population control methods adjust the particle population in the problem to
 obtain better sampling in regions of interest by preferentially increasing or
 decreasing the particle population.
@@ -303,24 +304,26 @@ splitting a single higher-weight particle into several lower-weight particles.
 Rouletting, conversely, reduces the particle population by stochastically
 killing particles. Particles that survive a rouletting routine have their weight
 adjusted higher, thereby conserving weight in the routine.
-Both splitting and roulette maintain a
-fair game by adjusting the particle weights as splitting and rouletting are
-performed; the sum of the child particle weights is the same as the parent
-weight as it entered the routine.
-To use population control methods effectively as a variance reduction technique,
+Both splitting and rouletting maintain a
+fair game by adjusting the particle weights; the sum of the child particle weights is the same as the parent
+weight as it entered the routine. 
+%RNS: I think this is only on statistical average. Always true for splitting, statistically true for rouletting, right?
+
+To use population control methods effectively as variance reduction techniques,
 splitting is performed in high-importance regions to increase the particle
-count, and thus the sampling, in important regions. Conversely, roulette is
+count, and thus the sampling, in important regions. Conversely, rouletting is
 performed in
  low-importance
   regions to reduce the particle population in regions that are unimportant to
   the tally result.
-Splitting and roulette can be applied to include geometry, energy and time,
+Splitting and rouletting can be applied to include geometry, energy and time,
   as well as a weight cutoff.
+  % RNS: weight cutoff is a truncation method...
 
-Rouletting and splitting can be combined in a
-single method, generally referred to as weight windows. Figure \ref{fig:ww-mcnp}
-illustrates the different processes a particle may go through when entering a
-weight window.
+Rouletting and splitting are often implemented through ``weight window"s. 
+% RNS: I wouldn't talk about it that way. Rouletting and splitting are still separate algorithms. 
+Figure \ref{fig:ww-mcnp}
+illustrates the weight window concept.
 %
 \begin{figure}
   \centering
@@ -330,7 +333,7 @@ weight window.
   \label{fig:ww-mcnp}
 \end{figure}
 %
-The first particle we see entering the weight window is a single, high-weight
+The top particle entering the weight window is a single, high-weight
 particle. The weight of this particle is above the weight window bounds, so as
 it enters the weight window it is split into multiple particles whose weight is
 within the window bounds. The second particle entering the window is within the
@@ -339,23 +342,27 @@ The last two particles entering the window have weights lower than the bound.
 They undergo a rouletting routine and one particle is killed and the surviving
 particle is increased in weight. As these particles leave the window, all of
 them have weights within the range of the window. This will reduce the variance
-of the particles contributing to a tally in that region. However, the user is
-faced with calculating a significant number of parameters to
+of the particles contributing to a tally in that region. 
+
+However, the user is
+faced with estimating or calculating a significant number of parameters to
 determine weight windows for the entire problem. In the best case with an
 experienced user, this may just take time. With an inexperienced user or a
-difficult problem this can
-be insurmountable, and may be too difficult to do without some automated
+difficult problem this may be too difficult to do without some automated
 assistance.
 
+% RNS: I'd note in here somewhere that angle can also be included--there's no reason that it can't be done. It just isn't in practice. 
 It should be noted that
-while splitting and roulette can be performed on a single variable--energy,
+while splitting and rouletting can be performed on a single variable--energy,
 space, or time--the weight window is either energy-space
 dependent or space-time dependent. Further, the weight window will split or
 roulette depending on the particle weight entering the window. Splitting and
-roulette on their own either increase or decrease the particle weight
-proportional to $I'/I$ no matter what the entering particle weight is. As a
-result, poorly chosen splitting or roulette parameters on their own can still
-have significant tally variance, because particle weights may still span a wide
+rouletting on their own either increase or decrease the particle weight
+proportional to $I'/I$ no matter what the entering particle weight is. 
+% RNS: need to define I and I'
+As a
+result, poorly chosen splitting or rouletting parameters can still
+result in tallies with significant variance because particle weights may still span a wide
 range.
 
 Modified sampling methods adjust transport by sampling from a different probability
@@ -402,7 +409,7 @@ the cross section is altered. Because the cross section in the problem is both
 energy and material dependent (depending on the geometry), the exponential
 transform will be dependent on space and energy, and particles will be biased in
 both. While a powerful method, the exponential transform is quite difficult to
-use and if $p$ is chosen poorly, this method can perform quite poorly. Further,
+use and if $p$ is chosen poorly this method can perform quite poorly. Further,
 the user has to know quite a bit about the problem physics and material to choose an
 optimal quantity for $p$.
 
@@ -412,11 +419,11 @@ Source biasing has the option to bias particles in energy, direction, and space
 (if the source is volumetric). This allows the user to choose importance
 separately for each variable. First, the source variable (let us consider
 energy for the moment) is defined as a series of bins or a function. Second, the bins are
-assigned probabilities of occurence according to their importance. An energy bin
-with a high importance will be assigned a high probability of occurence, and a
-bin with low importance will be assigned a low probability of occurence. As
+assigned probabilities of occurrence according to their importance. An energy bin
+with a high importance will be assigned a high probability of occurrence, and a
+bin with low importance will be assigned a low probability of occurrence. As
 particles are born in the bins with higher importances, they will have their
-weights adjusted to the inverse of their probability of occurence, or $w^* =
+weights adjusted to the inverse of their probability of occurrence, or $w^* =
 p/p^*$. Here $p$ refers to the probability density function for the source
 particles; it bears no relation to the exponential transform factor.
 
@@ -438,9 +445,10 @@ result are
  eliminated with a truncation method, the tally will lack the contribution from
  that particle's phase-space, and will be underestimated as a result. Further,
  as discussed in Section \ref{subsubsec:CLT}, the central limit theorem only
- holds assuming that the histories tracked are random and independent.
+ holds assuming that the histories tracked are independent and drawn from identical distributions.
  Truncating particles of high importance remove the independence from the
  sampling, and the estimate of the response will be wrong.
+ % RNS: is it really removing independence? I thought it was altering the underlying pdf being sampled...? I might be wrong. 
 
 It is important, in using any variance reduction technique, to ensure that a
 fair game
@@ -451,7 +459,7 @@ representative of the original problem. Automated variance reduction techniques 
 eliminate this uncertainty for the user by estimating the importance of
 particles in some
  way and then setting up variance reduction parameters automatically.
-The remainder of this literature review will focus on efforts to
+The remainder of this chapter will focus on efforts to
 automate population
 control methods and modified sampling methods for variance reduction.
 
