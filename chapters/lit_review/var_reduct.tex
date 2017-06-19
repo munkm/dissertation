@@ -5,23 +5,24 @@ Monte Carlo methods for radiation transport are used in the nuclear
 engineering community for a wide spectrum of application problems. Without any
 variance reduction techniques, Monte Carlo methods aim to emulate
 the transport of a particle from birth, through physical interaction, to death
-by randomly sampling probabilities particle production, elastic and inelastic
-scattering, and absorption for that particle.
+by randomly sampling probabilities of the physics the particle could encounter, e.g.\ production, elastic and inelastic
+scattering, absorption, etc.
 This process of transporting a single particle
 is repeated millions of times, which is analogous to transporting
 millions of particles throughout the problem. When the user achieves a
 sufficient
-number of particles to sample to reach the desired statistical precision for
+number of samples to reach the desired statistical precision for
 the region of interest, the
-simulation will be complete. However, this naive approach to simulating each
+simulation will be complete. 
+
+However, this approach of simulating each
 particle, no matter whether it is likely to contribute to the tallied result,
 can be extraordinarily computationally inefficient depending on the problem. A
 user could waste time simulating millions of unusable particles and still not
 reach the desired statistical precision for the tally. Variance
 reduction techniques were developed to address this issue. In general, these
-techniques bias the Monte Carlo transport to more effectively
-contribute to a particular result, while not fundamentally changing the nature
-of the problem being solved.
+techniques cause the Monte Carlo transport to more effectively
+contribute to a particular result, while not biasing the result.
 
 \subsection{Statistical Background}
 \label{subsec:StatBkgnd}
@@ -35,12 +36,13 @@ Monte Carlo
 methods transport many randomly sampled
 particles, and when those particles reach a region of interest, they are scored
 in a tally. The statistical precision of the tally
-will reflect the total number of particles that were sampled in- or at- this
+will reflect the total number of particles that were sampled in or at this
 region or surface.
-The reliability of the answer obtained in this region is then dependent
-on the quantity of these particles,
-and the amount of time taken to move the particles on
-their respective random walks through space to the region.
+The reliability of the answer obtained in this region depends
+on the quantity of these particles.
+%and the amount of time taken to move the particles on
+%their respective random walks through space to the region.
+% RNS: Why would the statistics depend on time?
 
 \subsubsection{Population Statistics}
 \label{subsubsec:PopStat}
@@ -48,13 +50,13 @@ their respective random walks through space to the region.
 In radiation transport, one desires to estimate some response in phase-space.
 This response is the average behavior of the physical interactions in some
 differential phase-space in energy, space, or time. If the probability density
-function $f(x)$ for the response is known exactly,
+function, $f(x)$, for the response is known exactly,
 then the response in $dx$ can be calculated exactly by the true
 mean, or
 \begin{equation}
   \bar{x} = \int_{-\infty}^{\infty} xf(x) dx .
 \end{equation}
-Rarely $f(x)$ is known
+Rarely is $f(x)$ known
 exactly, so instead it is sampled.
 Using $N$ randomly sampled particles, the estimate of the true mean value is given as
 \begin{equation}
@@ -90,16 +92,18 @@ and the sample standard deviation is given by
 \begin{equation}
   S = \big( \widehat{x^2}-\hat{x}^2 \big)^{(1/2)} .
 \end{equation}
-For \eqref{eq:Var} to hold true, the number of N samples must be large.
-$S^2$ is the sample estimate of the true variance, $\sigma^2$. The variance
-tells the observer how spread the sampled values are about the mean.
+
+For Eqn. \eqref{eq:Var} to hold true, the number of samples must be large.
+$S^2$ is the sample estimate of the true variance, $\sigma^2$. %The variance
+%tells the observer how spread the sampled values are about the mean.
+% RNS: already stated
 The variance of the estimate of the mean value about $\bar{x}$ is:
 \begin{equation}
 S^{ 2 }_{ \hat { x }  }=\frac{S^2}{N}.
 \label{eq:VarMean}
 \end{equation}
-From \eqref{eq:VarMean}, one can see that relationship between the sample standard
-deviation and the standard error of $\hat{x}$ about $\bar{x}$, which is
+From \eqref{eq:VarMean}, one can see the relationship between the sample standard
+deviation and the standard error of $\hat{x}$ about $\bar{x}$ is
 \begin{equation}
 S_{ \hat { x }  }=\sqrt { \frac { S^{ 2 } }{ N }  } =\frac { S }{ \sqrt { N }}.
 \label{eq:VarN}
@@ -138,36 +142,38 @@ the samples by
 \begin{equation}
   \sigma(\hat{x}) = \frac{\sigma(x)}{\sqrt{N}}.
 \end{equation}
-Replacing this in Eq. \eqref{eq:CLT1}
+Replacing this in Eq. \eqref{eq:CLT1} give
 \begin{equation}
   f_N\big(\hat{x}\big) \approx \sqrt{\frac{N}{2*\pi}} \frac{1}{\sigma(x)}\
            \exp\Bigg[ \frac{-N\big( \hat{x}- \bar{x}\big)^2}{2\sigma^2(x)} \Bigg],\
            \quad N \rightarrow \infty
   \label{eq:CLT2}
 \end{equation}
-allows us to use known values for $\hat{x}$ and an approximation of $\sigma(x)$
+and allows us to use known values for $\hat{x}$ and an approximation of $\sigma(x)$
 using $S$ to determine the probability density function of the sample means
-$f_N(\hat{x})$. Because $f_N(\hat{x})$ is a normal distribution, we can find the
+$f_N(\hat{x})$. 
+%RNS: I'm a little confused. Maybe some additional punctuation is needed? 
+Because $f_N(\hat{x})$ is normally distributed, we can find the
 probability that $\hat{x}$ lies in $\bar{x} \pm \epsilon$ with
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
    \int_{\bar{x}-\varepsilon}^{\bar{x}+\varepsilon}f_N\big( \hat{x} \big) d\hat{x}.
    \label{eq:probmean}
 \end{equation}
-Placing our definition for the distribution of $\hat{x}$ $f_N(\hat{x})$ into Eq.
+Placing our definition for the distribution of $\hat{x}$, which is $f_N(\hat{x})$, into Eq.
 \eqref{eq:probmean}, changing the limits of integration, and changing the
 variables such that $t = \sqrt{N/2}*(\hat{x}-\bar{x})/\sigma(x)$, this becomes
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
-  \frac{2}{\sqrt{\pi}} \int_0^{(\sqrt{N/2})(\varepsilon/\sigma(x))} e^{-t^2} dt
+  \frac{2}{\sqrt{\pi}} \int_0^{(\sqrt{N/2})(\varepsilon/\sigma(x))} e^{-t^2} dt\:.
 \end{equation}
-Recalling the definition of the error function, ends up as
+Recalling the definition of the error function, we obtain
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
     \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big].
 \end{equation}
-Then, using the calculated estimation for $\sigma(x)$ $S$, and also from Eq.
-\eqref{eq:VarN} that $S_{\hat{x}}= S/\sqrt{N}$, the error function reduces to be
+Then, using the calculated estimation for $\sigma(x)$ and $S$, and using Eq.
+\eqref{eq:VarN}, the error function reduces to be
 a function of $\varepsilon$ and $S_{\hat{x}}$ only
 \begin{equation}
     \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big] = \
@@ -186,25 +192,28 @@ error, this is evaluated as
   \end{cases}  .
 \end{equation}
 
-The central limit tells us that the sample mean follows a normal
+The central limit theorem tells us that the sample mean follows a normal
 distribution, regardless of the distribution of the underlying sample, as the
 number of samples approaches infinity. This
 means that no matter what distribution is being sampled, the sampled mean will
 have this expected behavior. As a result, given a calculated value for
-$\hat{x}$, and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known
+$\hat{x}$ and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known
 and calculable.
 Further, the central limit theorem shows that this distribution is approached
 very quickly as N increases, with most problems only requiring $N > 30$
 \cite{lewis_computational_1984}. Note
 that N is not the total number of samples, but the number of samples required to
 calculate each mean.
-However, for the central limit theorem to hold a number of
+
+However, for the central limit theorem to hold, a number of
 requirements must be satisfied. Ss with all of the quantities in Section
-\ref{subsubsec:PopStat}, each $x_i$ is assumed to be randomly sampled and
-independent of other $x_i$. If some region of phase space is omitted
+\ref{subsubsec:PopStat},
+% RNS: what is this frist clause?
+ each $x_i$ is assumed to be randomly sampled from the same distribution as all $x_i$s and
+independent of every other $x_i$. If some region of phase space is omitted
 accidentally, these values will not be reflective of the true $f(x)$, and so
 $\hat{x}$ will not approximate $\bar{x}$. Further, for $S$ to be a
-good approximation of $\sigma(x)$, a large number of N samples must contribute
+good approximation of $\sigma(x)$, a large number of samples must contribute
 to the calculation of $\hat{x}$. Further, the central limit theorem assumes that
 $f(x)$ is a probability density function that can be sampled and has a variance
 that exists. As a result, one must be reasonably sure that all of these
@@ -216,27 +225,29 @@ requirements are satisfied if using Monte Carlo sampling methods.
 The equations in the preceding sections describe how to estimate the statistics
 of a population given a finite number of samples. In radiation transport, a
 user seeks to estimate some response, the relative error associated with that
-response solution, and time that it takes to obtain those values. Equation
+response solution, and the time it takes to obtain those values. Equation
 \eqref{eq:S to R} described the relationship between the sample variance, the
 relative error, and the number of particles as
 \begin{equation*}
 S^2\:\propto\: R^2\:\propto\:\frac{1}{N} .
 \end{equation*}
-The relationship between the relative error $R$ and the number of particles $N$
-\begin{equation*}
-  R^2\:\propto\:\frac{1}{N}
-\end{equation*}
-will be some constant value (C)
+The relationship between the relative error, $R$, and the number of particles, $N$,
+%\begin{equation*}
+%  R^2\:\propto\:\frac{1}{N}
+%\end{equation*}
+will be some constant value:
 \begin{equation*}
  C_1 = R^2N .
 \end{equation*}
+
 As a problem is simulated, the number of particles run, $N$, will increase
-proportionally to the computational transport time run, $T$. Therefore, the
+proportionally to the computational transport time, $T$. Therefore, the
 relationship between $R$ and $T$ should also be a constant.
 \begin{equation*}
   C_2 = R^2T
 \end{equation*}
-The figure of merit (FOM) \eqref{eq:FOM}
+
+The figure of merit (FOM) shown in Eqn.\ \eqref{eq:FOM}
 is the most commonly reported metric using this relationship that is reported.
 It is widely used in quantifying the effects of variance reduction methods.
 Because it uses the inverse quantity of the relative error and time, a
@@ -247,19 +258,18 @@ FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
 \end{equation}
 Further, a user may desire to determine how long a problem must be run to obtain
-a desired relative error. In that case, Equation \eqref{eq:FOM} can simply be
+a desired relative error. In that case, Eqn.\ \eqref{eq:FOM} can simply be
 rearranged to
 \begin{equation*}
   R = \frac{1}{(FOM*T)^{1/2}} .
 \end{equation*}
 
-The figure of merit is a very useful tool that can be used to easily obtain
-tally results for a specific problem, but it still is limited by statistical
+The figure of merit is a very useful tool, but it still is limited by statistical
 precision in calculating $R$.
 It is worth noting that early on in a transport simulation,
-when too few N have been run to
-effectively capture $S$ or $\hat{x}$, the Figure of Merit will oscillate.
-Eventually it will converge on a relatively constant value. This behavior can
+when too few particles have been simulated to
+effectively capture $S$ or $\hat{x}$, the FOM will oscillate.
+Eventually, the FOM will converge to a relatively constant value. This behavior can
 also be used to determine whether one has sufficiently sampled the
 region in which they are quantifying the response.
 
