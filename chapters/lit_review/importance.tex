@@ -201,7 +201,7 @@ adjoint flux and the forward source distribution
   \label{eq:response2}
 \end{equation}
 
-At this point, we know that the adjoint problem problem, when solved, has
+At this point, we know that the solution to the adjoint problem has
 transported particles from the adjoint source (which is the detector or tally
 location) into the problem phase-space. The adjoint particles are
 upscattered in energy and are transported in $-\Omega$ relative to the forward
@@ -211,7 +211,7 @@ illustrative example: a monoenergetic, monodirectional, point source. The
 forward source takes the form of a delta function:
 \begin{equation*}
   q(\vec{r}, E, \hat{\Omega}) = \delta(\vec{r}-\vec{r}_0) \delta(E-E_0)
-  \delta(\hat{Omega}-\hat{Omega}_0) .
+  \delta(\hat{\Omega}-\hat{\Omega}_0) .
 \end{equation*}
 Using this definition of the forward source and evaluating Eq.
 \eqref{eq:response2}, we obtain
@@ -249,7 +249,7 @@ Goertzel and Kalos' finding that an exact adjoint can lead to a zero variance
 solution means that if a single particle is transported with the adjoint
 weighting function, its score will be the same as the total system response.
 Only a single particle is required to get an exact solution for the forward
-problem. Naturally, this is prohibitive, because one obtaining
+problem. This is prohibitive because obtaining
 an exact adjoint solution is just as computationally expensive as getting
 an exact forward solution. As a result, one seeks to obtain a good estimate of the
 adjoint solution based on computational limitations. A good importance estimate
@@ -292,8 +292,8 @@ specifically they aimed at generating parameters for energy biasing, source
 biasing, Russian roulette and splitting, and next event estimation
 probabilities. They implemented their work in the SAS4 module in SCALE
 \cite{SCALE6_1}; it was
-one of the earlier implementations of a fully automated biasing procedure for
-Monte Carlo.
+one of the earlier implementations of a fully-automated deterministic
+biasing procedure for Monte Carlo.
 
 \subsection{The Contributon Solution for Importance}
 \label{sec:ContributonImportance}
@@ -316,7 +316,8 @@ Because every particle transported would eventually reach the detector, this
 would lead to a zero variance solution. However, the nature of solving the
 contributon equation with Monte Carlo (or any other transport mechanism)
 involves knowing the exact solution to the adjoint equation, and so relies on
-the same computational obstacles as solving the adjoint NTE.
+the same computational obstacles as solving the adjoint transport equation and
+using that alone for an importance measure.
 
 The contributon transport equation can be derived in a form analogous
 to the forward (Eq. \ref{eq:F-NTE} ) and adjoint (Eq. \ref{eq:A-NTE}) equations.
@@ -430,16 +431,17 @@ detector, but it is still not immune to computational obstacles that exist for
 standard forward- and adjoint- transport.
 
 The past few subsections have described the different means by which importance
-can be defined or quantified for a particular problem.
+can be defined or quantified for a problem.
 As discussed in Section \ref{sec:Importance}, generating an importance function
 with Monte Carlo is limited in that the quality of the importance map is only as
 good as the regions that are sampled. For deep-penetration problems, it may be
 prohibitively difficult to obtain adequate importance sampling with traditional
-Monte Carlo methods. Deterministically-obtained importance functions, however,
+Monte Carlo methods. Deterministically-obtained importance functions
 offer the benefit of a solution that is equally valid across all of the problem
 solution-space. This is because the deterministic solution's precision is
 limited to convergence criteria, not sampling of individual particles. Using a
 deterministic solution is often faster and much less computationally-intensive
-than Monte Carlo for importance sampling. As a result, many hybrid methods opt
+than Monte Carlo for importance quantification.
+As a result, many hybrid methods opt
 to use deterministically-obtained importance functions to generate variance
-reduction parameters for Monte Carlo.
+reduction parameters for Monte Carlo transport.
