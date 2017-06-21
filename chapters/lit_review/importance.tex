@@ -302,29 +302,23 @@ Contributon theory is another useful metric that can be used as a measure of
 importance
 \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
 However, contributon theory quantifies importance differently than
-adjoint theory. In contributon transport, a pseudo-particle, the
-texit{contributon}, is defined. The contributon carries response in the problem
+adjoint theory alone. In contributon transport, a pseudo-particle, the
+\textit{contributon}, is defined. The contributon carries response in the problem
 system from the radiation source to a dectector. The
-total number of contributons in a system are conserved by the textit{contributon
+total number of contributons in a system are conserved by the \textit{contributon
 conservation principle}: all contributons that are emitted from the source
 eventually arrive at the detector. Much of the work in this realm has been done
 by Williams and collaborators
 \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
-Williams noted that one could
-go so far as to track contributons, rather than real particles in Monte Carlo.
-Because every particle transported would eventually reach the detector, this
-would lead to a zero variance solution. However, the nature of solving the
-contributon equation with Monte Carlo (or any other transport mechanism)
-involves knowing the exact solution to the adjoint equation, and so relies on
-the same computational obstacles as solving the adjoint transport equation and
-using that alone for an importance measure.
 
+We have generally introduced the concept of the contributon pseudo-particle and
+the response that it carries. This will be continued with a brief mathematical
+overview of contributon transport and contributon response.
 The contributon transport equation can be derived in a form analogous
-to the forward (Eq. \ref{eq:F-NTE} ) and adjoint (Eq. \ref{eq:A-NTE}) equations.
+to the forward (Eq. \ref{eq:F-NTE}) and adjoint (Eq. \ref{eq:A-NTE}) equations.
 The derivation of Eq. \ref{eq:Cont-NTE} and its corresponding variables is
-available in a number of the sources referenced in this section, so we will
-abstain from doing so at this time.
-The angular contributon flux is defined
+available in a number of the sources referenced in this section and will not be
+done so here. First, the angular contributon flux is defined
 as the product of the forward- and
 adjoint- angular- fluxes:
 \begin{equation}
@@ -342,50 +336,114 @@ The contributon transport equation is:
         \widetilde{P}(\vec{r}, \hat\Omega',E')
         \widetilde{\Sigma} _{ t }(\vec{r}, E', \hat\Omega')
         \Psi (\vec { r } ,E',\: \hat\Omega')dE' \:d\hat\Omega'
-        + \hat p(\vec { r } ,E, \:\hat\Omega) R ,
+        + \hat p(\vec { r } ,E, \:\hat\Omega) R .
 \label{eq:Cont-NTE}
 \end{multline}
-where the effective cross sections are given by:
+The units of phase-space are the same as observed in the forward and adjoint
+transport equations. The symbols decorated with tildes note variables that are
+unique to the contributon equation; $\widetilde{p}$ and $\widetilde{P}$ are both
+probability functions related to scattering and $\widetilde{\Sigma}$ are
+effective cross sections.
+The effective cross sections are given by:
 \begin{equation}
 \begin{aligned}
 \widetilde{\Sigma}_{t}(\vec{r}, E, \hat\Omega) &=
         \widetilde{\Sigma}_{s}(\vec{r}, E, \hat\Omega) +
         \widetilde{\Sigma}_{a}(\vec{r}, E, \hat\Omega)    \\
-     &= \frac{\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',
-        E'\rightarrow E'')}{\psi^{\dagger}(\vec{r}, E, \hat\Omega)}
+     &= \frac{\iint \Sigma_{s}(\vec{r},\hat\Omega''\cdot\hat\Omega,
+         E\rightarrow E'') \psi^{\dagger}
+         (\vec{r}, \Omega'', E'') d\Omega'' dE''}
+         {\psi^{\dagger}(\vec{r}, E, \hat\Omega)}
         + \frac{Q^{\dagger}(\vec{r}, E, \hat\Omega)}
         {\psi^{\dagger}(\vec{r}, E, \hat\Omega)}.
 \end{aligned}
 \end{equation}
+Note here that the effective scattering and absorption cross sections are
+adjoint flux-dependent. Where the adjoint flux becomes small, the interaction
+probabilities will become large. As a result, regions where the adjoint flux
+is high will have particles flowing freely. Conversely, regions with low adjoint
+fluxes--like the problem boundary--will have a very high cross section, thus
+encouraging particle transport back towards the adjoint source. This
+increased probability of interaction in low flux regions encourages response
+transport towards the detectector or tally, thus contributing to a response.
+
 The scattering probability of a contributon at position $\vec{r}$, $E'$, and
 $\hat\Omega'$ is:
 \begin{equation}
 \widetilde{P}(\vec{r}, \hat\Omega',E') =
-         \frac{\widetilde{\Sigma} _{ s }(\vec{r}, E', \hat\Omega')}
-       {\widetilde{\Sigma} _{ t }(\vec{r}, E'Q, \hat\Omega')}
+         \frac{\widetilde{\Sigma}_{ s }(\vec{r}, E', \hat\Omega')}
+       {\widetilde{\Sigma}_{ t }(\vec{r}, E', \hat\Omega')}
 \end{equation}
-and
+and the probability that a contributon scattering at $\vec{r}$, $E'$,
+and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$ is
 \begin{equation}
-\widetilde{p}(\vec{r}, \hat\Omega', E'\rightarrow\hat\Omega, E) =
+\widetilde{p}(\vec{r}, \hat\Omega'\rightarrow\hat\Omega, E' \rightarrow E) =
        \frac{\Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega,E'\rightarrow E)
        \psi^{\dagger} (\vec{r}, E, \hat\Omega)}
        {\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',E'\rightarrow
-       E'')\psi^{\dagger} (\vec{r}, E'', \hat\Omega'')d\hat\Omega'' dE''}
+       E'')\psi^{\dagger} (\vec{r}, E'', \hat\Omega'')d\hat\Omega'' dE''}.
 \end{equation}
-is the probability that a contributon scattering at $\vec{r}$, $E'$,
-and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$.
+The distribution function governing the contributon source is
 \begin{equation}
 \hat p(\vec{r}, E, \hat\Omega) =
-\frac{psi^{\dagger}(\vec{r}, E, \hat\Omega) Q(\vec{r},E,\hat\Omega)}
+\frac{\psi^{\dagger}(\vec{r}, E, \hat\Omega) Q(\vec{r},E,\hat\Omega)}
      {\int \int \int \psi^{\dagger}(\vec{r'},E',\hat\Omega')
-     Q(\vec{r'},E',\hat\Omega') d\hat\Omega' dE' dV'}
+     Q(\vec{r'},E',\hat\Omega') d\hat\Omega' dE' dV'},
 \end{equation}
-is the contributon source distribution.
+note that the contributon source is actually defined in Eq.
+\eqref{eq:Cont-NTE} by the product of $\hat{p}$
+and $R$. $R$ is contributon production rate; it
+is given by integral of the adjoint flux and the forward source
 \begin{equation}
-R = \int \int \int \psi^{\dagger}(\vec{r},E,\hat\Omega)Q(\vec{r},E,\hat\Omega)
-    d\hat\Omega dE dV
+  \begin{split}
+R &= \int \int \int \psi^{\dagger}(\vec{r},E,\hat\Omega)Q(\vec{r},E,\hat\Omega)
+    d\hat\Omega dE dV \\
+  & = \langle \psi^{\dagger}Q  \rangle
+\end{split}
 \end{equation}
-is the reaction rate.
+which is recognizable as the system response described
+in Section \ref{sec:AdjointImportance}. It can also be shown by integrating Eq.
+\eqref{eq:Cont-NTE} over all phase space and ensuring that the function
+$\hat{p}$ is normalized, that
+\begin{equation}
+  R = \langle \widetilde{\Sigma}_a \Psi \rangle,
+  \label{eq:contribprod}
+\end{equation}
+or that the rate at which contributons that die in the detector is the same as
+the rate at which they are produced by the contributon source.
+Knowing that $R$ is the contributon production rate, let us consider the
+probability that a particle will be absorbed in the detector, or $P$, given by
+\begin{equation}
+  P  = \langle \Sigma_a \psi \rangle.
+\end{equation}
+Adding a factor of $\psi^{\dagger}/\psi^{\dagger}$ to the terms on the right hand
+side, this becomes
+\begin{equation}
+  P = \Big \langle \frac{\Sigma_a}{\psi^{\dagger}} \psi \psi^{\dagger} \Big
+  \rangle.
+\end{equation}
+By using the identities from the contributon equation, this is also
+\begin{equation}
+  P = \langle \widetilde{\Sigma_a} \Psi \rangle .
+\end{equation}
+Next, substituting the definition from Eq. \eqref{eq:contribprod} into this
+equation, it follows that
+\begin{equation}
+  P = R.
+  \label{eq:PR}
+\end{equation}
+This is the same
+\textit{contributon conservation principle} introduced at the beginning of this
+section.
+Williams noted that one could
+go so far as to transport contributons rather than real particles with Monte Carlo.
+Because every particle transported would eventually reach the detector and give
+an exact value for R (as shown by Eq. \eqref{eq:PR}), this
+would lead to a zero variance solution. However, the nature of solving the
+contributon equation with Monte Carlo (or any other transport mechanism)
+involves knowing the exact solution to the adjoint equation, and so relies on
+the same computational obstacles as solving the adjoint transport equation and
+using that alone for an importance measure.
 
 As mentioned in the previous section, the adjoint flux is an indicator of a
 particle's importance to inducing a response. Conversely, the contributon
@@ -398,14 +456,19 @@ solution can be considered importance functions for a problem, but the
 importance that they describe differs.
 
 Williams recognized the applications of the pseudo-particles, contributons, to
-shield design and optimization. In particular, Williams noted that variables
+shield design and optimization in an extension of contribution theory called
+spatial channel theory. In particular, Williams noted that variables
 relevant to contributon response were useful in determining transport paths
 through media \cite{williams_contributon_study, williams_SCC_shielding}. A study
-of the contributon density in a system could enlighten the user on locations
-where particles would preferentially be transported, and so designers could
-intelligently choose where to place detectors and material. In this way, the
+of different contributon values throughout the system could enlighten users on
+regions with higher response potential. This could then be used to intelligently
+choose regions for detector locations or add to shielding.
+The contributon values in this theory include the contributon flux, the
+contributon density, the contributon current, or the contributon velocity
+\cite{williams_relations_1977}.
+In this way, the
 user could find the particles most influential to the response of the system. A
-region with high response is the most important to a detector tally. The
+region with high response potential is the most important to a detector tally. The
 variables of response described by Williams are the response potential, the
 response current, and the response vorticity \cite{williams_contributorn_1992}.
 
