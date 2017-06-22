@@ -153,44 +153,44 @@ methods by which variance reduction could be decreased in global mesh tallies in
 deep-penetration radiation transport problems. The first method, using a CADIS
 calculation where the adjoint source is defined at the problem boundary, aimed
 at moving particles outward to the problem edges.
-The second method used standard CADIS but instead
+The second method used standard CADIS, but instead
 defined each cell as equally important, so the adjoint source was defined
 equally throughout the problem phase-space. The last method, called Forward-Weighted
 CADIS (FW-CADIS), distributed the adjoint source across mesh cells as an inverse
-relation to the forward response of the cell. In their work, Peplow et al. found
-that the first method had large uncertainties in areas of the problem distant
+relation to the forward response of the cell. In their work, Peplow et al.\ found
+that the first method had large uncertainties in areas of the problem far
 from the boundary; the second method performed slightly, but not significantly,
-better than analog, and the third method had the most uniform uncertainty
+better than analog; and the third method had the most uniform uncertainty
 distribution.
 
 FW-CADIS
 \cite{wagner_forward-weighted_2007,wagner_forward-weighted_2009,wagner_forward-weighted_2010}
-built off of a combination of the work by Cooper in addition to CADIS.
-Like Becker's method, FW-CADIS used a forward deterministic calculation to
+built off of the work by Cooper and the CADIS method.
+Like Becker's method, FW-CADIS uses a forward deterministic calculation to
 determine the source distribution for the adjoint calculation. Unlike Becker's
-method which used contributon fluxes to construct weight windows,
-CADIS used adjoint fluxes as the basis of the weight window values. Similar to
-Cooper's method, CADIS used the forward calculation to determine how to
-evenly distribute particles throughout the problem. Like CADIS, FW-CADIS used
+method, which used contributon fluxes to construct weight windows,
+FW-CADIS uses adjoint fluxes as the basis of the weight window values. Similar to
+Cooper's method, however, FW-CADIS uses the forward calculation to determine how to
+evenly distribute particles throughout the problem. Like CADIS, FW-CADIS uses
 the adjoint solution from the deterministic calculation to generate consistent
 source biasing, weight windows, and particle birth weights.
 
-The adjoint source for the adjoint calculation is dependent on the
-desired response for the system. The generic description for the adjoint source
-is given by Eq. \eqref{eq:adjointsourcesimple} and more specific parameters are
-given by Eqs. \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}. First, we
-can describe a general form of the adjoint source definition for all
+In FW-CADIS, the adjoint source for the adjoint calculation is dependent on the
+desired response for the system. 
+%The generic description for the adjoint source
+%is given by Eq.\ \eqref{eq:adjointsourcesimple}, and more specific parameters are
+%given by Eqs.\ \eqref{eq:FWCadglobaldose}-\eqref{eq:FWCadglobalflux2}. 
+%% RNS: doesn't # correctly
+First, we
+can define a general form of the adjoint source for all
 phase-space, $P$, as:
 \begin{equation}
   { q^{\dagger}} (P)=\frac{\sigma_d(P)}{R}.
 \end{equation}
 \label{eq:adjointsourcesimple}
-Thus the adjoint source definition is dependent on the detector (or tally)
-cross-section and whatever response is being calculated in the system. Depending
-on whether the response is a flux or a dose rate, the adjoint source will
-differ. For example,
-the adjoint source for the spatially dependent global dose, $\int
-\phi(\vec{r},E)\sigma_d(\vec{r},E) dE$ is:
+Thus the adjoint source is dependent on the detector (or tally)
+cross-section and whatever response is being calculated in the system. The adjoint source for the spatially dependent global dose, $\int
+\phi(\vec{r},E)\sigma_d(\vec{r},E) dE$ is
 \begin{subequations}
 \begin{equation}
   { q^{\dagger} }(\vec { r } ,E)= \frac { \sigma _{ d }(\vec { r } ,E) }
@@ -198,24 +198,21 @@ the adjoint source for the spatially dependent global dose, $\int
 \end{equation}
 \label{eq:FWCadglobaldose}
 The adjoint source for the spatially dependent total flux $\int \phi(\vec{r},E)
-dE $ is:
+dE $ is
 \begin{equation}
   { q^{\dagger} }(\vec { r }) = \frac { 1 }{ \int { \phi (\vec { r } ,E) } dE }.
 \end{equation}
 \label{eq:FWCadglobalflux}
-Last,
-the adjoint source for the energy- and spatially- dependent flux
-$\phi(\vec{r},E)$ can be defined as:
+The adjoint source for the energy- and space-dependent flux,
+$\phi(\vec{r},E)$, is
 \begin{equation}
   { q^{\dagger} }(\vec { r } ,E) = \frac { 1 }{\phi (\vec { r } ,E) }.
 \end{equation}
 \label{eq:FWCadglobalflux2}
 \end{subequations}
 
-The process followed by FW-CADIS is to initially run a deterministic forward
-calculation to obtain the foward response. The solution from the deterministic
-forward problem is then used to set the source distribution for the adjoint
-solution. A second deterministic calculation is run to obtain the adjoint
+The process followed by FW-CADIS is to run a deterministic forward
+calculation to obtain the forward response. This solution is used to create the adjoint source. A second deterministic calculation is run to obtain the adjoint
 solution. The adjoint solution is then used to generate variance reduction
 parameters in the same manner as CADIS.
 
