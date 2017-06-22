@@ -222,77 +222,82 @@ Baker and Larsen showed that the exponential transform can be used to generate
 VR parameters for global low-variance solutions in Monte Carlo
 \cite{baker_localexponential_1993}. In this work, Baker used a forward diffusion
 solution to generate parameters for a combination of VR techniques: implicit
-capture and weight cutoff, geometry splitting / Russian roulette and implicit
-capture and a weight cutoff, and the exponential transform combined with
-implicit capture and a weight cutoff. The exponential transform method was then
+capture and weight cutoff, geometry splitting / rouletting, implicit
+capture and weight cutoff, and exponential transform combined with
+implicit capture and weight cutoff. The exponential transform method was then
 compared to the other combinations of VR techniques to quantify its success.
 In their work, Baker and Larsen found that
-this approach did not work well for highly scattering problems, where geometry
-splitting and Russian roulette were generally better options. Their work did not
+this approach 
+% RNS: which approach? it seems like there were ~5 approaches...
+did not work well for highly scattering problems, where geometry
+splitting and rouletting were generally better options. Their work did not
 focus on generating weight window values, nor was it tested on deep-penetration
 shielding problems.
 
-While the aforementioned methods in this section and the previous section use
+While the aforementioned methods in this and the previous sections use
 deterministically-obtained solutions to generate importance maps, it should be
 noted that not all methods use this approach. Booth and Hendricks' methods used
 initial Monte Carlo calculations to reduce the relative error in tallies. Two
 methods in the global variance reduction realm are notable in that they use
 Monte Carlo estimates of the flux to generate variance reduction parameters
 \cite{van_wijk_easy_2011, davis_comparison_2011}.
-Van Wijk et al. \cite{van_wijk_easy_2011} described an automated weight
+Van Wijk et al.\ \cite{van_wijk_easy_2011} developed an automated weight
 window generator that used a Monte
 Carlo calculation of the forward flux to generate weight window values. The
 weight window target values could be determined based on either a flux-centered
 scheme like Cooper's (eq. \eqref{eq:coopertarget})
-or by using a ratio of the square roots of the fluxes. The
-second method is a combination of Cooper's weight window target value and
+or by using a ratio of the square roots of the fluxes. 
+The
+second method is a combination of Cooper's weight window target values and
 knowing that the relative error in a region
 is proportional to the square root of the number
 of particles.
-Van Wijk et al. applied their method to a PWR facility and observed a FOM
+Van Wijk et al.\ applied their methods to a PWR facility and observed a FOM
 increase by a factor of $>$200 when compared to analog Monte Carlo. However, as
+% RNS: both methods? one of them? unclear
 with other Monte Carlo-generated VR parameters, for deep-penetration problems
 this approach relies on adequate sampling of all phase-space, which could be
 computationally prohibitive.
+
 The Method of Automatic Generation of Importances by Calculation (MAGIC) method
 was proposed in parallel by Davis and Turner \cite{davis_comparison_2011}.
-As with Van Wijk's method, the MAGIC method uses an analog forward Monte Carlo
-run--potentially with several iterations--to generate weight windows. The initial
+As with Van Wijk's method, the MAGIC method uses analog forward Monte Carlo--potentially with several iterations--to generate weight windows. The initial
 Monte Carlo runs used to generate the importance map were sped up by
-using multigroup cross section data and energy cutoffs. MAGIC
-converged on a finalized importance map by iteratively running several coarser
+using multigroup rather than continuous energy cross sections as well as energy cutoffs. MAGIC
+converged on a finalized importance map by iteratively running several coarse
 Monte Carlo calculations.
-In their paper, Davis and Hendricks compared three variants of MAGIC
+
+Davis and Hendricks compared three variants of MAGIC
 to FW-CADIS in ITER fusion energy systems.
 These three variants used different weight window adjustments for importances:
 weight windows in cells based on existing weight information, weight windows in
 mesh cells based on flux information, and weight windows in cells based on
 population density.
-It was concluded that the most effective method for variance
+The most effective method for variance
 reduction of those proposed in the paper
-was MAGIC's weight window in mesh based on flux
-information. In this case FW-CADIS' FOM was 65\% that of MAGIC's. This compared
+was MAGIC's weight windows in mesh based on flux
+information. In this case, FW-CADIS' FOM was 65\% that of MAGIC's. This compared
 similarly to Van Wijk's method, where the flux-based results continued improving
 the FOM as the computational time increased.
-The authors did not make it clear how many iterations were required, on average,
-to generate the finalized weight window map or if the time to iteratively
-generate importance maps were included in the FOM. While FW-CADIS' FOM was lower
+The authors did not make it clear how many iterations were required on average
+to generate the finalized weight window maps or if the time to iteratively
+generate importance maps was included in the FOM. While FW-CADIS' FOM was lower
 than MAGIC's, FW-CADIS had the highest fraction of cell voxels with very low
 relative errors.
 
-Peplow et al. \cite{peplow_comparison_2012} compared the performance of
+Peplow et al.\ \cite{peplow_comparison_2012} compared the performance of
 Cooper's method, Van Wijk's method, Becker's method, and FW-CADIS
 across a number of shielding calculations. For a simple shielding
 problem, FW-CADIS had the shortest runtime, which included the forward and
 adjoint deterministic times, and had a FOM 80x higher than the analog
-calculation, and more than 3x the next best hybrid method. Van Wijk's method was
+calculation, and more than 3x higher than the next best hybrid method. Van Wijk's method was
 the only method other than FW-CADIS to pass all statistical convergence checks
-for the problem, but its reported FOM was lower than Becker's method and than
+for the problem, but its reported FOM was lower than Becker's method and
 FW-CADIS. In a second deep penetration shielding problem, FW-CADIS was the
 only method
 that passed all statistical convergence checks. FW-CADIS also had the highest
 reported FOM for this problem. The timing for all of the methods were
-comparable. Peplow et al. also ran two ``challenge'' problems. As with the first
+comparable. Peplow et al.\ also ran two ``challenge'' problems. As with the first
 two problems, FW-CADIS outperformed the other methods and passed all statistical
 checks. Becker's method was
 consistently comparable to FW-CADIS in reported FOMs, but only passed all of the
@@ -305,6 +310,6 @@ Some of the
 methods discussed in this section--including Becker's global weight windows,
 Cooper's weight windows, Van Wijk's method, and FW-CADIS--have
 been applied to large application problems and compared to other methods.
-All of the methods reduce the time to a ``good'' solution when
+All of the methods improve FOM
 compared to analog Monte Carlo. When compared against one another, FW-CADIS
 consistently outperforms the other methods.
