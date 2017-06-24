@@ -608,9 +608,66 @@ iteratively converged.
 
 \subsubsection{Early Work}
 
-Dwivedi \cite{dwivedi_new_1982} showed
+As discussed in Section \ref{subsec:MCVR}, the exponential transform is a modified
+sampling method that adjusts the distance-to-collision in Monte Carlo
+transport to encourage particle transport in preferential regions. This is done
+by modifying the sampled cross section.
+Recall from Eq. \eqref{eq:ExTrns} that
+the exponential transform is dependent on a transform parameter $p$ and the
+cosine angle $\mu$, such that $\Sigma_t^* = \Sigma_t(1-p\mu)$.
+When used without angle biasing,
+\begin{equation}
+  \psi^{\dagger}_g (r, \Omega) \approx e^{\Sigma_t \lambda \cdot r}
+  \label{eq:ExTransfrm}
+\end{equation}
+the exponential transform can
+have undesirable weight
+fluctuations \cite{haghighat_monte_2003}, especially as the number of collisions
+to reach a tally increases \cite{gupta_sampling_1985}. The variables in Eq.
+\eqref{eq:ExTransfrm} show that the importance function (the adjoint flux) can
+be approximated as an exponential function varying in space, dependent on the
+total cross section $\Sigma_t$, space $r$, and a parameter defining the amount
+and direction of biasing $\lambda$.
 
-Gupta and Dwivedi \cite{gupta_sampling_1985} showed
+Dwivedi \cite{dwivedi_new_1982} showed that by adding an angle-dependent collision
+biasing scheme in addition to the exponential transform, the problematic weight
+fluctuations could be mitigated. The collision biasing scheme introduced with
+the exponential transform takes the form
+\begin{equation}
+  \psi_g^{\dagger}(r, \Omega) \approx \frac{\sigma_{s,0} e^{\Sigma_t\lambda \cdot r}}
+  {4 \pi \sigma_t (1 - \lambda \cdot \Omega)}.
+  \label{eq:DwivediTrns}
+\end{equation}
+Note that the ratio of cross sections outside of the exponential function
+$\sigma_s / \sigma_t$ is the survival probability in an interaction event, and
+the $(1 - \lambda \cdot \Omega)$ term is consistent with the weight adjustment
+required for the exponential transform (Eq. \eqref{eq:ExTrnsWt}).
+This was applied to a monoenergetic problem
+with slab geometry and isotropic scattering, and the variance was reduced by a
+factor of more than 100 when compared with other exponential transform methods.
+This was adjusted in
+Gupta and Dwivedi's subsequent work \cite{gupta_sampling_1985} applied the
+exponential transform with angle biasing to deep-penetration problems with
+anisotropic scattering. The authors did not explicitly use the
+true distribution for anisotropic scattering, but rather chose to approximate
+the biased kernel to be a function of the isotropic angular distribution. The
+authors observed a reduction in the variance by a factor of 10, but they
+acknowledged that while the combination of the biased kernel and exponential
+biasing reduced weight fluctuations, it also had the potential to introduce
+other weight fluctuations due to anisotropies in the flux.
+
+Ueki and Larsen \cite{ueki_kinetic_1998}
+generalized Dwivedi's importance transform and applied it to
+isotropic, linearly anisotropic, and quadratically anisotropic scattering. They
+observed that Dwivedi's method and the generalized Dwivedi method outperformed
+non-angle-dependent exponential biasing for all types of scattering,
+and that their generalized method
+outperformed Dwivedi's original method in higher order scattering. The work
+described by Dwivedi, Gupta, Ueki and Larsen were all applied to one-dimensional
+problems. Ueki and Larsen pointed out that this methodology could be extended to
+three-dimensional problems using Turner and Larsen's methodology
+(described in Section \ref{subsec:LIFT})
+\cite{ueki_kinetic_1998}.
 
 In 1985, Henricks and Carter \cite{hendricks_anisotropic_1985} described a
 method by which
@@ -637,31 +694,41 @@ biasing, and not
 neutron transport; the authors were optimistic that the method could be extended
 to neutron
 transport.
-Both, Niemal, and Vergnaud \cite{both_automated_1990} derived VR parameters for
+Both, Niemal, and Vergnaud \cite{both_automated_1990} also derived VR parameters for
 the exponential transform and for collision biasing based on the adjoint
 solution as a measure of importance. They implemented their results in the
 TRIPOLI-3 software.
 
 \subsubsection{LIFT}
+\label{subsec:LIFT}
 
-The LIFT \cite{turner_automatic_1997, turner_automatic_1997-1} method, developed by Turner and Larsen, is
+The LIFT \cite{turner_automatic_1997, turner_automatic_1997-1} method,
+developed by Turner and Larsen and like Dwivedi's exponential transform, is
 a modification
-of the zero variance solution (see Section \ref{sec:ContributonImportance})
-that uses a deterministic calculation to
+of the zero variance solution (see Section \ref{sec:ContributonImportance}).
+Consequently, the LIFT method uses a calculation of the adjoint flux as a measure
+for importance in the problem to distribute particles according to the
+contributon density in the problem.
+LIFT uses a deterministic calculation to
 generate biasing
 parameters for the exponential transform and weight window variance reduction
 techniques.
-First, the adjoint angular flux is approximated, piecewise continuous in space
+Like the form of the importance function derived by Dwivedi (Eq.
+\eqref{eq:DwivediTrns}), the LIFT method generates an angle-dependent importance
+function by the product of a space-based exponential function and an
+angle-informed collision estimator. Additionally, LIFT uses a deterministic
+calculation of the adjoint scalar flux to inform the angular flux
+reconstruction.
+The adjoint angular flux is approximated, piecewise continuous in space
 in angle,
-with the following equations:
-
-\begin{subequations}
+with Eqs. \eqref{eq:LIFTI} through \eqref{eq:LIFTIII}.
 \label{LIFT}
 \begin{equation}
-\psi^{\dagger}_{g,n} (\vec{r},\Omega) \approx
+\psi^{\dagger}_{g,n} (r,\Omega) \approx
                 \phi^{\dagger}_{g,n}V_n \left[ \beta_{g,n}
                 \frac{\sigma_{s_0,g \rightarrow g,n} b_{g,n}(\Omega)}{\sigma_{t,g,n} -
                 \rho_{g,n}\cdot \Omega} e^{\rho_{g,n}\cdot (r-r_n)} \right]
+                \label{eq:LIFTI}
 \end{equation}
 where the physical system is comprised of $V_n$ regions, and
 $\psi^{\dagger}_{g,n}$ is the
@@ -675,26 +742,54 @@ factor is given by:
 \end{equation}
 b, the linearly anisotropic factor, is
 \begin{equation}
-b_{g,n}(\hat\Omega) = 1 + 3\mu_{g\rightarrow g,n}\frac{\sigma_{t,g,n} -
+b_{g,n}(\Omega) = 1 + 3\mu_{g\rightarrow g,n}\frac{\sigma_{t,g,n} -
                       \sigma_{s_0,g\rightarrow g,n}}{{\left| \rho_{g,n}
                       \right|}^2}\rho_{g,n}\cdot \Omega
 \end{equation}
-and the biasing parameter is given by
+and the biasing parameter is given by the product of the cross section and the
+biasing parameter $\lambda$ seen previously in Eqs. \eqref{eq:ExTransfrm}
+and \eqref{eq:DwivediTrns},
 \begin{equation}
-  \rho_{g,n} = \sigma_{t,g,n} \lambda_{g,n}
+  \rho_{g,n} = \sigma_{t,g,n} \lambda_{g,n} .
+  \label{eq:LIFTIII}
 \end{equation}
+$\rho_{g,n}$ can be obtained from the deterministic solution to the adjoint
+equation, rather than from the cross section and $\lambda$, which requires some
+assumptions on the distribution of particles. Instead, Turner showed that $\rho$
+can be in terms of the deterministic scalar fluxes, where
+\begin{subequations}
+\begin{equation}
+  \rho_{x,g,n} = \frac{1}{\Delta x_n} \ln \bigg(
+  \frac{\phi^{\dagger}_{g,i+1/2}}{\phi^{\dagger}_{g,i-1/2}} \bigg)
+  \label{eq:rhox}
+\end{equation}
+\begin{equation}
+  \rho_{y,g,n} = \frac{1}{\Delta y_n} \ln \bigg(
+  \frac{\phi^{\dagger}_{g,j+1/2}}{\phi^{\dagger}_{g,j-1/2}} \bigg)
+  \label{eq:rhox}
+\end{equation}
+and
+\begin{equation}
+  \rho_{z,g,n} = \frac{1}{\Delta z_n} \ln \bigg(
+  \frac{\phi^{\dagger}_{g,k+1/2}}{\phi^{\dagger}_{g,k-1/2}} \bigg)
+  \label{eq:rhox}
+\end{equation}
+are all defined based on cell-edge flux values in cartesian coordinates.
 \end{subequations}
 
-The first equation in this series is an adjustment of the exponential transform.
+Eq. \eqref{eq:LIFTI} is an adjustment of the exponential transform described by
+Dwivedi \cite{dwivedi_new_1982}.
 However,
 rather than relying upon an isotropic scattering law, like earlier
 implementations of the exponential transform, the LIFT
 method adjusts the transform to instead be linearly anisotropic in angle. The
-parameters
-$\beta_{g,n}$, $b_{g,n}$ and $rho_{g,n}$ are calculated from values obtained from the
+derivation of this equation for both linearly anisotropic scattering and
+isotropic scattering is available in \cite{turner_automatic_1997}.
+The parameters
+$\beta_{g,n}$, $b_{g,n}$ and $\rho_{g,n}$ are calculated from values obtained from the
 deterministic calculation and are used to calculate $\psi^{\dagger}_{g,n}$.
 
-In addition to utilizing the exponential transform to bias the particles in
+In addition to using the exponential transform to bias the particles in
 angle, the LIFT
 method also utilized weight windows for particle weight adjustment. However, the
 computational
@@ -702,10 +797,23 @@ cost of generating angle-dependent weight windows from the previous equations
 led the authors
 to choose space-energy exclusive weight windows. The weight window target values were
 calculated to be inversely proportional to the adjoint solution, as with other
-methods.
+methods
 \begin{equation}
-  ww_{center,g,n} = \frac{\phi^{\dagger}_{g,src}}{\phi^{\dagger}_{g,n}}
+  ww_{center,g,n} = \frac{\phi^{\dagger}_{g,src}}{\phi^{\dagger}_{g,n}} .
 \end{equation}
+
+The LIFT method \cite{turner_automatic_1997, turner_automatic_1997-1}, like
+AVATAR, calculated the angular flux for a region by assuming the angular flux
+was a product of the scalar flux and an exponential function. The angular flux
+values were then used to generate values for the exponential transform variance
+reduction
+technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
+also generated weight window parameters. However, generating a full
+angle-dependent weight window map and running Monte Carlo transport with those
+weight windows was computationally limiting, and the authors chose to only
+generate space- and energy- dependent weight windows. Turner showed that LIFT
+outperformed AVATAR for several example problems, but both methods performed
+poorly in voids and low-density regions.
 
 Turner compared a number of variants of LIFT \cite{turner_automatic_1997-1}
 against AVATAR to
@@ -713,7 +821,7 @@ determine the efficiency of LIFT. In his investigation, Turner compared LIFT and
 AVATAR using
 approximations for the adjoint solution with diffusion and $S_N$ transport
 calculations, and
-various methods to calculate weight window parameters, including utilizing LIFT
+various methods to calculate weight window parameters, including using LIFT
 combined
 with AVATAR's weight window parameters. In most cases, LIFT outperformed AVATAR.
 In problems
@@ -728,19 +836,6 @@ methods: an
 overly accurate solution for the adjoint problem may reduce the variance but
 come at such
 a high computational cost that it will decrease the FOM.
-
-The LIFT method \cite{turner_automatic_1997, turner_automatic_1997-1}, like
-AVATAR, calculated the angular flux for a region by assuming the angular flux
-was a product of the scalar flux and an exponential function. The angular flux
-values were then used to generate values for the exponential transform variance
-reduction
-technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
-also generated weight window parameters. However, generating a full
-angle-dependent weight window map and running Monte Carlo transport with those
-weight windows was computationally limiting, and the authors chose to only
-generate space- and energy- dependent weight windows. Turner showed that LIFT
-outperformed AVATAR for several example problems, but both methods performed
-poorly in voids and low-density regions.
 
 More recently, Keady and Larsen showed that LIFT could be improved upon further
 by using cell-averaged currents and fluxes rather than cell-edge values for

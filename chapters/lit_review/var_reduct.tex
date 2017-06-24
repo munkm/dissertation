@@ -384,9 +384,10 @@ particles more frequently interact, thereby increasing their probability of
 directional change or absorption. The transformed cross section used by the
 exponential transform is defined by
 %
-\begin{equation*}
+\begin{equation}
   \Sigma_t^* = \Sigma_t(1-p\mu) ,
-\end{equation*}
+  \label{eq:ExTrns}
+\end{equation}
 %
 where $\Sigma_t^*$ is the transformed total cross section, $\Sigma_t$ is the
 true total cross section, $p$ is the transform parameter, and $\mu$ is the
@@ -401,6 +402,7 @@ particle weight must be adjusted accordingly. This is given by
   w^* &= \frac{\Sigma_t e^{-\Sigma_t s}}{\Sigma_t^* e^{-\Sigma_t^* s}} \\
       &= \frac{e^{-\rho \Sigma_t \mu s}}{1-p\mu}, \\
   \end{split}
+  \label{eq:ExTrnsWt}
 \end{equation*}
 %
 where $s$ is the phase space of particle residence. This weight adjustment
