@@ -611,7 +611,7 @@ As discussed in Section \ref{subsec:MCVR}, the exponential transform is a modifi
 sampling method that adjusts the distance-to-collision in Monte Carlo
 transport to encourage particle transport in preferential regions. This is done
 by modifying the sampled cross section.
-Recall from Eq. \eqref{eq:ExTrns} that
+Recall from Eq.\ \eqref{eq:ExTrns} that
 the exponential transform is dependent on a transform parameter $p$ and the
 cosine angle $\mu$, such that $\Sigma_t^* = \Sigma_t(1-p\mu)$.
 When used without angle biasing,
@@ -619,13 +619,13 @@ When used without angle biasing,
   \psi^{\dagger}_g (r, \Omega) \approx e^{\Sigma_t \lambda \cdot r}
   \label{eq:ExTransfrm}
 \end{equation}
-the exponential transform can
+and the exponential transform can
 have undesirable weight
 fluctuations \cite{haghighat_monte_2003}, especially as the number of collisions
-to reach a tally increases \cite{gupta_sampling_1985}. The variables in Eq.
-\eqref{eq:ExTransfrm} show that the importance function (the adjoint flux) can
+to reach a tally increases \cite{gupta_sampling_1985}. Eq.\
+\eqref{eq:ExTransfrm} shows that the importance function (the adjoint flux) can
 be approximated as an exponential function varying in space, dependent on the
-total cross section $\Sigma_t$, space $r$, and a parameter defining the amount
+total cross section $\Sigma_t$, distance traveled $r$, and a parameter defining the amount
 and direction of biasing $\lambda$.
 
 Dwivedi \cite{dwivedi_new_1982} showed that by adding an angle-dependent collision
@@ -638,22 +638,24 @@ the exponential transform takes the form
   \label{eq:DwivediTrns}
 \end{equation}
 Note that the ratio of cross sections outside of the exponential function
-$\sigma_s / \sigma_t$ is the survival probability in an interaction event, and
+$\sigma_{s,0} / \sigma_t$, where $\sigma_{s,0}$ is the zeroth moment of the scattering cross section, is the survival probability in an interaction event, and
 the $(1 - \lambda \cdot \Omega)$ term is consistent with the weight adjustment
-required for the exponential transform (Eq. \eqref{eq:ExTrnsWt}).
+required for the exponential transform (Eq.\ \eqref{eq:ExTrnsWt}).
+% RNS: What is "this" here?
 This was applied to a monoenergetic problem
 with slab geometry and isotropic scattering, and the variance was reduced by a
 factor of more than 100 when compared with other exponential transform methods.
-This was adjusted in
+
 Gupta and Dwivedi's subsequent work \cite{gupta_sampling_1985} applied the
 exponential transform with angle biasing to deep-penetration problems with
 anisotropic scattering. The authors did not explicitly use the
 true distribution for anisotropic scattering, but rather chose to approximate
 the biased kernel to be a function of the isotropic angular distribution. The
 authors observed a reduction in the variance by a factor of 10, but they
-acknowledged that while the combination of the biased kernel and exponential
+acknowledged that, while the combination of the biased kernel and exponential
 biasing reduced weight fluctuations, it also had the potential to introduce
 other weight fluctuations due to anisotropies in the flux.
+% RNS: any comments about time for these two paragraphs? not sure how fom was impacted.
 
 Ueki and Larsen \cite{ueki_kinetic_1998}
 generalized Dwivedi's importance transform and applied it to
@@ -662,9 +664,9 @@ observed that Dwivedi's method and the generalized Dwivedi method outperformed
 non-angle-dependent exponential biasing for all types of scattering,
 and that their generalized method
 outperformed Dwivedi's original method in higher order scattering. The work
-described by Dwivedi, Gupta, Ueki and Larsen were all applied to one-dimensional
-problems. Ueki and Larsen pointed out that this methodology could be extended to
-three-dimensional problems using Turner and Larsen's methodology
+of Dwivedi, Gupta, Ueki and Larsen was all applied to 1D
+problems. Ueki and Larsen pointed out that their method could be extended to
+3D problems using Turner and Larsen's methodology
 (described in Section \ref{subsec:LIFT})
 \cite{ueki_kinetic_1998}.
 
@@ -682,21 +684,20 @@ adjustment
 alone.
 However, their method performed best in highly absorbing media.
 The authors noted that this performance was due to the fact that the biasing
-could be made
+could be 
 strong without undersampling scattering in the problem.
-They also pointed out that while the weight window method was comparable in
+They also pointed out that, while the weight window method was comparable in
 efficiency to the
-method described, their method avoided the choice of choosing importances and
+method described, their method avoided choosing importances and
 weight window
-values for biasing. Their method was limited to exclusively photon transport
-biasing, and not
-neutron transport; the authors were optimistic that the method could be extended
+values for biasing. Their method was limited to photon transport
+biasing, though the authors were optimistic that the method could be extended
 to neutron
 transport.
 Both, Niemal, and Vergnaud \cite{both_automated_1990} also derived VR parameters for
 the exponential transform and for collision biasing based on the adjoint
-solution as a measure of importance. They implemented their results in the
-TRIPOLI-3 software.
+solution as a measure of importance. 
+% RNS: I don't think you need that, or else provide a tripoli ref.
 
 \subsubsection{LIFT}
 \label{subsec:LIFT}
