@@ -40,6 +40,7 @@ Thumbs.db
 # LaTeX generated files #
 #########################
 *.aux
+*.bak
 *.bbl
 *.glo
 *.acn

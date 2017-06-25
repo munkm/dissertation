@@ -18,18 +18,17 @@ here.
 
 \subsection{CADIS}
 \label{sec:CADIS}
+% RNS: the previous section did everything as a function of angle. I'd mention in here that CADIS can be a function of angle, but has only been implemented for space and energy as well as why that is. Also that the eqns you write are therefore space and energy only.
 
 In 1997, Haghighat and Wagner introduced the Consistent Adjoint-Driven
-Importance Sampling Method (CADIS)
+Importance Sampling (CADIS) method
 \cite{wagner_automatic_1997,wagner_automated_1998,haghighat_monte_2003} as a
 tool for automatic variance reduction for local tallies in Monte Carlo. CADIS
 was unique in that it used the adjoint solution from a deterministic solution to
 consistently bias the particle distribution and particle weights. Earlier
-methods had not ensured the consistency between source biasing and particle
-births. CADIS was applied to a large number of application problems and
+methods had not ensured the consistency between source biasing and particle weight. CADIS was applied to a large number of application problems and
 performed well in reducing the variance for local tallies
-\cite{wagner_review_2011}. The next several paragraphs will present and discuss
-the theory supporting CADIS.
+\cite{wagner_review_2011}. 
 
 In trying to reduce the variance for a local tally, we aim to encourage particle
 movement towards the tally or detector location. In other words, we seek to
@@ -37,20 +36,21 @@ encourage particles to induce a detector response while discouraging them from
 moving through unimportant regions in the problem.
 Recall from  Eqs. \eqref{eq:response1} and \eqref{eq:response2} that the total
 system response can be expressed as either an integral of the product of the
-adjoint flux and the forward source, or from the product of the forward flux and
-the adjoint source. Also recall that the adjoint solution is a measure for
+adjoint flux and the forward source, or the product of the forward flux and
+the adjoint source. 
+% RNS: I'd either cut this sentence or write math
+Also recall that the adjoint solution is a measure for
 response importance.
 \begin{subequations}
 \label{CADISmethod}
+
 To generate the biased source distribution for the Monte Carlo calculation,
-$\hat{q}$,
-should be related to it's contribution to inducing a response in the tally or
-detector. It follows, then, that the biased source distribution is the ratio of
+$\hat{q}$
+should be related to its contribution to inducing a response in the tally or
+detector. It follows, that the biased source distribution is the ratio of
 the contribution of a cell to a tally response to the tally response induced
 from the entire problem. Thus, the biased source distribution for CADIS
-is a function of the adjoint scalar
-flux and the forward source distribtion $q$ in region $\vec{r}, E$,
-and the total response $R$
+is 
 \begin{equation}
 \begin{split}
 \hat{q}  & = \frac{\phi^{\dagger}(\vec {r} ,E)q(\vec {r}
@@ -59,11 +59,11 @@ and the total response $R$
 \end{split}
 \label{eq:weightedsource}
 \end{equation}
+% RNS: I think it's okay to leave these as all related equation #s
+
 The  starting weights of the particles sampled from the biased source
-distribution, $\hat{q}$ must be adjusted to account for the biased source
-distribtution. As a result, the starting weights
-are a function of the biased source distribution and the
-original forward source distribution:
+distribution must be adjusted to account for the bias. As a result, the starting weights
+are 
 \begin{equation}
 \begin{split}
 w_0  & = \frac{q}{\hat{q}} \\
@@ -72,9 +72,11 @@ w_0  & = \frac{q}{\hat{q}} \\
 \label{eq:startingweight}
 \end{equation}
 Note that when Eq. \eqref{eq:weightedsource} is placed into Eq.
-\eqref{eq:startingweight}, the starting weight is a fucntion of the the total
+\eqref{eq:startingweight}, the starting weight is a function of the the total
 problem response and the adjoint scalar flux in $\vec{r}, E$.
-The target weights for the biased particles are given by
+
+The target weights throughout the problem are
+% RNS: are the weights a function of space and angle? I am not sure how clear it is. You  may want to remind us here that these weights are the ww targets that were described previously.
 \begin{equation}
 \hat{w} = \frac{R}{\phi^{\dagger}(\vec {r} ,E)},
 \label{eq:WW}
@@ -82,49 +84,51 @@ The target weights for the biased particles are given by
 \end{subequations}
 where the target weight $\hat{w}$ is also a function of the total response and
 the adjoint scalar flux in region $\vec{r}, E$.
-The equations for $\hat{w}$ and $w_0$ match; so particles are born at the same weight
-of the region they are born into. Consequently, the problem limits
-excessive splitting
-and roulette at the particle births, in addition to consistently biasing the
-particle source distribution and weights.
+The equations for $\hat{w}$ and $w_0$ match: particles are born at the target weight
+of the region they are born into. Consequently, splitting
+and rouletting is avoided at particle birth. This is the ``consistent" feature of the CADIS method.
 
-CADIS supports adjoint theory by showing that using the
-solution for the adjoint scalar
-flux, $\phi^{\dagger}$, source biasing and weight window
-variance reduction parameters can be calculated and used successfully
-for the forward Monte Carlo calculation. CADIS showed improvements in the FOM
+CADIS has been implemented in several codes with good result. For example, [NAME STUDIES] showed the CADIS method provides improvements in the FOM
 when compared to analog Monte Carlo on the order of $10^2$ to $10^3$,
-and on the order of 5
+and on the order of five
 when compared to ``expert'' determined or automatically-generated weight
-windows \cite{wagner_automated_1998, wagner_automated_2002}. For more complex
-problems, improvements in the FOM were on the order of $10^1$
+windows, respectively \cite{wagner_automated_1998, wagner_automated_2002}.
+% RNS: I'd briefly describe the problem type here. 
+% There are so many examples of CADIS use and quantification of performance, it's not possible to state any kind of generic improvement. It's ok to state a few illustrative examples and say they are illustrative examples.  
+For more complex
+problems, 
+% RNS: more complex than what? what does this mean?
+improvements in the FOM were about one order of magnitude
 \cite{wagner_automatic_1997, wagner_automated_1998}.
-Note that the original CADIS equations
-are based on space and energy ($\vec{r}, E$) dependence, but not angle, so
+
+% RNS: I'd move this up. I'd also expand on it very slightly / explain that last sentence more clearly than I did.
+Note that CADIS equations implemented in software
+are based on space and energy ($\vec{r}, E$) but not angle, so
 $\phi^{\dagger}$ can be used rather than $\psi^{\dagger}$. This does not mean
-that CADIS is not applicable to angle. It was merely a choice made by the
+that CADIS is not applicable to angle. This is a choice made by software
 developers given the computational resources required to calculate and store
-full angular flux datasets, and the inefficiency that using angular fluxes might
-pose for problems where angle dependence is not paramount.
+full angular flux datasets and the lack of sampling and scoring methods to deal with angle-based weight windows.
 
 \subsection{Becker's Local Weight Windows}
 \label{sec:beckerlocal}
 
 Becker's work in the mid- 2000s also explored generating biasing parameters for
 local source-detector problems \cite{becker_hybrid_2009}. Becker noted that in
-traditional weight window generating methods, some estimation of the adjoint
+traditional weight window generating methods, some estimate of the adjoint
 flux is used to bias a forward Monte Carlo calculation. The product of this
 weight window biasing and the forward Monte Carlo transport ultimately
 distributed particles in the problem similarly to the contributon flux.
 In his work, Becker
 used a formulation of the contributon flux, as described in Eq.
-\eqref{eq.Cont-Flux} to optimize the flux at the forward detector location. The
+\eqref{eq.Cont-Flux}, to optimize the flux at a detector location. 
+
+The
 relevant equations are given by Eqs. \eqref{eq:beckerconributon} -
 \eqref{eq:beckeralpha}.
 \begin{subequations}
 \label{eq.beckerlocal}
-The scalar contributon flux $\phi^c$, which is a function of space and energy
-is calculated with a product of the forward and
+The scalar contributon flux $\phi^c$, which is a function of space and energy,
+is calculated with a product of the deterministically-calculated forward and
 adjoint fluxes, where
 \begin{equation}
 \phi^c(\vec{r},E) = \phi(\vec{r},E) \phi^{\dagger}(\vec{r},E).
@@ -136,14 +140,14 @@ contributon flux
 \tilde{\phi^c}(\vec{r}) = C_{norm}\int_0^{\infty } \phi^c(\vec{r},E) dE,
 \label{eq:beckerconributonspace}
 \end{equation}
-where the normalization constant, $C_{norm}$ for a given detector volume $V_D$
+where the normalization constant $C_{norm}$ for a given detector volume $V_D$
 is
 \begin{equation}
 C_{norm} = \frac{V_D}{\int_{V_D}\int_0^{\infty } \phi^c(\vec{r},E) dE dV}.
 \end{equation}
-The space- and energy- dependent weight windows are given by:
+The space- and energy-dependent weight windows are given by:
 \begin{equation}
-  \bar{w}(\vec{r},E) = \frac{B(\vec{r})}{\phi^{\dagger}(\vec{r},E)}
+  \bar{w}(\vec{r},E) = \frac{B(\vec{r})}{\phi^{\dagger}(\vec{r},E)}\:,
 \label{eq:beckerlocalww}
 \end{equation}
 where
@@ -159,11 +163,11 @@ and
 \end{equation}
 \end{subequations}
 
-Becker found that this methodology for local solution variance reduction
-compared similarly to CADIS for a large challenge problem comprised of nested
-cubes. The particle density throughout the problem ended up to be similar
-between CADIS and Becker's local weight window. The FOMS also were relatively
-similar, but were reported only with Monte Carlo calculation runtimes. Note that
+Becker found that this methodology 
+compared similarly to CADIS for local solution variance reduction for a large challenge problem comprised of nested
+cubes. The particle density throughout the problem was similar
+between CADIS and Becker's local weight window. The FOM also were relatively
+similar, but were reported only with Monte Carlo calculation runtimes (excluding the deterministic runtimes). Note that
 Becker's method requires both a forward and an adjoint
 calculation to calculate the contributon fluxes, while CADIS requires only an
 adjoint calculation.
