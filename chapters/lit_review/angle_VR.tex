@@ -713,50 +713,53 @@ LIFT uses a deterministic calculation to
 generate biasing
 parameters for the exponential transform and weight window variance reduction
 techniques.
-Like the form of the importance function derived by Dwivedi (Eq.
+
+Like the form of the importance function derived by Dwivedi (Eq.\
 \eqref{eq:DwivediTrns}), the LIFT method generates an angle-dependent importance
-function by the product of a space-based exponential function and an
+function by taking the product of a space-based exponential function and an
 angle-informed collision estimator. Additionally, LIFT uses a deterministic
 calculation of the adjoint scalar flux to inform the angular flux
 reconstruction.
-The adjoint angular flux is approximated, piecewise continuous in space
-in angle,
-with Eqs. \eqref{eq:LIFTI} through \eqref{eq:LIFTIII}.
+The adjoint angular flux is approximated as piecewise continuous in space and
+in angle
+with Eqs.\ \eqref{eq:LIFTI} through \eqref{eq:LIFTIII}:
+% RNS: I think here you want to do the subequation numbering to match the other sections. 
+% Also, should all of the omegas have hats? And, should the scattering be g -> g'?
 \label{LIFT}
 \begin{equation}
 \psi^{\dagger}_{g,n} (r,\Omega) \approx
                 \phi^{\dagger}_{g,n}V_n \left[ \beta_{g,n}
                 \frac{\sigma_{s_0,g \rightarrow g,n} b_{g,n}(\Omega)}{\sigma_{t,g,n} -
-                \rho_{g,n}\cdot \Omega} e^{\rho_{g,n}\cdot (r-r_n)} \right]
+                \rho_{g,n}\cdot \Omega} e^{\rho_{g,n}\cdot (r-r_n)} \right]\:,
                 \label{eq:LIFTI}
 \end{equation}
-where the physical system is comprised of $V_n$ regions, and
+where the physical system is comprised of $N$ regions of volume $V_n$, and
 $\psi^{\dagger}_{g,n}$ is the
-approximation of the angular flux for group g and region n. Further, $\beta$,
+approximation of the angular flux for group $g$ and region $n$. Further, $\beta$,
 the normalization
-factor is given by:
+factor, is given by:
 \begin{equation}
 \beta_{g,n} = \frac{1}{\int_{V_n} e^{\rho_{g,n} \cdot (r-r_n)} dr \int_{4\pi}
               \frac{\sigma_{s_0,g \rightarrow g,n} b_{g,n}(\Omega)}{\sigma_{t,g,n} -
-              \rho_{g,n}\cdot \Omega} d\Omega}
+              \rho_{g,n}\cdot \Omega} d\Omega}\:;
 \end{equation}
-b, the linearly anisotropic factor, is
+$b_{g,n}$, the linearly anisotropic factor, is
 \begin{equation}
 b_{g,n}(\Omega) = 1 + 3\mu_{g\rightarrow g,n}\frac{\sigma_{t,g,n} -
                       \sigma_{s_0,g\rightarrow g,n}}{{\left| \rho_{g,n}
-                      \right|}^2}\rho_{g,n}\cdot \Omega
+                      \right|}^2}\rho_{g,n}\cdot \Omega\:;
 \end{equation}
-and the biasing parameter is given by the product of the cross section and the
-biasing parameter $\lambda$ seen previously in Eqs. \eqref{eq:ExTransfrm}
+and the biasing parameter $\rho_{g,n}$ is given by the product of the cross section and the
+biasing parameter $\lambda$ seen previously in Eqs.\ \eqref{eq:ExTransfrm}
 and \eqref{eq:DwivediTrns},
 \begin{equation}
   \rho_{g,n} = \sigma_{t,g,n} \lambda_{g,n} .
   \label{eq:LIFTIII}
 \end{equation}
-$\rho_{g,n}$ can be obtained from the deterministic solution to the adjoint
-equation, rather than from the cross section and $\lambda$, which requires some
-assumptions on the distribution of particles. Instead, Turner showed that $\rho$
-can be in terms of the deterministic scalar fluxes, where
+Turner showed that $\rho$
+can be defined by deterministic scalar fluxes rather than from the cross section and $\lambda$, which requires some
+assumptions on the distribution of particles:
+% RNS: what are these assumptions? Either tell us or don't mention it. 
 \begin{subequations}
 \begin{equation}
   \rho_{x,g,n} = \frac{1}{\Delta x_n} \ln \bigg(
@@ -774,10 +777,10 @@ and
   \frac{\phi^{\dagger}_{g,k+1/2}}{\phi^{\dagger}_{g,k-1/2}} \bigg)
   \label{eq:rhox}
 \end{equation}
-are all defined based on cell-edge flux values in cartesian coordinates.
+are all defined using cell-edge flux values in Cartesian coordinates.
 \end{subequations}
 
-Eq. \eqref{eq:LIFTI} is an adjustment of the exponential transform described by
+Eq.\ \eqref{eq:LIFTI} is an adjustment of the exponential transform described by
 Dwivedi \cite{dwivedi_new_1982}.
 However,
 rather than relying upon an isotropic scattering law, like earlier
@@ -786,12 +789,13 @@ method adjusts the transform to instead be linearly anisotropic in angle. The
 derivation of this equation for both linearly anisotropic scattering and
 isotropic scattering is available in \cite{turner_automatic_1997}.
 The parameters
-$\beta_{g,n}$, $b_{g,n}$ and $\rho_{g,n}$ are calculated from values obtained from the
+$\beta_{g,n}$, $b_{g,n}$, and $\rho_{g,n}$ are calculated from values obtained from the
 deterministic calculation and are used to calculate $\psi^{\dagger}_{g,n}$.
+% RNS: I'm not sure the point of this last sentence. I'd cut it (since you already told us) or contrast to other methods to make some point about it. 
 
 In addition to using the exponential transform to bias the particles in
 angle, the LIFT
-method also utilized weight windows for particle weight adjustment. However, the
+method also uses weight windows for particle weight adjustment. However, the
 computational
 cost of generating angle-dependent weight windows from the previous equations
 led the authors
@@ -811,7 +815,7 @@ technique to bias the particles in space, energy, and angle. Like AVATAR, LIFT
 also generated weight window parameters. However, generating a full
 angle-dependent weight window map and running Monte Carlo transport with those
 weight windows was computationally limiting, and the authors chose to only
-generate space- and energy- dependent weight windows. Turner showed that LIFT
+generate space- and energy-dependent weight windows. Turner showed that LIFT
 outperformed AVATAR for several example problems, but both methods performed
 poorly in voids and low-density regions.
 
@@ -820,31 +824,31 @@ against AVATAR to
 determine the efficiency of LIFT. In his investigation, Turner compared LIFT and
 AVATAR using
 approximations for the adjoint solution with diffusion and $S_N$ transport
-calculations, and
+calculations, and with
 various methods to calculate weight window parameters, including using LIFT
 combined
 with AVATAR's weight window parameters. In most cases, LIFT outperformed AVATAR.
 In problems
 with voids and low-density regions, the efficiency of the LIFT method decreased,
 but so did
-AVATAR. However, an important note that Turner mentioned was that a while
+AVATAR--confirming the findings of the previous study.
+% RNS: What is different about this sentence than the one ending the previous paragraph? I added a clause to try to connect them.
+ However, an important note was that a while
 increasing the
 accuracy of the deterministic solution may decrease the variance, it is not
 necessarily the
-best for the FOM. This is a valuable lesson for all automated variance reduction
-methods: an
+best for the FOM. Thus, an
 overly accurate solution for the adjoint problem may reduce the variance but
 come at such
-a high computational cost that it will decrease the FOM.
+a high computational cost such that it decreases the FOM.
 
 More recently, Keady and Larsen showed that LIFT could be improved upon further
 by using cell-averaged currents and fluxes rather than cell-edge values for
 angular biasing \cite{keady_modified_2015}. By using this modified variation of
-LIFT, material interfaces do not create strong flux discontinuties on cell
-edges, resulting in a solution that is both smoother and more realistic.
+LIFT, flux at material interfaces is smoother and therefore the solution is both smoother and more physical.
 Results were presented for a
-one-dimensional monoenergetic slab problem with material interfaces. The
-modified version of LIFT outperformed both the original LIFT and Monte Carlo
+1D, monoenergetic slab problem with material interfaces. The
+modified version of LIFT outperformed both the original LIFT method and Monte Carlo
 weight windows generated with forward deterministic weight windows.
 
 
