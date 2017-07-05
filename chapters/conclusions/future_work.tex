@@ -10,6 +10,15 @@ methods. First we will discuss how improving software performance will aid in
 future work. Then we will discuss how extending the breadth of analysis will
 help to understand the $\Omega$-methods further.
 
+To calculate the $\Omega$ flux, an adjustment to either the adjoint flux is
+required to ensure that the directional variable $\Omega$ is the same in both
+fluxes, or that $\Omega_{adjoint} = \Omega_{forward}$. Because quadrature sets
+are not always straightforward to interpolate, a rotationally symmetric
+quadrature set is desirable for computing the $\Omega$ fluxes. Should a method
+be developed that does have interpolatable quadrature points, it would be a good
+candidate to calculate $\Omega$ fluxes for solutions that are not
+rotationally symmetric.
+
 - mention parallelization \\
 - mention integration into production code \\
 - mention analysis script specifics \\
