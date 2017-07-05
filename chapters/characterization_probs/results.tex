@@ -1,6 +1,30 @@
 \section{Characterization Problem Results}
 \label{sec:CharResults}
 
+To quantify the $\Omega$-method success for a variety of anisotropy-inducing
+physics, we will present various forms of the Figure of Merit, as described in
+Section \ref{sec:successmetrics}.
+In the preceding subsections, a
+subset of flux anisotropy-inducing physics have been identified
+and a subset of problems that contain these physics have been conceptualized.
+In this section, the results for CADIS-$\Omega$, CADIS, and nonbiased Monte Carlo
+will be presented for each of these problems. Note that the default
+deterministic parameters for each problem are used and each Monte Carlo run is
+defaults to use the same particle count. Times to transport this particle
+quantity between methods due to differences in sampling. Monte Carlo and ADVANTG
+inputs are provided in Appendix \ref{sec:github_codes}.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/simulation_defaults}
+  \caption[Default simulation values for characterization problems.]{
+    Default simulation values for the characterization problems. The values for
+    ADVANTG primarily signify parameters used to run Denovo, with exceptions for
+    calculating biasing parameters, which is done exclusively in ADVANTG.
+    MCNP-specific values are those used for Monte Carlo runs.
+  }
+  \label{tab:simulation_defaults}
+\end{table}
 [Describe default deterministic and monte carlo specs for problems.]
 
 \subsection{Maze Variants}
@@ -8,8 +32,35 @@
 \subsubsection{Single Turn}
 [Table of FOMs for this problem] \\
 
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/maze1/maze_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for single turn maze.]{The FOMS are
+  quantified using three relative error results and two different timing results.
+  The relative errors used are the tally average relative error, the tally maximum relative
+  error, and the tally minimum relative error; the times are total walltimes for
+  the Monte Carlo calculation and the sum of the hybrid method software, the
+  deterministic tranport time, and the Monte Carlo calculation time.}
+  \label{tab:maze1foms}
+\end{table}
+
 [Plot of tally results for this problem] \\
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/maze1/maze_1_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for single turn labyrinth.]
+  {This is a fun tally result.}
+  \label{fig:maze1result}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics{./chapters/characterization_probs/figures/maze1/maze_1_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for single turn
+  labyrinth]{This is a super cool result.}
+  \label{fig:maze1result}
+\end{figure}
 [Plot of anisotropies for this problem] \\
 
 [Summarize results and describe issues affecting performance] \\

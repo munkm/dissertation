@@ -19,10 +19,43 @@ monodirectional sources, etc.]
 \subsection{Problem Specifications}
 \label{subsec:ProbSpecs}
 
-[Describe problems that have streaming paths.]
+With the anisotropy-inducing physics described in Section
+\ref{subsec:AngleProbDescriptors}, a set of characterization problems that have
+different combinations of each of these effects can be conceptualized. With
+different anisotropy-inducing physics in the system, these problems can provide
+an overview of how the $\Omega$-methods perform in an assortment of anisotropic
+problems. The primary anisotropy-inducing features identified are: streaming
+paths, material heterogeneity, materials with highly differing scattering
+probabilities, and monodirectional sources. As previously described, these fall
+into two broad categories: anisotropy caused by the problem materials and
+geometry, and anisotropy caused by the source definition. In the next few
+paragraphs, each problem will be described and will be accompanied by
+a justification for which
+anisotropy-inducing physics is in each problem. A summary of which physics are
+in each problem is provided in Table \ref{tab:probphysics}.
 
-[Describe problems that are highly heterogenous.]
+% [Describe problems that have streaming paths.]
 
-[Describe problems with monodirectional sources.]
+% [Describe problems that are highly heterogenous.]
 
-[Describe problems that have high scattering discontinuity.]
+% [Describe problems with monodirectional sources.]
+
+% [Describe problems that have high scattering discontinuity.]
+
+Now that the broad subset of characterization problems have been described,
+the physics that each contains is summarized in Table \ref{tab:probphysics}.
+Upon glancing at the table, one may see that it can be difficult to separate
+out one physical mechanism from another when constructing problems. This is a
+deficiency of the characterization problem construction, and is certainly an
+area that may be improved upon in future work.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/problem_physics}
+  \caption[Anisotropy-inducing physics of each of the characterization problems.]
+  {Anisotropy-inducing physics of each of the characterization problems.
+  Each identified anisotropy-inducing physical metric is used in different
+  combinations for the characterization problems. This will help to aid in
+  extrapolating to which real problems the $\Omega$-methods may be applied.}
+  \label{tab:probphysics}
+\end{table}

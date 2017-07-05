@@ -10,5 +10,15 @@ the $\Omega$-methods.] \\
 
 [Address gaps in angle sensitivity study.] \\
 
+The characterization problems that were run were heavily biased towards
+low-density streaming to induce anisotropy in the flux. In retrospect, this subset of
+problems was not ideal for a method so dependent on weight-window type biasing,
+because particle streaming allowed for particles to cross several orders of
+magnitude in the flux before resampling. This meant that in a high-importance
+region a particle may split many thousands of times in a new splitting event.
+Unfortunately, the $\Omega$-methods are not immune to this issue and so suffered
+the same effects as CADIS, even with positive effects like the reduction of ray
+effects.
+
 [Conclude chapter with potential application problems that the $\Omega$-methods
 might apply to.] \\
