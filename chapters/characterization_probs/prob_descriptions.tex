@@ -1,11 +1,53 @@
 \section{Description of the Characterization Problems}
 \label{sec:AngleProbDesc}
 
-[Introduce the types of problems that worked vs. didn't work in CADIS and other
-methods.] \\
+In characterizing the $\Omega$ methods, we aim to determine in which problems
+the $\Omega$-methods perform well, and then quantify that success.
+First, it must be determined how effective the
+$\Omega$-methods are in reducing the variance for a tally result in Monte Carlo.
+This will be done by assessing and comparing the FOMs between different VR methods.
+Also, the method should be investigated on a diverse set of anisotropic
+problems. By constructing problems that have
+different mechanisms by which the flux may be or become
+anisotropic, potential strengths or weaknesses of the method can be identified.
+Another desirable metric would be to quantify the method's success given the
+degree of anisotropy in the problem. Recall that different
+means of quantifying the flux
+anisotropy were presented in Section \ref{sec:anisotropy_quant}. With a diverse
+selection of characterization problems, we will obtain variation in the flux
+anisotropy in each problem as well as the resultant FOMs. This will provide us
+with a path forward with which to use the $\Omega$-methods in a deeper
+angular-sensitivity study, which will be discussed in Section
+\ref{sec:DetAngle}.
 
-\subsection{Descriptors of Anisotropy-Inducing Physics}
-\label{subsec:AngleProbDescriptors}
+\subsection{Identification of Anisotropy-Inducing Physics}
+\label{subsec:AngleProbID}
+
+There exists a rich history of using hybrid methods in problems with strong
+angular dependence, as summarized in Chapter \ref{sec:lit_review}. Angular
+dependence may appear in a problem by way of several means.
+Mosher et al. noted in their threat-detection work with ADVANTG
+that problems with strongly directional sources and
+problems with ``thin'' materials like air were difficult for ADVANTG to effectively
+reduce the variance. The attributed this to strongly anisotropic behavior of the
+importance function that were not reflected well by the scalar flux
+\cite{mosher_automated_2009}. Sweezy also found that weight windows obtained
+from a hybrid S$_N$ calculation were not good for a dogleg void problem,
+where ray effects from the $S_N$ calculation generated poorer weight windows
+than a method without ray effects \cite{sweezy_automated_2005}.
+In their work with angular-CADIS, Peplow et
+al. also found that CADIS struggled with thin material streaming in a spherical
+boat test problem \cite{peplow_consistent_2012}.
+
+The examples of angle-dependence in problems affecting hybrid methods' success
+illustrate that the flux can have anisotropy resulting from more than one
+mechanism. Based on these examples, we have identified several separate
+processes that affect the flux anisotropy. These processes can be grouped into
+three categories: anisotropy in the flux resulting from a strongly
+directional source; anisotropy resulting from strong differences between
+material properties (this can be due to differences in
+materials spatially and due to cross section); and anisotropy in the flux
+from algorithmic limitations (ray effects).
 
 [From the problems that didn't work for other methods, extrapolate and describe
 the physical reasons why these problems caused issues.]
@@ -13,16 +55,34 @@ the physical reasons why these problems caused issues.]
 [Make sure to talk about both physical effects and deterministically-introduced
 issues, like ray effects.]
 
-[Summarize physical effects, like streaming paths, highly heterogenous,
-monodirectional sources, etc.]
+It is important to note that these broad categories of anisotropy-inducing
+physics are targeted towards \textit{realistic} occurrences of anisotropies in
+the flux. There are also computational effects that influence flux anisotropy,
+namely ray effects. Ray effects are common in situations where there are strong
+streaming effects. As describe in Sections \ref{sec:contributon} and
+\ref{sec:applicationprobs}, ray effects occur when particles have long mean free
+paths and are an effect from the angular discretization $S_N$ transport. As a
+result, anisotropies in the flux arising from ray effects may also affect the
+ability of the $\Omega$ methods to effectively reduce tally variances.
+
+In this subsection, four primary physical mechanisms by which the flux may
+be anisotropic were identified. These are streaming paths, problems with high
+scattering effects, problems with high material heterogeneity (specifically with
+materials with strong differences in scattering and absorption probabilities),
+and problems with monodirectional sources. As described in the preceding
+paragraphs, a few of these mechanisms may overlap
+with one another. They comprise a large subset of flux
+anisotropy-inducing physics, and combined with different geometric arrangements
+in sample problems a diverse group anisotropic problems can be formulated. These
+problems can then be used to characterize the $\Omega$-methods.
 
 \subsection{Problem Specifications}
 \label{subsec:ProbSpecs}
 
 With the anisotropy-inducing physics described in Section
-\ref{subsec:AngleProbDescriptors}, a set of characterization problems that have
+\ref{subsec:AngleProbID}, a set of characterization problems that have
 different combinations of each of these effects can be conceptualized. With
-different anisotropy-inducing physics in the system, these problems can provide
+different anisotropy-inducing physics in the system, these problems will provide
 an overview of how the $\Omega$-methods perform in an assortment of anisotropic
 problems. The primary anisotropy-inducing features identified are: streaming
 paths, material heterogeneity, materials with highly differing scattering
@@ -34,13 +94,79 @@ a justification for which
 anisotropy-inducing physics is in each problem. A summary of which physics are
 in each problem is provided in Table \ref{tab:probphysics}.
 
-% [Describe problems that have streaming paths.]
+\subsubsection*{Experimental Beamline}
 
-% [Describe problems that are highly heterogenous.]
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=8cm]{./chapters/characterization_probs/figures/geometries/beam.png}
+  \caption[Nuclear physics experimental beamline.]{Nuclear physics experimental beamline.}
+  \label{fig:beamgeom}
+\end{figure}
 
-% [Describe problems with monodirectional sources.]
+The experimental beamline illustrated in Fig. \ref{fig:beamgeom} is an
+application problem that will have strong angular dependence in the flux. The
+facility is primarily air, with two sodium iodine detectors in the room. The
+beamline--a monodirectional source--is aimed towards the first detector, and
+the response in the second detector (at a 45\degree angle
+relative to the beamline) is to be optimized with CADIS. In this problem, we
+expect anisotropy to occur in the flux from both the monodirectional source and
+the very strong streaming effects that will occur from the low-density air. This
+problem will also be very high energy, with little opportunity for particles to
+slow down from moderating materials. The only moderating materials in the
+problem are located in the detectors. As a result, this problem will have a
+significant amount of leakage out of the vacuum boundary conditions.
 
-% [Describe problems that have high scattering discontinuity.]
+\subsubsection*{Maze Variants}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=10cm]{./chapters/characterization_probs/figures/geometries/maze2.png}
+  \caption[Single turn labyrinth geometry.]{Single turn labyrinth geometry.}
+  \label{fig:maze2geom}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=10cm]{./chapters/characterization_probs/figures/geometries/maze1.png}
+  \caption[Multi-turn labyrinth geometry.]{Multi-turn labyrinth geometry.}
+  \label{fig:maze1geom}
+\end{figure}
+
+\subsubsection*{Steel beam in Concrete}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=12cm]{./chapters/characterization_probs/figures/geometries/prob-1.png}
+  \caption[Steel plate embedded in concrete.]{Steel plate embedded in concrete.}
+  \label{fig:prob1geom}
+\end{figure}
+
+\subsubsection*{U-shaped corridor}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=15cm]{./chapters/characterization_probs/figures/geometries/prob-2.png}
+  \caption[U-shaped corridor in concrete]{U-shaped corridor in concrete.}
+  \label{fig:prob2geom}
+\end{figure}
+
+\subsubsection*{Concrete shielding with rebar}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=15cm]{./chapters/characterization_probs/figures/geometries/prob-4.png}
+  \caption[Concrete shielding with rebar]{Concrete shielding with rebar.}
+  \label{fig:prob4geom}
+\end{figure}
+
+\subsubsection*{Nuclear medicine therapy room}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=8cm]{./chapters/characterization_probs/figures/geometries/therapy-room.png}
+  \caption[Nuclear medicine therapy room.]{Therapy room geometry.}
+  \label{fig:therapygeom}
+\end{figure}
 
 Now that the broad subset of characterization problems have been described,
 the physics that each contains is summarized in Table \ref{tab:probphysics}.
