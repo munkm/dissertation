@@ -25,7 +25,8 @@ angular-sensitivity study, which will be discussed in Section
 
 There exists a rich history of using hybrid methods in problems with strong
 angular dependence, as summarized in Chapter \ref{sec:lit_review}. Angular
-dependence may appear in a problem by way of several means.
+dependence may appear in a problem through several means--both physical and
+computational.
 Mosher et al. noted in their threat-detection work with ADVANTG
 that problems with strongly directional sources and
 problems with ``thin'' materials like air were difficult for ADVANTG to effectively
@@ -34,8 +35,14 @@ importance function that were not reflected well by the scalar flux
 \cite{mosher_automated_2009}. Sweezy also found that weight windows obtained
 from a hybrid S$_N$ calculation were not good for a dogleg void problem,
 where ray effects from the $S_N$ calculation generated poorer weight windows
-than a method without ray effects \cite{sweezy_automated_2005}.
-In their work with angular-CADIS, Peplow et
+than a method without ray effects \cite{sweezy_automated_2005}. Recall from
+Sections \ref{sec:contributon} and \ref{sec:applicationprobs}, that ray
+effects are a nonphysical effect seen in the flux solution that arise from
+the angular discretization of the problem.
+Ray effects are common in situations where there are strong
+streaming effects or if there exists a strong source emitting particles with
+long mean free paths in the material. Though they did not observe ray effects in
+the importance map for the problem, Peplow et
 al. also found that CADIS struggled with thin material streaming in a spherical
 boat test problem \cite{peplow_consistent_2012}.
 
@@ -47,23 +54,17 @@ three categories: anisotropy in the flux resulting from a strongly
 directional source; anisotropy resulting from strong differences between
 material properties (this can be due to differences in
 materials spatially and due to cross section); and anisotropy in the flux
-from algorithmic limitations (ray effects).
+from algorithmic limitations (ray effects). These processes have some parameter
+space that overlap, so we will continue with a brief discussion about how each
+of these apply to anisotropic problems.
+
+Flux anisotropy arising from strong differences in material properties
 
 [From the problems that didn't work for other methods, extrapolate and describe
 the physical reasons why these problems caused issues.]
 
 [Make sure to talk about both physical effects and deterministically-introduced
 issues, like ray effects.]
-
-It is important to note that these broad categories of anisotropy-inducing
-physics are targeted towards \textit{realistic} occurrences of anisotropies in
-the flux. There are also computational effects that influence flux anisotropy,
-namely ray effects. Ray effects are common in situations where there are strong
-streaming effects. As describe in Sections \ref{sec:contributon} and
-\ref{sec:applicationprobs}, ray effects occur when particles have long mean free
-paths and are an effect from the angular discretization $S_N$ transport. As a
-result, anisotropies in the flux arising from ray effects may also affect the
-ability of the $\Omega$ methods to effectively reduce tally variances.
 
 In this subsection, four primary physical mechanisms by which the flux may
 be anisotropic were identified. These are streaming paths, problems with high
