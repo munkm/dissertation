@@ -1,0 +1,30 @@
+\begin{tabular}{l|m{5cm}}
+\toprule
+Parameter Type & Parameter Value \\
+\midrule \midrule
+\multicolumn{2}{c}{ADVANTG Values$^1$} \\
+\midrule
+P$_N$ Order               &    $3$ \\
+Quadrature Type           &  Quadruple Range \\
+Quadrature Order          &    $10$ \\
+Spatial Solver            &  Step Characteristic \\
+Energy Group Library$^{\dagger}$     &    27G19N \\
+Boundary Conditions & vacuum \\
+\midrule \midrule
+\multicolumn{2}{c}{MCNP Values$^2$} \\
+\midrule
+Particle Count      &   $1e7$ \\
+Boundary Conditions & vacuum \\
+\bottomrule
+\end{tabular}
+\begin{flushleft}
+\footnotesize{
+  $^1$ ADVANTG runs of the characterization problems
+  were run on 16 cores of a 32 core node, with 256Gb of memory on
+  an Oak Ridge National Laboratory compute cluster maintained by the Radiation
+  Transport and Nuclear Systems Division. \\
+  $^2$ MCNP runs of the characterization problems were run on the same
+ machine, with 256Gb of memory but using all 32 cores of the node. \\
+  $^{\dagger}$ Parameter type that has no default in ADVANTG.}
+\end{flushleft}
+
