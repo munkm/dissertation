@@ -9,12 +9,12 @@ Quadrature Type           &  Quadruple Range \\
 Quadrature Order          &    $10$ \\
 Spatial Solver            &  Step Characteristic \\
 Energy Group Library$^{\dagger}$     &    27G19N \\
-Boundary Conditions & vacuum \\
+Boundary Conditions$^{*}$ & vacuum \\
 \midrule \midrule
 \multicolumn{2}{c}{MCNP Values$^2$} \\
 \midrule
-Particle Count      &   $1e7$ \\
-Boundary Conditions & vacuum \\
+Particle Count             &   $1e7$ \\
+Boundary Conditions$^{**}$ & vacuum \\
 \bottomrule
 \end{tabular}
 \begin{flushleft}
@@ -25,6 +25,11 @@ Boundary Conditions & vacuum \\
   Transport and Nuclear Systems Division. \\
   $^2$ MCNP runs of the characterization problems were run on the same
  machine, with 256Gb of memory but using all 32 cores of the node. \\
-  $^{\dagger}$ Parameter type that has no default in ADVANTG.}
+  $^{\dagger}$ Parameter type that has no default in ADVANTG. \\
+  $^{*}$ No other boundary condition type is available in ADVANTG at this time. \\
+  $^{**}$ To ensure that the Monte Carlo input physics match what is possible by
+  ADVANTG/Denovo, all Monte Carlo runs have vacuum boundary conditions, despite
+  the availability of other options.
+}
 \end{flushleft}
 

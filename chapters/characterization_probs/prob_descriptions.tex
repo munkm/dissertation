@@ -36,7 +36,7 @@ importance function that were not reflected well by the scalar flux
 from a hybrid S$_N$ calculation were not good for a dogleg void problem,
 where ray effects from the $S_N$ calculation generated poorer weight windows
 than a method without ray effects \cite{sweezy_automated_2005}. Recall from
-Sections \ref{sec:contributon} and \ref{sec:applicationprobs}, that ray
+Sections \ref{sec:ContributonImportance} and \ref{sec:applicationprobs}, that ray
 effects are a nonphysical effect seen in the flux solution that arise from
 the angular discretization of the problem.
 Ray effects are common in situations where there are strong
@@ -53,18 +53,67 @@ processes that affect the flux anisotropy. These processes can be grouped into
 three categories: anisotropy in the flux resulting from a strongly
 directional source; anisotropy resulting from strong differences between
 material properties (this can be due to differences in
-materials spatially and due to cross section); and anisotropy in the flux
-from algorithmic limitations (ray effects). These processes have some parameter
-space that overlap, so we will continue with a brief discussion about how each
+materials spatially and due to changes in interaction probabilities);
+and anisotropy in the flux from algorithmic limitations (ray effects).
+These processes have some parameter
+space that overlap, so this section will continue with a brief discussion about how each
 of these apply to anisotropic problems.
 
-Flux anisotropy arising from strong differences in material properties
+A strongly directional source is one that emits particles in a very small solid
+angle of angle-space. The most extreme example of this would be a
+monodirectional source, while an extreme opposite would be an isotropic source.
+This particular anisotropy-creating process
+is source-specific and does not depend on the rest of the
+problem configuration. Characterization problems will have sources of both types
+to ensure parameter space is covered.
 
-[From the problems that didn't work for other methods, extrapolate and describe
-the physical reasons why these problems caused issues.]
+% This next paragraph is maybe a little confusing and could use rewording.
+The next subset of anisotropy-inducing processes are those that result form
+strong differences between material properties. As noted, this can be from
+the geometric configuration of the problem, or from variations in the cross
+sections within a geometric location. To illustrate the differences in the way
+the problem can physically induce anisotropy in the flux, several simple thought
+experiments will be presented. Consider first the extreme example of material
+A which has some low absorption probability,
+and material B which is a pure absorber. Only
+particles that travel through material A will eventually reach the tally
+location. This is an example of a type of problem with strong material
+heterogeneity. In constructing a set of characterization problems, creating channels
+through which particles will preferentially travel will induce anisotropy in the
+flux. These types of flow paths are also of interest in shielding application
+problems, and were discussed at length in Section
+\ref{sec:ContributonImportance}. In this type of problem, material A can either
+have a low scattering probability (airlike), or it can be highly scattering. In
+scattering events, neutral particles can either lose very little energy with a high Z
+material, like lead, or they can lose a lot of energy with a low Z material.
+These will be considered separately, because the energy spectrum of the
+particles affects the particle's interaction probability.
+Consider another example of an isotropic
+point source immersed in a pure thin material. Because particles have a very low
+probability of interaction in the material, they will travel almost uniformly
+outwards away from the point source. At some distance from the point source, the
+majority of the
+particles in a cell will be traveling in the same direction. This is an example
+of a problem with streaming paths.
+To summarize, we have identified several
+sub-distinctions of this type of effect: regions with streaming where particles
+far from the source are primarily monodirectional, regions
+that are highly scattering where particles have a preferential flowpath through
+one material and are downscattered in energy, and regions with strong
+material heterogeneity where particles have preferential flowpaths but are not
+necessarily downscattered in energy. It should be noted that while streaming and
+scattering problems will almost always be subsets of problems with material
+homogeneity, it is possible to have a highly scattering or a streaming problem
+without material heterogeneity.
 
-[Make sure to talk about both physical effects and deterministically-introduced
-issues, like ray effects.]
+The last factor that can influence anisotropy in the flux solution is ray
+effects. While ray effects are a result of anisotropy in the flux solution, this
+is a nonphysical effect and can actually affect variance reduction
+performance. In the case of ray effects, we aim to see if the
+$\Omega$-methods are more robust in avoiding them in generating VR parameters.
+Because ray effects are primarily seen in large regions with low interaction
+probabilities, some of the characterization problems will need to
+incorporate these regions into their geometries.
 
 In this subsection, four primary physical mechanisms by which the flux may
 be anisotropic were identified. These are streaming paths, problems with high
@@ -105,19 +154,38 @@ in each problem is provided in Table \ref{tab:probphysics}.
 \end{figure}
 
 The experimental beamline illustrated in Fig. \ref{fig:beamgeom} is an
-application problem that will have strong angular dependence in the flux. The
+application problem that will have very strong angular dependence in the flux. The
 facility is primarily air, with two sodium iodine detectors in the room. The
 beamline--a monodirectional source--is aimed towards the first detector, and
 the response in the second detector (at a 45\degree angle
 relative to the beamline) is to be optimized with CADIS. In this problem, we
 expect anisotropy to occur in the flux from both the monodirectional source and
-the very strong streaming effects that will occur from the low-density air. This
-problem will also be very high energy, with little opportunity for particles to
+the very strong streaming effects that will occur from the low-density air.
+These streaming effects will also cause ray effects to appear in the
+deterministic solutions. This
+problem will be very high energy, with little opportunity for particles to
 slow down from moderating materials. The only moderating materials in the
-problem are located in the detectors. As a result, this problem will have a
-significant amount of leakage out of the vacuum boundary conditions.
+problem are located in the detectors, and as a result it is the only problem
+that has strong streaming effects but does not have material heterogeneity.
 
-\subsubsection*{Maze Variants}
+\subsubsection*{Labyrinth Variants}
+
+The labyrinth variants have isotropic point sources on the left hand side of the
+problem emitting a watt spectrum of
+neutrons approximating the energy spectrum emitted by that of $^{235}$U fission.
+On the right hand side of the problem there is a NaI detector recording the flux.
+They are both composed of a concrete maze with an air channel through the maze, and
+then open air channels at either end of the channels. The first variant of the
+labyrinth has a single turn, as illustrated in Figure \ref{fig:maze2geom}, and
+the second labyrinth has multiple turns, as illustrated in Figure
+\ref{fig:maze1geom}. These problems are both
+likely to have ray effects in the air region near the forward source. However,
+because far more scattering events will be required for a particle to exit the
+channel in the multi-turn maze, ray effects will likely be less prominent in the
+air region of that variant problem. Both problems have strong
+differences in interaction probabilities between the air and the concrete,
+thus they will have material heterogeneity. Further, because the concrete is
+composed of several lighter-mass elements, these will also be highly scattering.
 
 \begin{figure}[h!]
   \centering
@@ -142,6 +210,20 @@ significant amount of leakage out of the vacuum boundary conditions.
   \label{fig:prob1geom}
 \end{figure}
 
+Figure \ref{fig:prob1geom} is a variant problem with a steel beam embedded in
+concrete. A NaI detector is located on the right hand side of the problem to
+record the response in CADIS problems. The source is a 80x80cm sheet pointed in
+towards the steel structure in the $+x$ direction emitting 10MeV neutrons.
+Because the particles have preferential flow through the steel but do do not
+have long streaming paths, this problem has material heterogeneity and will be
+highly scattering, but it will not have streaming paths in the shielding region.
+Further, because the source is emitted from a thin plate in $+x$, it is
+monodirectional. This problem may have some ray effects occurring from
+backscattering off of the steel and concrete in the left side air region, and it
+may also have some exiting the beam on the right hand side. However, because
+significantly more scattering will happen in the concrete, the ray effects on
+the right hand side will be less pronounced than in the low-density maze exits.
+
 \subsubsection*{U-shaped corridor}
 
 \begin{figure}[h!]
@@ -150,6 +232,16 @@ significant amount of leakage out of the vacuum boundary conditions.
   \caption[U-shaped corridor in concrete]{U-shaped corridor in concrete.}
   \label{fig:prob2geom}
 \end{figure}
+
+The u-shaped corridor illustrated in Figure \ref{fig:prob2geom} is somewhat
+similar to the maze variants from Figs. \ref{fig:maze2geom} and
+\ref{fig:maze1geom}. On the left-hand side of the corridor there is a point source
+emitting a watt specturum of $^{235}$U neutrons. The right leg of the corridor
+has a NaI detector. Without the large air voids in the labyrinth variants, the
+U-shaped corridor will have
+less-prominent ray effects. The heterogeneity between
+the air and concrete will preferentially transport particles through the air,
+and particles interacting with the concrete will downscatter in energy. This
 
 \subsubsection*{Concrete shielding with rebar}
 
@@ -160,6 +252,23 @@ significant amount of leakage out of the vacuum boundary conditions.
   \label{fig:prob4geom}
 \end{figure}
 
+The shielding material illustrated in Figure \ref{fig:prob4geom} is built off of
+the steel structural beam problem in Figure \ref{fig:prob1geom}. However, this is a more
+realistic illustration of rebar in concrete. In this problem, a NaI detector is
+used to meausure the response on the right hand side of the problem in yellow.
+The source is both space- and energy-dependent, emitting a watts spectrum of
+neutrons characteristic of 235U fission, and is distributed in a 100x160cm plate
+on the left hand side of the problem. The source is monodirectional in $+x$.
+The two images provided show
+different xy-plane cutaways of the shielding, with steel rebar running through
+the concrete in different directions. This problem should have angular
+dependence, but preferential flowpaths through the concrete are not directed
+towards the detector location on the other side of the shielding in some of the
+rebar. This problem has material heterogeneity both in the concrete and between
+the concrete and air. This problem is highly scattering from the concrete, and
+is unlikely to have ray effects without a strong single preferential flowpath
+through the shield.
+
 \subsubsection*{Nuclear medicine therapy room}
 
 \begin{figure}[h!]
@@ -169,10 +278,26 @@ significant amount of leakage out of the vacuum boundary conditions.
   \label{fig:therapygeom}
 \end{figure}
 
+A small application problem relevant to the interests of this project is the
+therapy room illustrated in Figure \ref{fig:therapygeom}. This room has concrete
+walls, a water-based phantom that is being irradiated by a monodirectional
+source in the room, and a hallway where a therapy technician might walk. In a
+CADIS-run of this problem, we seek to optimize the dose response of the
+technician in the hallway. Because this problem is primarily air with concrete
+borders, it will have strong streaming effects in the air. Particles that do
+make it to the technician will be produced by emission from the patient in the
+room, by scattering off of the problem air, or by scattering off of the problem
+walls. Because of the high fraction of air in this problem, we also anticipate
+ray effects to occur. While there will be scattering in this problem, it will
+not be as strong of an effect as other characterization problems.
+
 Now that the broad subset of characterization problems have been described,
 the physics that each contains is summarized in Table \ref{tab:probphysics}.
 Upon glancing at the table, one may see that it can be difficult to separate
-out one physical mechanism from another when constructing problems. This is a
+out one physical mechanism from another when constructing problems. This is
+especially true in generating a problem that has ray effects without streaming
+paths, and in constructing a highly scattering problem that has preferential
+flow paths but does not have material heterogeneity. This is a
 deficiency of the characterization problem construction, and is certainly an
 area that may be improved upon in future work.
 
@@ -186,3 +311,8 @@ area that may be improved upon in future work.
   extrapolating to which real problems the $\Omega$-methods may be applied.}
   \label{tab:probphysics}
 \end{table}
+
+% maybe it would be worthwhile to add a table of source definitions between each
+% of the char problems. Some of them are monoenergetic, some are
+% monodirectional, and some are monospatial(?) (point sources). A table would be
+% a good way to summarize this information.
