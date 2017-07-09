@@ -1,14 +1,16 @@
 \section{Method Recommendations}
 \label{sec:method_recs}
 
-[Summarize results from characterization problems.] \\
+% [Summarize results from characterization problems.] \\
 
-[Summarize findings from angle sensitivity study.] \\
+In this chapter the
 
-[Based on the results, we recommend that the following parameters be used for
-the $\Omega$-methods.] \\
+% [Summarize findings from angle sensitivity study.] \\
 
-[Address gaps in angle sensitivity study.] \\
+% [Based on the results, we recommend that the following parameters be used for
+% the $\Omega$-methods.] \\
+
+% [Address gaps in angle sensitivity study.] \\
 
 The characterization problems that were run were heavily biased towards
 low-density streaming to induce anisotropy in the flux. In retrospect, this subset of
@@ -18,7 +20,15 @@ magnitude in the flux before resampling. This meant that in a high-importance
 region a particle may split many thousands of times in a new splitting event.
 Unfortunately, the $\Omega$-methods are not immune to this issue and so suffered
 the same effects as CADIS, even with positive effects like the reduction of ray
-effects.
+effects. Further, with the strong dependence on angle, the $\Omega$-fluxes may
+have exacerbated this streaming-sampling effect in regions with strong angular
+dependence around the detector. In a problem like the single turn labyrinth,
+where the $\Omega$-flux generated a strong line of importance between the exit
+of the labyrinth and the detector and drastically dropped the importance behind
+the detector, a particle has much more opportunity to cross several orders of
+mangitude of importance than it does in CADIS. This is likely what caused
+CADIS-$\Omega$ to take longer in Monte Carlo transport than CADIS in all of the
+characterization problems.
 
-[Conclude chapter with potential application problems that the $\Omega$-methods
-might apply to.] \\
+% [Conclude chapter with potential application problems that the $\Omega$-methods
+% might apply to.] \\

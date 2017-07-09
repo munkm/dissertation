@@ -59,12 +59,18 @@ error bins in the majority of the nonbiased Monte Carlo
 characterization problems less than 100\%. In some problems that are
 extraordinarily difficult for Monte Carlo to solve without biasing, there were
 tally bins with very high errors. In the following subsections they will be
-clearly indicated. Time cutoffs were not chosen because
+clearly indicated and their results will not be plotted so as to not obfuscate
+the CADIS and CADIS-$\Omega$ results. Time cutoffs were not chosen because
 we decided to measure how effective the $\Omega$ methods were at reducing the
 variance per particle. Depending on the flux maps generated from CADIS and
 CADIS-$\Omega$, the time to transport a finite amount of particles may vary. As
 a result, the reported times from a simulation can tell us whether the method
-requires more sampling than other methods.
+requires more sampling than other methods in addition to how fast it takes to
+reach a desired relative error. The responses in the NaI detectors of each of
+the problems was measured with an MCNP track length tally (f4). The tally was
+energetically binned to match the dataset of the multigroup dataset provided in
+ADVANTG, and the entire volume of the detectors were used with no spatial
+binning.
 
 Each problem presented in Section \ref{sec:CharResults} will
 use the values specified in Table \ref{tab:simulation_defaults}
@@ -77,13 +83,118 @@ provided in Appendix \ref{sec:github_codes}.
 \subsection{Maze Variants}
 \label{subsec:resultsmaze}
 \subsubsection{Single Turn}
-[Table of FOMs for this problem] \\
+
+The single turn maze FOM results are summarized in Table \ref{tab:maze2foms},
+and are illustrated in Figures \ref{fig:maze2result} and \ref{fig:maze2error}.
+The table has six FOM values for CADIS and CADIS-$\Omega$ results, and three FOM
+values for the analog (nonbiased) Monte Carlo results. Results for the
+subsequent problems are presented similarly. The FOMS are quantified
+using the three different relative errors and two different times presented in
+Section \ref{sec:successmetrics}. In this and following FOM tables, FOMS noted
+with a dashed line represent bins that were not tallied and returned a
+zero-error bin. This technically results in an infinite FOM, but in reality
+represents a bin that will never converge. Because this value will hold no
+meaning in our quantification of the $\Omega$-method's success, it
+is not included in the table.
 
 \begin{table}[h!]
   \centering
-  \input{./chapters/characterization_probs/figures/maze1/maze_1_tally_foms_compare}
+  \input{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_foms_compare}
   \caption[Figure of Merit comparison for single turn maze.]{Figure of Merit
-    comparison for single turn maze. The FOMS are
+    comparison for single turn maze.
+    The relative errors used are the tally average relative error, the tally maximum relative
+  error, and the tally minimum relative error; the times are total walltimes for
+  the Monte Carlo calculation and the sum of the hybrid method software, the
+  deterministic transport time, and the Monte Carlo calculation time.}
+  \label{tab:maze2foms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_times_compare}
+  \caption[Detailed timing results for single turn maze.]
+  {Detailed timing results for single turn maze.}
+  \label{tab:maze2times}
+\end{table}
+
+In Table \ref{tab:maze2foms} the results for CADIS, CADIS-$\Omega$, and
+nonbiased Monte Carlo for the single turn maze are presented. In all cases, the
+CADIS FOMs are better than those obtained by CADIS-$\Omega$. The FOMS
+calculated using the tally average relative error are better in the nonbiased
+analog Monte Carlo than CADIS-$\Omega$ as well. However, this is a product of
+two effects: the time for the analog to run the same particle count is far
+shorter than either CADIS or CADIS-$\Omega$. As a result, to obtain the same
+FOM, CADIS-$\Omega$ needs to have $(11.7/157)^{1/2}$ the tally average
+relative error, or ~$0.27$. Because this problem is highly scattering and many
+low-energy particles can make it through the concrete labyrinth, even the analog
+can have good sampling at low energies, resulting in a tally average FOM that
+surpasses this value.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for single turn labyrinth.]
+  {Tally results comparison between methods for single turn labyrinth.}
+  \label{fig:maze2result}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for single turn
+  labyrinth]{Tally relative error comparison between methods for a single turn
+  labyrinth.}
+  \label{fig:maze2error}
+\end{figure}
+
+Figures \ref{fig:maze2result} and \ref{fig:maze2error} show the tally result and
+the relative errors for each result in the single turn maze, respectively.
+The relative error plot, Figure \ref{fig:maze2error}, does not include the
+relative error bins of the analog result because they are significantly higher
+than the CADIS and CADIS-$\Omega$ results. This is further confirmed in Table
+\ref{tab:maze2foms}, where the minimum relative error FOM is a nontallied bin.
+By inspecting Figure \ref{fig:maze2result}, one can observe that the CADIS and
+CADIS-$\Omega$ results are in agreement in bins greater that $10^{-7}$ MeV. At
+lower energy bins, CADIS-$\Omega$ generally has a higher value for the tally
+result than standard CADIS. However, in comparing the errors in these low energy
+bins in Figure $\ref{fig:maze2error}$, CADIS has a lower relative error. This
+indicates that CADIS sampled many more low-weight particles than CADIS-$\Omega$
+in these regions. Conversely, CADIS-$\Omega$ has a lower calculated relative
+error than CADIS for bins greater than ~$5*10^{-6}$. This is expected, as
+higher energy particles generally exhibit a stronger angular dependence than
+low-energy particles. High energy particles exiting the maze towards the tally
+detector have much longer mean free paths than the low energy particles, and
+will generally show a much stronger effect in the $\Omega$-flux in those
+regions. This is illustrated in Figure \ref{fig:}. The shape of the $\Omega$
+flux around the detector region is much more strongly dependent on direction in
+the high energy group 000 flux than it is for the lower energy group 026 flux.
+Despite having lower relative errors than CADIS at higher energies,
+CADIS-$\Omega$ has lower FOMs than CADIS for the FOMS calculated with the
+minimum relative error. As discussed previously, this is due to the long runtime
+of CADIS-$\Omega$, which is more than twice as long as CADIS. From this, we can
+conclude that while CADIS-$\Omega$ is better at transporting particles in high
+energy regions than CADIS, achieving lower relative errors, the length of time
+to do so is prohibitive and achievable by CADIS should the runtimes be the same
+for both.
+
+[todo: Omega flux lot of group 00]
+
+[todo: Omega flux plot of group 026]
+
+\subsubsection{Multiple Turn}
+
+The multiple turn labyrinth is built off of the single turn labyrinth geometry.
+The labyrinth materials are much the same, but the geometry differs. Table
+\ref{tab:maze1foms} summarizes the Figure of Merit results for CADIS,
+CADIS-$\Omega$ and nonbiased Monte Carlo. Figures \ref{fig:maze1result} and
+\ref{fig:maze1error} show the results obtained by the track length tally in each
+method.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for single turn maze.]{Figure of Merit
+    comparison for multiple turn maze. The FOMS are
   quantified using three relative error results and two different timing results.
   The relative errors used are the tally average relative error, the tally maximum relative
   error, and the tally minimum relative error; the times are total walltimes for
@@ -92,84 +203,246 @@ provided in Appendix \ref{sec:github_codes}.
   \label{tab:maze1foms}
 \end{table}
 
-[Plot of tally results for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_times_compare}
+  \caption[Detailed timing results for multiple turn maze.]
+  {Detailed timing results for multiple turn maze.}
+  \label{tab:maze1times}
+\end{table}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/maze1/maze_1_tally_result_compare.pdf}
-  \caption[Tally results comparison between methods for single turn labyrinth.]
-  {Tally results comparison between methods for single turn labyrinth. This is a fun tally result.}
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for multiple turn labyrinth.]
+  {Tally results comparison between methods for multiple turn labyrinth. }
   \label{fig:maze1result}
 \end{figure}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics{./chapters/characterization_probs/figures/maze1/maze_1_tally_error_compare.pdf}
-  \caption[Tally relative error comparison between methods for single turn
-  labyrinth]{Tally relative error comparison between methods for a single turn
-  labyrinth. This is a super cool result.}
-  \label{fig:maze1result}
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for multiple turn labyrinth]
+  {Tally relative error comparison between methods for a multiple turn
+  labyrinth. }
+  \label{fig:maze1error}
 \end{figure}
-[Plot of anisotropies for this problem] \\
 
-[Summarize results and describe issues affecting performance] \\
-
-\subsubsection{Multiple Turn}
-[Table of FOMs for this problem]\\
-
-[Plot of tally results for this problem]\\
-
-[Plot of anisotropies for this problem] \\
-
-[Summarize results and describe issues affecting performance] \\
+% [Summarize results and describe issues affecting performance] \\
 
 \subsection{Steel Beam}
 \label{subsec:resultbeam}
-[Table of FOMs for this problem] \\
 
-[Plot of tally results for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for steel bar embedded in concrete.]
+  {Figure of Merit comparison for steel bar embedded in concrete. }
+  \label{tab:steelbeamfoms}
+\end{table}
 
-[Plot of anisotropies for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_times_compare}
+  \caption[Detailed timing results for steel bar embedded in concrete.]
+  {Detailed timing results for steel bar embedded in concrete.}
+  \label{tab:steelbeamtimes}
+\end{table}
 
-[Summarize results and describe issues affecting performance] \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for steel bar embedded in
+  concrete.]
+  {Tally results comparison between methods for steel bar embedded in concrete.}
+  \label{fig:steelbeamresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for steel bar
+  embedded in concrete.]
+  {Tally relative error comparison between methods for steel bar embedded in
+  concrete.}
+  \label{fig:steelbeamerror}
+\end{figure}
+% [Table of FOMs for this problem] \\
+%
+% [Plot of tally results for this problem] \\
+%
+% [Plot of anisotropies for this problem] \\
+%
+% [Summarize results and describe issues affecting performance] \\
 
 \subsection{U-Shaped Corridor}
 \label{subsec:resultsucorridor}
-[Table of FOMs for this problem] \\
 
-[Plot of tally results for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for U-shaped air corridor in concrete.]
+  {Figure of Merit comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{tab:ucorridorfoms}
+\end{table}
 
-[Plot of anisotropies for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_times_compare}
+  \caption[Detailed timing results for U-shaped air corridor in concrete.]
+  {Detailed timing results for U-shaped air corridor in concrete.}
+  \label{tab:ucorridortimes}
+\end{table}
 
-[Summarize results and describe issues affecting performance] \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for U-shaped air corridor in
+  concrete.]
+  {Tally results comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{fig:ucorridorresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for U-shaped air
+  corridor in concrete.]
+  {Tally relative error comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{fig:ucorridorerror}
+\end{figure}
+% [Table of FOMs for this problem] \\
+%
+% [Plot of tally results for this problem] \\
+%
+% [Plot of anisotropies for this problem] \\
+%
+% [Summarize results and describe issues affecting performance] \\
 
 \subsection{Shielding with Rebar}
 \label{subsec:resultrebar}
-[Table of FOMs for this problem] \\
 
-[Plot of tally results for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for rebar-embedded
+  concrete.]{Figure of Merit comparison between methods for rebar-embedded
+  concrete.}
+  \label{tab:rebarfoms}
+\end{table}
 
-[Plot of anisotropies for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_times_compare}
+  \caption[Detailed timing results for rebar-embedded concrete]
+  {Detailed timing results for rebar-embedded concrete.}
+  \label{tab:rebartimes}
+\end{table}
 
-[Summarize results and describe issues affecting performance] \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for rebar-embedded concrete.]
+  {Tally results comparison between methods for rebar-embedded concrete.}
+  \label{fig:rebarresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for rebar-embedded concrete.]
+  {Tally relative error comparison between methods for rebar-embedded concrete.}
+  \label{fig:rebarerror}
+\end{figure}
+% [Table of FOMs for this problem] \\
+%
+% [Plot of tally results for this problem] \\
+%
+% [Plot of anisotropies for this problem] \\
+%
+% [Summarize results and describe issues affecting performance] \\
 
 \subsection{Beam Problem}
 \label{subsec:resultsbeam}
-[Table of FOMs for this problem] \\
 
-[Plot of tally results for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for simplified
+    experimental nuclear physics beamline.]
+    {Figure of Merit comparison between methods for simplified experimental
+    nuclear physics beamline.}
+  \label{tab:beamfoms}
+\end{table}
 
-[Plot of anisotropies for this problem] \\
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_times_compare}
+  \caption[Detailed timing results for simplified experimental nuclear physics
+  beamline.]
+  {Detailed timing results for simplified experimental nuclear physics beamline.}
+  \label{tab:steelbeamtimes}
+\end{table}
 
-[Summarize results and describe issues affecting performance] \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for simplified experimental
+    nuclear physics beamline.]
+  {Tally results comparison between methods for simplified experimental
+    nuclear physics beamline.}
+  \label{fig:beamresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods
+    for simplified experimental nuclear physics beamline.]
+  {Tally relative error comparison between methods for simplified experimental
+    nuclear physics beamline.}
+  \label{fig:beamerror}
+\end{figure}
+% [Table of FOMs for this problem] \\
+%
+% [Plot of tally results for this problem] \\
+%
+% [Plot of anisotropies for this problem] \\
+%
+% [Summarize results and describe issues affecting performance] \\
 
 \subsection{Therapy Room}
-\label{subsec:resultstherapy}
-[Table of FOMs for this problem] \\
+% \label{subsec:resultstherapy}
+% \begin{table}[h!]
+%   \centering
+%   \input{./chapters/characterization_probs/figures//_tally_foms_compare}
+%   \caption[]{}
+%   \label{tab:foms}
+% \end{table}
 
-[Plot of tally results for this problem] \\
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/_tally_result_compare.pdf}
+%   \caption[Tally results comparison between methods for ]
+%   {Tally results comparison between methods for }
+%   \label{fig:result}
+% \end{figure}
 
-[Plot of anisotropies for this problem] \\
-
-[Summarize results and describe issues affecting performance] \\
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/_tally_error_compare.pdf}
+%   \caption[Tally relative error comparison between methods for ]
+%   {Tally relative error comparison between methods for}
+%   \label{fig:result}
+% \end{figure}
+% [Table of FOMs for this problem] \\
+%
+% [Plot of tally results for this problem] \\
+%
+% [Plot of anisotropies for this problem] \\
+%
+% [Summarize results and describe issues affecting performance] \\
 
