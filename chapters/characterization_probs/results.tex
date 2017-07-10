@@ -130,6 +130,27 @@ low-energy particles can make it through the concrete labyrinth, even the analog
 can have good sampling at low energies, resulting in a tally average FOM that
 surpasses this value.
 
+Table \ref{tab:maze2times} contains more detailed timing information spent in
+each of the codes for each type of problem. This table is split into three
+vertical regions: the MCNP time spent doing Monte Carlo transport, the
+deterministic time spent in ADVANTG/Denovo, and the walltime, which is the
+summation of the two. The deterministic time subsection of the table contains
+further characterizations of timing. This is because processes in ADVANTG are
+run using different computational resources. ADVANTG itself is a driver script
+used to run the deterministic transport Denovo, but it also postprocesses the
+Denovo fluxes into source biasing and weight window parameters. The processes
+exclusive to ADVANTG, like generating the biasing parameters, are performed in
+serial on a single processor. Conversely, all of the Denovo calculation is run
+in parallel on any number of cores specified by the user. To ensure that a
+comparable time is used when calculating the adjusted FOM, we have chosen to
+calculate the total walltime spent in each calculation. Thus, the parallelized
+time is multipled by the total number of cores and this quantity is summed with
+the ADVANTG runtime to obtain the total deterministic runtime. The omega time,
+though run in denovo, is still a serial calculation so is separated out from the
+total Denovo time. Further, in the timing output from ADVANTG, some timed tasks
+overlap with other tasks, and are labeled in this table as ``dispose time''.
+The analog problem does not have any hybrid timing information.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
@@ -193,13 +214,8 @@ method.
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_foms_compare}
-  \caption[Figure of Merit comparison for single turn maze.]{Figure of Merit
-    comparison for multiple turn maze. The FOMS are
-  quantified using three relative error results and two different timing results.
-  The relative errors used are the tally average relative error, the tally maximum relative
-  error, and the tally minimum relative error; the times are total walltimes for
-  the Monte Carlo calculation and the sum of the hybrid method software, the
-  deterministic tranport time, and the Monte Carlo calculation time.}
+  \caption[Figure of Merit comparison for multiple turn maze.]{Figure of Merit
+    comparison for multiple turn maze.}
   \label{tab:maze1foms}
 \end{table}
 
@@ -210,6 +226,15 @@ method.
   {Detailed timing results for multiple turn maze.}
   \label{tab:maze1times}
 \end{table}
+
+In Tables \ref{tab:maze1foms} and \ref{tab:maze1times}
+it is notable that the CADIS-$\Omega$ runtime is
+shorter in the Monte Carlo simulation than CADIS. This differs most of the other
+cases presented in this section. Both CADIS and CADIS-$\Omega$ outperform the
+analog by a factor of $10^2$ or $10^3$, indicating the necessity of variance
+reduction for a problem like this. In comparing the FOMs, CADIS slightly outperforms
+CADIS-$\Omega$ for all relative errors, meaning that the time
+to reach any relative error will be achieved faster by CADIS.
 
 \begin{figure}[h!]
   \centering
@@ -228,10 +253,33 @@ method.
   \label{fig:maze1error}
 \end{figure}
 
-% [Summarize results and describe issues affecting performance] \\
+Looking at Figures \ref{fig:maze1result} and \ref{fig:maze1error}, we can see
+that the analog Monte Carlo differ significantly from either CADIS or
+CADIS-$\Omega$. Two distinct regions of tally bins have been recorded in the
+analog case: a high energy region comprised of particles that have scattered
+very few times before reaching the detector, and a much smaller low energy
+region, comprised of particles that are very thermal. These thermal particles
+have a very small MFP in the concrete labyrinth, thus the majority of them were
+absorbed in the shield. However, given the errors on this result, these results are
+not trustworthy. In the case of this problem, some of what was discussed in the
+single-turn labyrinth is confirmed. This particular case requires that particles
+scatter several more times if they are to exit the labyrinth from the air duct.
+As a result, the spectrum is more thermal than the first case and the problem
+has less anisotropy. As discussed in the single-turn labyrinth, CADIS
+outperformed CADIS-$\Omega$ in problems in energy bins that had less angular
+dependence. Because this problem has far more scattering event, it overall has
+less angular dependence and CADIS outperforms CADIS-$\Omega$ in all energy bins.
+This problem is poorly suited to CADIS-$\Omega$.
 
 \subsection{Steel Beam}
 \label{subsec:resultbeam}
+
+The steel beam embedded in concrete FOM and timing
+results are summarized in Tables
+\ref{tab:steelbeamfoms} and \ref{tab:steelbeamtimes}. Figures
+\ref{fig:steelbeamresult} and \ref{fig:steelbeamerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
 
 \begin{table}[h!]
   \centering
@@ -248,6 +296,25 @@ method.
   {Detailed timing results for steel bar embedded in concrete.}
   \label{tab:steelbeamtimes}
 \end{table}
+
+In the inspection of Tables \ref{tab:steelbeamfoms} and
+\ref{tab:steelbeamtimes} we can conclude that this problem is very difficult for
+analog Monte Carlo and that CADIS-$\Omega$ generally performs better than CADIS.
+In fact, CADIS-$\Omega$ has the best performance
+in this problem of all of the characterization problems.
+CADIS-$\Omega$ outperforms CADIS for
+the FOMS calculated with the tally average relative error and the tally maxmimum
+relative error. This indicates that giving a limiting relative error to which
+all energy bins must converge, CADIS-$\Omega$ will achieve it in half the time
+that CADIS will. Further, CADIS-$\Omega$ has a better FOM than CADIS when the
+deterministic runtimes are added. As shown in the timing table, the time to run
+and generate the variance reduction parameters for CADIS-$\Omega$ will always be
+longer than CADIS due to the forward transport run. The addition of
+deterministic runtimes will always lower the FOM of CADIS-$\Omega$ more than
+that of CADIS, so CADIS-$\Omega$'s achievement of a FOM higher FOM with much
+longer runtimes in both Monte Carlo and ADVANTG illustrates just how much lower
+the relative error it achieves is. CADIS-$\Omega$ is very well-suited to a
+problem with these conditions.
 
 \begin{figure}[h!]
   \centering
@@ -267,6 +334,17 @@ method.
   concrete.}
   \label{fig:steelbeamerror}
 \end{figure}
+
+Figure \ref{fig:steelbeamresult} shows that CADIS and CADIS-$\Omega$ are in
+agreement for the tally results in all energy bins. The nonbiased Monte Carlo
+calculation differs from both of the hybrid methods. In Figure
+\ref{fig:steelbeamerror} it can be observed that CADIS-$\Omega$ achieves a
+consistently lower relative error than CADIS. From this we can conclude that
+CADIS-$\Omega$'s source biasing parameters consistently move more particles in
+all tally energy bins than CADIS. The importance map generated by CADIS-$\Omega$
+better reflects the problem physics and more efficiently transports particles to
+the desired tally location.
+
 % [Table of FOMs for this problem] \\
 %
 % [Plot of tally results for this problem] \\
@@ -277,6 +355,14 @@ method.
 
 \subsection{U-Shaped Corridor}
 \label{subsec:resultsucorridor}
+
+The U-shaped air corridor embedded in concrete
+FOM and timing
+results are summarized in Tables
+\ref{tab:ucorridorfoms} and \ref{tab:ucorridortimes}. Figures
+\ref{fig:ucorridorresult} and \ref{fig:ucorridorerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
 
 \begin{table}[h!]
   \centering
@@ -325,6 +411,14 @@ method.
 \subsection{Shielding with Rebar}
 \label{subsec:resultrebar}
 
+The problem with rebar embedded length- and width-wise
+in concrete has FOM and timing
+results summarized in Tables
+\ref{tab:rebarfoms} and \ref{tab:rebartimes}. Figures
+\ref{fig:rebarresult} and \ref{fig:rebarerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
+
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_foms_compare}
@@ -367,6 +461,13 @@ method.
 
 \subsection{Beam Problem}
 \label{subsec:resultsbeam}
+
+The nuclear physics beamline toy problem has FOM and timing
+results summarized in Tables
+\ref{tab:beamfoms} and \ref{tab:beamtimes}. Figures
+\ref{fig:beamresult} and \ref{fig:beamerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
 
 \begin{table}[h!]
   \centering
