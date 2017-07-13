@@ -18,7 +18,7 @@ selection of characterization problems, we will obtain variation in the flux
 anisotropy in each problem as well as the resultant FOMs. This will provide us
 with a path forward with which to use the $\Omega$-methods in a deeper
 angular-sensitivity study, which will be discussed in Section
-\ref{sec:DetAngle}.
+\ref{sec:AngleResults}.
 
 \subsection{Identification of Anisotropy-Inducing Physics}
 \label{subsec:AngleProbID}
@@ -168,9 +168,9 @@ slow down from moderating materials. The only moderating materials in the
 problem are located in the detectors, and as a result it is the only problem
 that has strong streaming effects but does not have material heterogeneity.
 
-\subsubsection*{Labyrinth Variants}
+\subsubsection*{Labyrinths}
 
-The labyrinth variants have isotropic point sources on the left hand side of the
+The labyrinth problems have isotropic point sources on the left hand side of the
 problem emitting a watt spectrum of
 neutrons approximating the energy spectrum emitted by that of $^{235}$U fission.
 On the right hand side of the problem there is a NaI detector recording the flux.
@@ -182,7 +182,8 @@ the second labyrinth has multiple turns, as illustrated in Figure
 likely to have ray effects in the air region near the forward source. However,
 because far more scattering events will be required for a particle to exit the
 channel in the multi-turn maze, ray effects will likely be less prominent in the
-air region of that variant problem. Both problems have strong
+air region near the detector of that variant problem than it is in the single
+turn maze. Both problems have strong
 differences in interaction probabilities between the air and the concrete,
 thus they will have material heterogeneity. Further, because the concrete is
 composed of several lighter-mass elements, these will also be highly scattering.
@@ -255,7 +256,7 @@ and particles interacting with the concrete will downscatter in energy. This
 The shielding material illustrated in Figure \ref{fig:prob4geom} is built off of
 the steel structural beam problem in Figure \ref{fig:prob1geom}. However, this is a more
 realistic illustration of rebar in concrete. In this problem, a NaI detector is
-used to meausure the response on the right hand side of the problem in yellow.
+used to measure the response on the right hand side of the problem in yellow.
 The source is both space- and energy-dependent, emitting a watts spectrum of
 neutrons characteristic of 235U fission, and is distributed in a 100x160cm plate
 on the left hand side of the problem. The source is monodirectional in $+x$.
@@ -282,8 +283,9 @@ A small application problem relevant to the interests of this project is the
 therapy room illustrated in Figure \ref{fig:therapygeom}. This room has concrete
 walls, a water-based phantom that is being irradiated by a monodirectional
 source in the room, and a hallway where a therapy technician might walk. In a
-CADIS-run of this problem, we seek to optimize the dose response of the
-technician in the hallway. Because this problem is primarily air with concrete
+CADIS-run of this problem, we seek to calculate the response in the
+technician in the hallway from particles that are not absorbed by the patient in
+the room. Because this problem is primarily air with concrete
 borders, it will have strong streaming effects in the air. Particles that do
 make it to the technician will be produced by emission from the patient in the
 room, by scattering off of the problem air, or by scattering off of the problem
@@ -311,8 +313,39 @@ area that may be improved upon in future work.
   extrapolating to which real problems the $\Omega$-methods may be applied.}
   \label{tab:probphysics}
 \end{table}
-
 % maybe it would be worthwhile to add a table of source definitions between each
 % of the char problems. Some of them are monoenergetic, some are
 % monodirectional, and some are monospatial(?) (point sources). A table would be
 % a good way to summarize this information.
+
+\subsection{Introduction the Presented Data}
+\label{subsec:resultsintro}
+
+The results for the characterization problems and the subsequent angle
+sensitivity study will have a substantive amount of data. Only the most
+pertinent fraction of the available data will be presented with each problem.
+A more extensive set of data is available in Appendix \ref{ch:extended}. The
+characterization problems will have extended results in Section
+\ref{sec:extendedcharprobs} and the angle sensitivity study will be in
+\ref{sec:extendedangle}. To provide a more tangible approach to the theoretical success
+metrics that were presented in Section \ref{sec:successmetrics}, the next few
+paragraphs will present the types and variety of data that may be presented in
+Sections \ref{sec:CharResults}, \ref{sec:AngleResults},
+\ref{sec:extendedcharprobs} and \ref{sec:extendedangle}. This will be
+accompanied by some discussion into the factors influencing these metrics, when
+relevant.
+
+In Section \ref{sec:FOMvariants} several variants of the Figure of Merit were
+presented as quantifications of method success. In the
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/fom_defaults}
+  \caption[Table of FOM variants used to measure $\Omega$ performance.]{
+  Table of FOM variants used to measure $\Omega$ performance. Relevant Eqs. can
+  be found in Section \ref{sec:FOMvariants} and are referenced in the table in
+  brackets.}
+  \label{tab:fom_defaults}
+\end{table}
+
+

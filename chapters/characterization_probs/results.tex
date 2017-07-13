@@ -37,20 +37,34 @@ Monte Carlo calculations are demarcated in the table.
 
 The first portion of the table summarizes the values used by ADVANTG. Note that
 these values all pertain to the Denovo deterministic solver, which is set up by
-ADVANTG. The parameter types marked with an asterisk have no default in ADVANTG.
+ADVANTG. The parameter types marked with a dagger have no default in ADVANTG.
 We have chosen to use a relatively course 27 group energy group library.
 Because the characterization problems are meant to identify the method's
 performance pertaining to flux anisotropy, and we expect the energy group
-structure to have little effect on anisotropy conditions, we opted for a
+structure to have less of an effect on anisotropy conditions than other
+parameters, we opted for a
 computationally inexpensive energy group mesh for the deterministic solver.
-The values without an asterisk are ADVANTG default values.
-They are also good choices for
-initial characterization of the method. This is because a novice user may opt to
-use these parameters for an initial solution on a problem for which they may have
-little intuition. Further, these values are defaults in ADVANTG for their
-computational stability--such as not having negative valued weights or fluxes,
-stable convergence, a relatively fast time to a solution, etc.--so they should
-be good initial parameters with which to study the characterization problems.
+Further, this group library was designed for radiation shielding applications,
+so it applies to the majority of the characterization problems.
+
+The boundary conditions for all of the characterization problems will be vacuum.
+At this time, ADVANTG does not support reflective or mirror boundary conditions
+so this is a limitation in application space that we cannot address at this
+time. The Monte Carlo code we use does support vacuum boundary conditions, but a
+discrepancy in boundary conditions between deterministic and Monte Carlo
+calculations would result in the simulation of a fundamentally different problem.
+
+Unless noted, the values in this subsection of the table are ADVANTG
+default values. They are a good initial choice for characterization of the
+method because they are often chosen as the parameters for hybrid methods studies
+by experienced and inexperienced ADAVANTG users.
+Further, these values are defaults in ADVANTG for their
+computational stability, such as not having negative valued weights or fluxes,
+stable convergence, a relatively fast time to a solution, et cetera. Due to
+the good properties exhibited by the solver options and because users first
+using the $\Omega$-methods are likely to choose these values, the values in
+Table \ref{tab:simulation_defaults} will be used for the characterization of the
+$\Omega$-methods.
 
 The latter section of the table summarizes the Monte Carlo code MCNP values for
 each of the problems. The value of $1e7$ particles as a particle cutoff
@@ -66,11 +80,32 @@ variance per particle. Depending on the flux maps generated from CADIS and
 CADIS-$\Omega$, the time to transport a finite amount of particles may vary. As
 a result, the reported times from a simulation can tell us whether the method
 requires more sampling than other methods in addition to how fast it takes to
-reach a desired relative error. The responses in the NaI detectors of each of
+reach a desired relative error.
+
+The responses in the NaI detectors of each of
 the problems was measured with an MCNP track length tally (f4). The tally was
 energetically binned to match the dataset of the multigroup dataset provided in
 ADVANTG, and the entire volume of the detectors were used with no spatial
-binning.
+binning. It should be noted that while the tally is energetically binned, Monte
+Carlo transport is not discretized in space or energy like deterministic
+transport. In a nonbiased analog Monte Carlo calculation, transport is
+completely continuous in space, energy, and angle. In a hybrid calculation using
+VR parameters from a deterministic solution, the VR parameters will be
+discretized to reflect the solution obtained from the determinstic solver. As a
+result, the particle's transit throughout the
+problem will be a combination of sampling both continuous and discretized-energy
+dependent factors. Consider a particle that goes through a scattering event
+in shielding material. In this scattering event, the particle samples from a
+continuous-energy cross section and changes direction based on its energy.
+However, depending on how much energy it loses in the scattering event it may
+cross into the energy range of a lower-energy weight window and will require
+further sampling.
+
+All characterization problems were run on Remus, a machine operated and
+maintained by the Radiation Transport and Nuclear Systems Division at Oak Ridge
+National Laboratory. The ADVANTG runs were run on 16 cores of a 32 core node,
+with 256Gb of memory. The MCNP runs were run on the same machine, with 256Gb of
+memory but using all 32 cores of the node.
 
 Each problem presented in Section \ref{sec:CharResults} will
 use the values specified in Table \ref{tab:simulation_defaults}
@@ -124,7 +159,8 @@ calculated using the tally average relative error are better in the nonbiased
 analog Monte Carlo than CADIS-$\Omega$ as well. However, this is a product of
 two effects: the time for the analog to run the same particle count is far
 shorter than either CADIS or CADIS-$\Omega$. As a result, to obtain the same
-FOM, CADIS-$\Omega$ needs to have $(11.7/157)^{1/2}$ the tally average
+FOM, CADIS-$\Omega$ needs to have $R_1/R_2 = \sqrt{T_2/T_1}$ (this is from
+taking a ratio of the FOMs) the tally average
 relative error, or ~$0.27$. Because this problem is highly scattering and many
 low-energy particles can make it through the concrete labyrinth, even the analog
 can have good sampling at low energies, resulting in a tally average FOM that
