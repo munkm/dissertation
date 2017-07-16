@@ -167,25 +167,7 @@ can have good sampling at low energies, resulting in a tally average FOM that
 surpasses this value.
 
 Table \ref{tab:maze2times} contains more detailed timing information spent in
-each of the codes for each type of problem. This table is split into three
-vertical regions: the MCNP time spent doing Monte Carlo transport, the
-deterministic time spent in ADVANTG/Denovo, and the walltime, which is the
-summation of the two. The deterministic time subsection of the table contains
-further characterizations of timing. This is because processes in ADVANTG are
-run using different computational resources. ADVANTG itself is a driver script
-used to run the deterministic transport Denovo, but it also postprocesses the
-Denovo fluxes into source biasing and weight window parameters. The processes
-exclusive to ADVANTG, like generating the biasing parameters, are performed in
-serial on a single processor. Conversely, all of the Denovo calculation is run
-in parallel on any number of cores specified by the user. To ensure that a
-comparable time is used when calculating the adjusted FOM, we have chosen to
-calculate the total walltime spent in each calculation. Thus, the parallelized
-time is multipled by the total number of cores and this quantity is summed with
-the ADVANTG runtime to obtain the total deterministic runtime. The omega time,
-though run in denovo, is still a serial calculation so is separated out from the
-total Denovo time. Further, in the timing output from ADVANTG, some timed tasks
-overlap with other tasks, and are labeled in this table as ``dispose time''.
-The analog problem does not have any hybrid timing information.
+each of the codes for each type of problem.
 
 \begin{figure}[h!]
   \centering
