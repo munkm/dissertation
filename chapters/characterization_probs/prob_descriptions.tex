@@ -321,30 +321,16 @@ area that may be improved upon in future work.
 \subsection{Introduction the Presented Data}
 \label{subsec:resultsintro}
 
-The results for the characterization problems and the subsequent angle
-sensitivity study will have a substantive amount of data. Only the most
-pertinent fraction of the available data will be presented with each problem.
-A more extensive set of data is available in Appendix \ref{ch:extended}. The
-characterization problems will have extended results in Section
-\ref{sec:extendedcharprobs} and the angle sensitivity study will be in
-\ref{sec:extendedangle}. To provide a more tangible approach to the theoretical success
-metrics that were presented in Section \ref{sec:successmetrics}, the next few
-paragraphs will present the types and variety of data that may be presented in
-Sections \ref{sec:CharResults}, \ref{sec:AngleResults},
-\ref{sec:extendedcharprobs} and \ref{sec:extendedangle}. This will be
-accompanied by some discussion into the factors influencing these metrics, when
-relevant.
-
-The data that will be presented for each characterization problem
-can be subdivided into three distinct
-categories: data primarily obtained by the Monte Carlo calculation, data
-primarily obtained by the deterministic calculation, and data that is a
-combination of both. The FOM values using Monte Carlo runtimes, for example, is
-in the first category. The anisotropy metrics presented in Section
-\ref{sec:anisotropy_quant} are an example of a determinstic-exclusive dataset.
-In analyzing the subsequent results, one should consider the source of the data
-that may be influencing their effects.
-% Maybe delete this paragraph.
+At this point several characterization problems have been identified for their
+properties in inducing anisotropy in the particle flux.
+Prior to going through the results for each of the characterization problems,
+this section will show how the data for each problem will be presented and will
+walk through the reasoning behind this approach to the analysis. First, this
+section will start with example tables and figures of the FOM and tally results.
+Then, plots explaining the anisotropy metrics will follow. This will be
+accompanied by a
+discussion about how the anisotropy metrics will be related to the FOM and the
+relative error.
 
 In Section \ref{sec:FOMvariants} several equation variants of
 the Figure of Merit were
@@ -377,58 +363,53 @@ in brackets.
 \end{table}
 
 Table \ref{tab:time_defaults} further reports the times used to calculate the
-FOM values in \ref{tab:fom_defaults}. The times are enumerated in more detail
-beyond what is reported by the FOM. In particular, a number of subsets of the
-deterministic time have been included to show where the majority of the compute
-time is spent for each type of hybrid calculation. The advantg time, T$_{adv}$,
-is the total time spent in advantg-specific processes in a hybrid run. This may
-include calculate weight windows or source biasing parameters or constructing
-the inputs for Denovo. The denovo time T$_{denovo}$ is the walltime for the
-tasks spent in Denovo. The reported $\Omega$ time, T$_{\Omega}$, is the total
-time spent in the tasks unique to the $\Omega$ methods. This includes reading
-in the angular flux files, performing the computation of Eq.
-\eqref{eq:omega_basic}, and writing the $\Omega$-results to a file.
-
-ADVANTG itself is a non-parallelized
-code, but it can launch parallel computations of Exnihilo/Denovo.
-During the calculation,
-ADVANTG records the clock times of each task. If these tasks are serial, then
-the clock time matches the total required compute time to perform the process.
-In the case of Denovo calculations, the total required time to perform the
-computation is the clock time times the number of parallelized processors used
-to perform the computation. The $\Omega$ method tasks at this time are not
-parallelized, so the clock time is treated in the same way as the reported
-ADVANTG time. Because the majority of the $\Omega$-flux generation
-infrastructure is implemented in Exnihilo rather than ADVANTG, future expansions
-of the method could be parallelized for faster clock times.
-
-This table is split into three
-vertical regions: the MCNP time spent doing Monte Carlo transport, the
-deterministic time spent in ADVANTG/Denovo, and the walltime, which is the
-summation of the two. The deterministic time subsection of the table contains
-further characterizations of timing. This is because processes in ADVANTG are
+FOM values in \ref{tab:fom_defaults}. This table is split into three
+vertical regions: the MCNP time spent doing Monte Carlo transport (T$_{MC}$),
+the deterministic time spent in ADVANTG/Denovo (T$_{det}$),
+and the walltime (T$_{hybrid}$), which is the
+summation of the two. The deterministic time section of the table contains
+further segmentations of timing. This is because processes in ADVANTG are
 run using different computational resources. ADVANTG itself is a driver script
-used to run the deterministic transport Denovo, but it also postprocesses the
+that can launch a paralellized run in Exnihilo/Denovo, but it also postprocesses the
 Denovo fluxes into source biasing and weight window parameters. The processes
 exclusive to ADVANTG, like generating the biasing parameters, are performed in
 serial on a single processor. Conversely, all of the Denovo calculation is run
 in parallel on any number of cores specified by the user. To ensure that a
 comparable time is used when calculating the adjusted FOM, we have chosen to
 calculate the total walltime spent in each calculation. Thus, the parallelized
-time is multipled by the total number of cores and this quantity is summed with
-the ADVANTG runtime to obtain the total deterministic runtime. The omega time,
-though run in denovo, is still a serial calculation so is separated out from the
-total Denovo time. Further, in the timing output from ADVANTG, some timed tasks
-overlap with other tasks, and are labeled in this table as ``dispose time''.
-The analog problem does not have any hybrid timing information.
+clock time is multiplied by the total number of cores to obtain T$_{denovo}$.
+This quantity is summed with
+the runtimes of the other serial tasks to obtain the total deterministic runtime.
 
-Because the adjusted FOM uses T$_{Hybrid}$, which is the total runtime of the
+Two other times are listed under the deterministic time that may or may not be
+included in T$_{hybrid}$, which are T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ is the
+reported times that are not included in the calculation of T$_{det}$ in either
+CADIS or CADIS-$\Omega$. It is a sum of time results that either are not
+important to comparing the methods--like calculating the anisotropy metrics--or
+times that are accounted for by other tasks in T$_{det}$. This prevents overlap
+of times and provides a more realistic comparison between the performance of
+both methods.
+
+The reported $\Omega$ time, T$_{\Omega}$, is the total
+time spent in the tasks unique to the $\Omega$ methods. This includes reading
+in the angular flux files, performing the computation of Eq.
+\eqref{eq:omega_basic}, and writing the $\Omega$-results to a file.
+The $\Omega$ time,
+though run in Denovo, is still a serial calculation so is separated out from the
+total Denovo time. The $\Omega$ method tasks at this time are not
+parallelized, so the clock time is treated in the same way as the reported
+ADVANTG time. Because the majority of the $\Omega$-flux generation
+infrastructure is implemented in Exnihilo rather than ADVANTG, future expansions
+of the method could be parallelized for faster clock times.
+
+Because the adjusted FOM (the FOMs labeled FOM$_{hybrid}$ in Table
+\ref{tab:fom_defaults}) uses T$_{Hybrid}$, which is the total runtime of the
 Monte Carlo calculation (T$_{MC}$) and the hybrid/deterministic run preceding it
 (T$_{det}$), it will differ between
 the $\Omega$ methods and standard CADIS and FW-CADIS. For CADIS, T$_{det}$ is
-the sum of the advantg runtime and the wall time of the Denovo tranport. For
-CADIS-$\Omega$, this is the sum of the advantg runtime, the wall time of the
-Denovo tranport, and the time spent in the $\Omega$-flux calculation. How each
+the sum of the ADVANTG runtime and the wall time of the Denovo transport. For
+CADIS-$\Omega$, this is the sum of the ADVANTG runtime, the wall time of the
+Denovo transport, and the time spent in the $\Omega$-flux calculation. How each
 time is calculated is summarized in Table \ref{tab:time_defaults}.
 
 Beyond
@@ -466,14 +447,14 @@ Presenting both the relative error distribution and the FOM will provide a clear
 picture of the performance of the $\Omega$-methods.
 
 The tally results and relative errors for CADIS,
-CADIS-$\Omega$, and the nobiased analog Monte Carlo will be
+CADIS-$\Omega$, and the nonbiased analog Monte Carlo will be
 presented in figures similar to
 \ref{fig:sampleresult} and \ref{fig:sampleerror}.
-% Can't figure out why this figure reference isn't working.
 In the case where the
-relative error of the nobiased analog Monte Carlo far exceeds the errors
+relative error of the nonbiased analog Monte Carlo far exceeds the errors
 achieved by CADIS and CADIS-$\Omega$, it will be omitted. The example given in
-Figure \ref{fig:sampleerror} shows a result from this case. The hybrid methods
+Figure \ref{fig:sampleerror} shows a result where this is the case.
+The hybrid methods
 will be marked with a dashed line; the nonbiased analog Monte Carlo will be a
 solid line.
 
@@ -507,9 +488,14 @@ the particles are travelling in opposite directions, this will result in a
 larger omega flux than the adjoint flux. If they stream in the same direction
 (away from the tally detector, for example),
 then the resultant $\Omega$ flux will be smaller than the adjoint. In the case
-of the
+of the angular contributon max to average the distribution will have a lower
+limit where the maximum is very close to the average contributon flux. It can
+never be lower than the average. In a isotropic problem, the majority of the
+cells in the problem will be this ratio, whereas in a strongly anisotropic
+problem this distribution will shift upwards, but will still have the same
+limiting lower value as the isotropic case.
 
-\begin{figure}[htb]
+\begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
@@ -524,7 +510,7 @@ of the
     \label{fig:samplestrip013}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[width=0.95\linewidth]{./chapters/characterization_probs/figures/sample_data/group_026_strip_full.pdf}
@@ -537,36 +523,34 @@ of the
   \label{fig:samplestrips}
 \end{figure}
 
-Figure \ref{fig:samplestrips} shows stripplots for all of the anisotropy metrics
-for three different energy groups of one of the characterization problems. The
-effects of thermalization on each of the metrics can be seen clearly as one
-scans from Fig \ref{fig:samplestrip001} to \ref{fig:samplestrip026}. The adjoint
-anistropy metric, the forward anisotropy metric, and metric three are all
-shifted by a factor of $4\pi$. This may be corrected in the future, but for the
+To illustrate the effect of how different the anisotropy metrics' distributions
+are, Figure \ref{fig:samplestrips} shows stripplots for all of the anisotropy
+metrics for three different energy groups in one of the characterization
+problems. The effects of thermalization--and consequently more induced
+isotropy--on each of the metrics can be seen clearly as one
+scans from Fig \ref{fig:samplestrip001} to \ref{fig:samplestrip026}.
+
+The adjoint
+anisotropy metric, the forward anisotropy metric, and metric three are all
+shifted by a factor of $4\pi$. Their natural lowest limit should be near unity
+but all lie lower. This may be corrected in the future, but for the
 purposes of this analysis we are more interested in the relative distribution
-and the factor of $4\pi$ is irrelevant.
+and the consistent factor of $4\pi$ is not important to that effect.
 
 A stripplot shows distinct data points, but easily can be overwhelmed if the
-full number of cells is used from the characterization problems. The figures in
+full number of cells is used in a single strip. The figures in
 \ref{fig:samplestrips} contain a random selection of 1500 data points from the
 full anisotropy datasets,
-which is only a small fraction of the number of points in the characterization
+which is only a small fraction of the number of cells in the characterization
 problem meshes. There are other ways to visualize the full distribution of the
-dataset. Figure \ref{fig:sampledistros} shows three means by which an anisotropy metric
-can be visualized. These plots, unlike Figure \ref{fig:samplestrips}, show a
-single metric but all energy groups. The highest energy group is plotted in deep
-red, and the lowest or most thermal energy group is shown in blue.
-Because we care about the relative behavior
-of the metric as it pertains to the Monte Carlo tally--which has been
-discretized to correspond to the same energy groups as these--the subsequent
-characterization problems
-will show the metric distributions in this way. These plots
-show the distributions from least informative to most informative. The box and
-whisker plot show the quartiles of data, but become overwhelmed by the extrema
-in this case. The violin plot, which is countoured relative to the density of
-values, shows the relative distribution in a more readable format than the
-stripplot.
-\begin{figure}[htb]
+dataset. Figure \ref{fig:sampledistros} shows three modes
+by which an anisotropy metric can be visualized.
+These plots, unlike Figure \ref{fig:samplestrips}, show a
+single metric but all energy groups. The highest/fastest energy group
+is plotted in deep red, and the lowest or most thermal
+energy group is shown in blue.
+
+\begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_four_strip_full.pdf}
@@ -574,7 +558,7 @@ stripplot.
     \label{fig:samplestripM4}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_four_box_full.pdf}
@@ -588,16 +572,33 @@ stripplot.
   \end{subfigure}
   \caption[Different ways of visualizing M$_4$ for a characterization problem.]
   {Different ways of visualizing M$_4$ for a characterization problem.}
-  \label{fig:samplestrips}
+  \label{fig:sampledistros}
 \end{figure}
 
-In the case of metrics two,
-three, and five (Eqs. \eqref{eq:metric_two}, \eqref{eq:metric_three},
-\eqref{eq:metric_five}), the metrics will have some variation but will have a
-number of values at unity in isotropic cells. Depending on how anisotropic the
-problems are, these cells may dominate the distribution.
+All three subfigures in \ref{fig:sampledistros} show the effects of
+thermalization on the chosen metric distribution and density. The stripplot of
+\ref{fig:samplestripM4} is a clear representation of the density, but not much
+more can be ascertained about the distribution of the metric. Figure
+\ref{fig:sampleboxM4} has box and whisker plots that show the data quartiles,
+the mean, and outliers. However, in the case where the distribution is heavily
+towards a limiting value, the mean is hard to separate from the distribution.
+Further, no data on how the metric is distributed beyond the quartile markers is
+provided. The violin plot of Figure \ref{fig:sampleviolinM4} is a hybrid of the
+former two plots. The width of the violin is related to the density of values,
+but inside the violin the limits of the box plots are marked in black. The
+violin limits extend to the outliers.
 
-\begin{figure}[htb]
+The analysis for each of the characterization problems look at the result for
+the tally average relative error, the tally maximum relative error, and the
+tally minumum relative error. Because we are interested in how the relative
+error in each energy bin changes with respect to CADIS-$\Omega$ and CADIS, the
+plots showing the distributions over all energy groups for a single metric
+is generally more applicable than the plots for a single energy group
+but with all metrics. As a result,
+future plots of the metrics will be in the style of those
+in Figure \ref{fig:sampledistros} rather than \ref{fig:samplestrips}.
+
+\begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
@@ -606,7 +607,7 @@ problems are, these cells may dominate the distribution.
     \label{fig:samplefullviolinM2}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
@@ -616,7 +617,7 @@ problems are, these cells may dominate the distribution.
     \label{fig:samplemedianviolinM2}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
@@ -627,42 +628,167 @@ problems are, these cells may dominate the distribution.
   \end{subfigure}
   \caption[M$_2$ violin plots using different selections of the metric data.]
   {M$_2$ violin plots using different selections of the metric data.}
-  \label{fig:samplestrips}
+  \label{fig:sampleviolinsM2}
 \end{figure}
-asfdsadasdasdafaasdfasffdsasfd
 
-\begin{figure}[htb]
+Beyond plotting the anisotropy metrics as a function of energy group, we are
+interested in how the relative error or FOM will respond as a function of each
+metric. However, not all cells in the problem are as important as others to
+contributing to the tally. A cell on the problem boundary is very unlikely to
+contribute to the tally result when compared to a cell next to the adjoint
+source. As discussed in Section \ref{sec:ContributonImportance}, the contributon
+flux measures the response importance of a cell. By selectively choosing
+anisotropy metrics from cells that are likely to induce a response, some of the noise
+of less important cells can be cut out.
+
+To consistently cut out the same number of datapoints across all metrics, we
+have chosen to use a filtering algorithm based on the contributon flux in each
+cell. The first filter is choosing metric values from cells where the
+contributon flux is above the problem median contributon flux. This median is
+evaluated separately for each energy group to ensure that the same number of
+cells in each group is plotted. The second filter is choosing metric values from
+cells where the contributon flux is above the problem mean contributon flux.
+Again, the mean is computed separately for each energy group such that energy
+groups with higher contributon fluxes do not cut out important flux values from
+a different energy group. However, unlike the median filter a different number
+of cells for each energy group will be filtered. This is dependent on the skew
+between the contributon mean and median value for each energy group.
+Because the filter is evaluated based on the
+contributon flux, it can be applied to each metric consistently, meaning that
+the same number of cells are filtered out between different metrics.
+
+Figure \ref{fig:sampleviolinsM2} shows the effects of cutting out data from
+unimportant cells on the M$_2$ distribution. The first figure in the series,
+\ref{fig:samplefullviolinM2}, is the M$_2$ full distribution. As discussed
+previously, M$_2$ will be above unity in cells where the foward and adjoint
+angular fluxes travel in opposing directions, and will be below unity in cells
+where they travel in the same direction. Very unimportant cells should be below
+unity. Applying the first filter--selecting values above the contributon
+median--to this distribution results in Figure \ref{fig:samplemedianviolinM2}.
+The bottom tails of all of the distributions have been shortened, but still many
+unimportant cells remain. This should be expected, as only half of cells have
+been removed. Applying the second filter results in Figure
+\ref{fig:samplemeanviolinM2}. The unimportant tails have been almost completely
+removed from the M$_2$ distributions. Further, features in the metric
+distribution once obviscated by the
+tails are now visible.
+
+Now that a way of visualizing the metric distributions has been presented,
+we seek to find
+how the metric distributions relate to the relative error or FOM for a given
+problem. First, an improvement ratio for the relative error and FOM will be
+defined. For the relative error it is
+\begin{equation}
+  I_{RE} = \frac{RE_{CADIS-\Omega}}{RE_{CADIS}}\bigg\rvert_{E_g},
+  \label{eq:I-RE}
+\end{equation}
+and for the FOM it is
+\begin{equation}
+  I_{FOM} = \frac{FOM_{CADIS-\Omega}}{FOM_{CADIS}}\bigg\rvert_{E_g}.
+  \label{eq:I-FOM}
+\end{equation}
+These will be henceforth be referred to as the relative error and FOM
+improvement factors.
+With this definition of the improvement in the FOM or the relative
+error from CADIS to CADIS-$\Omega$, we now have a comparison between the updated
+and standard methods. By relating this metric to the anisotropy metrics, we can
+see how anisotropy of the problem influences the improvement in the relative
+error or the FOM.
+
+\begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_full.pdf}
     \caption{M$_3$ average, mean, skew, and variance plotted against the
-    relative error improvement between CADIS and CADIS-$\Omega$}
+      relative error improvement I$_{RE}$}
     \label{fig:samplestatsfullM3}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_median.pdf}
     \caption{M$_3$ data selection above the metric median for each energy group,
       value average, mean, skew, and variance plotted against the
-    relative error improvement between CADIS and CADIS-$\Omega$}
-    \label{fig:samplestatsfullM3}
+      relative error improvement I$_{RE}$}
+    \label{fig:samplestatsmedianM3}
   \end{subfigure}
 \end{figure}
-\begin{figure}[htb]\ContinuedFloat
+\begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_mean.pdf}
     \caption{M$_3$ data selection above the mean for each energy group,
       value average, mean, skew, and variance plotted against the
-    relative error improvement between CADIS and CADIS-$\Omega$}
-    \label{fig:samplestatsfullM3}
+      relative error improvement I$_{RE}$ }
+    \label{fig:samplestatsmeanM3}
   \end{subfigure}
-  \caption[M$_3$ violin plots using different selections of the metric data.]
-  {M$_3$ violin plots using different selections of the metric data.}
-  \label{fig:samplestrips}
+  \caption[Sample scatterplots of M$_3$ distribution against the relative error
+  improvement factor, I$_{RE}$.]
+  {Sample scatterplots of the M$_3$ distribution against the relative error
+    improvement factor, I$_{RE}$.}
+  \label{fig:samplestats}
 \end{figure}
+
+There are several ways in which the improvement
+factor I$_{RE}$ or I$_{FOM}$ may be compared against the anisotropy metrics. The
+first are against the metric mean and median values. A plot of I versus either
+of these values should look very simiar, with some shifting depending on the
+distribution. However, if the mean and median are shifted significantly, this
+would indicate a skew of the distribution. This skew may also be correlated with
+either
+of the I values. Last, it is possible that the spread of metric values may be
+correlated with the I factor. Figure \ref{fig:samplestatsfullM3} is an
+illustration of how I can be plotted with
+each of these measurements of the metric distribution.
+
+Similar to using the filtering algorithms in Figure
+\ref{fig:sampleviolinsM2}, the data in the statistical trend plots can also be
+filtered. The subfigures in \ref{fig:samplestats} illustrate how filtering out
+the data by the contributon flux influences the location of I$_{RE}$ for each
+energy group. Figure \ref{fig:samplestatsmedianM3} calculates the
+metric mean, median, skew, and variance for each energy group using only metric
+values in cells above the contributon median. Conversely, Figure
+\ref{fig:samplestatsmeanM3} calculates the metric mean, median, skew, and
+variance for each energy group using only metric values in cells above the
+contributon median value.
+
+The dots in each plot correspond to the same energy
+groups plotted in \ref{fig:sampleviolinsM2}. That is, the lowest energy is
+plotted in blue and the highest in red. Note that this type of plot is
+possible because the Monte Carlo tally has been discretized to have
+the same binning as the the deterministic code. It would be far more difficult
+if the energy bin widths of the Monte Carlo tally did not match the
+deterministic code.
+
+The data that will be presented for each characterization problem
+can be subdivided into three distinct
+categories: data primarily obtained by the Monte Carlo calculation, data
+primarily obtained by the deterministic calculation, and data that is a
+combination of both. The FOM values using Monte Carlo runtimes, for example, is
+in the first category. The anisotropy metrics presented in Section
+\ref{sec:anisotropy_quant} are an example of a determinstic-exclusive dataset.
+The results presented in Figure \ref{fig:samplestats} are a combination of both
+deterministic and Monte Carlo-influenced results. In studying the $\Omega$
+methods, we seek to understand how the $\Omega$ methods' performance influence
+the Monte Carlo results. Beyond observing the FOM and relative error
+distribution obtained in the Monte Carlo, the anisotropy metrics will provide
+another avenue by which to investigate $\Omega$-method performance.
+
+One may have deduced that the results for the characterization
+problems and the subsequent angle
+sensitivity study will be substantive. Only the most
+pertinent fraction of the available data will be presented with each problem in
+Sections \ref{sec:CharResults} and \ref{sec:AngleResults}. For example, in most
+cases only a single figure--and perhaps only a single metric--from the
+three presented in \ref{fig:samplestats}
+will be presented for a particular problem, because only one will show a trend
+relevant to the $\Omega$-methods' performance.
+A more extensive set of data is accessible in Appendix \ref{ch:extended}; the
+characterization problems will have extended results in Section
+\ref{sec:extendedcharprobs} and the angle sensitivity study will be in
+Section \ref{sec:extendedangle}.
+
