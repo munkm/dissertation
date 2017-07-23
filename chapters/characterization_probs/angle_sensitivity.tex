@@ -1,24 +1,42 @@
 \section{Sensitivity to Deterministic Angle Variations}
 \label{sec:AngleResults}
 
+At this point in the work, it has been shown how the $\Omega$-methods
+behave in problems with differing geometries and with differing materials.
+However, each of these problems was run with the same deterministic calculation
+parameters. While the angular flux may have differed in these problems due to
+the material or geometric configuration, it did not vary due to deterministic
+solver properties. This section will explore the effects of deterministic solver
+choices on the $\Omega$-methods' performance.
+
 Section \ref{sec:CharResults} showed that the $\Omega$-methods have a strong
-weakness to ``thin'' materials, as CADIS and FW-CADIS do. This was confirmed by
+weakness to ``thin'' materials, as CADIS and FW-CADIS do. This is because the
+importance of a particle may vary several orders of magnitude over a mean free
+path of travel distance. At a collision, it then requires several orders of
+magnitude of sampling events. This was confirmed by
 running the steel beam problem with air and concrete in place of the beam; in
-the ``thin'' material air version, CADIS-$\Omega$ performs less well than CADIS.
+the ``thin'' material air version, CADIS-$\Omega$ performs poorer than CADIS,
+conversely to the original steel problem.
 The characterization problem results also showed that
 the incorporation of the $\Omega$-flux into a problem with materials with
 strongly different moderating properties, the steel plate in concrete, showed
 strong improvement when compared to both CADIS and nonbiased Monte Carlo.
 
-Last, the parametric study will be performed on the most interesting results of
-from the characterization problem results. Because the steel beam embedded in
-concrete showed promising results, it is the problem that is covered in this
-subsection. Recall that the CADIS-$\Omega$ had better results than CADIS for
-for both a coarse and a finer mesh. CADIS-$\Omega$ had
-
-[Describe problem selection decision.] \\
-
-[Describe physical reasons why these are important for testing the method.] \\
+Due to the better performance of CADIS-$\Omega$ than CADIS
+in the problem with a steel beam in concrete, this is the problem that will be
+used to characterize the $\Omega$-methods' sensitivity to deterministic angle
+fidelity. In this section, the effect of deterministic solver choices on the
+performance of the $\Omega$ methods will be studied. By using the same problem
+with differing solver options, the effect of solver options can be isolated from
+the material and geometric effects. By doing so, we seek to determine: how
+resilient the $\Omega$-methods may be by using low-fidelity solver options, how
+different the sensitivity of the $\Omega$-methods are to solution quality when
+compared to CADIS, and how varying angular parameters may speed up or slow down
+the time to a desired solution. By quantifying these effects, we can determine
+the best parameter selection for the $\Omega$-methods for this type of problem
+or if a desirable solution
+can be sufficiently achieved using standard CADIS with a higher-quality
+deterministic solution.
 
 \subsection{Parametric Study Description}
 \label{subsec:parstudy}
@@ -52,7 +70,7 @@ because of the I/O demand to read and write these values. Recall that the ADVANT
 default quadrature order is 10. The quadrature orders used for the sensitivity
 study aimed to choose orders surrounding this value. This resulted in quadrature
 orders 5, 7, 10, 12, 15, 17, and 20 being chosen for variations in this
-variable.
+parameter.
 
 The P$_N$ order determines the fidelity of the scattering expansion. The
 availability of P$_N$ orders is dependent on the cross section dataset. For the
