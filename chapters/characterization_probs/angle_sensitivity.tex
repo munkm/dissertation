@@ -2,10 +2,19 @@
 \label{sec:AngleResults}
 
 Section \ref{sec:CharResults} showed that the $\Omega$-methods have a strong
-weakness to ``thin'' materials, as CADIS and FW-CADIS do. It also showed that
+weakness to ``thin'' materials, as CADIS and FW-CADIS do. This was confirmed by
+running the steel beam problem with air and concrete in place of the beam; in
+the ``thin'' material air version, CADIS-$\Omega$ performs less well than CADIS.
+The characterization problem results also showed that
 the incorporation of the $\Omega$-flux into a problem with materials with
 strongly different moderating properties, the steel plate in concrete, showed
 strong improvement when compared to both CADIS and nonbiased Monte Carlo.
+
+Last, the parametric study will be performed on the most interesting results of
+from the characterization problem results. Because the steel beam embedded in
+concrete showed promising results, it is the problem that is covered in this
+subsection. Recall that the CADIS-$\Omega$ had better results than CADIS for
+for both a coarse and a finer mesh. CADIS-$\Omega$ had
 
 [Describe problem selection decision.] \\
 
@@ -29,9 +38,33 @@ require rotational symmetry, only quadrature sets that have rotational
 symmetry (generally these are triangular quadrature sets)
 can be used with the $\Omega$-methods. In ADVANTG/Denovo, the triangular
 quadrature sets are: linear-discontinuous finite element, level-symmetric, and
-quadruple range. Quadrature sets differ in
-properties and are a realm of study unto their own. Quadrature orders specify
-how fine of a resolution the quadrature set will be
+quadruple range. As discussed previously, quadruple range is selected as the
+ADVANTG default because it has good properties and guarantees positivity in the
+flux. Different quadrature sets have separate
+properties and are a realm of study unto their own. Thus, we will vary only
+quadrature order and not quadrature type in this sensitivity study.
+
+Quadrature orders specify
+how fine of a resolution the quadrature set will be. As quadrature order
+increases, the size of the angular flux matrices will increase. We expect to
+observe much slower deterministic recorded times for high quadrature orders
+because of the I/O demand to read and write these values. Recall that the ADVANTG
+default quadrature order is 10. The quadrature orders used for the sensitivity
+study aimed to choose orders surrounding this value. This resulted in quadrature
+orders 5, 7, 10, 12, 15, 17, and 20 being chosen for variations in this
+variable.
+
+The P$_N$ order determines the fidelity of the scattering expansion. The
+availability of P$_N$ orders is dependent on the cross section dataset. For the
+27G19N cross section library, the P$_N$ order extends to 5. As a result,
+P$_N$ orders of 1, 3, and 5 are chosen for variations in this parameter.
+
+While the P$_N$ order
+does affect angular information in the problem, it will not change the size of
+the angular flux matrices. As a result, deterministic runtimes between
+differing P$_N$ orders
+may vary, but not as significantly as they will in differing quadrature orders
+due to the lack of change in I/O demands as P$_N$ order changes.
 
 Other deterministic parameters may influence the variance reduction parameters
 calculated by the $\Omega$ methods.
@@ -50,13 +83,72 @@ energy group structure, the spatial discretization, and the quadrature type
 certainly could be an area of future work.
 
 Several factors in the deterministic calculation should not have a strong effect
-on the angular flux whatsoever. These include the spatial solver, the
-convergence limits of the solvers, and the within group solver types.
+on the angular flux distribution. These include the spatial solver, the
+convergence criteria for the solvers, and the within group solver types.
 Because these factors should not influence the angular flux any more than any
 other part of the solution, they will not be included in this parametric study.
 
 \subsection{Quadrature Order}
 \label{subsec:quadorder}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/angle/prob_1/reordered_quad_foms}
+  \caption[Figure of Merit results for steel beam embedded in concrete, with
+  variations in quadrature order.]{Figure of Merit results for steel beam embedded in concrete, with
+  variations in quadrature order. Subdivisions of the table indicate
+calculations of the FOM using different relative errors. The analog case has a
+single value for each relative error as it is not dependent on changes in
+deterministic calculation parameters.}
+  \label{tab:quad_foms}
+\end{table}
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/angle/prob_1/err_quad_cadis.pdf}
+    \caption{Relative errors of CADIS results for differing S$_N$ orders.}
+    \label{fig:sn_cad_err}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/angle/prob_1/err_quad_cadisangle.pdf}
+    \caption{Relative errors of CADIS-$\Omega$ results for differing S$_N$
+    orders.}
+    \label{fig:sn_cadangle_err}
+  \end{subfigure}
+  \caption[Relative error results for CADIS and CADIS-$\Omega$ as a function of
+  quadrature order for the problem with a steel beam in concrete.]
+  {Relative error results for CADIS and CADIS-$\Omega$ as a function of
+  quadrature order for the problem with a steel beam in concrete.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/compare_err_quad.pdf}
+  \caption[Relative error improvement factor (Eq. \eqref{eq:I-RE}) between CADIS-$\Omega$ and
+  CADIS as a function of quadrature order for steel beam embedded in concrete.]
+  {Relative error ratio (Eq. \eqref{eq:I-RE}) between CADIS-$\Omega$ and
+   CADIS as a function of quadrature order for the problem with
+   a steel beam embedded in concrete.}
+  \label{fig:prob_1_quad_I_RE}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/compare_fom_quad.pdf}
+  \caption[Figure of merit improvement factor  (Eq. \eqref{eq:I-FOM}) between CADIS-$\Omega$ and
+  CADIS as a function of quadrature order for steel beam embedded in concrete.]
+  {Figure of merit improvement factor  (Eq. \eqref{eq:I-RE}) between CADIS-$\Omega$ and
+   CADIS as a function of quadrature order for the problem with
+   a steel beam embedded in concrete.}
+  \label{fig:prob_1_quad_I_FOM}
+\end{figure}
+
 [Show FOMs as a function of quad order for first problem] \\
 
 [Show interesting anisotropy plots for extreme-valued quad types.] \\
@@ -75,6 +167,65 @@ other part of the solution, they will not be included in this parametric study.
 
 \subsection{Scattering (P$_N$) Order}
 \label{subsec:pnorder}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/angle/prob_1/reordered_pn_foms}
+  \caption[Figure of Merit results for steel beam embedded in concrete, with
+  variations in P$_{N}$ order.]{Figure of Merit results for steel beam embedded in concrete, with
+    variations in P$_{N}$ order. Subdivisions of the table indicate
+calculations of the FOM using different relative errors. The analog case has a
+single value for each relative error as it is not dependent on changes in
+deterministic calculation parameters.}
+  \label{tab:pn_foms}
+\end{table}
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/angle/prob_1/err_pN_cadis.pdf}
+    \caption{Relative errors of CADIS results for differing P$_N$ orders.}
+    \label{fig:pn_cad_err}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/angle/prob_1/err_pN_cadisangle.pdf}
+    \caption{Relative errors of CADIS-$\Omega$ results for differing P$_N$
+    orders.}
+    \label{fig:pn_cadangle_err}
+  \end{subfigure}
+  \caption[Relative error results for CADIS and CADIS-$\Omega$ as a function of
+  P$_N$ order for the problem with a steel beam in concrete.]
+  {Relative error results for CADIS and CADIS-$\Omega$ as a function of
+  P$_N$ order for the problem with a steel beam in concrete.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/compare_err_pN.pdf}
+  \caption[Relative error improvement factor (Eq. \eqref{eq:I-RE}) between CADIS-$\Omega$ and
+  CADIS as a function of P$_N$ order for steel beam embedded in concrete.]
+  {Relative error improvement factor (Eq. \eqref{eq:I-RE}) between CADIS-$\Omega$ and
+   CADIS as a function of P$_N$ order for the problem with a
+   steel beam embedded in concrete.}
+  \label{fig:prob_1_pN_I_RE}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/compare_fom_pN.pdf}
+  \caption[Figure of merit improvement factor (Eq. \eqref{eq:I-FOM}) between CADIS-$\Omega$ and
+  CADIS as a function of P$_N$ order for steel beam embedded in concrete.]
+  {Figure of merit improvement factor (Eq. \eqref{eq:I-FOM}) between CADIS-$\Omega$ and
+   CADIS as a function of P$_N$ order for the problem with a
+   steel beam embedded in concrete.}
+  \label{fig:prob_1_pN_I_FOM}
+\end{figure}
+
 [Show FOMs as a function of pN order for first problem] \\
 
 [Show interesting anisotropy plots for extreme-valued pN orders] \\
@@ -93,6 +244,24 @@ other part of the solution, they will not be included in this parametric study.
 
 \subsection{Observations}
 \label{subsec:observations}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/improvement_err_allmethds.pdf}
+  \caption[Ratio in the relative errors between the lowest and highest variable in the angle
+  sensitivity study for CADIS and CADIS-$\Omega$.]{Ratio in the relative errors between
+    the lowest and highest variable in the angle sensitivity study for CADIS and CADIS-$\Omega$.}
+  \label{fig:angle_err_improvements}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/angle/prob_1/improvement_fom_allmethds.pdf}
+  \caption[Ratio in the figure of merits between the lowest and highest variable in the angle
+  sensitivity study for CADIS and CADIS-$\Omega$.]{Ratio in the figure of merits between
+    the lowest and highest variable in the angle sensitivity study for CADIS and CADIS-$\Omega$.}
+  \label{fig:angle_fom_improvements}
+\end{figure}
 
 [Go back through results and highlight benefits and pitfalls.] \\
 
