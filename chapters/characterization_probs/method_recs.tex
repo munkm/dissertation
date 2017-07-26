@@ -16,7 +16,7 @@ The characterization problems that were run were heavily biased towards
 low-density streaming to induce anisotropy in the flux. In retrospect, this subset of
 problems was not ideal for a method so dependent on weight-window type biasing,
 because particle streaming allowed for particles to cross several orders of
-magnitude in the flux before resampling. This meant that in a high-importance
+magnitude in the flux before re-sampling. This meant that in a high-importance
 region a particle may split many thousands of times in a new splitting event.
 Unfortunately, the $\Omega$-methods are not immune to this issue and so suffered
 the same effects as CADIS, even with positive effects like the reduction of ray
@@ -26,7 +26,7 @@ dependence around the detector. In a problem like the single turn labyrinth,
 where the $\Omega$-flux generated a strong line of importance between the exit
 of the labyrinth and the detector and drastically dropped the importance behind
 the detector, a particle has much more opportunity to cross several orders of
-mangitude of importance than it does in CADIS. This is likely what caused
+magnitude of importance than it does in CADIS. This is likely what caused
 CADIS-$\Omega$ to take longer in Monte Carlo transport than CADIS in all of the
 characterization problems.
 

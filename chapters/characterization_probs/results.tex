@@ -116,19 +116,15 @@ inputs and directions on how to acquire them are
 provided in Appendix \ref{sec:github_codes}.
 
 \subsection{Single Turn Labyrinth}
+\label{subsec:maze2}
 
-The single turn maze FOM results are summarized in Table \ref{tab:maze2foms},
+The analysis of the characterization problems begins with the single turn
+labyrinth.
+The single turn labyrinth FOM results are summarized in Table \ref{tab:maze2foms},
 and are illustrated in Figures \ref{fig:maze2result} and \ref{fig:maze2error}.
 The table has six FOM values for CADIS and CADIS-$\Omega$ results, and three FOM
-values for the analog (nonbiased) Monte Carlo results. Results for the
-subsequent problems are presented similarly. The FOMS are quantified
-using the three different relative errors and two different times presented in
-Section \ref{sec:successmetrics}. In this and following FOM tables, FOMS noted
-with a dashed line represent bins that were not tallied and returned a
-zero-error bin. This technically results in an infinite FOM, but in reality
-represents a bin that will never converge. Because this value will hold no
-meaning in our quantification of the $\Omega$-method's success, it
-is not included in the table.
+values for the analog (nonbiased) Monte Carlo results. The equations to
+calculate each of these FOMS is summarized in Table \ref{tab:fom_defaults}.
 
 \begin{table}[h!]
   \centering
@@ -150,7 +146,7 @@ is not included in the table.
   \label{tab:maze2times}
 \end{table}
 
-In Table \ref{tab:maze2foms} the results for CADIS, CADIS-$\Omega$, and
+In Table \ref{tab:maze2foms} the FOM results for CADIS, CADIS-$\Omega$, and
 nonbiased Monte Carlo for the single turn maze are presented. In all cases, the
 CADIS FOMs are better than those obtained by CADIS-$\Omega$. The FOMS
 calculated using the tally average relative error are better in the nonbiased
@@ -162,10 +158,16 @@ taking a ratio of the FOMs) the tally average
 relative error, or ~$0.27$. Because this problem is highly scattering and many
 low-energy particles can make it through the concrete labyrinth, even the analog
 can have good sampling at low energies, resulting in a tally average FOM that
-surpasses this value.
+reaches this threshold.
 
 Table \ref{tab:maze2times} contains more detailed timing information spent in
-each of the codes for each type of problem.
+each of the codes for each type of problem. We can see that the Monte Carlo
+runtime for CADIS-$\Omega$ is more than twice that of CADIS, and almost fifteen
+times that of the nonbiased analog Monte Carlo. The time to run just the
+hybrid/deterministic portion of the calculation is also four times longer for
+CADIS-$\Omega$ than it is for CADIS. These disparities in runtimes have a strong
+negative impact on the CADIS-$\Omega$ FOMs, which was observed in the FOM
+results in Table \ref{tab:maze2foms}.
 
 \begin{figure}[h!]
   \centering
@@ -186,39 +188,47 @@ each of the codes for each type of problem.
 
 Figures \ref{fig:maze2result} and \ref{fig:maze2error} show the tally result and
 the relative errors for each result in the single turn maze, respectively.
-The relative error plot, Figure \ref{fig:maze2error}, does not include the
+This particular relative error plot,
+Figure \ref{fig:maze2error}, does not include the
 relative error bins of the analog result because they are significantly higher
 than the CADIS and CADIS-$\Omega$ results. This is further confirmed in Table
-\ref{tab:maze2foms}, where the minimum relative error FOM is a nontallied bin.
+\ref{tab:maze2foms}, where the minimum relative error FOM is a non-tallied bin.
+
 By inspecting Figure \ref{fig:maze2result}, one can observe that the CADIS and
 CADIS-$\Omega$ results are in agreement in bins greater that $10^{-7}$ MeV. At
 lower energy bins, CADIS-$\Omega$ generally has a higher value for the tally
-result than standard CADIS. However, in comparing the errors in these low energy
+result than standard CADIS. However, in comparing the errors for these low energy
 bins in Figure $\ref{fig:maze2error}$, CADIS has a lower relative error. This
 indicates that CADIS sampled many more low-weight particles than CADIS-$\Omega$
 in these regions. Conversely, CADIS-$\Omega$ has a lower calculated relative
-error than CADIS for bins greater than ~$5*10^{-6}$. This is expected, as
+error than CADIS for bins greater than ~$5*10^{-6}$ MeV. This is expected, as
 higher energy particles generally exhibit a stronger angular dependence than
-low-energy particles. High energy particles exiting the maze towards the tally
-detector have much longer mean free paths than the low energy particles, and
-will generally show a much stronger effect in the $\Omega$-flux in those
-regions. This is illustrated in Figure \ref{fig:}. The shape of the $\Omega$
-flux around the detector region is much more strongly dependent on direction in
-the high energy group 000 flux than it is for the lower energy group 026 flux.
-Despite having lower relative errors than CADIS at higher energies,
-CADIS-$\Omega$ has lower FOMs than CADIS for the FOMS calculated with the
-minimum relative error. As discussed previously, this is due to the long runtime
-of CADIS-$\Omega$, which is more than twice as long as CADIS. From this, we can
-conclude that while CADIS-$\Omega$ is better at transporting particles in high
-energy regions than CADIS, achieving lower relative errors, the length of time
-to do so is prohibitive and achievable by CADIS should the runtimes be the same
-for both.
+low-energy particles. In geometric and energetic regions
+where the angular dependence is stronger,
+the importance map generated by CADIS-$\Omega$ may show more of an effect in
+improving the relative error.
 
-[todo: Omega flux lot of group 00]
-
-[todo: Omega flux plot of group 026]
+% High energy particles exiting the maze towards the tally
+% detector have much longer mean free paths than the low energy particles, and
+% will generally show a much stronger effect in the $\Omega$-flux in those
+% regions. This is illustrated in Figure \ref{fig:}. The shape of the $\Omega$
+% flux around the detector region is much more strongly dependent on direction in
+% the high energy group 000 flux than it is for the lower energy group 026 flux.
+% Despite having lower relative errors than CADIS at higher energies,
+% CADIS-$\Omega$ has lower FOMs than CADIS for the FOMS calculated with the
+% minimum relative error. As discussed previously, this is due to the long runtime
+% of CADIS-$\Omega$, which is more than twice as long as CADIS. From this, we can
+% conclude that while CADIS-$\Omega$ is better at transporting particles in high
+% energy regions than CADIS, achieving lower relative errors, the length of time
+% to do so is prohibitive and achievable by CADIS should the runtimes be the same
+% for both.
+%
+% [todo: Omega flux lot of group 00]
+%
+% [todo: Omega flux plot of group 026]
 
 \subsection{Multiple Turn Labyrinth}
+\label{subsec:maze1}
 
 The multiple turn labyrinth is built off of the single turn labyrinth geometry.
 The labyrinth materials are much the same, but the geometry differs. Table
@@ -286,6 +296,36 @@ outperformed CADIS-$\Omega$ in problems in energy bins that had less angular
 dependence. Because this problem has far more scattering event, it overall has
 less angular dependence and CADIS outperforms CADIS-$\Omega$ in all energy bins.
 This problem is poorly suited to CADIS-$\Omega$.
+
+In Section \ref{subsec:maze2}, it was discussed that higher energy regions that
+contribute to the tally are more anisotropic, and that these regions benefit
+more from the $\Omega$-flux map than they do with standard CADIS' importance
+map. First, looking at the metric three distributions for both the single- and
+multiple-turn labyrinths in Figure \ref{fig:labyrinthviolins}, we can see shifts
+up to much higher values for very isotropic energy groups.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_violin_mean.pdf}
+    \caption{M$_{3}$ distribution for single turn labyrinth}
+    \label{fig:maze2M3violins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_violin_mean.pdf}
+    \caption{M$_3$ distribution for multi-turn labyrinth}
+    \label{fig:maze1M3violins}
+  \end{subfigure}
+  \caption[Violin plots of M$_{3}$ distribution using values above the mean
+  contributon flux for labyrinth problems.]
+  {Violin plots of M$_{3}$ distribution using values above the mean
+  contributon flux for labyrinth problems.}
+  \label{fig:labyrinthviolins}
+\end{figure}
+
 
 \subsection{Steel Beam}
 \label{subsec:resultbeam}

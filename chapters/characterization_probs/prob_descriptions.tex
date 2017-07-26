@@ -362,6 +362,19 @@ in brackets.
   \label{tab:fom_defaults}
 \end{table}
 
+Tables calculating the FOMs summarized in Table \ref{tab:fom_defaults} may also
+not have evaluated FOMS in some locations. These will be noted with a dashed
+line, or ``--''.  These values will generally be in the minimum relative error
+section of the FOM tables, and they represent a zero valued relative error. This
+does not mean that infinite particles have been sampled (so the relative error
+is infinitely small), but rather that no particles have been binned for that
+energy bin and result in a zero-valued relative error.
+This technically results in an infinite FOM, but in reality
+represents a bin that will never converge. Because this value will hold no
+meaning in our quantification of the $\Omega$-method's success, the infinite
+valued FOM will not included in the table.
+
+
 Table \ref{tab:time_defaults} further reports the times used to calculate the
 FOM values in \ref{tab:fom_defaults}. This table is split into three
 vertical regions: the MCNP time spent doing Monte Carlo transport (T$_{MC}$),
