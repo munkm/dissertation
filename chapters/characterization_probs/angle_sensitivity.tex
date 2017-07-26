@@ -1,7 +1,8 @@
 \section{Sensitivity to Deterministic Parameter Choice}
 \label{sec:AngleResults}
 
-At this point in the work, it has been shown how the $\Omega$-methods
+At this point in the $\Omega$-method characterization,
+it has been shown how the $\Omega$-methods
 behave in problems with differing geometries and materials.
 However, each of these problems was run with the same deterministic calculation
 parameters. While the angular flux may have differed in these problems due to
@@ -10,26 +11,36 @@ solver choices. Some deterministic solver choices will change the angular
 fluxes used to calculate the $\Omega$-flux. Consequently, this may affect the
 behavior of the $\Omega$-methods. This section will
 explore the effects of deterministic solver
-choices on the $\Omega$-methods' performance.
+choices on the $\Omega$-method's performance.
 
 Section \ref{sec:CharResults} showed that the $\Omega$-methods have a strong
-weakness to ``thin'' materials, as CADIS and FW-CADIS do. This is because the
-importance of a particle may vary several orders of magnitude over a mean free
+weakness to ``thin'' materials, as CADIS and FW-CADIS do. Recall that a
+``thin'' material is characterized by a low density, and thus a low macroscopic
+cross section, or interaction
+probability. In a pure streaming problem, the particle flux will decrease by a
+factor of $r^2$ from the source. In a thin material, a particle may stream
+several centimeters before interacting. As a result, the
+importance of a particle, which is related to the adjoint- or omega-flux,
+may vary several orders of magnitude over a mean free
 path of travel distance. At a collision, the particle then requires
 several orders of
-magnitude of sampling events. This was confirmed by
+magnitude of sampling events.
+
+The $\Omega$-methods' weakness to ``thin'' materials was confirmed by
 running the steel beam problem with air and concrete in the geometric location
 of the steel beam. In
-the ``thin'' material air version, CADIS-$\Omega$ performs poorer than CADIS,
-conversely to the original steel problem.
+the ``thin'' material air version, CADIS-$\Omega$ performs poorer than CADIS.
+This was a strong contrast to the same geometric configuration with a steel
+beam, where CADIS-$\Omega$ outperformed CADIS.
 The characterization problem results also showed that
 the incorporation of the $\Omega$-flux into a problem with materials with
-strongly different moderating properties, the steel plate in concrete, showed
+very different moderating properties, such as the steel plate in
+concrete, showed
 strong improvement when compared to both CADIS and nonbiased Monte Carlo.
 
-Due to the better performance of CADIS-$\Omega$ than CADIS
+Due to CADIS-$\Omega$'s superior performance to CADIS
 in the problem with a steel beam in concrete, this is the problem that will be
-used to characterize the $\Omega$-methods' sensitivity to deterministic
+used to characterize the $\Omega$-method's sensitivity to deterministic
 parameter choice.
 In this section, the effect of deterministic solver choices on the
 performance of the $\Omega$ methods will be investigated. In particular, we are
@@ -37,7 +48,7 @@ interested in how parameters that influence the angular flux will affect the
 performance of the $\Omega$-methods. By using the same problem
 with differing solver options, the effect of solver options can be isolated from
 the material and geometric effects. By doing so, we seek to determine how
-resilient the $\Omega$-methods may be by using low-fidelity solver options, how
+resilient the $\Omega$-methods may be to using low-fidelity solver options, how
 different the sensitivity of the $\Omega$-methods are to solution quality when
 compared to CADIS, and how varying angular parameters may speed up or slow down
 the time to a desired solution. By quantifying these effects, we can determine
@@ -50,7 +61,7 @@ The angle sensitivity parametric study will cover the subset of computational pa
 that are most likely to influence the $\Omega$ method's solution. Because the
 $\Omega$-flux is calculated from an angle integration of the forward and adjoint
 flux, calculation parameters that are most likely to influence the angular flux
-solution are the variables that were perturbed.
+solution are the variables that are perturbed.
 The two parameters that will be studied
 are the quadrature order and the P$_N$ order.
 
@@ -70,7 +81,8 @@ quadrature order and not quadrature type in this sensitivity study.
 Quadrature orders specify
 how fine of a resolution the quadrature set will be. As quadrature order
 increases, the size of the angular flux matrices will increase. We expect to
-observe much slower deterministic recorded times for high quadrature orders
+observe much slower deterministic recorded times in T$_{det}$--and, by
+extension, T$_{hybrid}$--for high quadrature orders
 because of the I/O demand to read and write these values. Recall that the ADVANTG
 default quadrature order is 10. The quadrature orders used for the sensitivity
 study aimed to choose orders surrounding this value. This resulted in quadrature
@@ -78,7 +90,8 @@ orders 5, 7, 10, 12, 15, 17, and 20 being chosen for variations in this
 parameter.
 
 The P$_N$ order determines the fidelity of the scattering expansion. The
-availability of P$_N$ orders is dependent on the cross section dataset. For the
+availability of P$_N$ orders is dependent on the cross section dataset that is
+being used. For the
 27G19N cross section library, the P$_N$ order extends to 5. As a result,
 P$_N$ orders of 1, 3, and 5 are chosen for variations in this parameter.
 
@@ -87,7 +100,7 @@ does affect angular information in the problem, it will not change the size of
 the angular flux matrices. As a result, deterministic runtimes between
 differing P$_N$ orders
 may vary, but not as significantly as they will in differing quadrature orders
-due to the lack of change in I/O demands as P$_N$ order changes.
+due to the lack of change in I/O requirements as P$_N$ order changes.
 
 Other deterministic parameters may influence the variance reduction parameters
 calculated by the $\Omega$ methods.
@@ -96,7 +109,7 @@ the angular flux, still may affect the $\Omega$-methods' performance.
 A finer energy group structure may also influence the $\Omega$-method solution.
 Finer energy groups will more effectively reflect resonance regions in
 scattering and absorption. Scattering effects in certain energy regions will
-have angular dependence and, thus, may be a stronger effect on the angular flux
+have angular dependence and, thus, may have a stronger effect on the angular flux
 than a coarser energy discretization. Because these particular solution effects
 do not directly influence the angular flux, they will not be included
 in the angular sensitivity parametric study. This is because the effects on the
@@ -112,23 +125,33 @@ Several factors in the deterministic calculation should not have a strong effect
 on the angular flux distribution. These include the spatial solver, the
 convergence criteria for the solvers, and the within group solver types.
 Because these factors should not influence the angular flux any more than any
-other part of the solution, they will not be included in this parametric study.
+other part of the solution, they will also not be included in this parametric study.
 
 \subsection{Quadrature Order}
 \label{subsec:quadorder}
 
-Table \ref{tab:quad_foms} contains the FOM results for each of the quadrature
-orders run in the parametric study. The results are grouped by the relative
-error choices so the trend in each in relation to the quadrature order is more
-observable. There are many notable observations that one can gather from this
-table.
+The results that will be presented in the next two subsections will be similar
+to those presented in Section \ref{sec:CharResults}. However, our goal is to see
+how changing deterministic parameter type affects the results in the tally
+region. With this in mind, the presentation of the results may be adjusted to
+more effectively show the effect each parameter has on the results.
 
-In the tally average relative error subsection of the table, we can see two strong
+Table \ref{tab:quad_foms} contains the FOM results for each of the quadrature
+orders run in the parametric study. The results are grouped by FOMs calculated
+with the same relative error such that the trend as a result of changing
+quadrature order is more observable. The first three sections of the table
+pertain to different FOM values, and the last section of the table shows timing
+results for the standard Monte Carlo and the total walltime for the entire
+calculation.
+
+In the tally average relative error subsection of Table \ref{tab:quad_foms},
+two strong
 dips in the FOM in CADIS at S$_N$ orders 5 and 10, and a dip in CADIS-$\Omega$
-at S$_N$ order 12. These dips are much larger relatively than in the maximum or
+at S$_N$ order 12 exist. These dips are much larger relatively than in the maximum or
 minimum relative errors subsections of the table. This indicates that for these
-particular quadrature orders, overall fewer particles contribute to the
-detector response across all groups. We can also see that for CADIS-$\Omega$
+particular quadrature orders, fewer particles contribute to the
+detector response across all groups. We can also see in the CADIS-$\Omega$
+results that
 quadrature orders 10, 15 and 17 all have a similar FOM for the tally average
 relative error using the Monte Carlo runtime. However, the FOMS for the same
 quadratures decrease more significantly when using T$_{hybrid}$ to calculate the
@@ -139,9 +162,20 @@ CADIS-$\Omega$ than it is in standard CADIS, meaning that increasing quadrature
 order in CADIS-$\Omega$ more strongly negatively effects the tally average FOM
 than CADIS.
 
-The maximum relative error datapoints also have several notable
+The maximum relative error portion of the table also has several notable
 datapoints. For CADIS, the dips in FOM are still visible for S$_N$ orders 5 and
-7, but they
+10, but quadrature order 7 does not achieve the same high FOM as quadrature
+orders 12 and above as it does in the tally average subsection of the table. If
+the maximum relative error convergence is the limiting factor for the user,
+it appears that using any quadrature order above 10 is a good choice for CADIS.
+CADIS-$\Omega$, conversely, has more varied results. No observable trend is
+observable in the FOM with increasing quadrature order for CADIS-$\Omega$. A dip
+in the FOM occurs at quadrature order 12, as it did in the tally average
+subsection of the table. This dip, like CADIS' dips, is not as significant as
+the dip in the tally average FOMs. Generally, CADIS has higher FOMs when using
+the maximum relative error as a success metric. In fact, the only quadrature order where
+CADIS-$\Omega$'s FOM is larger than CADIS' is at quadrature order 10.
+
 
 \begin{table}[h!]
   \centering
@@ -155,22 +189,53 @@ deterministic calculation parameters.}
   \label{tab:quad_foms}
 \end{table}
 
-In the minimum relative error subsection of the Table \ref{tab:quad_foms}
-the CADIS behavior is
+In the minimum relative error subsection of Table \ref{tab:quad_foms}
+the CADIS and CADIS-$\Omega$ FOM behavior is
 much more well-behaved than it is for the preceding two subsections of the
-table. There are no dips in the FOM value, so the lowest relative error will
+table. There are no dips in the FOM value for either method,
+so the lowest relative error will
 consistently get better with increasing quadrature order. A slight shift
+to a $<1\%$ lower FOM
 occurs for quadrature orders 17 and 20, which indicates that increasing
 quadrature fidelity does not help improve the FOM past S$_N$ order 15. Similar
 behavior is observable for CADIS-$\Omega$ in the minimum relative error
-subsection of the table. CADIS-$\Omega$ consistently has a lower-valued FOM
-between ~5\%-10\% for all quadrature orders. A turnover occurs in the CADIS-$\Omega$
+subsection of the table. CADIS-$\Omega$ has a consistently lower-valued FOM
+between ~5\%-10\% for all quadrature orders when compared to CADIS.
+A turnover occurs in the CADIS-$\Omega$
 FOMs at a lower quadrature order, meaning that CADIS-$\Omega$ does not benefit
-from increasing S$_N$ order as much as CADIS.
+from increasing S$_N$ order as much as CADIS using this FOM as a metric.
+However, beyond quadrature order 15 neither method sees a benefit in the FOM by
+increasing the quadrature order.
 
-This table shows that for the FOM using the tally average relative error,
+The timing results in the last section of the table show how much longer it
+takes CADIS-$\Omega$ to transport the standard Monte Carlo than CADIS. In the
+introduction to this section, it was predicted that the I/O demands for
+CADIS-$\Omega$ would impact the MC$_{hybrid}$ FOMs as quadrature order
+increases. However, because the CADIS-$\Omega$ Monte Carlo times are already so
+much longer than CADIS', this impact is not as significant as expected.
+Returning to Table
+\ref{tab:quad_foms}, at S$_N$ order 5 the non-MC runtime is three minutes for
+CADIS, while it is around ten minutes for CADIS-$\Omega$. At S$_N$ order 20, the
+CADIS non-MC runtime is 19 minutes; the CADIS-$\Omega$ time is 100 minutes. For
+each of these cases, the non-MC runtime is about 4\% that of the Monte Carlo runtime.
+Because this fractional time is fairly consistent between CADIS and
+CADIS-$\Omega$, we do not see a strong impact on FOM$_{hybrid}$ from the
+significantly longer non-MC runtimes in CADIS-$\Omega$.
+
+Table \ref{tab:quad_foms} shows that for the FOM using the tally average relative error,
 CADIS-$\Omega$ outperforms CADIS for most quadrature orders (with excpetions
-being S$_N$ orders 7 and 12). It also shows that CADIS-$\Omega$
+being S$_N$ orders 7 and 12). For the majority of the quadrature orders,
+CADIS-$\Omega$ gets more particles to the tally region than CADIS. By increasing
+quadrature order, CADIS-$\Omega$ generally increases the number of particles to
+the tally as a whole, while CADIS does not. The table
+also shows that by using either the maximum or minimum relative error to
+calculate the FOM, CADIS generally outperforms CADIS-$\Omega$. However, while
+both the maximum and minimum RE FOMs increase with increasing quadrature order
+in CADIS, this is not the case for the tally average FOM. This could be
+interpreted as that as the quadrature order increases, more particles reach the extreme
+tally bins, but fewer particles end up in the tally overall. For CADIS-$\Omega$,
+this behavior is not quite the same. Instead, a peak occurs in the tally
+average FOMs at intermediate quadrature orders.
 
 \begin{figure}[htb!]
   \centering
@@ -198,11 +263,53 @@ being S$_N$ orders 7 and 12). It also shows that CADIS-$\Omega$
   \label{fig:sn_errs}
 \end{figure}
 
+In the characterization problems subsection, it was discussed that while the FOM
+shows how quickly a tally may approach a desired value, it does not show how
+effectively
+each method transported particles to the tally location. Because the same
+particle count was used in each variation of the steel beam problem in the angle
+sensitivity study, the relative error results achieved by each method can reveal
+how well each method transported the same number of starting particles.
+The next several plots will present
+this information.
+
 Figures \ref{fig:sn_cad_err} and \ref{fig:sn_cadangle_err} show the relative
 errors for all tally bins for each quadrature order run of the problem with the
 steel beam in concrete. Unlike Table \ref{tab:quad_foms}, these plots show the
 overall behavior of the tally results as a function of changing quadrature
-order.
+order, so the behavior of non-extreme tally bins can also be observed.
+
+Figure \ref{fig:sn_cad_err} plots the tally relative error results for each of
+the CADIS runs, binned by energy. The warmer colored red and orange lines show
+the low quadrature order results, while the cooler colored lines correspond to
+higher quadrature results. For all of the energy bins below $10^{-4}$ MeV, a
+reduction in the relative error with increasing quadrature order can be
+observed. For quadrature orders S$_N$ 12 and above, the relative error does not
+show as much of an improvement in the relative error. Between $10^{-4}$ and
+$10^{0}$ MeV, large spikes in the relative error for quadrature orders 5 and 10
+exist. Quadrature order 7 has relative errors much closer to quadrature orders
+12 and above. Because tehse relative error spikes span so many bins, they affect
+the overall tally convergence, and, by extension, the tally average FOM. At very
+high energies ($> 10^{0}$ MeV), there is very little improvement in the relative
+error with increasing quadrature order.
+
+Figure \ref{fig:sn_cadangle_err} shows the relative error results for
+CADIS-$\Omega$, rather than CADIS. A number of interesting features exist in
+this figure that are not reflected in Figure \ref{fig:sn_cad_err}. For example,
+in the lowest energy region a decrease in the relative error is seen up to S$_N$
+10, but then the relative error increases for higher S$_N$ orders. In the wider
+energy bins between
+$10^{-6}$ and $10^{-1}$ MeV, quadrature orders 10 and above all achieve a
+similar relative error. This is not true in narrow energy bins, were higher
+quadrature orders do tend to have a lower relative error. Moving to higher
+energies, we can observe a significant spike in the relative error between
+$10^{-1}$ to $10^{0}$ MeV for S$_N$ order 12. Although this spike does not span
+several energy bins like those seen in Figure \ref{fig:sn_cad_err}, it is very
+high when compared to the other relative error bins. As a result, this single
+tally bin throws off the tally results, as observed in Table
+\ref{tab:quad_foms}. In energy bins above this spike, most quadrature orders
+produce similar FOMs. The lowest valued energy bin is located in this high
+energy region.
 
 \begin{figure}[h!]
   \centering
@@ -229,13 +336,28 @@ order. Conversely, we observed that CADIS-$\Omega$ had a very problematic energy
 bin between $10^{-1}$ and $10^{0}$ at quadrature order 12. The value of this
 I$_{RE}$ is far above the y-limit of Figure \ref{fig:sn_errs}.
 
-Figure \ref{fig:sn_errs} also shows that quadrature order 10 is generally order
+Figure \ref{fig:sn_errs} also shows that quadrature order 10 is generally the order
 in which CADIS-$\Omega$ outperforms CADIS the most. For this quadrature error,
-CADIS-$\Omega$ achieves the lowest error when compared to CADIS. An exception to
-this is observed at energy regions above ~$3^{-1}$, whre the highest quadrature
-orders outperform CADIS. In the low ($<10^{-5}$) and high ($>10^{0}$),
+CADIS-$\Omega$ achieves the lowest error when compared to CADIS. The reasons for
+this are twofold: first, it is one of the best performing quadrature sets for
+CADIS-$\Omega$, which achieves its lowest relative errors in almost every energy
+bin in this quadrature order; second, it is a very poorly performing quadrature
+set for CADIS. This synergistic combination results in the best overall
+quadrature order for CADIS-$\Omega$.
+
+A region where quadrature order 10 is not the best quadrature order is
+in energy regions above ~$10^{-1}$ MeV, whre the higher quadrature
+orders--like 15, 17 and 20--outperform CADIS.
+In the low ($<10^{-5}$ MeV) and high ($>10^{0}$ MeV) energy
+regions,
 CADIS-$\Omega$ obtains lower relative errors than CADIS for all quadrature
-orders.
+orders. In intermediate energy regions, some spikes occur in regions that
+indicate a lower relative error is achieved by CADIS. Returning again to the
+relative error figures of \ref{fig:sn_errs}, the spike in I$_{RE}$ between
+$10^{-5}$ and $10^{-4}$
+MeV is explained by a relatively low relative error achieved by CADIS, where in
+CADIS-$\Omega$ a large spike in the relative error occurs. This is reflected in
+the ratio for I$_RE$.
 
 \begin{figure}[h!]
   \centering
@@ -252,8 +374,8 @@ Figure \ref{fig:prob_1_quad_I_FOM} complements the results to Figure
 \ref{fig:prob_1_quad_I_RE}. Here the FOM improvement factor is plotted rather
 than the relative error improvement factor. Because a higher valued FOM is a
 better result, values above $10^{0}$ indicate that CADIS-$\Omega$ outperformed
-CADIS. On this plot we see clearly that for higher energies there is a
-larger difference between CADIS-$\Omega$ and CADIS, as observed with I$_{RE}$.
+CADIS. On this plot we see clearly that for higher energies, CADIS-$\Omega$
+outperforms CADIS more in higher quadrature orders, as observed with I$_{RE}$.
 
 Let us return again to the high and low-energy regions of the plot, as explored
 with Figure \ref{fig:prob_1_quad_I_RE}. In this region it can be observed
@@ -265,7 +387,8 @@ Recall from Section \ref{subsec:resultsbeam} that the anisotropy metric was much
 higher at high energies than it was at low energies. It is possible that for
 this more anisotropic energy group, increasing the quadrature order improves the
 importance map in the $\Omega$ methods more, resulting in a better relative
-error. This would also explain the converse behavior at low energies. Low
+error, and, consequently, a better FOM.
+This would also explain the complementary behavior at low energies. Low
 energies generally have more isotropic behavior, and increasing the quadrature
 order would not help to improve anisotropy information in the importance map.
 As a result, increasing quadrature order would not help the FOM at low energies.
@@ -305,14 +428,14 @@ positively affects the FOM).
 
 Table \ref{tab:pn_foms} is much like that of Table \ref{tab:quad_foms}, but with
 differing P$_N$ orders than quadrature orders. The table is split into four
-vertical regions, the first three corresponding to FOMS calculated with
+regions, the first three corresponding to FOMs calculated with
 different relative errors and the last corresponding to Monte Carlo and hybrid
 runtimes for the problem. Each of the three first subsections of the table have
 different trends with P$_N$ order, which will be described in the next several
 paragraphs.
 
 In the tally average relative error subsection of the table one can see that
-CADIS has a dip in the FOM for P$_N$ order 3; both P$_N$ orders one and five are
+CADIS has a dip in the FOM for P$_N$ order 3; both P$_N$ orders 1 and 5 are
 higher overall. This effect is not seen in CADIS-$\Omega$, where a decrease in
 the FOM is observed with increasing P$_N$ order. As a result, for
 CADIS-$\Omega$, lower P$_N$ orders are sufficient for generating biasing
@@ -349,7 +472,11 @@ move more particles (and reduce the relative error) in the energy bin with the
 lowest relative error in CADIS, but it does in CADIS-$\Omega$.
 
 Note that the FOMS using T$_{hybrid}$ do not decrease as much with increasing
-P$_N$ order as they did for increasing quadrature order for CADIS-$\Omega$. As
+P$_N$ order as they did for increasing quadrature order for CADIS-$\Omega$. In
+Section \ref{subsec:quad_order} the idea that I/O requirements would severely
+impact the FOM for CADIS-$\Omega$ was shown to be false. The FOM change between
+FOM$_{MC}$ and FOM$_{hybrid}$ was roughly the same for CADIS as CADIS-$\Omega$
+because the CADIS-$\Omega$ runtimes are so much longer than CADIS. Instead, the As
 noted previously, this is due to the lower I/O requirements for differing P$_N$
 orders for CADIS-$\Omega$. As a result,
 CADIS and CADIS-$\Omega$ have similar increases in computational
@@ -435,7 +562,9 @@ CADIS-$\Omega$.
 From Figures \ref{fig:pn_cadangle_err} and \ref{fig:pn_cad_err}, we can conclude
 that shifts in the relative error that dramatically change between P$_N$ orders
 can affect the overall tally convergence. This shift is not predictable, and may
-not be observed with other
+not be observed if combined with a different set of deterministic parameters,
+such as quadrature order 15, where both CADIS and CADIS-$\Omega$ has no spikes
+in their relative errors.
 
 \begin{figure}[h!]
   \centering
@@ -473,7 +602,18 @@ convergences for the steel beam problem embedded in concrete. A number of
 observations can be made from this study.
 
 Figures \ref{fig:angle_err_improvements} and \ref{fig:angle_fom_improvements}
-summarize the data from the previous subsection. In Figure
+summarize the data from the previous subsection. As with P$_N$ order and S$_N$
+order, these plots show either the relative error or Figure of Merit results for
+the angle sensitivity study. Unlike the plots with I$_{RE}$ and I$_{FOM}$, which
+show the ratio of CADIS-$\Omega$ to CADIS results to give a better intuition of
+the performance of one compared to the other, these
+figures show how the FOM and relative error change for a single method. That is,
+how much does the relative error or the Figure of Merit change between the lowest-
+and highest- valued parameters run. These figures are useful to show how
+sensitive CADIS and CADIS-$\Omega$ are to P$_N$ order and quadrature order,
+respectively.
+
+In Figure
 \ref{fig:angle_err_improvements}, the ratio of the relative error in each tally
 bin is taken between the lowest and highest-valued parameter run of the
 parametric study. For P$_N$ order (the purple lines in the figure)
@@ -481,6 +621,14 @@ this would be $RE_{P_N 1}/RE_{P_N 5}$ and for
 quadrature order (the green lines in the figure) it would be $RE_{S_N 5}/
 RE_{S_N 20}$. A high ratio means that the relative error decreased more for
 the higher-valued parameter (P$_N$ order 5 or S$_N$ order 20).
+
+In Figure \ref{fig:angle_fom_improvements}, the linestyles and colors match
+those in Figure \ref{fig:angle_err_improvements}. The y-axis of this figure
+shows the ratio of the FOMs for the lowest- and highest-valued parameters. The
+purple lines indicate the ratio of $FOM_{P_N 1}/FOM_{P_N 5}$; the green lines
+show the ratio of $FOM_{S_N 5}/FOM_{S_N 20}$; the linestyles indicate the method
+type. In this plot a low-valued ratio is better, as it reflects a larger value
+of the FOM for the finer P$_N$ or S$_N$ order.
 
 \begin{figure}[h!]
   \centering
@@ -491,7 +639,30 @@ the higher-valued parameter (P$_N$ order 5 or S$_N$ order 20).
   \label{fig:angle_err_improvements}
 \end{figure}
 
-In
+Figure \ref{fig:angle_err_improvements} shows that a greater change in the
+relative error occurs for both CADIS and CADIS-$\Omega$ from S$_N$ order 5 to 20
+than it does for P$_N$ orders. A notable exception to this is for CADIS in the
+energy range from $10^{-8}$ to $10^{-7}$ MeV, where the relative error
+improvement for P$_N$ order exceeds any quadrature order line. Returning to
+the relative error results for just CADIS, as shown in Figure
+\ref{fig:pn_cad_err}, this energy range has a very high relative error for P$_N$
+order 1, especially when compared to the other energy regions nearby. In this
+energy range, the relative error drops from 0.015 to .005 from P$_N$ order 1 to
+3, but the energy bin just lower only drops about .005 total. The greater change
+in the relative error for this region accounts for the spike we see in Figure
+\ref{fig:angle_err_improvements}.
+
+The data in this figure also shows us that increasing P$_N$ order for
+CADIS-$\Omega$ does not reduce the relative error in the energy range from
+$10^{-3}$ to $10^{0}$ MeV. In Figure \ref{fig:angle_err_improvements}, the ratio
+in this region for CADIS-$\Omega$ is below unity. This would indicate that a low
+CADIS-$\Omega$ does not see a strong positive effect from increasing P$_N$
+order. For a problem like this, a low P$_N$ order may be a good enough choice.
+
+CADIS' results in the same energy region just discussed show improvement in the
+relative error. However, in many centrally-located energy bins, this improvement
+is very small. If a tally existed for a similar problem in these energy ranges,
+it may be sufficient to use CADIS with a low P$_N$ order as well.
 
 \begin{figure}[h!]
   \centering
@@ -502,14 +673,23 @@ In
   \label{fig:angle_fom_improvements}
 \end{figure}
 
-[Go back through results and highlight benefits and pitfalls.] \\
+Figure \ref{fig:angle_fom_improvements} shows the
 
-[Describe reasons why these might have occurred. Follow up with a list of options
-that could be done in further testing to confirm reasons.] \\
+By inspecting both Figure \ref{fig:angle_err_improvements} and
+\ref{fig:angle_fom_improvements}, a few common themes appear. First, CADIS has a
+larger change in the tally relative error and FOM than CADIS-$\Omega$ for most
+energy bins. Second, this general observation does not hold for energy bins
+greater than $~10^{-1}$.
+
+% [Go back through results and highlight benefits and pitfalls.] \\
+
+% [Describe reasons why these might have occurred. Follow up with a list of options
+% that could be done in further testing to confirm reasons.] \\
 
 It should also be noted that while the angle-dependent parametric study revealed
-how P$_N$ order and quadrature order may affect a problem's convergence, it is
-by no means a universially prescriptive approach. Section \ref{sec:CharResults}
+how P$_N$ order and quadrature order may affect a problem's results, the
+best parameter choices for this problem are by no means a prescriptive solution
+for other problems. Section \ref{sec:CharResults}
 showed how different the characterization problems' results were, depending on
 the source definition, the material composition of the problem, and the
 geometric configuration of the problem. Using the deterministic parameter
