@@ -256,7 +256,11 @@ method.
 In Tables \ref{tab:maze1foms} and \ref{tab:maze1times}
 it is notable that the CADIS-$\Omega$ runtime is
 shorter in the Monte Carlo simulation than CADIS. This differs most of the other
-cases presented in this section. Both CADIS and CADIS-$\Omega$ outperform the
+cases presented in this section. However, it is also notable that because the
+deterministic time is so much longer for CADIS-$\Omega$, T$_{hybrid}$ ends up
+being greater for CADIS-$\Omega$ than CADIS.
+
+Table \ref{tab:maze1foms} shows that both CADIS and CADIS-$\Omega$ outperform the
 analog by a factor of $10^2$ or $10^3$, indicating the necessity of variance
 reduction for a problem like this. In comparing the FOMs, CADIS slightly outperforms
 CADIS-$\Omega$ for all relative errors, meaning that the time
@@ -280,18 +284,19 @@ to reach any relative error will be achieved faster by CADIS.
 \end{figure}
 
 Looking at Figures \ref{fig:maze1result} and \ref{fig:maze1error}, we can see
-that the analog Monte Carlo differ significantly from either CADIS or
+that the analog Monte Carlo results differ significantly from either CADIS or
 CADIS-$\Omega$. Two distinct regions of tally bins have been recorded in the
 analog case: a high energy region comprised of particles that have scattered
 very few times before reaching the detector, and a much smaller low energy
 region, comprised of particles that are very thermal. These thermal particles
-have a very small MFP in the concrete labyrinth, thus the majority of them were
+have a very small mean free path in the concrete labyrinth, thus the majority of them were
 absorbed in the shield. However, given the errors on this result, these results are
 not trustworthy. In the case of this problem, some of what was discussed in the
 single-turn labyrinth is confirmed. This particular case requires that particles
 scatter several more times if they are to exit the labyrinth from the air duct.
 As a result, the spectrum is more thermal than the first case and the problem
-has less anisotropy. As discussed in the single-turn labyrinth, CADIS
+has less anisotropy from the scattering effects.
+As discussed in the single-turn labyrinth subsection, CADIS
 outperformed CADIS-$\Omega$ in problems in energy bins that had less angular
 dependence. Because this problem has far more scattering event, it overall has
 less angular dependence and CADIS outperforms CADIS-$\Omega$ in all energy bins.
@@ -300,9 +305,27 @@ This problem is poorly suited to CADIS-$\Omega$.
 In Section \ref{subsec:maze2}, it was discussed that higher energy regions that
 contribute to the tally are more anisotropic, and that these regions benefit
 more from the $\Omega$-flux map than they do with standard CADIS' importance
-map. First, looking at the metric three distributions for both the single- and
-multiple-turn labyrinths in Figure \ref{fig:labyrinthviolins}, we can see shifts
-up to much higher values for very isotropic energy groups.
+map. Using the anisotropy metrics from Section \ref{sec:anisotropy_quant}, let
+us compare the anisotropy distributions of the single turn and multiple-turn
+labyrinth problems. Figure \ref{fig:labyrinthviolins} are violin plots of the
+M$_{3}$ distributions of the labyrinth problems. To filter out values of the
+metric distribtuion that do not have a strong importance to contributing to the
+tally, only values from cells above the contributon flux mean value are included
+in the violins.
+
+First, looking at the metric three distributions for both the single-
+(\ref{fig:maze2M3violins})and
+multiple-turn (\ref{fig:maze1M3violins}) labyrinths, we can see that the violins
+in both plots shift from a fairly small grouping of values at high enrgies to a
+broad range of values at low energies. The bottom of the violin in each
+group also tells us a
+bit about the metric distribution. Because only values from ``more important''
+cells have been included in these distributions, the bottom cutoff tells us how
+anisotropic the cells of median importance might be. It also tells us how many
+cells have high-valued anisotropy metrics. For both the single- and
+multi-turn labyrinths, we see higher-valued cutoff point in high energies than
+in low energies. This indicates that more cells in high energies have higher
+values of M$_3$.
 
 \begin{figure}[htb!]
   \centering
@@ -322,10 +345,124 @@ up to much higher values for very isotropic energy groups.
   \caption[Violin plots of M$_{3}$ distribution using values above the mean
   contributon flux for labyrinth problems.]
   {Violin plots of M$_{3}$ distribution using values above the mean
-  contributon flux for labyrinth problems.}
+  contributon flux for labyrinth problems. Low energy group numbers correspond
+  to high energies or fast particles, and are marked in red.}
   \label{fig:labyrinthviolins}
 \end{figure}
 
+The violin plots of the multi-turn labyrinth (Fig. \ref{fig:maze1M3violins})
+tend to span a larger range of values. That is, the violins tend to be longer.
+All of the violins in both plots have a bounding upper limit, meaning that in
+every energy group there are some very anisotropic cells. Interestingly, it
+appears that for the multi-turn labyrinth the distribution of anisotropies at
+low energies has no distinctive bunching, as observed in the single-turn
+labyrinth. This means that in important cells, there is an even distribution of
+very anisotorpic, slightly anisotropic, and isotropic cells.
+
+It must be noted that while
+the trends in these violins are interesting, we must also be wary of using comparing
+the violins directly. The filtering algorithm used to pull values out is dependent only
+on the contributon flux solution for that problem, so the average contributon
+flux cutoff for the single-turn labyrinth and multiple-turn labyrinth are
+different. Using a raw value from the violin plot in Figure
+\ref{fig:maze1M3violins} and directly comparing it to one from Figure
+\ref{fig:maze2M3violins} may be misleading. Instead, this analysis will focus on
+the general behavior of the metrics in each problem, not specific metric values.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_err_stats_mean.pdf}
+    \caption{RE improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \label{fig:maze2M3errs}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_err_stats_mean.pdf}
+    \caption{RE improvement factor as a function of M$_3$ statistics for multi-turn labyrinth}
+    \label{fig:maze1M3errs}
+  \end{subfigure}
+  \caption[Relative error improvement factor as a function of M$_3$
+  distribution statistics.]
+  {Relative error improvement factor as a function of M$_3$
+  distribution statistics. Metric distribution statistics are calculated using
+  values of M$_3$ in cells with contributon flux values above the mean. Colors
+  of datapoints correspond to the energy group to which they belong.}
+  \label{fig:labyrinthIREs}
+\end{figure}
+
+Figure \ref{fig:labyrinthIREs} shows the improvement factors of the relative
+errors between CADIS-$\Omega$ and CADIS for the labyrinth problems. The x-axes
+of the plots in Figures \ref{fig:maze2M3errs} and \ref{fig:maze1M3errs} use the
+distribution statistics from the violins in Figures \ref{fig:maze2M3violins} and
+\ref{fig:maze1M3violins}, respectively. Recall that because I$_{RE}$ is the
+ratio of the relative error between CADIS-$\Omega$ and CADIS--and we seek a low
+relative error--that values of I$_{RE}$ below 1.0 indicate method improvement
+for CADIS-$\Omega$.
+
+Looking at the differences between Figures \ref{fig:maze2M3errs} and
+\ref{fig:maze1M3errs}, some interesting effects can be observed. Recall from the
+relative error distribution plots for each problem (Figures \ref{fig:maze1error} and
+\ref{fig:maze2error}) that CADIS-$\Omega$ had higher relative errors in all
+energy bins than CADIS for the multi-turn labyrinth, and a higher relative
+error in thermal energy groups in the single-turn labyrinth.
+Figure
+\ref{fig:maze2M3errs} shows the isolated grouping of poorer results for low
+energy bins in the single turn labyrinth. The rest of the values in this figure
+all show improvement in the relative error, while the low-energy group show
+better performance for CADIS. There is no distinct grouping in Figure
+\ref{fig:maze1M3errs} because all of the CADIS-$\Omega$ relative errors are
+higher than CADIS, so a distinct turnover in I$_{RE}$ does not occur.
+
+There does not seem to be a tight
+trend
+observable for any measurement of the M$_3$ distribution and I$_{RE}$ in Figure
+\ref{fig:maze2M3errs}, but the higher values of I$_{RE}$ generally occur in high
+mean values of M$_3$ and higer variances of M$_3$. Figure \ref{fig:maze1M3errs}
+also shows this trend in the metric mean and variance subplots, with a single
+outlier in an intermediate energy group. It also appears that the spread of
+I$_{RE}$ values does not change as a function of any of the metric values.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_fom_stats_mean.pdf}
+    \caption{FOM improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \label{fig:maze2M3FOMs}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_fom_stats_mean.pdf}
+    \caption{FOM improvement factor as a function of M$_3$ statistics for multi-turn labyrinth}
+    \label{fig:maze1M3FOMs}
+  \end{subfigure}
+  \caption[Figure of Merit improvement factor as a function of M$_3$
+  distribution statistics.]
+  {Figure of Merit improvement factor as a function of M$_3$
+  distribution statistics. Metric distribution statistics are calculated using
+  values of M$_3$ in cells with contributon flux values above the mean. Colors
+  of datapoints correspond to the energy group to which they belong.}
+  \label{fig:labyrinthIFOMs}
+\end{figure}
+
+Figure \ref{fig:labyrinthIFOMs} builds off of what we've already observed in Figure
+\ref{fig:labyrinthIREs}. In this series of figures, I$_{FOM}$ is plotted rather
+than I$_{RE}$. If CADIS-$\Omega$ has better FOM performance than CADIS, the
+resulting value of I$_{FOM}$ will be above 1.0.
+
+Many features from Figure \ref{fig:labyrinthIREs} continue in Figure
+\ref{fig:labyrinthIFOMs}. The distinct grouping of low-energy results for the
+single turn labyrinth are also observable in \ref{fig:maze2M3FOMs}. The intermediate
+energy outlier for the multiple turn labyrinth is located at the bottom of
+all of the subplots in Figure \ref{fig:maze1M3FOMs}. By adjusting our results to
+include timing, even less of a trend with metric distribution measurements is
+seen in the improvement metric for the single turn labyrinth. However, for the
+multiple turn labyrinth it does appear that as the metric mean value increases,
+I$_{FOM}$ decreases.
 
 \subsection{Steel Beam}
 \label{subsec:resultbeam}
@@ -353,20 +490,28 @@ Monte Carlo.
   \label{tab:steelbeamtimes}
 \end{table}
 
-In the inspection of Tables \ref{tab:steelbeamfoms} and
-\ref{tab:steelbeamtimes} we can conclude that this problem is very difficult for
+Tables \ref{tab:steelbeamfoms} and
+\ref{tab:steelbeamtimes} show that this problem is very difficult for
 analog Monte Carlo and that CADIS-$\Omega$ generally performs better than CADIS.
 In fact, CADIS-$\Omega$ has the best performance
 in this problem of all of the characterization problems.
+
+For both CADIS and CADIS-$\Omega$, this problem has a huge disparity in the FOMs
+calculated with the maximum and minimum relative error. As a result, depending
+on the convergence requirements that a user might require, the time to achieve
+a desired solution could vary significantly in applications. However, both CADIS
+and CADIS-$\Omega$ improve on the unbiased analog Monte Carlo's FOM by a factor
+of $10^{2}$ or more.
+
 CADIS-$\Omega$ outperforms CADIS for
 the FOMS calculated with the tally average relative error and the tally maxmimum
 relative error. This indicates that giving a limiting relative error to which
-all energy bins must converge, CADIS-$\Omega$ will achieve it in half the time
+all energy bins must converge, CADIS-$\Omega$ will achieve it in $1/3$rd the time
 that CADIS will. Further, CADIS-$\Omega$ has a better FOM than CADIS when the
 deterministic runtimes are added. As shown in the timing table, the time to run
 and generate the variance reduction parameters for CADIS-$\Omega$ will always be
-longer than CADIS due to the forward transport run. The addition of
-deterministic runtimes will always lower the FOM of CADIS-$\Omega$ more than
+longer than CADIS due to the addition of the forward transport run. The addition of
+deterministic runtimes has the potential to lower the FOM of CADIS-$\Omega$ more than
 that of CADIS, so CADIS-$\Omega$'s achievement of a FOM higher FOM with much
 longer runtimes in both Monte Carlo and ADVANTG illustrates just how much lower
 the relative error it achieves is. CADIS-$\Omega$ is very well-suited to a
@@ -393,22 +538,52 @@ problem with these conditions.
 
 Figure \ref{fig:steelbeamresult} shows that CADIS and CADIS-$\Omega$ are in
 agreement for the tally results in all energy bins. The nonbiased Monte Carlo
-calculation differs from both of the hybrid methods. In Figure
-\ref{fig:steelbeamerror} it can be observed that CADIS-$\Omega$ achieves a
-consistently lower relative error than CADIS. From this we can conclude that
+calculation differs from both of the hybrid methods. This supports what was
+observed in the nonbiased analog FOM values of Table \ref{tab:steelbeamfoms}.
+Figure
+\ref{fig:steelbeamerror} shows that CADIS-$\Omega$ achieves a
+consistently lower relative error than CADIS for all energy bins. For most
+energy bins, CADIS-$\Omega$'s relative errors are shifted a consistent fraction
+below CADIS'. In the energy regions between $10^{-4}$ and $10^{-1}$ MeV, this is
+not the case. For these energy regions CADIS' relative errors spike while
+CADIS-$\Omega$'s do not.
+
+% [add anisotropy plots here]
+%
+% [describe why anisotropy might have happened in this region]
+%
+% [make visit plot of problematic energy group in adjoint flux and omega flux.
+% compare and discuss differences.]
+
+From the FOM results presented in Table \ref{tab:steelbeamfoms} and the tally
+results and error in Figures \ref{fig:steelbeamresult} and
+\ref{fig:steelbeamerror}, we can conclude that
 CADIS-$\Omega$'s source biasing parameters consistently move more particles in
-all tally energy bins than CADIS. The importance map generated by CADIS-$\Omega$
+all tally energy bins more effectively than CADIS.
+The importance map generated by CADIS-$\Omega$
 better reflects the problem physics and more efficiently transports particles to
 the desired tally location.
 
 \subsubsection{Air Channel Variant}
 \label{subsubsec:airbeam}
 
+The characterization problems have been designed to induce anisotropy in
+the flux. Most of these problems do so, in some part, by using air to induce
+particle streaming. The steel beam in concrete problem requires that particles
+interact with a high density material (either steel or concrete) before reaching
+the detector to induce a response. These next two variant problems explore
+whether the material choice of steel strongly affects the $\Omega$-method's
+ability to generate variance reduction parameters. This first variant keeps the
+geometric configuration of the steel beam problem the same, but the steel is
+replaced with air. If the $\Omega$-methods are more sensitive to air, then this
+change in the materials composition should affect the results.
+
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/prob1v1/problem_1_tally_foms_compare}
-  \caption[Figure of Merit comparison for steel bar geometry air variant.]
-  {Figure of Merit comparison for steel bar geometry air variant. In this
+  \caption[Figure of Merit comparison for the air variant of the steel beam
+  problem geometry.]
+  {Figure of Merit comparison for air variant of the steel beam problem geometry. In this
   variant problem, the steel bar volume region is replaced with air to
 exacerbate the suggested splitting issues encountered in other hybrid problems. }
   \label{tab:airbeamfoms}
@@ -417,33 +592,80 @@ exacerbate the suggested splitting issues encountered in other hybrid problems. 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/prob1v1/problem_1_tally_times_compare}
-  \caption[Detailed timing results for steel bar geometry air variant.]
-  {Detailed timing results for steel bar geometry air variant.}
+  \caption[Detailed timing results for steel beam geometry air variant.]
+  {Detailed timing results for steel beam geometry air variant.}
   \label{tab:airbeamtimes}
 \end{table}
+
+Tables \ref{tab:airbeamfoms} and \ref{tab:airbeamtimes} summarize the FOM and timing
+results for the air variant of the steel beam problem. Comparing the FOMs for
+this variant and for the steel variant (Table \ref{tab:steelbeamfoms}), it is
+clear that CADIS-$\Omega$ performs more poorly than CADIS with air.
+Interestingly, CADIS-$\Omega$'s minimum relative error FOM is better than
+CADIS', which is opposite to the results for the standard steel problem. For the
+maximum relative error, CADIS-$\Omega$'s FOM is 1/5th that of CADIS'. However,
+for this problem CADIS-$\Omega$'s runtime is almost five times that of CADIS.
+Considering this time difference, it appears that CADIS-$\Omega$ requires far
+more sampling with its importance map than CADIS. These sampling requirements
+also exist with the original steel problem, but the importance map reduces the
+tally variance enough to offset the time addition. This is not the case for the
+air variant. From this, we can conclude that the addition of air into this
+problem geometry reduces the sampling interaction points enough to negatively
+affect the $\Omega$-method. Further, it lowers the FOMs achieved by both CADIS
+and CADIS-$\Omega$ substantially that their improvement over the nonbiased
+analog reduces almost an order of magnitude.
+
+The runtimes in Table \ref{tab:airbeamtimes} are also worth comparing with the
+original steel variant. In particular, the deterministic runtime in both of the
+promblems is on the same order of magnitude. However, the Monte Carlo runtime is
+far longer in the original steel version. The runtimes in the air variant are
+generally much shorter for CADIS and CADIS-$\Omega$, but comparable for the
+nonbiased analog. In this problem, the fraction of time spent in the
+deterministic solve is much higher than in the steel version.
 
 \subsubsection{Concrete Channel Variant}
 \label{subsubsec:concretebeam}
 
+In addition to the air variant of the steel beam geometry, we can see if having
+non-preferential flowpaths might affect the $\Omega$-method's performance.
+Recall that the $\Omega$-methods have been designed to incorporate angular
+information into the importance map. If no preferential flowpaths exist through
+the problem geometry, then the $\Omega$-importance map may have less of an
+impact on improving the tally convergence. However, because the entire shield is
+composed of concrete, then the distance to smapling location should still be
+quite small as with the original steel version of the problem. As a result, there
+should be some positive effects on the $\Omega$-methods due to sampling
+interaction frequency. Tables \ref{tab:concretebeamfoms} and
+\ref{tab:concretebeamtimes} show the FOM and timing results for this material
+variant of the steel beam geometry.
+
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/prob1v2/problem_1_tally_foms_compare}
-  \caption[Figure of Merit comparison for steel bar geometry concrete variant.]
-  {Figure of Merit comparison for steel bar geometry concrete variant. In this
+  \caption[Figure of Merit comparison for concrete variant of steel bar geometry.]
+  {Figure of Merit comparison for concrete variant of steel bar geometry. In this
   variant problem, the steel bar volume region is replaced with concrete to
-  eliminate the preferential particle travel through the beam region. This
-  should reduce the angular dependence in the problem, but not have splitting
-  issues like the air channel. }
-  \label{tab:airbeamfoms}
+  eliminate the preferential particle travel through the beam region.}
+  \label{tab:concretebeamfoms}
 \end{table}
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/prob1v2/problem_1_tally_times_compare}
-  \caption[Detailed timing results for steel bar geometry air variant.]
-  {Detailed timing results for steel bar geometry air variant.}
-  \label{tab:airbeamtimes}
+  \caption[Detailed timing results for concrete variant of steel bar.]
+  {Detailed timing results for concrete variant of steel bar.}
+  \label{tab:concretebeamtimes}
 \end{table}
+
+Tables \ref{tab:concretebeamfoms} and \ref{tab:concretebeamtimes} show the
+results of the concrete variant of the steel beam problem. As with the original
+steel and air versions described previously, the runtimes for CADIS-$\Omega$ are quite
+long when compared to CADIS. In each variant, the runtimes are about five times
+longer than those observed for CADIS. Similarly to the steel variant, in this
+version CADIS-$\Omega$ achieves a superior FOM for the tally average FOM.
+However, CADIS-$\Omega$'s FOMS for the maximum and minimum relative error FOMs
+are both lower than CADIS'. Both CADIS and CADIS-$\Omega$ far outperform the
+nonbiased analog Monte Carlo.
 
 \subsection{U-Shaped Corridor}
 \label{subsec:resultsucorridor}
@@ -473,6 +695,28 @@ Monte Carlo.
   \label{tab:ucorridortimes}
 \end{table}
 
+Much like the single- and multiple-turn labyrinths, the U-shaped air corridor
+has a pathway of preferential movement for particles in a concrete shield. In
+this problem, the particles travel down the legs of the u-bend to a detector on
+the other side of the corridor. The particles should have preferential flowpaths
+through the air ducts, but it is possible for low energy particles to traverse
+the concrete barrier between the source and detector. The high energy particles
+tallied in the detector are more likely to have traveled through the air ducts
+and the low energy particles may be supplied from the shield or from scattering
+down the air duct.
+
+The FOM table for the u-shaped corridor shows that this is a fairly difficult
+problem for CADIS, CADIS-$\Omega$, and the analog. For the tally average FOM,
+CADIS and CADIS-$\Omega$ achieve a FOM two orders of magnitude higher than the
+nonbiased analog. Both methods have comparable FOMs. In fact, CADIS and
+CADIS-$\Omega$ are in relative agreement for all FOMs calculated with the Monte
+Carlo runtime. Interestingly, the nonbiased analog Monte Carlo has a higher
+maximum relative error FOM than either method. However, this analog tally for
+this problem has many
+nontallied bins (as can be gathered from the major discrepancy in results in
+Figures \ref{fig:ucorridorresult} and \ref{fig:ucorridorerror}). For the
+few bins that were tallied, the analog has a high FOM.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_result_compare.pdf}
@@ -492,19 +736,27 @@ Monte Carlo.
   concrete.}
   \label{fig:ucorridorerror}
 \end{figure}
-% [Table of FOMs for this problem] \\
-%
-% [Plot of tally results for this problem] \\
-%
-% [Plot of anisotropies for this problem] \\
-%
-% [Summarize results and describe issues affecting performance] \\
+
+The tally results for the u-shaped corridor in Figure \ref{fig:ucorridorresult}
+show general agreement between CADIS and CADIS-$\Omega$. The nonbiased analog
+has no agreement with either method. Comparing their relative errors in Figure
+\ref{fig:ucorridorerror}, we can gather that this is a difficult problem for
+both methods. At high energies both CADIS and CADIS-$\Omega$ have very high
+relative errors, indicating untrustworthy results. To get the relative error in
+these regions for CADIS-$\Omega$ to below 0.10--a fairly standard threshold for
+Monte Carlo--it would have to run nearly 40x longer, or ~900 hours. However,
+CADIS-$\Omega$ achieves a uniformly lower relative error than CADIS for all
+energy bins. Because the time to run CADIS-$\Omega$ is so much longer, the FOM
+is impacted and appears worse than CADIS. Therefore, should CADIS-$\Omega$ use
+the same runtime as CADIS, CADIS will achieve superior relative errors.
+Conversely, if CADIS-$\Omega$ uses the same particle count as CADIS,
+CADIS-$\Omega$ will achieve superior relative errors.
 
 \subsection{Shielding with Rebar}
 \label{subsec:resultrebar}
 
-The problem with rebar embedded length- and width-wise
-in concrete has FOM and timing
+The problem with rebar embedded both in the x- and y- directions
+in concrete has
 results summarized in Tables
 \ref{tab:rebarfoms} and \ref{tab:rebartimes}. Figures
 \ref{fig:rebarresult} and \ref{fig:rebarerror} show the results obtained
@@ -528,6 +780,15 @@ Monte Carlo.
   \label{tab:rebartimes}
 \end{table}
 
+The FOM results for the rebar-embedded concrete show that this is a very poor
+problem for CADIS-$\Omega$, in general. CADIS-$\Omega$ has lower FOMs than CADIS
+in all measures. CADIS-$\Omega$ spends fractionally over five--both
+deterministically and in Monte Carlo--the
+transport time that CADIS does. Further, CADIS-$\Omega$ has poorer FOMs in both
+the tally average and maximum relative error than the nonbiased analog. This is
+due to CADIS-$\Omega$ requiring nearly 30x longer to run Monte Carlo than the
+nonbiased analog.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
@@ -543,13 +804,26 @@ Monte Carlo.
   {Tally relative error comparison between methods for rebar-embedded concrete.}
   \label{fig:rebarerror}
 \end{figure}
-% [Table of FOMs for this problem] \\
-%
-% [Plot of tally results for this problem] \\
-%
-% [Plot of anisotropies for this problem] \\
-%
-% [Summarize results and describe issues affecting performance] \\
+
+Figure \ref{fig:rebarresult} shows that the tally results for the rebar-embedded
+concrete do not generally agree between any method. CADIS and CADIS-$\Omega$
+have better agreement with each other than with the nonbiased analog, but at
+high energies their results differ significantly. However, in comparing their
+relative errors in Figure \ref{fig:rebarerror}, the large discrepancy in their
+results is explained by the very high relative errors in this region. As with
+the u-shaped air corridor, neither method achieves satisfactory relative errors
+below 0.10 in high energy bins. However, both methods achieve comparitavely good
+relative error results in energy bins below $10^{-1}$ MeV.
+
+Unlike previous problems that had
+significant problem volumes filled with air, this particular problem has a thick
+shield with which incident particles must interact. While this problem may
+appear similar geometrically to the beam embedded in
+concrete, this problem has far more preferential flowpaths by which particles
+might flow. Some of these flowpaths are directed perpindicularly to a path
+towards the detector. It is possible that CADIS-$\Omega$ is capturing these
+flowpaths, but because they are not towards the detector CADIS-$\Omega$ spends a
+significant portion of its time sampling less useful regions.
 
 \subsection{Beam Problem}
 \label{subsec:resultsbeam}
@@ -577,7 +851,7 @@ Monte Carlo.
   \caption[Detailed timing results for simplified experimental nuclear physics
   beamline.]
   {Detailed timing results for simplified experimental nuclear physics beamline.}
-  \label{tab:steelbeamtimes}
+  \label{tab:beamtimes}
 \end{table}
 
 \begin{figure}[h!]
@@ -599,13 +873,6 @@ Monte Carlo.
     nuclear physics beamline.}
   \label{fig:beamerror}
 \end{figure}
-% [Table of FOMs for this problem] \\
-%
-% [Plot of tally results for this problem] \\
-%
-% [Plot of anisotropies for this problem] \\
-%
-% [Summarize results and describe issues affecting performance] \\
 
 \subsection{Therapy Room}
 % \label{subsec:resultstherapy}
