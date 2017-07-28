@@ -854,6 +854,42 @@ Monte Carlo.
   \label{tab:beamtimes}
 \end{table}
 
+The experimental nuclear physics beamline problem is the most
+difficult of the characterization problems for both CADIS and CADIS-$\Omega$.
+There are no walls off which
+particles may scatter; the only places most particles will scatter is in the
+detector regions and potentially off of air. These particular problems were run
+with $1e9$ particles rather than $1e7$. Because there are so few interaction
+points, the majority of particles leak out of the problem boundary so
+more source particles are required to obtain results.
+
+Table \ref{tab:beamfoms} shows that nuclear physics experimental beamline
+problem has very slow convergence for
+CADIS and CADIS-$\Omega$. CADIS, CADIS-$\Omega$ and the nonbiased analog all have
+zero-scoring tally bins. These are in low energy regions, energy regions in
+which particles in the problem never reach.
+The maximum relative error FOM for CADIS, CADIS-$\Omega$,
+and the nonbiased analog are all very low, indicating that the threshold for
+convergence of the highest energy bin will take a long time for all three
+methods. Interestingly, CADIS performs worse than CADIS-$\Omega$ and the
+nonbiased analog with this metric. The nonbiased analog achieves the highest
+maximum relative error FOM and the highest tally average relative error FOM for all
+three methods.
+
+A notable feature of Table \ref{tab:beamtimes} is the Monte Carlo runtime of
+CADIS, CADIS-$\Omega$, and the nobiased analog. In previous characterization
+problems, CADIS-$\Omega$ and CADIS had much longer runtimes than the nonbiased
+analog. In all of the previous characterization problems, CADIS-$\Omega$ had a
+longer runtime than CADIS. In this problem, CADIS-$\Omega$ has a shorter runtime
+than CADIS. The deterministic runtime of CADIS-$\Omega$ relative to CADIS
+is comparable to previous problems. A potential reason that the runtimes of
+CADIS and CADIS-$\Omega$ is so close to the nonbiased analog is because so many
+particles leak out of the problem space.
+% Further, the reason that CADIS-$\Omega$
+% may have a shorter runtime than CADIS is because ray effects are dampened in the
+% problem. As a result, unphysical fluctuations in the flux that may generate
+% additional sampling issues are eliminated with CADIS-$\Omega$.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_result_compare.pdf}
@@ -874,35 +910,62 @@ Monte Carlo.
   \label{fig:beamerror}
 \end{figure}
 
+Comparing the full tally results presented in Figures \ref{fig:beamresult} and
+\ref{fig:beamerror}, the FOM results from Table \ref{tab:beamfoms} have more
+context. Figure \ref{fig:beamresult} shows that all three methods have similar
+results in the track length tally. In a few of the bins CADIS and the nonbiased
+analog appear to have closer results than CADIS and CADIS-$\Omega$.
+
 \subsection{Therapy Room}
-% \label{subsec:resultstherapy}
+\label{subsec:resultstherapy}
+
+The problem with a simplified representation of a nuclear medicine therapy room
+has FOM and timing
+results summarized in Tables
+\ref{tab:therapyfoms} and \ref{tab:therapytimes}. Figures
+\ref{fig:therapyresult} and \ref{fig:therapyerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo. Note that the results for this problem had issues with reported
+times for the deterministic run, so the adjusted Monte Carlo
+(FOM$_{hybrid}$) is not reported and the timing table is not reported.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_foms_compare}
+  \caption[Tally results comparison between methods for simplified medical
+  therapy room.]{Tally relative error comparison between methods for simplified
+  medical therapy room.}
+  \label{tab:therapyfoms}
+\end{table}
+
 % \begin{table}[h!]
 %   \centering
-%   \input{./chapters/characterization_probs/figures//_tally_foms_compare}
-%   \caption[]{}
-%   \label{tab:foms}
+%   \input{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_times_compare}
+%   \caption[Tally relative error comparison between methods for simplified
+%   medical therapy room.]{Tally relative error comparison between methods for
+%   simplified medical therapy room.}
+%   \label{tab:therapytimess}
 % \end{table}
 
-% \begin{figure}[h!]
-%   \centering
-%   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/_tally_result_compare.pdf}
-%   \caption[Tally results comparison between methods for ]
-%   {Tally results comparison between methods for }
-%   \label{fig:result}
-% \end{figure}
 
-% \begin{figure}[h!]
-%   \centering
-%   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/_tally_error_compare.pdf}
-%   \caption[Tally relative error comparison between methods for ]
-%   {Tally relative error comparison between methods for}
-%   \label{fig:result}
-% \end{figure}
-% [Table of FOMs for this problem] \\
-%
-% [Plot of tally results for this problem] \\
-%
-% [Plot of anisotropies for this problem] \\
-%
-% [Summarize results and describe issues affecting performance] \\
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for simplified medical
+  therapy room.]
+  {Tally results comparison between methods for simplified medical therapy room.}
+  \label{fig:therapyresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for simplified
+  medical therapy room.]
+  {Tally relative error comparison between methods for simplified medical
+  therapy room.}
+  \label{fig:therapyerror}
+\end{figure}
 
