@@ -1,10 +1,27 @@
 \section{Assessment of the $\Omega$-methods}
 \label{sec:assessments}
 
-\subsection{CADIS-$\Omega$}
-\label{subsec:assess-cadom}
+The results in Chapter \ref{ch:charprobs} showed that CADIS-$\Omega$ has varied
+performance when compared to CADIS over the problem space investigated.
+Depending on the geometric configuration, the material composition, and the
+solver options used, the method
 
-\subsection{FW-CADIS-$\Omega$}
-\label{subsec:assess-fwcadom}
+Summarize the results of the char probs
 
+Summarize the results of the angle study
 
+Summarize the effectiveness of the anisotropy metrics
+
+Draw larger conclusions from it.
+
+The $\Omega$-methods have been characterized with their sensitivity to
+geometric and material configuration, as well as their sensitivity to
+deterministic calculation parameter choice. It is clear from the results in
+Sections \ref{sec:charresults} and \ref{sec:angleresults} that the
+$\Omega$-methods are not always the best choice for variance reduction methods.
+This is from a combination of many effects, but primarily the varied range of
+runtimes when compared to CADIS. In many problems, CADIS-$\Omega$ was able to
+obtain lower relative errors for tally bins than CADIS, but the runtimes were
+significantly longer. The generally longer runtime for CADIS-$\Omega$
+negatively impacts the FOMs that it is able to achieve, thus negating its more
+effective transport of particles.
