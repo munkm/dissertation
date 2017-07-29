@@ -4,15 +4,55 @@
 The results in Chapter \ref{ch:charprobs} showed that CADIS-$\Omega$ has varied
 performance when compared to CADIS over the problem space investigated.
 Depending on the geometric configuration, the material composition, and the
-solver options used, the method
+solver options used, the method can outperform CADIS by an order of magnitude or
+it can be outperformed by an order of magnitude. This underscores the difficulty
+of developing a method that is broadly applicable to a large subset of
+application space. Further, it illustrates the necessity for further methods
+development.
 
-Summarize the results of the char probs
+Several characterization problems were formulated to induce anisotropy in the
+flux by different physical mechanisms. These mechanisms for flux anisotropy were
+either from the source, or from physical interactions with the problem materials
+and geometry. The success of the $\Omega$-methods was not directly correlated
+with any single physical mechanism, but both CADIS and CADIS-$\Omega$ struggled
+in problems comprised of primarily air. Further, CADIS-$\Omega$ struggled more
+than CADIS in problems with air and fairly isotropic fluxes.
 
-Summarize the results of the angle study
+In the single turn labyrinth, CADIS-$\Omega$ achieved lower relative errors in
+epithermal and fast energy groups. These groups were shown to have flux
+anisotropies with anisotropy distributions that were clumped around a particular
+anisotropy values.
+For the multiple turn labyrinth, CADIS achieved uniformly lower relative errors
+than CADIS-$\Omega$. For both the steel beam in concrete and the u-shaped bend,
+CADIS-$\Omega$ achieved lower relative errors than CADIS but had runtimes 3-7x
+longer than those of CADIS. For the geometrically complex rebar-embedded
+concrete, CADIS-$\Omega$ had higher relative errors than CADIS. In high energy
+regions the convergence for energy bins would take days of computational runtime
+to get to a relative error of less than 10\%. For two heavily air-centered
+problems, CADIS-$\Omega$ and CADIS both had comparable relative error
+achievements.
 
-Summarize the effectiveness of the anisotropy metrics
+In addition to checking the limitations of the $\Omega$-methods with respect to
+geometry and material composition, the sensitivity of the methods to
+deterministic parameter selection was studied also. In particular, the effect of
+quadrature order and P$_N$ order were studied. For both CADIS and
+CADIS-$\Omega$, the change in quadrature order had a stronger effect on the
+change in the relative error and the FOM. CADIS showed stronger sensitivity to
+both change in P$_N$ order and quadrature order over CADIS-$\Omega$. CADIS also
+proved to have more and greater magnitude oscillations in the relative error
+between different P$_N$ and quadrature orders. Spikes in the relative error
+occurred in both methods, but more frequently in CADIS. Both
+methods showed improvement in the FOM and relative error with increasing
+quadrature order and P$_N$ order.
+In high energies, CADIS-$\Omega$ achieved superior FOMS to CADIS for all P$_N$
+orders and quadrature orders.
 
-Draw larger conclusions from it.
+Chapter \ref{ch:charprobs} showed a few examples of the anisotropy metrics when
+they showed promising trends with I$_{RE}$ or I$_{FOM}$. These metrics did
+provide information on the relative distribution of anisotropy in the problem,
+and they also showed some trends with the improvement factors. However, many
+problems did not have significant trends, so more work must be done to fully
+characterize hybrid methods using this novel analysis technique.
 
 The $\Omega$-methods have been characterized with their sensitivity to
 geometric and material configuration, as well as their sensitivity to
