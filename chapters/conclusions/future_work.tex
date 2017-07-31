@@ -59,7 +59,7 @@ improvement metrics.
 The $\Omega$-methods, as currently implemented in both Exnihilo and ADVANTG, are
 entirely serial. That is, there is no parallelization in any part of the
 $\Omega$-flux calculation, or supporting code to that effect. In the results
-presented in \ref{ch:results}, T$_{hybrid}$ was calculated to remove
+presented in Chapter \ref{ch:charprobs}, T$_{hybrid}$ was calculated to remove
 parallelization effects so that CADIS and CADIS-$\Omega$ were comparable. While
 the results were adjusted accordingly, this is not the best implementation for
 production software or more difficult use cases. As mentioned previously, the
@@ -121,7 +121,7 @@ geometry of the labyrinth (perhaps an elbow bend), or a hallway in concrete with
 no air rooms, can show if there is a turnover in labyrinth anisotropy in which
 the $\Omega$ methods perform the best.
 
-The results presented in Section \ref{sec:resultsangle} showed that
+The results presented in Section \ref{sec:AngleResults} showed that
 CADIS-$\Omega$ is generally more resilient than CADIS to changes in
 deterministic parameter choice. As a result, CADIS-$\Omega$ can use a coarser
 calculation set to obtain variance reduction parameters for a problem, saving
@@ -138,7 +138,7 @@ mesh refinement, where the number of mesh cells can significantly alter the
 speed at which the deterministic solution converges.
 
 Investigating the impact of quadrature type may also be an area of future work.
-In Section \ref{sec:resultsangle}, it was observed that both CADIS and
+In Section \ref{sec:AngleResults}, it was observed that both CADIS and
 CADIS-$\Omega$ showed greater sensitivity to changes in quadrature order than
 P$_N$ order. CADIS showed a greater sensitivity to changes in quadrature order
 than CADIS-$\Omega$. We expect that the behavior of other quadrature sets will
