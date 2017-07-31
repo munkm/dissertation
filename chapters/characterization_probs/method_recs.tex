@@ -1,20 +1,62 @@
 \section{Method Recommendations}
 \label{sec:method_recs}
 
-% [Summarize results from characterization problems.] \\
+The performance of CADIS-$\Omega$ has been characterized and compared against
+CADIS and a standard, nonbiased analog Monte Carlo run for a series of problems.
+Section \ref{sec:CharResults} showed how varying geometric configuration and
+material composition of various problems with anisotropy affected the
+performance of the $\Omega$ methods.
+Subsections \ref{subsec:pnorder} and \ref{subsec:quadorder} showed how varying
+P$_N$ order and quadrature order changed the tally results and tally
+convergences for the steel beam problem embedded in concrete. In doing this
+characterization, we sought to determine in which problems and with which solver
+options the $\Omega$ methods were best suited. A secondary objective was to
+determine the sensitivity of the $\Omega$-methods to changes in the solver
+options. With these objectives in mind, we can evaluate the $\Omega$ methods'
+performance based on the study performed in the preceding subsections.
 
-In this chapter the
+\subsection{Problem Selection}
+\label{sec:materials_recs}
 
-% [Summarize findings from angle sensitivity study.] \\
+\subsection{Deterministic Solver Choice}
+\label{sec:deterministic_recs}
+First, the effect of T$_{det}$ does not change the FOM with CADIS-$\Omega$ more
+than CADIS. In
+Section \ref{subsec:quadorder} the hypothesis that I/O requirements would severely
+impact the FOM for CADIS-$\Omega$ was shown to not be as impactful as
+hypothesized. The FOM change between
+FOM$_{MC}$ and FOM$_{hybrid}$ was roughly the same for CADIS as CADIS-$\Omega$
+because the CADIS-$\Omega$ runtimes are so much longer than CADIS.
+
+Next, the only consistent region in which CADIS-$\Omega$ outperforms CADIS is in
+high energies. For all P$_N$ orders and all quadrature orders, CADIS-$\Omega$
+achieved lower relative errors and higher FOMs than CADIS. With P$_N$ order
+there were more energy bins that had high I$_{FOM}$ values than with quadrature
+order.
+
+Another observation that can be extended from Section \ref{sec:CharResults} is
+that CADIS-$\Omega$ consistently biases
+particles better than CADIS. For the same number of source particles,
+CADIS-$\Omega$
+achieves lower relative error than CADIS for most energy bins with both P$_N$
+order and quadrature order. This means that while sampling may be slow, the
+importance map generated with the $\Omega$ flux is generally
+better at moving particles to the tally region than
+CADIS.
+
+Based on the results in Section \ref{sec:AngleResults},
+
 
 % [Based on the results, we recommend that the following parameters be used for
 % the $\Omega$-methods.] \\
 
-% [Address gaps in angle sensitivity study.] \\
+\subsection{Lessons Learned}
+\label{sec:lesslearn}
 
 The characterization problems that were run were heavily biased towards
-low-density streaming to induce anisotropy in the flux. In retrospect, this subset of
-problems was not ideal for a method so dependent on weight-window type biasing,
+low-density streaming to induce anisotropy in the flux. This subset of
+problems, though highly anisotropic, are not the best
+for a method so dependent on weight-window type biasing,
 because particle streaming allowed for particles to cross several orders of
 magnitude in the flux before re-sampling. This meant that in a high-importance
 region a particle may split many thousands of times in a new splitting event.
@@ -27,8 +69,17 @@ where the $\Omega$-flux generated a strong line of importance between the exit
 of the labyrinth and the detector and drastically dropped the importance behind
 the detector, a particle has much more opportunity to cross several orders of
 magnitude of importance than it does in CADIS. This is likely what caused
-CADIS-$\Omega$ to take longer in Monte Carlo transport than CADIS in all of the
+CADIS-$\Omega$ to take longer in Monte Carlo transport than CADIS in many of the
 characterization problems.
 
-% [Conclude chapter with potential application problems that the $\Omega$-methods
-% might apply to.] \\
+It should also be noted that while the angle-dependent parametric study revealed
+how P$_N$ order and quadrature order may affect a problem's results, the
+best parameter choices for this problem are by no means a prescriptive solution
+for other problems. Section \ref{sec:CharResults}
+showed how different the characterization problems' results were, depending on
+the source definition, the material composition of the problem, and the
+geometric configuration of the problem. Using the deterministic parameter
+choices that appear the best for the steel beam in concrete may not be the best
+for, say, a multi-turn labyrinth. From this study we have a good starting point
+from which to further characterize the method for other application problems.
+
