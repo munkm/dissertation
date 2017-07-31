@@ -20,6 +20,9 @@ performance based on the study performed in the preceding subsections.
 
 \subsection{Deterministic Solver Choice}
 \label{sec:deterministic_recs}
+
+The angle-based parametric study provided a number of interesting obervations on
+the performance of the $\Omega$ methods.
 First, the effect of T$_{det}$ does not change the FOM with CADIS-$\Omega$ more
 than CADIS. In
 Section \ref{subsec:quadorder} the hypothesis that I/O requirements would severely
@@ -29,8 +32,23 @@ FOM$_{MC}$ and FOM$_{hybrid}$ was roughly the same for CADIS as CADIS-$\Omega$
 because the CADIS-$\Omega$ runtimes are so much longer than CADIS.
 
 Next, the only consistent region in which CADIS-$\Omega$ outperforms CADIS is in
-high energies. For all P$_N$ orders and all quadrature orders, CADIS-$\Omega$
-achieved lower relative errors and higher FOMs than CADIS. With P$_N$ order
+high energies. For almost all P$_N$ orders and all quadrature orders, CADIS-$\Omega$
+achieved lower relative errors and higher FOMs than CADIS. In high energy bins,
+increasing quadrature order showed a decrease in I$_RE$, increasing P$_N$ order
+did not show a large change in I$_RE$. In the same bins, I$_{FOM}$ values above
+unity were observed for both P$_N$ and S$_N$ order, but no trends with changing
+parameter value were observed.
+
+
+By including the runtime to calculate
+the FOM, the comparative performance of CADIS-$\Omega$ dropped when compared to
+using the relative error. Several
+energy bins in CADIS-$\Omega$--for quadrature orders and
+P$_N$ orders--achieved better FOMs than
+CADIS. However no P$_N$ order consistently outperformed the other, while low
+S$_N$ orders generally achieved better FOMS for CADIS-$\Omega$ than CADIS.
+However, despite the lack of consistent performance for a single P$_N$ order,
+the raw values obtained with P$_N$ order are promising. With P$_N$ order
 there were more energy bins that had high I$_{FOM}$ values than with quadrature
 order.
 
@@ -44,11 +62,26 @@ importance map generated with the $\Omega$ flux is generally
 better at moving particles to the tally region than
 CADIS.
 
-Based on the results in Section \ref{sec:AngleResults},
+Based on the results in Section \ref{sec:AngleResults}, a number of
+recommendations can be made based on deterministic solver choice. First, the
+best P$_N$ order choice is
+dependent on the energy range in which one is tallying. For low energy regions,
+P$_N$ order 1 will give the best FOMs relative to CADIS, for intermediate
+energies P$_N$ 3 is a better choice, and for high energies any P$_N$ order is
+satisfactory. In general, because lower P$_N$ orders have lower runtimes, these
+will get the best results for CADIS-$\Omega$ the fastest, and have comparatively
+the best relative errors and FOMs against CADIS. Next, the best S$_N$ order
+choice is
 
-
-% [Based on the results, we recommend that the following parameters be used for
-% the $\Omega$-methods.] \\
+If one has to choose between varying P$_N$ order and S$_N$ order to improve the
+importance map for their method, varying S$_N$ order will have a greater impact.
+This is the case for using either CADIS or CADIS-$\Omega$. However, both methods
+have a turnarount point at which increasing S$_N$ order does not improve the
+relative error enough to offset the time increase of the method. For
+CADIS-$\Omega$, this occurs in bins above S$_N$ 15, and for CADIS it occurs in
+bins aboe S$_N$ 12. For this type of problem, and using all energy bins in the
+tally, CADIS-$\Omega$ will obtain the
+best results with a lower P$_N$ order and intermediate S$_N$ orders.
 
 \subsection{Lessons Learned}
 \label{sec:lesslearn}

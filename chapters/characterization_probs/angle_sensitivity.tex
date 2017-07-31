@@ -673,18 +673,18 @@ this undescores the negative impact that time has on CADIS-$\Omega$'s FOM.
 \label{subsec:observations}
 
 At this point we are interested in which deterministic parameter value affects
-CADIS-$\Omega$ and CADIS' performance more significantly. Up to this point, we
+CADIS-$\Omega$ and CADIS' performance more significantly. We
 have looked at how varying each metric changes the relative error, I$_{RE}$, and
-I$_{FOM}$. However, we have not compared each metric against the other.
+I$_{FOM}$, and from that we have observed trends associated with varying each
+parameter. However, we have not compared each metric against the other.
 Figures \ref{fig:angle_err_improvements} and \ref{fig:angle_fom_improvements}
-summarize the data from the previous subsection. As with P$_N$ order and S$_N$
+aid in this comparison. As with P$_N$ order and S$_N$
 order, these plots show either the relative error or Figure of Merit results for
-the angle sensitivity study. Unlike the plots with I$_{RE}$ and I$_{FOM}$, which
-show the ratio of CADIS-$\Omega$ to CADIS results to give a better intuition of
-the performance of one compared to the other, these
+the angle sensitivity study. Unlike the plots with I$_{RE}$ and I$_{FOM}$, these
 figures show how the FOM and relative error change for a single method. That is,
 how much does the relative error or the Figure of Merit change between the lowest-
-and highest- valued parameters run. These figures are useful to show how
+and highest- valued parameters run for CADIS or CADIS-$\Omega$.
+These figures are useful to show how
 sensitive CADIS and CADIS-$\Omega$ are to P$_N$ order and quadrature order,
 respectively.
 
@@ -692,18 +692,12 @@ In Figure
 \ref{fig:angle_err_improvements}, the ratio of the relative error in each tally
 bin is taken between the lowest and highest-valued parameter run of the
 parametric study. For P$_N$ order (the purple lines in the figure)
-this would be $RE_{P_N 1}/RE_{P_N 5}$ and for
-quadrature order (the green lines in the figure) it would be $RE_{S_N 5}/
-RE_{S_N 20}$. A high ratio means that the relative error decreased more for
-the higher-valued parameter (P$_N$ order 5 or S$_N$ order 20).
-
-In Figure \ref{fig:angle_fom_improvements}, the linestyles and colors match
-those in Figure \ref{fig:angle_err_improvements}. The y-axis of this figure
-shows the ratio of the FOMs for the lowest- and highest-valued parameters. The
-purple lines indicate the ratio of $FOM_{P_N 1}/FOM_{P_N 5}$; the green lines
-show the ratio of $FOM_{S_N 5}/FOM_{S_N 20}$; the linestyles indicate the method
-type. In this plot a low-valued ratio is better, as it reflects a larger value
-of the FOM for the finer P$_N$ or S$_N$ order.
+this is calculated with $RE_{P_N 1}/RE_{P_N 5}$ and for
+quadrature order (the green lines in the figure) it is calculated with
+$RE_{S_N 5}/RE_{S_N 20}$.
+A ratio above unity means that the relative error obtained by
+the higher-valued parameter (P$_N$ order 5 or S$_N$ order 20) is lower than that
+of the lower-valued parameter.
 
 \begin{figure}[h!]
   \centering
@@ -718,23 +712,25 @@ Figure \ref{fig:angle_err_improvements} shows that a greater change in the
 relative error occurs for both CADIS and CADIS-$\Omega$ from S$_N$ order 5 to 20
 than it does for P$_N$ orders. A notable exception to this is for CADIS in the
 energy range from $10^{-8}$ to $10^{-7}$ MeV, where the relative error
-improvement for P$_N$ order exceeds any quadrature order line. Returning to
+improvement for P$_N$ order exceeds any quadrature order line.
+Returning to
 the relative error results for just CADIS, as shown in Figure
 \ref{fig:pn_cad_err}, this energy range has a very high relative error for P$_N$
 order 1, especially when compared to the other energy regions nearby. In this
 energy range, the relative error drops from 0.015 to .005 from P$_N$ order 1 to
-3, but the energy bin just lower only drops about .005 total. The greater change
+3, but the energy bin immediately adjacent
+only drops about .005 total. The greater change
 in the relative error for this region accounts for the spike we see in Figure
 \ref{fig:angle_err_improvements}.
 
 The data in this figure also shows us that increasing P$_N$ order for
 CADIS-$\Omega$ does not reduce the relative error in the energy range from
-$10^{-3}$ to $10^{0}$ MeV. In Figure \ref{fig:angle_err_improvements}, the ratio
-in this region for CADIS-$\Omega$ is below unity. This would indicate that a low
-CADIS-$\Omega$ does not see a strong positive effect from increasing P$_N$
-order. For a problem like this, a low P$_N$ order may be a good enough choice.
+$10^{-3}$ to $10^{0}$ MeV. CADIS-$\Omega$'s purple line on this figure is
+located below unity in that energy region. Generally this line for
+CADIS-$\Omega$ does not see a huge improvement with increasing P$_N$ order.
+For a problem like this, a low P$_N$ order may be a good enough choice.
 
-CADIS' results in the same energy regioni previously discussed show improvement in the
+CADIS' results in the same energy region show improvement in the
 relative error. However, in many centrally-located energy bins, this improvement
 is very small. If a tally existed for a similar problem in these energy ranges,
 it may be sufficient to use CADIS with a low P$_N$ order as well.
@@ -748,16 +744,42 @@ it may be sufficient to use CADIS with a low P$_N$ order as well.
   \label{fig:angle_fom_improvements}
 \end{figure}
 
-Figure \ref{fig:angle_fom_improvements} shows the
+In Figure \ref{fig:angle_fom_improvements}, the linestyles and colors match
+those in Figure \ref{fig:angle_err_improvements}. The y-axis of this figure
+shows the ratio of the FOMs for the lowest- and highest-valued parameters. The
+purple lines are calculated by the ratio of $FOM_{P_N 1}/FOM_{P_N 5}$;
+the green lines show the
+ratio of $FOM_{S_N 5}/FOM_{S_N 20}$; the linestyles indicate the method
+type. In this plot, a low-valued ratio reflects a higher valued FOM obtained by
+the finer P$_N$ or S$_N$ order.
+
+Some features from \ref{fig:angle_err_improvements} are continued in Figure
+\ref{fig:angle_fom_improvements}. For example, the energy bins between $10^{-8}$
+and $10^{-7}$ MeV still show a large change for P$_N$ order in CADIS. However,
+the addition of time to calculate the FOMs affects both methods. In Figure
+\ref{fig:angle_err_improvements}, we observed that for both methods, increasing
+P$_N$ order or quadrature order generally decreased the relative error. In
+Figure \ref{fig:angle_fom_improvements}, this is not the case. At low energies,
+all methods have higher FOMs with increasing parameter resolution. At
+intermediate energies, only S$_N$ order strongly changes the FOM. At high
+energies, energy bins for both S$_N$ and P$_N$ order wildly oscillate between
+improved and not improved.
+
+The CADIS lines in Figure \ref{fig:angle_fom_improvements} generally lie at
+lower values than CADIS-$\Omega$. Consequently, larger changes in the FOM are
+observable with increasing either P$_N$ or S$_N$ order. This is the case for
+most energy bins, but not above $10^0$ MeV. In this region, CADIS-$\Omega$ and
+CADIS shift between energy bins in which method sees
+a larger change with parameter value selection.
 
 By inspecting both Figure \ref{fig:angle_err_improvements} and
 \ref{fig:angle_fom_improvements}, a few common themes appear. First, CADIS has a
 larger change in the tally relative error and FOM than CADIS-$\Omega$ for most
 energy bins. Second, this general observation does not hold for energy bins
-greater than $~10^{-1}$.
-
-% [Go back through results and highlight benefits and pitfalls.] \\
-
-% [Describe reasons why these might have occurred. Follow up with a list of options
-% that could be done in further testing to confirm reasons.] \\
+greater than $~10^{-1}$. At these energy regions, CADIS-$\Omega$ achieves a
+better relative error with increasing S$_N$ order, but not P$_N$ order. Neither
+CADIS-$\Omega$ or CADIS have a dominant trend in FOM values in this region.
+Another observation is that generally S$_N$ order has a greater effect on the
+relative errors and FOMS for both methods. This is not the case in the high
+energy region for FOM values, where both methods are comparable.
 
