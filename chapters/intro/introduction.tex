@@ -1,13 +1,27 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-This dissertation covers the development, implementation, and characterization
-of a novel method for neutral particle, deep-penetration, radiation transport in
-highly anisotropic problems.
+This dissertation covers the development,
+implementation, and characterization
+of a novel hybrid method for neutral particle, deep-penetration, radiation transport in
+highly anisotropic problems. The method generates a forward-weighted adjoint
+scalar flux, which is then used to consistently generate variance reduction
+parameters for Monte Carlo radiation transport. Because of the incorporation
+of directionality into the adjoint scalar flux,
+the method has been named FW/CADIS-$\Omega$. The name alludes to the lineage of
+the method, which builds off of
+the Consistent Adjoint-Driven Importance Sampling (CADIS), and
+Forward-Weighted CADIS (FW-CADIS) methods.
+The work supporting the development of these methods not only help
+to further characterize hybrid method performance, but also provide a novel
+analytical framework by which to characterize problem physical behavior. This
+work advances the current state of hybrid methods and extends the availability
+for different hybrid methods in existing software.
 
 
 \input{./chapters/intro/motivation.tex}
-\input{./chapters/intro/methodology.tex}
 \input{./chapters/intro/objectives.tex}
+% \input{./chapters/intro/methodology.tex}
+\input{./chapters/intro/outline.tex}
 
 
