@@ -18,6 +18,64 @@ performance based on the study performed in the preceding subsections.
 \subsection{Problem Selection}
 \label{sec:materials_recs}
 
+Section \ref{sec:CharResults} revealed that CADIS-$\Omega$ does not outperform
+CADIS for all problems containing anisotropy in the flux. Depending on how and
+where the flux
+anisotropy was induced in the problem, CADIS-$\Omega$ had the potential to
+significantly increase the FOM in Monte Carlo. These results were not
+consistent, and are not entirely predictable.
+
+In comparing the single turn and multiple turn labyrinths, it was observed that
+more scattering effects decrease the effectiveness of CADIS-$\Omega$. Because
+more scattering is required to penetrate the multiple turn labyrinth,
+the performance of CADIS-$\Omega$ was poorer. In the single turn labyrinth
+energy bins that had more isotropy in the flux induced by scattering also were
+poorer performing for CADIS-$\Omega$.
+
+To add to this complexity, problems with little- to no- scattering were also
+difficult for CADIS-$\Omega$ to handle. These problems were also problematic for
+CADIS, as they were generally comprised of ``thin'' materials to induce
+streaming effects. As a result, sampling events occurred over several
+centimeters, which also was over several orders of magnitude in flux change.
+This resulted in very high relative errors, as observed in the beam facility
+problem. This was not as problematic in the therapy room example because the
+problem was bounded by 10cm of concrete, which allowed for particle scattering
+rather than leakage.
+
+Several material variants of the steel beam in concrete problem were run. The
+results of this small study confirmed that both CADIS and CADIS-$\Omega$ obtain
+poorer FOMs with air than with steel or concrete. In the case of the air
+variant, the FOMs obtained by CADIS-$\Omega$ were generally lower than CADIS,
+but the relative errors were also better. For all material variants of the steel
+beam problem, CADIS and CADIS-$\Omega$ achieved superior FOMs to the nonbiased
+analog, but these were an order of magnitude lower for the air variant.
+
+The rebar-embedded concrete problem showed that for problems with
+geometric complexity, CADIS-$\Omega$ can also struggle. Because the rebar in
+this problem was not always directed in line with the detector tally, particles
+could more freely move perpendicular to the tally path, crossing out of
+importance with a preferential flowpath. As a result, in high energy bins the
+tally relative error was very high for both CADIS and CADIS-$\Omega$. However,
+CADIS-$\Omega$'s performance was poorer. The FOMs obtained by CADIS-$\Omega$ in
+this problem were one to two orders of magnitude smaller than CADIS or the
+nonbiased analog.
+
+CADIS-$\Omega$ achieved lower relative errors than CADIS for many problems, but
+often this was offset by a very long runtime. The long runtime impacted the FOM.
+As a result, even though CADIS-$\Omega$ achieves a lower relative error for the
+same particle count, it may be more advantageous to simply run standard CADIS
+for longer. In a few instances, the runtime for CADIS-$\Omega$ is comparable to
+CADIS. This occurs in the beam and therapy room problems, for example. Although
+these problems are not the best for either CADIS or CADIS-$\Omega$, there is no
+caveat to using CADIS-$\Omega$ if choosing a hybrid method.
+
+The characterization problems' variations in material and geometric
+configuration showed that there is no distinct behavior for which CADIS-$\Omega$
+is universally better. However,
+in problem geometries where preferential flowpaths are directed
+towards the tally detector, and where materials provide short mean free paths to
+interaction or resampling sites, CADIS-$\Omega$ is a well-suited method.
+
 \subsection{Deterministic Solver Choice}
 \label{sec:deterministic_recs}
 
@@ -38,7 +96,6 @@ increasing quadrature order showed a decrease in I$_RE$, increasing P$_N$ order
 did not show a large change in I$_RE$. In the same bins, I$_{FOM}$ values above
 unity were observed for both P$_N$ and S$_N$ order, but no trends with changing
 parameter value were observed.
-
 
 By including the runtime to calculate
 the FOM, the comparative performance of CADIS-$\Omega$ dropped when compared to
