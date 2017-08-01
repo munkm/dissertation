@@ -1,39 +1,41 @@
 \section{Motivation}
 \label{sec:motivation}
 
-Radiation shielding is a realm of continued importance for nuclear engineering
-and health physics applications. With the expansion of nuclear technology
-applications,
+Radiation shielding is an area of continued importance for nuclear engineering, nuclear security, 
+and health physics applications. With the expansion of nuclear technology,
 the potential proliferation of nuclear materials, and the continued development of
-nuclear medicine applications, tools with which to predict the behavior
+nuclear medicine, tools with which to predict the behavior
 of these systems are
 in ever-increasing demand. Over the course of several decades, radiation
 transport methods have been developed in two primary areas: stochastic (Monte
 Carlo) and
-deterministic radiation transport.
+deterministic.
 
 These tools have the potential to be immensely
 powerful, but are not without their drawbacks. Monte Carlo methods have the
 benefit of modeling transport that is continuous in energy, space, and angle.
 A user can obtain results for any region in phase-space that one might desire.
+% Add a sentence explaining that these are localized.
 However, Monte Carlo methods also require adequate sampling in order to obtain a
-solution with sufficient precision. Depending on the complexity of the problem,
-this may be difficult, computationally demanding, very time consuming,
+solution with sufficient precision.
+% I'd add a sentence realting number of particles simulated, and hence run time, to statistics .
+ Depending on the complexity of the problem,
+this may be difficult, computationally expensive, very time consuming,
 or impossible.
 
 Deterministic
 transport methods discretize the problem phase-space in space, energy, and
 angle. They iteratively converge on a global problem solution that is equally
 valid across the entire problem space, rather than a potentially localized tally
-location. They tend to be much faster than Monte Carlo methods, but also lose
+location. Deterministic solvers tend to be much faster than Monte Carlo methods, but also lose
 the continuity in phase-space that is offered by Monte Carlo. Depending on how
-coarse the problem is discretized, features of interest in the particle flux may
-be obfuscated.
+coarsely the problem is discretized, features of interest in the particle flux may
+be incorrect or missed entirely.
 
 Hybrid methods leverage the speed and uniform solution validity of
 deterministically-obtained transport solutions to bias Monte Carlo transport to
 more effectively sample in regions of interest. Biasing Monte Carlo to move
-particles to regions of interest is called variance reduction. Many existing
+particles to regions of interest more effectively is called variance reduction. Many existing
 implementations of hybrid methods
 automate the variance reduction process to speed up the time to a
 desired solution or to achieve a more uniform uncertainty distribution in the
