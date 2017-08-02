@@ -667,6 +667,144 @@ However, CADIS-$\Omega$'s FOMS for the maximum and minimum relative error FOMs
 are both lower than CADIS'. Both CADIS and CADIS-$\Omega$ far outperform the
 nonbiased analog Monte Carlo.
 
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_1/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for steel beam geometry}
+    \label{fig:beamsteelviolins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for air beam geometry}
+    \label{fig:beamairviolins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for concrete beam geometry}
+    \label{fig:beamconcreteviolins}
+  \end{subfigure}
+  \caption[Distribution plots of M$_4$ for the steel beam problem geometry
+  material variants.]{Distribution plots of M$_4$ for the steel beam problem
+  geometry material variants. Distributions have been filtered from cells that
+  are in bins above the contributon average flux in each problem. Coloring
+corresponds to energy group, red indicates a higher energy group and blue a
+lower energy group. }
+  \label{fig:beamviolins}
+\end{figure}
+
+The beam problem material variants provide a very interesting opportunity to see
+the effect of material properties on I$_{RE}$ and on the anisotropy metric
+distributions. Based on observations, the distributions for M$_4$ will be shown
+for these problem variants in \ref{fig:beamviolins} and \ref{fig:beamIREs}.
+Figure \ref{fig:beamsteelviolins} shows the M$_4$ distribution for each energy
+group as a violin plot for the original steel version of the problem.
+Figures \ref{fig:beamairviolins} and \ref{fig:beamconcreteviolins} show the air
+and concrete variants of the problem, respectively. Note the similarity between
+the metric distributions for the steel and concrete variants of the problem
+(Figs. \ref{fig:beamsteelviolins} and \ref{fig:beamconcreteviolins}). The metric
+distributions have similar ranges, similar distributions, and similar mean
+values. The only energy groups where there are noticeable differences are in the
+highest energy groups, where the local minimum values differ, and in energy
+group three, where the distribution between the two problems differs.
+
+Compare
+what was observed in the concrete and steel variations of the problem
+to Figure \ref{fig:beamairviolins}, which contains the M$_4$ distributions
+for air. The range in values for each of these violins is much larger than
+either \ref{fig:beamsteelviolins} or \ref{fig:beamconcreteviolins}. Energy group
+11 does not bottom out as it does in the previous two problems. The fastest
+energy group is strongly peaked upwards, as are many low energy groups. While
+the distribution of each of the metrics for this problem are much broader, the
+main body of the distributions are centered around lower values than either
+\ref{fig:beamsteelviolins} and \ref{fig:beamconcreteviolins}.
+
+The differences in the violin plots are purely due to differences in the
+sampling physics of the problem. Despite different materials in the concrete and
+steel variants of the problem,
+\ref{fig:beamconcreteviolins} and \ref{fig:beamsteelviolins} have similar violin
+distributions. This tells us that while the overall energy spectrum of the
+problem may be different, the distribution of anisotropy within the problem may
+be more dependent on how likely particles are to collide. That is, because both
+steel and concrete have higher interaction probabilities than air, their
+anisotropy distributions will be closer to each other than air.
+
+Because the problem geometries and mesh sizes are identical between each of
+these problems, it is likely that the selection of values is at similar
+locations in each of the problems. However, because the filter matrix described
+in Section \ref{subsec:resultsintro} is based on the contributon flux, which is
+problem specific, these will still differ between problems. Further, the number
+of cells selected from each energy group will differ between problems.
+
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_1/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for steel beam geometry}
+    \label{fig:beamsteelIRE}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for air beam geometry}
+    \label{fig:beamairIRE}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for concrete beam geometry}
+    \label{fig:beamconcreteIRE}
+  \end{subfigure}
+  \caption[Scatterplots of values describing M$_4$ distribution against I$_{RE}$
+  for steel beam problem geometry material variants.]{Scatterplots of values
+    describing M$_4$ distribution against I$_{RE}$ for steel beam problem
+    geometry material variants. As with the distributions in
+    \ref{fig:beamviolins}, M$_4$ is based on values filtered out in cells
+  located above the contributon flux average value. The values on the x-axes of
+the figures are evaluated based on the subset of M$_4$ values. Coloring of
+datapoints correspond to the energy groups.}
+  \label{fig:beamIREs}
+\end{figure}
+
+Based on the violin plots in \ref{fig:beamviolins}, it was observed that
+the M$_4$ distribution was far different in the air variant of this problem
+geometry than the steel or concrete variants. This is also observable in Figure
+\ref{fig:beamIREs}, which plots the relative error improvement metric, I$_{RE}$
+with different metric distribution values. Recall that a low I$_{RE}$ means that
+the $\Omega$ method achieved a superior relative error to standard CADIS.
+
+Figures \ref{fig:beamsteelIRE} through \ref{fig:beamconcreteIRE} shows the
+relative error improvement factors for each of the steel beam material variants
+described in \ref{fig:beamviolins}. For both the steel and concrete problems,
+CADIS-$\Omega$ has favorable values for I$_{RE}$ in most energy bins. In Figures
+\ref{fig:beamsteelIRE} and \ref{fig:beamconcreteIRE} there appears to be a trend
+in I$_{RE}$ with both the metric variance and the metric skew--the ratio of the
+mean to the median values--which indicates that the metric distribution rather
+than the metric average are more likely to be related to the improvement in the
+relative error for these problems. This trend is not observable for the air
+variant in Figure \ref{fig:beamairIRE}. In fact, the metric mean and median
+values are better indicators for I$_{RE}$ than the distribution values.
+
+Looking at the distributions of I$_{RE}$ it is clear that despite the similar
+metric distribution values, the concrete and steel variants of this problem do
+have different performances. Disregarding energy group 11, which is an outlier
+in all three problem figures, the two problems have similar ranges of I$_{RE}$.
+However, the highest energy groups have the lowest I$_{RE}$ for the concrete
+problem, while the lowest values in the steel problem occur in in intermediate
+energy groups.
+
+
 \subsection{U-Shaped Corridor}
 \label{subsec:resultsucorridor}
 
@@ -825,6 +963,65 @@ towards the detector. It is possible that CADIS-$\Omega$ is capturing these
 flowpaths, but because they are not towards the detector CADIS-$\Omega$ spends a
 significant portion of its time sampling less useful regions.
 
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_violin_mean.pdf}
+    \caption{M$_3$ distributions rebar embedded in concrete}
+    \label{fig:M3violinrebar}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete.}
+    \label{fig:M3statsrebar}
+  \end{subfigure}
+  \caption[M$_3$ distribution and trends for rebar-embedded concrete
+  problem.]{M$_3$ distribution and I$_{RE}$ scatterplot for rebar-embedded in
+concrete. Values of M$_3$ have been filtered to be from cells that are above the
+contributon mean value.}
+  \label{fig:rebarplots}
+\end{figure}
+
+After inspecting the metric distributions against I$_{RE}$ and I$_{FOM}$, no
+distinct trends were observable with any metric and either improvement factor.
+The distribution with the best trends are included in Figure
+\ref{fig:rebarplots}. Figure \ref{fig:M3violinrebar} illustrates the
+metric distribution and Figure \ref{fig:M3statsrebar} shows the relative error
+improvement metric as a function of different metric distribution values.
+
+Figure \ref{fig:M3violinrebar} shows the metric
+distribution for this problem using metric values from cells above the
+contributon mean. It is clear from this distribution that low energy cells have
+a large spread but no centering value. There exist some very anisotropic cells
+at low energy groups, but there exist also exist some very isotropic cells.
+Conversely, in high energy groups the metric distribution has a very clumped
+distribution of values where the contributon max angular flux is higher than the
+average contributon angular flux in the cell.
+
+Using values that can be computed from the distributions shown in Figure
+\ref{fig:M3violinrebar}, the relative error improvement between CADIS-$\Omega$
+and CADIS can be plotted as shown in \ref{fig:M3statsrebar}. In general there
+exist many energy bins where CADIS-$\Omega$ achieves a poorer relative error
+than CADIS. The bins where the comparative error is the worst is in intermediate
+energy regions. At low energy regions the relative errors are comparable, but as
+shown in the timing table, the FOM will be much lower for CADIS-$\Omega$. There
+does appear to be a slight trend in I$_{RE}$ with the ratio of the metric mean
+to the metric median and with the metric variance. As with the steel beam
+problem, this shows that the metric distribution is a better predictor of the
+improvement in the relative error than the metric average or median value.
+However, these trends are not strong, and it would be difficult to predict the
+performance of a similar problem based on metric distributions.
+
+It is possible that the filter matrix is not fine enough for this particular
+problem to pull out metric
+values of high importance, but even values filtered out above the mean
+contributon flux did not have strong correlations. However, with the cutoffs
+appearing in the distributions of \ref{fig:M3violinrebar}, choosing too high of
+a filter value may also remove much of the metric distribution.
+
 \subsection{Beam Problem}
 \label{subsec:resultsbeam}
 
@@ -916,6 +1113,54 @@ context. Figure \ref{fig:beamresult} shows that all three methods have similar
 results in the track length tally. In a few of the bins CADIS and the nonbiased
 analog appear to have closer results than CADIS and CADIS-$\Omega$.
 
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/beam/forward_anisotropy_violin_full.pdf}
+    \caption{Full forward flux anisotropy distribution}
+    \label{fig:forwardbeamline}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/beam/adjoint_anisotropy_violin_full.pdf}
+    \caption{Full adjoint flux anisotropy distribution}
+    \label{fig:adjointbeamline}
+  \end{subfigure}
+  \caption[Forward and adjoint anisotropy distributions for experimental
+  nuclear physics beamline]{Forward and adjoint anisotropy distributions for
+  experimental nuclear physics beamline.}
+  \label{fig:beamlineplots}
+\end{figure}
+
+While this problem has very poor performance for the relative errors of CADIS
+and CADIS-$\Omega$, some interesting physics can be highlighted by looking at
+the distributions of the forward and adjoint anisotropy. Here the ratio of the
+maximum angular flux to the average angular flux is computed for each cell.
+Figure \ref{fig:forwardbeamline} shows the distribution of values for the
+forward flux, and Figure \ref{fig:adjointbeamline} shows the distribution of
+values for the adjoint flux. Because this value has extremely high leakage, we
+can see the effect of moderation on the distributions. The forward flux in this
+problem is defined as a monodirectional beam aimed at a NaI cube. As a result,
+the highest energy group only exists in the problem between the source and the
+cube. This is reflected in the very different distribution for the highest
+energy group and all of the other energy groups.
+
+Because all of the highest energy particles are removed--most likely by
+downscattering to lower energies--from the problem after interacting with the
+NaI cube, the distribution is dominated by the monodirectional beam. The
+distribution of values in this energy group are strongly peaked towards a single
+direction, which is the limiting upper value of group 0.
+
+Compare the forward distributions of Figure \ref{fig:forwardbeamline} to the
+adjoint distributions of Figure \ref{fig:adjointbeamline}. All energy groups
+in the adjoint variant are similar to the fastest in the forward problem. This
+is because the adjoint source particle distribution is not angle-dependent as it
+is in the forward problem. The other NaI detector in the problem comprises a very
+small fraction of the solid angle of the adjoint source. As a result, all energy
+groups are fairly monodirectional, and particles stream out of the problem.
+
 \subsection{Therapy Room}
 \label{subsec:resultstherapy}
 
@@ -937,6 +1182,12 @@ times for the deterministic run, so the adjusted Monte Carlo
   \label{tab:therapyfoms}
 \end{table}
 
+The therapy room is a problem where CADIS-$\Omega$ performs fairly well when
+compared to CADIS and the nonbiased analog Monte Carlo. For the Monte Carlo
+runtime-exclusive FOMs, CADIS-$\Omega$ achieves better FOMs than CADIS and the
+nonbiased analog in both the tally average relative error and the tally maximum
+relative error.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
@@ -955,4 +1206,13 @@ times for the deterministic run, so the adjusted Monte Carlo
   therapy room.}
   \label{fig:therapyerror}
 \end{figure}
+
+For this problem, CADIS-$\Omega$ achieved similar relative errors to CADIS for
+intermediate- and fast- energy bins. However, for low energy bins CADIS
+performed poorly and CADIS-$\Omega$ achieved satisfactory relative errors. These
+low energy bins are the only ones where CADIS-$\Omega$ really substantially
+outperformed CADIS. In a similar problem it would be advantageous to use
+CADIS-$\Omega$ as a method, but with deterministic runtime incorporated it may
+still be worthwhile to run with CADIS instead. If a user desires a tally with
+low energy bins exclusively, CADIS-$\Omega$ will be the advantageous method.
 
