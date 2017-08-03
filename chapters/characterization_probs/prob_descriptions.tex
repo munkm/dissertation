@@ -1,22 +1,22 @@
 \section{Description of the Characterization Problems}
 \label{sec:AngleProbDesc}
 
-In characterizing the $\Omega$ methods, we aim to determine in which problems
-the $\Omega$-methods perform well, and then quantify that success.
+In characterizing the $\Omega$-methods, we aim to determine in which problems
+they perform well, and then quantify that success.
 First, it must be determined how effective the
 $\Omega$-methods are in reducing the variance for a tally result in Monte Carlo.
 This will be done by assessing and comparing the FOMs between different VR methods.
-Also, the method should be investigated on a diverse set of anisotropic
+Also, the methods should be investigated on a diverse set of anisotropic
 problems. By constructing problems that have
-different mechanisms by which the flux may be or become
-anisotropic, potential strengths or weaknesses of the method can be identified.
-Another desirable metric would be to quantify the method's success given the
+different physical mechanisms causing
+anisotropy in the flux, potential strengths or weaknesses of the methods can be identified.
+
+Another desirable metric is to quantify the methods' success given the
 degree of anisotropy in the problem. Recall that different
 means of quantifying the flux
 anisotropy were presented in Section \ref{sec:anisotropy_quant}. With a diverse
 selection of characterization problems, we will obtain variation in the flux
-anisotropy in each problem as well as the resultant FOMs. This will provide us
-with a path forward with which to use the $\Omega$-methods in a deeper
+anisotropy in each problem as well as the resultant FOMs. This will provide a path forward with which to use the $\Omega$-methods in a deeper
 angular-sensitivity study, which will be discussed in Section
 \ref{sec:AngleResults}.
 
@@ -27,37 +27,35 @@ There exists a rich history of using hybrid methods in problems with strong
 angular dependence, as summarized in Chapter \ref{ch:lit_review}. Angular
 dependence may appear in a problem through several means--both physical and
 computational.
-Mosher et al. noted in their threat-detection work with ADVANTG
+Mosher et al.~\cite{mosher_automated_2009} noted in their threat-detection work with ADVANTG
 that problems with strongly directional sources and
 problems with ``thin'' materials like air were difficult for ADVANTG to effectively
-reduce the variance. The attributed this to strongly anisotropic behavior of the
-importance function that were not reflected well by the scalar flux
-\cite{mosher_automated_2009}. Sweezy also found that weight windows obtained
+reduce the variance. They attributed this to strongly anisotropic behavior of the
+importance function that were not reflected well by the scalar flux. Sweezy~\cite{sweezy_automated_2005} also found that weight windows obtained
 from a hybrid S$_N$ calculation were not good for a dogleg void problem,
-where ray effects from the $S_N$ calculation generated poorer weight windows
-than a method without ray effects \cite{sweezy_automated_2005}. Recall from
-Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary}, that ray
+where ray effects from the S$_N$ calculation generated poorer weight windows
+than a method without ray effects. \footnote{Recall from
+Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary} that ray
 effects are a nonphysical effect seen in the flux solution that arise from
 the angular discretization of the problem.
 Ray effects are common in situations where there are strong
-streaming effects or if there exists a strong source emitting particles with
-long mean free paths in the material. Though they did not observe ray effects in
+streaming effects or a strong source is emitting particles with
+long mean free paths in the material.} Though they did not observe ray effects in
 the importance map for the problem, Peplow et
-al. also found that CADIS struggled with thin material streaming in a spherical
-boat test problem \cite{peplow_consistent_2012}.
+al.~\cite{peplow_consistent_2012} also found that CADIS struggled with thin material streaming in a spherical
+boat test problem.
 
 The examples of angle-dependence in problems affecting hybrid methods' success
 illustrate that the flux can have anisotropy resulting from more than one
 mechanism. Based on these examples, we have identified several separate
 processes that affect the flux anisotropy. These processes can be grouped into
 three categories: anisotropy in the flux resulting from a strongly
-directional source; anisotropy resulting from strong differences between
+directional sources; anisotropy resulting from strong differences between
 material properties (this can be due to differences in
-materials spatially and due to changes in interaction probabilities);
+materials spatially or due to changes in interaction probabilities as a function of energy);
 and anisotropy in the flux from algorithmic limitations (ray effects).
-These processes have some parameter
-space that overlap, so this section will continue with a brief discussion about how each
-of these apply to anisotropic problems.
+These processes overlap, so this section will continue with a brief discussion about how each
+mechanism applies to anisotropic problems.
 
 A strongly directional source is one that emits particles in a very small solid
 angle of angle-space. The most extreme example of this would be a
@@ -67,58 +65,69 @@ is source-specific and does not depend on the rest of the
 problem configuration. Characterization problems will have sources of both types
 to ensure parameter space is covered.
 
-% This next paragraph is maybe a little confusing and could use rewording.
-The next subset of anisotropy-inducing processes are those that result form
-strong differences between material properties. As noted, this can be from
-the geometric configuration of the problem, or from variations in the cross
-sections within a geometric location. To illustrate the differences in the way
-the problem can physically induce anisotropy in the flux, several simple thought
-experiments will be presented. Consider first the extreme example of material
-A which has some low absorption probability,
-and material B which is a pure absorber. Only
-particles that travel through material A will eventually reach the tally
-location. This is an example of a type of problem with strong material
-heterogeneity. In constructing a set of characterization problems, creating channels
-through which particles will preferentially travel will induce anisotropy in the
-flux. These types of flow paths are also of interest in shielding application
-problems, and were discussed at length in Section
-\ref{sec:ContributonImportance}. In this type of problem, material A can either
-have a low scattering probability (airlike), or it can be highly scattering. In
-scattering events, neutral particles can either lose very little energy with a high Z
-material, like lead, or they can lose a lot of energy with a low Z material.
-These will be considered separately, because the energy spectrum of the
-particles affects the particle's interaction probability.
-Consider another example of an isotropic
-point source immersed in a pure thin material. Because particles have a very low
+It is also possible for isotropic sources to appear anisotropic from great distances. 
+Consider an isotropic
+point source in a physically large streaming material. 
+% Idk what "immersed in a pure thin material" means
+Because particles have a very low
 probability of interaction in the material, they will travel almost uniformly
-outwards away from the point source. At some distance from the point source, the
+outward away from the point source. At some distance from the point source, the
 majority of the
-particles in a cell will be traveling in the same direction. This is an example
-of a problem with streaming paths.
-To summarize, we have identified several
-sub-distinctions of this type of effect: regions with streaming where particles
+particles in a cell will be traveling in the same direction, appearing anisotropic at that location.
+% this doesnt seem to fall into the two materials category, but closer to the source category, so I moved it into the source
+
+% This next paragraph is maybe a little confusing and could use rewording.
+The next subset of anisotropy-inducing processes are those that result from
+strong differences between interaction probabilities. As noted, this can be from
+the geometric configuration of the problem, or from variations in the cross
+sections in energy within a geometric location. To illustrate these effects, several simple thought
+experiments will be presented. 
+
+Consider first the example of material
+A, which has low scattering and absorption probabilities across energy (a streaming material like air),
+and material B, which is a pure absorber. 
+Particles that travel through material A will have a much higher likelihood of reaching the tally
+location than those that travel through material B. 
+Thus, material A provides a preferential streaming path that could cause flux anisotropy. Some characterization problems, therefore, contain streaming materials in combination with materials with higher moderating and/or absorbing properties. Particles will preferentially travel through the streaming material and induce anisotropy. 
+
+% I think I've made this clearer and a little better separated? I think this is sort of the distinction you mean? I'm not completely clear though. 
+A second example is when material A has low absorption but high scattering potential. In
+scattering events, neutral particles can lose very little energy, as often happens with a high Z
+material like lead, or they can lose a lot of energy with a low Z material like hydrogen.
+When neutrons lose little energy, they tend to forward-scatter and stream through the problem. 
+Larger energy transfers tend to be more isotropic and thus diffuse particles.
+Thus, streaming can occur within a material based on the details of the scattering cross section.
+Problems emphasizing the first and second examples will be considered separately, and both types of flow paths are of interest in shielding application
+problems, and were discussed at length in Section
+\ref{sec:ContributonImportance}. 
+
+We have identified several
+ physical configurations of interest: regions with streaming where particles
 far from the source are primarily monodirectional, regions
 that are highly scattering where particles have a preferential flowpath through
 one material and are downscattered in energy, and regions with strong
 material heterogeneity where particles have preferential flowpaths but are not
 necessarily downscattered in energy. It should be noted that while streaming and
 scattering problems will almost always be subsets of problems with material
-homogeneity, it is possible to have a highly scattering or a streaming problem
+inhomogeneity, it is possible to have a highly scattering or a streaming problem
 without material heterogeneity.
 
+% What you had before wasn't really correct. 
 The last factor that can influence anisotropy in the flux solution is ray
 effects. While ray effects are a result of anisotropy in the flux solution, this
 is a nonphysical effect and can actually affect variance reduction
-performance. In the case of ray effects, we aim to see if the
-$\Omega$-methods are more robust in avoiding them in generating VR parameters.
-Because ray effects are primarily seen in large regions with low interaction
-probabilities, some of the characterization problems will need to
-incorporate these regions into their geometries.
+performance. Because the $\Omega$-methods use the angular flux as weighting
+functions, it is possible that any ray effects could be included in the scalar flux 
+used for creating VR parameters.
+We aim to see if this does in fact happen, and if so if there is an impact on performance. 
 
-In this subsection, four primary physical mechanisms by which the flux may
-be anisotropic were identified. These are streaming paths, problems with high
+In this subsection, four mechanisms by which the flux may
+become anisotropic were identified. These are streaming paths, problems with high
 scattering effects, problems with high material heterogeneity (specifically with
 materials with strong differences in scattering and absorption probabilities),
+% I don't understand the difference between what you're calling streaming paths
+% and problems with high material hetergeneity. I think it is just two differen version
+% of material hetergeneity causing streaming -- and in reality they're both low absoprtion...one just has more scattering and one doesn't. 
 and problems with monodirectional sources. As described in the preceding
 paragraphs, a few of these mechanisms may overlap
 with one another. They comprise a large subset of flux
