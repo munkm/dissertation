@@ -920,9 +920,11 @@ nonbiased analog Monte Carlo.
 
 To compare the performance of each of the variants of this problem, let us first
 compare the differences in the flux distributions for the $\Omega$ and CADIS
-versions of the problem. Figure \ref{fig:steelebeamfluxes} shows the
+versions of the problem. Figure \ref{fig:steelbeamfluxes} shows the
 adjoint and $\Omega$ fluxes for
-the steel beam in concrete version of this geometry.
+the steel beam in concrete version of this geometry. It is clear from both of
+these two figures that there is a preferential flowpath through the steel beam
+for both the standard adjoint and for the $\Omega$-fluxes.
 
 \begin{figure}[htb!]
   \centering
@@ -950,6 +952,12 @@ labyrinth, the flux maps are very similar between the adjoint and $\Omega$-flux
 plots in this figure. Recall that M$_2$ is the ratio of the scalar $\Omega$-flux
 to the scalar adjoint flux in each cell. Figure \ref{fig:M2beamplots} shows the
 $M_2$ distributions for each of the material variants of the steel beam problem.
+Figure \ref{fig:M2steel} contains the distribution of M$_2$ for the original
+steel variant, Figure \ref{fig:M2air} is of the variant with air replacing the
+steel, and Figure \ref{fig:m2concrete}. Note that Figure \ref{fig:M2air} has the
+colormap scaled to a log scale, while the other two figures do not. This is
+because the range is much larger in this figure, and a linear scale obscures the
+data.
 
 \begin{figure}[htb!]
   \centering
@@ -981,6 +989,18 @@ $M_2$ distributions for each of the material variants of the steel beam problem.
   \label{fig:M2beamplots}
 \end{figure}
 
+By comparing the ratio of the $\Omega$- to adjoint-fluxes in each of the figures
+in \ref{fig:m2beamplots}, the effect that material choice has on changing the
+$\Omega$-flux becomes more apparent. First, all three plots show a constant
+value of M$_2$ within the concrete shield itself. As a result, we can conclude
+that materials in which the particles have a small mean free path of travel, the
+flux isotropy is fairly constant and does not differ between the $\Omega$- and
+adjoint fluxes. Next, having a preferential flowpath through the shield does
+change the resultant $\Omega$-flux. Depending on material, the flux may be very
+different (as with the air in Figure \ref{fig:m2air}) or fairly similar (as with
+the flux ratio in the steel in Figure \ref{fig:m2steel}). All three problems
+show a very different distribution of fluxes near the adjoint source. This is
+the case with both of the labyrinth variants previously discussed.
 
 \begin{figure}[htb!]
   \centering
@@ -1009,11 +1029,45 @@ $M_2$ distributions for each of the material variants of the steel beam problem.
   concrete.]{M$_4$ distribution plots for material variants of steel beam in
   concrete. Distribution shown is for lowest energy group. Scales adjusted to
   match dataset of each figure.}
-  \label{fig:M2beamplots}
+  \label{fig:M4beamplots}
 \end{figure}
 
+The subfigures of Figure \ref{fig:M4beamplots} complement those presented in
+Figure \ref{fig:M2beamplots}. As with Figure \ref{fig:M2beamplots}, the
+subfigures here are normalized by the adjoint problem. Rather than comparing the
+adjoint scalar fluxes, here the contributon anisotropy in each
+cell is compared to the adjoint. Similar features can be observed between the
+subfigures in \ref{fig:M4beamplots} and their counterparts in
+\ref{fig:M2beamplots}. For exmaple, the anisotropies in the cells in the shield
+are the same as the adjoint. As a result, we see little- to no- difference
+between the $\Omega$-method aniosotropy or the standard adjoint anisotropy.
+Figure \ref{fig:M4air} shows some interesting streaming effects on the
+anisotropy in the air channel within the shield. In particular, the contributon
+anisotropy is larger for the majority of the air channel than the adjoint
+anisotropy. There is an exception to this observation at the M$_4$ values marked
+with dark blue in the air channel.
 
+All three subfigures in \ref{fig:M4beamplots} show that there exist differences
+in the anisotropy near the adjoint source and near the forward source in all
+material variants of this problem. Unlike the subfigures of
+\ref{fig:M2beamplots}, the anisotropies extend all the way to the problem
+boundaries in the air regions of the problem. However,
+the anisotropy in the area of each
+problem near the detector is generally larger than the anisotropy in the area
+neaer the forward source.
 
+With an intuition of how the $\Omega$ and adjoint-scalar fluxes differ both on
+the cell-scale, and how their anisotropies differ on the cell scale, we can
+now look at the effectiveness of each at predicting the $\Omega$-method's
+success (or lack thereof). Recall that Figures \ref{fig:M2beamplots} and
+\ref{fig:M4beamplots} show the anisotropy distributions for the lowest energy
+group. On the next several figures, the data illustrated by these figures will
+correspond with the
+darkest blue violin and the darkest blue scatterplot data point, respectively.
+The next several figures attempt to collapse the substantial quantity of data
+available in Figures \ref{fig:M2beamplots} and \ref{fig:M4beamplots} to
+values with which we can correlate with $\Omega$- relative error or FOM
+improvement.
 
 \begin{figure}[htb!]
   \centering
