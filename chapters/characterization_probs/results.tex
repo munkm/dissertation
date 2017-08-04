@@ -393,38 +393,35 @@ to do so is prohibitive.
 \subsection{Multiple Turn Labyrinth}
 \label{subsec:maze1}
 
-The multiple turn labyrinth is built off of the single turn labyrinth geometry.
-The labyrinth materials are much the same, but the geometry differs. Table
-\ref{tab:maze1foms} summarizes the Figure of Merit results for CADIS,
-CADIS-$\Omega$ and nonbiased Monte Carlo. Figures \ref{fig:maze1result} and
-\ref{fig:maze1error} show the results obtained by the track length tally in each
+The multiple turn labyrinth materials are the same as the single turn, but the geometry differs. Table
+\ref{tab:maze1foms} summarizes the FOMs and runtimes. Figures \ref{fig:maze1result} and
+\ref{fig:maze1error} show the results obtained by the track length tally for each
 method.
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_foms_compare}
-  \caption[Figure of Merit comparison for multiple turn maze.]{Figure of Merit
-    comparison for multiple turn maze.}
+  \caption[Figure of Merit comparison for multiple turn labyrinth.]{Figure of Merit
+    comparison for multiple turn labyrinth.}
   \label{tab:maze1foms}
 \end{table}
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_times_compare}
-  \caption[Detailed timing results for multiple turn maze.]
-  {Detailed timing results for multiple turn maze.}
+  \caption[Detailed timing results for multiple turn labyrinth.]
+  {Detailed timing results for multiple turn labyrinth.}
   \label{tab:maze1times}
 \end{table}
 
 In Tables \ref{tab:maze1foms} and \ref{tab:maze1times}
-it is notable that the CADIS-$\Omega$ runtime is
-shorter in the Monte Carlo simulation than CADIS. This differs most of the other
-cases presented in this section. However, it is also notable that because the
-deterministic time is so much longer for CADIS-$\Omega$, T$_{hybrid}$ ends up
-being greater for CADIS-$\Omega$ than CADIS.
+it is notable that the MC part of the CADIS-$\Omega$ runtime is
+shorter than with CADIS. This differs from most of the other
+test cases. However, it is also notable that the
+deterministic time is much longer for CADIS-$\Omega$ than CADIS.
 
-Table \ref{tab:maze1foms} shows that both CADIS and CADIS-$\Omega$ outperform the
-analog by a factor of $10^2$ or $10^3$, indicating the necessity of variance
+Table \ref{tab:maze1foms} shows that both CADIS and CADIS-$\Omega$ outperform
+analog MC by a factor of $10^2$ or $10^3$, indicating the necessity of variance
 reduction for a problem like this. In comparing the FOMs, CADIS slightly outperforms
 CADIS-$\Omega$ for all relative errors, meaning that the time
 to reach any relative error will be achieved faster by CADIS.
@@ -436,6 +433,7 @@ to reach any relative error will be achieved faster by CADIS.
   {Tally results comparison between methods for multiple turn labyrinth. }
   \label{fig:maze1result}
 \end{figure}
+% can you make this log-log? It's really though to see the CADIS matchin.
 
 \begin{figure}[h!]
   \centering
@@ -464,7 +462,10 @@ outperformed CADIS-$\Omega$ in problems in energy bins that had less angular
 dependence. Because this problem has far more scattering event, it overall has
 less angular dependence and CADIS outperforms CADIS-$\Omega$ in all energy bins.
 This problem is poorly suited to CADIS-$\Omega$.
+% I'm not sure it's worth showing analog results. They tally plots don't have error bars,
+% and if the analog results have really high error they're probably not worth showing. 
 
+% same feedback about breaking up figures and putting caption in the text.
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
@@ -478,7 +479,7 @@ This problem is poorly suited to CADIS-$\Omega$.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze1/maze1omegaG26.png}
-    \caption{$\Omega$-flux flux map for lowest energy group, multiple turn
+    \caption{$\Omega$-flux map for lowest energy group, multiple turn
     labyrinth.}
     \label{fig:maze1omega}
   \end{subfigure}
@@ -486,15 +487,15 @@ This problem is poorly suited to CADIS-$\Omega$.
     multiple turn
   turn labyrinth. Flux maps have scales normalized to maximum and minimum values
   for each slice; between plots the scales are not consistent. These plots show
-  the lowest energy group, group 026, for each cell in the problem midplane.}
+  the lowest energy group for each cell in the problem midplane.}
   \label{fig:maze1fluxmaps}
 \end{figure}
 
-Figure \ref{fig:maze1fluxmaps} shows the adjoint and $\Omega$ flux maps for the
-lowest energy group at the problem midplane for the multiple turn labyrinth.
+Figure \ref{fig:maze1fluxmaps} shows the adjoint and $\Omega$-flux maps for the
+lowest energy group at the problem midplane.
 These figures look remarkably similar, showing that this problem does not have
 significant anisotropy to capture. The region that does differ is near the
-detector region, where the region of high importance is focused towards the
+detector, where the high importance is focused towards the
 labyrinth and the laybrinth exit. The other region with noticeable difference is
 located at the entrance to the maze. These figures show the lowest energy group
 particles, so for forward particles of this energy to go the same direction as
@@ -504,31 +505,35 @@ dependence in the $\Omega$-flux plot in the region near the forward source. The
 adjoint flux plot shows more of a streaming effect from the adjoint particles
 that exit the maze.
 
+\subsubsection{Labyrinth Comparison}
 In Section \ref{subsec:maze2}, it was discussed that higher energy regions that
 contribute to the tally are more anisotropic, and that these regions benefit
-more from the $\Omega$-flux map than they do with standard CADIS' importance
+more from the $\Omega$-flux map than they do with a standard CADIS importance
 map. Using the anisotropy metrics from Section \ref{sec:anisotropy_quant}, let
 us compare the anisotropy distributions of the single turn and multiple-turn
-labyrinth problems. Figure \ref{fig:labyrinthviolins} are violin plots of the
+labyrinth problems. Figure \ref{fig:labyrinthviolins} shows violin plots of the
 M$_{3}$ distributions of the labyrinth problems. To filter out values of the
-metric distribtuion that do not have a strong importance to contributing to the
+metric that do not have a strong contribution to the
 tally, only values from cells above the contributon flux mean value are included
 in the violins.
 
-First, looking at the metric three distributions for both the single-
-(\ref{fig:maze2M3violins})and
-multiple-turn (\ref{fig:maze1M3violins}) labyrinths, we can see that the violins
-in both plots shift from a fairly small grouping of values at high enrgies to a
+% Here is where I would put the explanation of how to read these. 
+
+First, looking at the M$_{3}$ distributions for both the single-
+(Fig.~\ref{fig:maze2M3violins}) and
+multiple-turn (Fig.~\ref{fig:maze1M3violins}) labyrinths, we can see that the violins
+in both plots shift from a fairly small grouping of values at high energies to a
 broad range of values at low energies. The bottom of the violin in each
 group also tells us a
 bit about the metric distribution. Because only values from ``more important''
 cells have been included in these distributions, the bottom cutoff tells us how
 anisotropic the cells of median importance might be. It also tells us how many
 cells have high-valued anisotropy metrics. For both the single- and
-multi-turn labyrinths, we see higher-valued cutoff point in high energies than
+multi-turn labyrinths, we see higher-valued cutoff points in high energies than
 in low energies. This indicates that more cells in high energies have higher
-values of M$_3$.
+values of M$_3$ and are therefore more anisotropic.
 
+% again, it doesn't really work to have these broken across pages.
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
@@ -552,10 +557,12 @@ values of M$_3$.
   \label{fig:labyrinthviolins}
 \end{figure}
 
-The violin plots of the multi-turn labyrinth (Fig. \ref{fig:maze1M3violins})
-tend to span a larger range of values. That is, the violins tend to be longer.
+The violin plots of the multi-turn labyrinth (Fig.~\ref{fig:maze1M3violins})
+tend to span a larger range of values than the single turn. That is, the violins tend to be longer.
 All of the violins in both plots have a bounding upper limit, meaning that in
-every energy group there are some very anisotropic cells. Interestingly, it
+every energy group there are some very anisotropic cells. 
+% I don't htink that's what bounding upper limit means. 
+Interestingly, it
 appears that for the multi-turn labyrinth the distribution of anisotropies at
 low energies has no distinctive bunching, as observed in the single-turn
 labyrinth. This means that in important cells, there is an even distribution of
@@ -565,7 +572,7 @@ very anisotropic, slightly anisotropic, and isotropic cells.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2M4G26.png}
-    \caption{M$_4$ lowest energy group, single turn
+    \caption{M$_4$ lowest energy group, single-turn
     labyrinth.}
     \label{fig:maze2M4}
   \end{subfigure}
@@ -574,7 +581,7 @@ very anisotropic, slightly anisotropic, and isotropic cells.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze1/maze1M4G026.png}
-    \caption{M$_4$ for lowest energy group, multiple turn labyrinth }
+    \caption{M$_4$ for lowest energy group, multi-turn labyrinth }
     \label{fig:maze1M4}
   \end{subfigure}
   \caption[M$_4$ distributions at problem midplane for labyrinth problems]{M$_4$
@@ -582,40 +589,40 @@ very anisotropic, slightly anisotropic, and isotropic cells.
   \label{fig:labyrinthM4}
 \end{figure}
 
-While the violin plots of Figure \ref{fig:labyrinthviolins} are useful in seeing
+While the violin plots are useful in seeing
 the overall distribution of metrics for the whole problem, it is also possible
-to plot them similarly to the flux maps shown previously. Figure
-\ref{fig:labyrinthM4} shows the M$_4$ distribution for the single and multiple
-turn labyrinth problems. Recall that this metric is the ratio of the contributon
+to plot a given metric similarly to the flux maps. Figure
+\ref{fig:labyrinthM4} shows the M$_4$ distribution for the single- and multiple-turn 
+labyrinth problems. Recall that this metric is the ratio of the contributon
 anisotropy to the standard adjoint anisotropy. Cells that have blue coloring
 are those where the contributon max to average flux is lower than the adjoint.
-As a result, the forward and adjoint fluxes to not synergitically combine in
+As a result, the forward and adjoint fluxes do not synergistically combine in
 angle. This
 generally means this is a region of lower importance. Values of unity mean that
 the contributon anisotropy is comparable to the adjoint anisotropy. In figure
 \ref{fig:maze2M4}, it is clear that the concrete body of the maze is a region
-where the anisotropies are similar.
+where the anisotropies are similar, which makes sense.
 
 Figure \ref{fig:maze2M4} shows that the region where the anisotropy of the
 contributon flux differs the most from the adjoint flux is in the air region
 near the detector, and also in the air regions of the maze. Specifically, the
 anisotropy of the contributon flux is greater in the air region between the
-detector and the maze, and the anisotropy of the contributon flux is lower in
+detector and the labyrinth, and the anisotropy of the contributon flux is lower in
 regions behind the detector. Conceptually, we expect this anisotropy behavior
 in the region just past the detector, as the contributon flux will combine
-positively if the forward and adjoint fluxes are travelling in opposite
-directions, and will combine negatively if they are travelling in the same
+positively if the forward and adjoint fluxes are traveling in opposite
+directions, and will combine negatively if they are traveling in the same
 direction. As a result, the anisotropy of the contributon flux behind the
 detector will be minimized when compared to the original adjoint angular flux.
 
 Figure \ref{fig:maze1M4} shows, like Figure \ref{fig:maze2M4}, the M$_4$
 distribution at the problem midplane for the lowest energy group for
-the multiple turn labyrinth. In this problem we similarly see the strongest
+the multi-turn labyrinth. In this problem, we similarly see the strongest
 anisotropy in the flux near the NaI detector. However, the range of values is
 different. The concrete region of the maze still shows similar anisotropies
-between the contributon and adjoint angular fluxes. The maze edge next to the
+between the contributon and adjoint angular fluxes. The labyrinth edge next to the
 NaI detector also has some fairly anisotropic regions, but overall the
-anisotropies are less different in this problem than in the single turn
+anisotropies are less different in this problem than in the single-turn
 labyrinth. As a result, CADIS-$\Omega$ does not have as much angular information
 to capture, and its importance map is less effective. This was also illustrated
 in the flux map comparison of Figure \ref{fig:maze1fluxmaps}.
@@ -624,9 +631,10 @@ Both figures have interesting secondary features in the anisotropy in the air
 regions. These regions look similar to ray effects, but are not always reflected
 in the flux maps themselves. The author is not sure how to explain these
 effects, but they are worth future study.
+% it might be a measure in the difference in ability to capture angular information as a result of angle discretization
 
-It must be noted that while
-the trends in these violins are interesting, we must also be wary of using comparing
+It must be noted that, while
+the trends in these violins are interesting, we must also be wary of comparing
 the violins directly. The filtering algorithm used to pull values out is dependent only
 on the contributon flux solution for that problem, so the average contributon
 flux cutoff for the single-turn labyrinth and multiple-turn labyrinth are
@@ -635,11 +643,12 @@ different. Using a raw value from the violin plot in Figure
 \ref{fig:maze2M3violins} may be misleading. Instead, this analysis will focus on
 the general behavior of the metrics in each problem, not specific metric values.
 
+% same comment about broken up figures.
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_err_stats_mean.pdf}
-    \caption{RE improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \caption{RE improvement factor as a function of M$_{3}$ statistics for single-turn labyrinth}
     \label{fig:maze2M3errs}
   \end{subfigure}
 \end{figure}
@@ -655,18 +664,20 @@ the general behavior of the metrics in each problem, not specific metric values.
   {Relative error improvement factor as a function of M$_3$
   distribution statistics. Metric distribution statistics are calculated using
   values of M$_3$ in cells with contributon flux values above the mean. Colors
-  of datapoints correspond to the energy group to which they belong.}
+  of data points correspond to the energy group to which they belong.}
   \label{fig:labyrinthIREs}
 \end{figure}
 
-Figure \ref{fig:labyrinthIREs} shows the improvement factors of the relative
+% here is where you can put the explanation of these plots. 
+Figures \ref{fig:labyrinthIREs} show the improvement factors of the relative
 errors between CADIS-$\Omega$ and CADIS for the labyrinth problems. The x-axes
-of the plots in Figures \ref{fig:maze2M3errs} and \ref{fig:maze1M3errs} use the
+of the plots use the
 distribution statistics from the violins in Figures \ref{fig:maze2M3violins} and
 \ref{fig:maze1M3violins}, respectively. Recall that because I$_{RE}$ is the
 ratio of the relative error between CADIS-$\Omega$ and CADIS--and we seek a low
 relative error--that values of I$_{RE}$ below 1.0 indicate method improvement
 for CADIS-$\Omega$.
+% if you ever need to make the plots again, I'd add a line at 1 to help show it.
 
 Looking at the differences between Figures \ref{fig:maze2M3errs} and
 \ref{fig:maze1M3errs}, some interesting effects can be observed. Recall from the
@@ -676,7 +687,7 @@ energy bins than CADIS for the multi-turn labyrinth, and a higher relative
 error in thermal energy groups in the single-turn labyrinth.
 Figure
 \ref{fig:maze2M3errs} shows the isolated grouping of poorer results for low
-energy bins in the single turn labyrinth. The rest of the values in this figure
+energy bins in the single-turn labyrinth. The rest of the values in this figure
 all show improvement in the relative error, while the low-energy group show
 better performance for CADIS. There is no distinct grouping in Figure
 \ref{fig:maze1M3errs} because all of the CADIS-$\Omega$ relative errors are
@@ -686,7 +697,7 @@ There does not seem to be a tight
 trend
 observable for any measurement of the M$_3$ distribution and I$_{RE}$ in Figure
 \ref{fig:maze2M3errs}, but the higher values of I$_{RE}$ generally occur in high
-mean values of M$_3$ and higer variances of M$_3$. Figure \ref{fig:maze1M3errs}
+mean values of M$_3$ and higher variances of M$_3$. Figure \ref{fig:maze1M3errs}
 also shows this trend in the metric mean and variance subplots, with a single
 outlier in an intermediate energy group. It also appears that the spread of
 I$_{RE}$ values does not change as a function of any of the metric values.
@@ -695,7 +706,7 @@ I$_{RE}$ values does not change as a function of any of the metric values.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_fom_stats_mean.pdf}
-    \caption{FOM improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \caption{FOM improvement factor as a function of M$_{3}$ statistics for single-turn labyrinth}
     \label{fig:maze2M3FOMs}
   \end{subfigure}
 \end{figure}
@@ -711,23 +722,23 @@ I$_{RE}$ values does not change as a function of any of the metric values.
   {Figure of Merit improvement factor as a function of M$_3$
   distribution statistics. Metric distribution statistics are calculated using
   values of M$_3$ in cells with contributon flux values above the mean. Colors
-  of datapoints correspond to the energy group to which they belong.}
+  of data points correspond to the energy group to which they belong.}
   \label{fig:labyrinthIFOMs}
 \end{figure}
 
-Figure \ref{fig:labyrinthIFOMs} builds off of what we've already observed in Figure
-\ref{fig:labyrinthIREs}. In this series of figures, I$_{FOM}$ is plotted rather
+Figure \ref{fig:labyrinthIFOMs} confirms what we've already observed in Figure
+\ref{fig:labyrinthIREs}. In these figures, I$_{FOM}$ is plotted rather
 than I$_{RE}$. If CADIS-$\Omega$ has better FOM performance than CADIS, the
-resulting value of I$_{FOM}$ will be above 1.0.
+resulting value of I$_{FOM}$ will be \textit{above} 1.0.
 
-Many features from Figure \ref{fig:labyrinthIREs} continue in Figure
+Many features from Figure \ref{fig:labyrinthIREs} are also present in Figure
 \ref{fig:labyrinthIFOMs}. The distinct grouping of low-energy results for the
-single turn labyrinth are also observable in \ref{fig:maze2M3FOMs}. The intermediate
+single-turn labyrinth are also observable in Fig.~\ref{fig:maze2M3FOMs}. The intermediate
 energy outlier for the multiple turn labyrinth is located at the bottom of
 all of the subplots in Figure \ref{fig:maze1M3FOMs}. By adjusting our results to
 include timing, even less of a trend with metric distribution measurements is
 seen in the improvement metric for the single turn labyrinth. However, for the
-multiple turn labyrinth it does appear that as the metric mean value increases,
+multi-turn labyrinth, it does appear that as the metric mean value increases,
 I$_{FOM}$ decreases.
 
 \subsection{Steel Beam}
