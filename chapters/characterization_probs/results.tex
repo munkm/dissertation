@@ -7,9 +7,9 @@ Section \ref{sec:successmetrics}.
 In the preceding subsections, a
 subset of flux anisotropy-inducing physics have been identified
 and a subset of problems that contain these physics have been conceived.
-In this section, the results for CADIS-$\Omega$, CADIS, and nonbiased Monte Carlo
+In this section, the results for CADIS-$\Omega$, CADIS, and analog Monte Carlo
 will be presented for each of these problems. Explanations on the performance of
-the $\Omega$ methods will accompany the results for each problem. In some cases,
+the $\Omega$-methods will accompany the results for each problem. In some cases,
 variants of problems were run to confirm or refute observations seen
 in other problems.
 
@@ -48,13 +48,14 @@ Further, this group library was designed for radiation shielding applications,
 so it applies to the majority of the characterization problems.
 
 The boundary conditions for all of the characterization problems will be vacuum.
-At this time, ADVANTG does not support reflective or mirror boundary conditions
-so this is a limitation in application space that we cannot address at this
+At this time, ADVANTG does not support reflective boundary conditions,
+which is a limitation in application space that we cannot address at this
 time. The Monte Carlo code we use does support vacuum boundary conditions, but a
 discrepancy in boundary conditions between deterministic and Monte Carlo
-calculations would result in the simulation of a fundamentally different problem.
+calculations would result in a mismatch between the problem the biasing parameters
+are for and the one we are trying to solve. 
 
-Unless noted, the values in this subsection of the table are ADVANTG
+Unless otherwise noted, the values in this subsection of the table are ADVANTG
 default values. They are a good initial choice for characterization of the
 method because they are often chosen as the parameters for hybrid methods studies
 by experienced and inexperienced ADAVANTG users.
@@ -69,15 +70,15 @@ $\Omega$-methods.
 The latter section of the table summarizes the Monte Carlo code MCNP values for
 each of the problems. The value of $1e7$ particles as a particle cutoff
 was chosen because it made the
-error bins in the majority of the nonbiased Monte Carlo
+error bins in the majority of the analog Monte Carlo
 characterization problems less than 100\%. In some problems that are
 extraordinarily difficult for Monte Carlo to solve without biasing, there were
-tally bins with very high errors. In the following subsections they will be
+tally bins with very high errors. In the following subsections, they will be
 clearly indicated and their results will not be plotted so as to not obfuscate
 the CADIS and CADIS-$\Omega$ results. Time cutoffs were not chosen because
-we decided to measure how effective the $\Omega$ methods were at reducing the
+we decided to measure how effective the $\Omega$-methods were at reducing the
 variance per particle. Depending on the flux maps generated from CADIS and
-CADIS-$\Omega$, the time to transport a finite amount of particles may vary. As
+CADIS-$\Omega$, the time to transport a finite number of particles may vary. As
 a result, the reported times from a simulation can tell us whether the method
 requires more sampling than other methods in addition to how fast it takes to
 reach a desired relative error.
@@ -85,35 +86,39 @@ reach a desired relative error.
 The responses in the NaI detectors of each of
 the problems was measured with an MCNP track length tally (f4). The tally was
 energetically binned to match the dataset of the multigroup dataset provided in
-ADVANTG, and the entire volume of the detectors were used with no spatial
-binning. It should be noted that while the tally is energetically binned, Monte
+ADVANTG, and the entire volume of the detector was used with no spatial
+binning. 
+
+It should be noted that, while the tally is energetically binned, Monte
 Carlo transport is not discretized in space or energy like deterministic
 transport. In a nonbiased analog Monte Carlo calculation, transport is
 completely continuous in space, energy, and angle. In a hybrid calculation using
 VR parameters from a deterministic solution, the VR parameters will be
-discretized to reflect the solution obtained from the determinstic solver. As a
+discretized to reflect the solution obtained from the deterministic solver. As a
 result, the particle's transit throughout the
 problem will be a combination of sampling both continuous and discretized-energy
 dependent factors. Consider a particle that goes through a scattering event
 in shielding material. In this scattering event, the particle samples from a
-continuous-energy cross section and changes direction based on its energy.
-However, depending on how much energy it loses in the scattering event it may
+continuous-energy cross section and may change energy as a result of the interaction.
+However, depending on how much energy the particle loses in the scattering event it may
 cross into the energy range of a lower-energy weight window and will require
 further sampling.
 
 All characterization problems were run on Remus, a machine operated and
 maintained by the Radiation Transport and Nuclear Systems Division at Oak Ridge
 National Laboratory. The ADVANTG runs were run on 16 cores of a 32 core node,
-with 256Gb of memory. The MCNP runs were run on the same machine, with 256Gb of
-memory but using all 32 cores of the node.
-
-Each problem presented in Section \ref{sec:CharResults} will
-use the values specified in Table \ref{tab:simulation_defaults}
-unless otherwise noted.
-Times to transport the Monte Carlo particle quantity varies between methods
-due to differences in sampling. Monte Carlo and ADVANTG
+with 256 GB of memory. The MCNP runs were run on the same machine, with 256 GB of
+memory but using all 32 cores of the node. Monte Carlo and ADVANTG
 inputs and directions on how to acquire them are
 provided in Appendix \ref{sec:github_codes}.
+
+%Each problem presented in Section \ref{sec:CharResults} will
+%use the values specified in Table \ref{tab:simulation_defaults}
+%unless otherwise noted.
+% already stated
+%Times to transport the Monte Carlo particle quantity varies between methods
+%due to differences in sampling.
+% seems obvious
 
 \subsection{Single Turn Labyrinth}
 \label{subsec:maze2}
