@@ -120,28 +120,46 @@ provided in Appendix \ref{sec:github_codes}.
 %due to differences in sampling.
 % seems obvious
 
+% in all results tables, you might want to bold the best value and italicize the worst, or something similar, that makes it easeir to see. 
+% or old the best for each horzontal category
+
 \subsection{Single Turn Labyrinth}
 \label{subsec:maze2}
 
 The analysis of the characterization problems begins with the single turn
 labyrinth.
-The single turn labyrinth FOM results are summarized in Table \ref{tab:maze2foms},
+The single turn labyrinth FOM results and runtimes are summarized in Table \ref{tab:maze2foms},
 and are illustrated in Figures \ref{fig:maze2result} and \ref{fig:maze2error}.
-The table has six FOM values for CADIS and CADIS-$\Omega$ results, and three FOM
-values for the analog (nonbiased) Monte Carlo results. The equations to
-calculate each of these FOMS is summarized in Table \ref{tab:fom_defaults}.
+ The equations to
+calculate each of these FOMS is summarized in Table \ref{tab:fom_defaults}. As a reminder,
+   The relative errors used are the tally average relative error, the tally maximum relative
+  error, and the tally minimum relative error; the times are total walltimes for
+  the Monte Carlo calculation and the sum of the hybrid method times, the
+  deterministic transport time, and the Monte Carlo calculation time.
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_foms_compare}
   \caption[Figure of Merit comparison for single turn maze.]{Figure of Merit
-    comparison for single turn maze.
-    The relative errors used are the tally average relative error, the tally maximum relative
-  error, and the tally minimum relative error; the times are total walltimes for
-  the Monte Carlo calculation and the sum of the hybrid method software, the
-  deterministic transport time, and the Monte Carlo calculation time.}
+    comparison for single turn maze.}
   \label{tab:maze2foms}
 \end{table}
+% these are foms, except the bottom row, which is time? I'd state that. 
+
+In all cases, the
+CADIS FOMs are better than those obtained by CADIS-$\Omega$. The FOMs
+calculated using the tally average relative error are better in the nonbiased
+analog Monte Carlo than CADIS-$\Omega$ as well. However, this is a product of
+two effects: the time for the analog to run the same particle count is far
+shorter than either CADIS or CADIS-$\Omega$. As a result, to obtain the same
+FOM, CADIS-$\Omega$ needs to have $R_1/R_2 = \sqrt{T_2/T_1}$ (this is from
+taking a ratio of the FOMs) the tally average
+relative error, or ~$0.27$. 
+% this sentence seems to be missing some words?
+Because this problem is highly scattering and many
+low-energy particles can make it through the concrete labyrinth, even analog MC
+can have good sampling at low energies, resulting in a tally average FOM that
+reaches this threshold.
 
 \begin{table}[h!]
   \centering
@@ -150,29 +168,15 @@ calculate each of these FOMS is summarized in Table \ref{tab:fom_defaults}.
   {Detailed timing results for single turn maze.}
   \label{tab:maze2times}
 \end{table}
+% again, I'd put horizontal lines between the 3 categories.
 
-In Table \ref{tab:maze2foms} the FOM results for CADIS, CADIS-$\Omega$, and
-nonbiased Monte Carlo for the single turn maze are presented. In all cases, the
-CADIS FOMs are better than those obtained by CADIS-$\Omega$. The FOMS
-calculated using the tally average relative error are better in the nonbiased
-analog Monte Carlo than CADIS-$\Omega$ as well. However, this is a product of
-two effects: the time for the analog to run the same particle count is far
-shorter than either CADIS or CADIS-$\Omega$. As a result, to obtain the same
-FOM, CADIS-$\Omega$ needs to have $R_1/R_2 = \sqrt{T_2/T_1}$ (this is from
-taking a ratio of the FOMs) the tally average
-relative error, or ~$0.27$. Because this problem is highly scattering and many
-low-energy particles can make it through the concrete labyrinth, even the analog
-can have good sampling at low energies, resulting in a tally average FOM that
-reaches this threshold.
-
-Table \ref{tab:maze2times} contains more detailed timing information spent in
-each of the codes for each type of problem. We can see that the Monte Carlo
+Table \ref{tab:maze2times} contains more detailed timing information. 
+We can see that the Monte Carlo
 runtime for CADIS-$\Omega$ is more than twice that of CADIS, and almost fifteen
 times that of the nonbiased analog Monte Carlo. The time to run just the
 hybrid/deterministic portion of the calculation is also four times longer for
 CADIS-$\Omega$ than it is for CADIS. These disparities in runtimes have a strong
-negative impact on the CADIS-$\Omega$ FOMs, which was observed in the FOM
-results in Table \ref{tab:maze2foms}.
+negative impact on the CADIS-$\Omega$ FOMs.
 
 \begin{figure}[h!]
   \centering
@@ -181,6 +185,8 @@ results in Table \ref{tab:maze2foms}.
   {Tally results comparison between methods for single turn labyrinth.}
   \label{fig:maze2result}
 \end{figure}
+% if you end up needing to remake the plots, I'd take the titles off. You don't call this maze 2 anywhere else.
+% I wouldn't change it now, but for papers, the future, etc.
 
 \begin{figure}[h!]
   \centering
@@ -191,9 +197,9 @@ results in Table \ref{tab:maze2foms}.
   \label{fig:maze2error}
 \end{figure}
 
-Figures \ref{fig:maze2result} and \ref{fig:maze2error} show the tally result and
-the relative errors for each result in the single turn maze, respectively.
-This particular relative error plot,
+Figures \ref{fig:maze2result} and \ref{fig:maze2error} show the tally results and
+the relative errors for the single turn maze, respectively.
+The relative error plot,
 Figure \ref{fig:maze2error}, does not include the
 relative error bins of the analog result because they are significantly higher
 than the CADIS and CADIS-$\Omega$ results. This is further confirmed in Table
@@ -205,21 +211,23 @@ lower energy bins, CADIS-$\Omega$ generally has a higher value for the tally
 result than standard CADIS. However, in comparing the errors for these low energy
 bins in Figure $\ref{fig:maze2error}$, CADIS has a lower relative error. This
 indicates that CADIS sampled many more low-weight particles than CADIS-$\Omega$
-in these regions. Conversely, CADIS-$\Omega$ has a lower calculated relative
-error than CADIS for bins greater than ~$5*10^{-6}$ MeV. This is expected, as
+in these regions. Conversely, CADIS-$\Omega$ has a lower relative
+error than CADIS for bins greater than $\sim5*10^{-6}$ MeV. This is expected, as
 higher energy particles generally exhibit a stronger angular dependence than
 low-energy particles. In geometric and energetic regions
 where the angular dependence is stronger,
 the importance map generated by CADIS-$\Omega$ may show more of an effect in
 improving the relative error.
 
-To aid in our understanding of how the $\Omega$-method's importance map differs
+To aid in our understanding of how the $\Omega$-methods' importance map differs
 from the standard adjoint flux map, let us compare the flux distributions
 obtained by different deterministic solutions of the single turn labyrinth.
 Figure \ref{fig:maze2fluxmaps} shows several different flux distributions that
 represent the single turn labyrinth geometry. This figure is of the highest
-energy group for each flux type.
+energy group for each flux type. The flux maps have scales normalized to maximum and minimum values
+  for each slice; between plots the scales are not consistent. 
 
+% the figure numbers don't seem to be displaying correctly. I'd make them all separate figure #s b/c they are split over multiple pages. 
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
@@ -255,23 +263,19 @@ energy group for each flux type.
     labyrinth.}
     \label{fig:maze2omega}
   \end{subfigure}
-  \caption[Flux map slice of single turn labyrinth.]{Flux map slice of single
-  turn labyrinth. Flux maps have scales normalized to maximum and minimum values
-  for each slice; between plots the scales are not consistent. These plots show
-  the highest energy group, group 000, for each cell in the problem midplane.}
+  \caption[Flux map slice of single turn labyrinth.]{}
   \label{fig:maze2fluxmaps}
 \end{figure}
 
 Figure \ref{fig:maze2fwd} shows the forward flux for the labyrinth. It is
-clear that in this problem, particles emenate isotropically outwards from the
+clear that in this problem, particles emanate isotropically from the
 source on the left side of the problem. Some particles travel towards the
-shield and enter the labyrinth. These particles travel 50cm and hit the wall in
+shield and enter the labyrinth. After 50 cm some of these particles hit the wall in
 the first turn of the labyrinth. Many high energy particles reach fairly deep
-into the concrete past this turn, as indicated by the green channel partway
-through the concrete.
+into the concrete past this turn.
 
 Figure \ref{fig:maze2adj} complements Figure \ref{fig:maze2fwd} by showing the
-adjoint flux distribution for the fastest energy group. Recall that this
+adjoint scalar flux distribution for the fastest energy group. Recall that this
 distribution is what is used by CADIS to generate VR parameters. Particles are
 generated throughout the NaI detector and exit the detector in all directions.
 Because the source is not in line with the labyrinth entrance, particles end up
@@ -284,30 +288,33 @@ importance in this region should be close to a spherical surface some distance
 away from the adjoint source.
 
 Recall that the $\Omega$-flux is computed using the angle-integrated contributon
-flux in the numerator. For this problem, the contributon flux will be used to
-illustrate how the $\Omega$-flux is a combination of the adjoint and the
-contributon flux. Figure \ref{fig:maze2contrib} shows the distribution of
+flux in the numerator. 
+%For this problem, the contributon flux will be used to
+%illustrate how the $\Omega$-flux is a combination of the adjoint and the
+%contributon flux.
+% that sentence doesn't make sense.
+ Figure \ref{fig:maze2contrib} shows the distribution of
 angle-integrated contributon flux values for the single turn labyrinth.
 Interestingly, because so many forward particles penetrated deeply into the
 shield, the contributon flux points directly into this section of the shield. It
-is also clear that near the forward source, only particles moving in the
-direction towards the labyrinth entrance contribute to a high contributon flux.
+is also clear that near the forward source, only particles moving 
+towards the labyrinth entrance contribute to the contributon flux.
 In the left-side of the labyrinth, we can observe directional importance in the
 labyrinth channels, but in the first turn this directional importance is no
 different than the concrete barriers surrounding the channels.
 
-Figure \ref{fig:maze2omega} shows how the $\Omega$-flux is built off of the
+Figure \ref{fig:maze2omega} shows how the $\Omega$-flux is built from the
 adjoint and contributon fluxes by showing the $\Omega$-flux distribution for the
 single turn labyrinth. Comparing this figure to \ref{fig:maze2contrib}, the
 majority of high flux regions are pushed back towards the NaI detector. The
 flux gradient exiting the maze does not span as many orders of magnitude as it
-did in the contributon flux plot, too. Further, the importance of particles does
+did in the contributon flux plot. Further, the importance of particles does
 not remain as high or go as deep into the concrete shield as the contributon
-flux plot. This is because the $\Omega$ flux normalizes by the forward flux,
+flux plot. This is because the $\Omega$-flux is normalized by the forward flux,
 resulting in reducing importance in regions where only the forward flux is
 strong. As with the contributon flux, the $\Omega$-flux strongly reduces
 particle importance near the problem boundaries. Recall from Section
-\ref{sec:ContributonImportance} that in the contributon transport equation that
+\ref{sec:ContributonImportance} that in the contributon transport equation
 the cross section becomes very high near problem boundaries, thus encouraging
 particles back towards the problem source and sink. Because the $\Omega$-flux
 uses standard forward and adjoint transport, the cross section is not
@@ -318,21 +325,20 @@ Both the $\Omega$- and the contributon fluxes show a mitigation of ray effects
 on the right hand side of the problem. Note that there are no ``fingers'' of
 flux magnitude at distances several cm away from the NaI detector on the right
 side of the problem in either Figure \ref{fig:maze2contrib} or
-\ref{fig:maze2omega}. Reducing these numerical appiritions is a positivie effect
+\ref{fig:maze2omega}. Reducing these numerical apparitions is a positive effect
 of the method. However, there exists a fairly strong gradient in flux magnitude
-for a particle travelling directly out of the maze exit. As a result, a particle
+for a particle traveling directly out of the maze exit. As a result, a particle
 traveling several cm of distance across this strong gradient line may move from
-a region of very low importance to very high importance, causing very
+a region of very low importance to very high importance, causing 
 significant sampling requirements for the $\Omega$-importance that may not exist
 with the standard adjoint.
 
 A description of filtering algorithms accompanied
 the discussion of the anisotropy metrics in Section
 \ref{subsec:resultsintro}. The filtering algorithms are based on the contributon
-flux distribution in the problem, or \ref{fig:maze2contrib}. Recall that the two
-filter matrices discussed included those from cells where the contributon flux
-is above the average contributon flux value, and where values are above the mean
-contributon flux value. For the single-turn labyrinth, the filter matrix in the
+flux distribution in the problem. Recall that the two
+filter matrices include the cells where the contributon flux
+is above the average contributon flux value. For the single-turn labyrinth, the filter matrix in the
 highest energy group (Figure \ref{fig:maze2contrib}) will use values in the
 orange and pink region of the figure and exclude values from the blue and green
 regions of the figure. As a result, only anisotropy metric values from within
@@ -349,36 +355,40 @@ are likely to be inconsequential to the tally response.
 \end{figure}
 
 Figure \ref{fig:maze2omega26} shows the $\Omega$-flux distribution for the
-lowest energy group. This differs quite a bit from \ref{fig:maze2omega} in that
+lowest energy group. This differs quite a bit from Figure \ref{fig:maze2omega} in that
 the flux in the labyrinth has a much stronger gradient once entering concrete
 than the higher energy group. This is expected, as the mean free path of a low
 energy neutron is much shorter than a high energy one, especially in a dense,
 hydrogenous material like concrete. As a result of the stronger flux gradient in
 concrete, low energy particles entering
 the concrete shield will be rouletted at a much greater frequency than high
-energy particles. Particles exiting the labyrinth also have a lower gradient of
-importance that they may cross than in the high energy flux map. As a result,
+energy particles. Low energy particles exiting the labyrinth also see a smaller gradient of
+importance than the high energy particles do. As a result,
 particle splitting and rouletting in this air region will be less extreme at low
 energies than at high energies.
 
-Comparing the figures of $\Omega$-fluxes in \ref{fig:maze2omega} and
+Comparing the $\Omega$-fluxes in Figures \ref{fig:maze2omega} and
 \ref{fig:maze2omega26}, we can start to explain some of the timing behavior
 observed in Tables \ref{tab:maze2foms} and \ref{tab:maze2times}.
-High energy particles exiting the maze towards the tally
+High energy particles exiting the maze towards the 
 detector have much longer mean free paths than the low energy particles, and
-will generally show a much stronger effect in the $\Omega$-flux in those
+will generally have a much larger contribution to the $\Omega$-flux in those
 regions. This is illustrated in Figure \ref{fig:maze2omega}.
-The shape of the $\Omega$
-flux around the detector region is much more strongly dependent on direction in
-the high energy group 000 flux than it is for the lower energy group 026 flux.
+The shape of the $\Omega$-flux 
+around the detector region is much more dependent on direction in
+the high energy group than it is for the lower energy group.
 Despite having lower relative errors than CADIS at higher energies,
-CADIS-$\Omega$ has lower FOMs than CADIS for the FOMS calculated with the
+CADIS-$\Omega$ has lower FOMs than CADIS for the
 minimum relative error. As discussed previously, this is due to the long runtime
 of CADIS-$\Omega$, which is more than twice as long as CADIS. From this, we can
 conclude that while CADIS-$\Omega$ is better at transporting particles in high
 energy regions than CADIS, achieving lower relative errors, the length of time
-to do so is prohibitive and achievable by CADIS should the runtimes be the same
-for both.
+to do so is prohibitive.
+% a big punchline out of all of this may end up being that FW-CADIS-\Omega is really worth
+% investigating b/c the determ transport times will become equitable. 
+% It may also be that we just need way bigger problems st the determ transport time
+% washes out in comparison with MC time. It's too bad that for these problems the
+% MC time is comparatively short. 
 
 \subsection{Multiple Turn Labyrinth}
 \label{subsec:maze1}
