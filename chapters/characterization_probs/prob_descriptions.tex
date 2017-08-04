@@ -322,10 +322,10 @@ area that may be improved upon in future work.
 % I don't think material heterogeneity and streaming paths are different, so you could remove that column to add source energy and write either the energy or watt-fission.
 %  Instead of an x in monodir, you could write source type and include one of mono-dir or point?
 
-\subsection{Introduction the Presented Data}
+\subsection{Interpreting the Data}
 \label{subsec:resultsintro}
 
-At this point several characterization problems have been identified for their
+Several characterization problems have been identified for their
 properties in inducing anisotropy in the particle flux.
 Prior to going through the results for each of the characterization problems,
 this section will show how the data for each problem will be presented and will
@@ -338,23 +338,25 @@ relative error.
 
 In Section \ref{sec:FOMvariants} several equation variants of
 the Figure of Merit were
-presented as quantifications of method success. The FOMS for each
+presented as quantification of method success. The FOMs for each
 characterization problem will be presented in tabular form, similar to Table
 \ref{tab:fom_defaults}. As discussed in that section, the FOM is dependent on
 the relative error and the time to obtain that relative error. For the hybrid
-cases, six different FOMs will be presented: three FOMs based on the tally average
-relative error, the tally maximum relative error, and the tally minimum relative
-error, and two FOMs based on the Monte Carlo runtime and the hybrid runtime. The
+cases, two sets of three different FOMs will be presented. In each set, tally relative error will be reported three ways: minimum, maximum, and average, illustrating how the performance varies on average and at the extremes.   
+The sets are based on runtime: one set uses only the Monte Carlo runtime and the other set uses deterministic + processing + MC runtime. 
+The
 unbiased analog Monte Carlo does not have a deterministic runtime, so only the
 three FOM variants based on the relative error will be presented for those runs.
-When analyzing the results in the FOM table for each characterization problem,
-consider also that the tally average relative error is calculated from all
+Table \ref{tab:fom_defaults} summarizes the notation and which
+equations were used to calculate each FOM; each equation number is noted
+in brackets.
+
+When analyzing the FOM results for each characterization problem,
+we will consider that the tally average relative error is calculated from all
 particles contributing to all tally bins in the problem. Thus the FOM reported
 for the tally average relative error may be outside of the bounds of the tally
 minimum or the tally maximum relative error.
-Table \ref{tab:fom_defaults} summarizes which
-equations were used to calculate each FOM; each equation number is noted
-in brackets.
+% I am not sure that I understand this. How is the average outside the min and max? That doesn't make sense. 
 
 \begin{table}[h!]
   \centering
@@ -366,26 +368,34 @@ in brackets.
   \label{tab:fom_defaults}
 \end{table}
 
-Tables calculating the FOMs summarized in Table \ref{tab:fom_defaults} may also
-not have evaluated FOMS in some locations. These will be noted with a dashed
-line, or ``--''.  These values will generally be in the minimum relative error
+Not all problems will have every FOM, which will be noted with ``--''.  These missing values will generally be in the minimum relative error
 section of the FOM tables, and they represent a zero valued relative error. This
 does not mean that infinite particles have been sampled (so the relative error
 is infinitely small), but rather that no particles have been binned for that
 energy bin and result in a zero-valued relative error.
 This technically results in an infinite FOM, but in reality
-represents a bin that will never converge. Because this value will hold no
-meaning in our quantification of the $\Omega$-method's success, the infinite
-valued FOM will not included in the table.
+represents a bin that has not been sampled at all and thus 
+a problem that did not perform well.
 
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
+  \caption[Table of differing times used to measure $\Omega$ performance.]{
+    Table of differing times used to measure $\Omega$ performance. These times
+    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
+  \label{tab:time_defaults}
+\end{table}
+% add more lines. This table is very very hard to read. I'd remove the analog time column to give yourself more room and just specify it in the text.
 
-Table \ref{tab:time_defaults} further reports the times used to calculate the
-FOM values in \ref{tab:fom_defaults}. This table is split into three
+Table \ref{tab:time_defaults} details the times used to calculate the
+FOM values in Table \ref{tab:fom_defaults}. This table is split into three
 vertical regions: the MCNP time spent doing Monte Carlo transport (T$_{MC}$),
 the deterministic time spent in ADVANTG/Denovo (T$_{det}$),
 and the walltime (T$_{hybrid}$), which is the
-summation of the two. The deterministic time section of the table contains
-further segmentations of timing. This is because processes in ADVANTG are
+summation of the two. 
+% put a line between each of these regions
+The deterministic time section of the table contains
+further divisions of timing. This is because processes in ADVANTG are
 run using different computational resources. ADVANTG itself is a driver script
 that can launch a paralellized run in Exnihilo/Denovo, but it also postprocesses the
 Denovo fluxes into source biasing and weight window parameters. The processes
@@ -399,24 +409,21 @@ This quantity is summed with
 the runtimes of the other serial tasks to obtain the total deterministic runtime.
 
 Two other times are listed under the deterministic time that may or may not be
-included in T$_{hybrid}$, which are T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ is the
-reported times that are not included in the calculation of T$_{det}$ in either
-CADIS or CADIS-$\Omega$. It is a sum of time results that either are not
+included in T$_{hybrid}$, T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ contains the times that either are not
 important to comparing the methods--like calculating the anisotropy metrics--or
 times that are accounted for by other tasks in T$_{det}$. This prevents overlap
 of times and provides a more realistic comparison between the performance of
 both methods.
-
-The reported $\Omega$ time, T$_{\Omega}$, is the total
+% I understand the anisotropy thing, is the other stuff double counted for some reason? That isn't clear.
+T$_{\Omega}$, is the total
 time spent in the tasks unique to the $\Omega$ methods. This includes reading
-in the angular flux files, performing the computation of Eq.
+in the angular flux files, performing the computation of Eq.\
 \eqref{eq:omega_basic}, and writing the $\Omega$-results to a file.
 The $\Omega$ time,
-though run in Denovo, is still a serial calculation so is separated out from the
-total Denovo time. The $\Omega$ method tasks at this time are not
-parallelized, so the clock time is treated in the same way as the reported
+though run in Denovo, is still a serial calculation so is separated from the
+total Denovo time and treated the same way as the 
 ADVANTG time. Because the majority of the $\Omega$-flux generation
-infrastructure is implemented in Exnihilo rather than ADVANTG, future expansions
+infrastructure is implemented in Denovo rather than ADVANTG, future expansions
 of the method could be parallelized for faster clock times.
 
 Because the adjusted FOM (the FOMs labeled FOM$_{hybrid}$ in Table
@@ -427,81 +434,71 @@ the $\Omega$ methods and standard CADIS and FW-CADIS. For CADIS, T$_{det}$ is
 the sum of the ADVANTG runtime and the wall time of the Denovo transport. For
 CADIS-$\Omega$, this is the sum of the ADVANTG runtime, the wall time of the
 Denovo transport, and the time spent in the $\Omega$-flux calculation. How each
-time is calculated is summarized in Table \ref{tab:time_defaults}.
+time is calculated is summarized in Table \`ref{tab:time_defaults}.
 
 Beyond
 adding the $\Omega$-flux compute time, CADIS-$\Omega$ will generally have much
-longer Denovo runtimes than CADIS. This is a combination of the $\Omega$-methods'
+longer Denovo runtimes than CADIS. This come from a combination of the $\Omega$-methods'
 requirement of both a forward and adjoint calculation (recall that CADIS
 requires only the adjoint calculation), and that the $\Omega$-methods require
 full angular flux solutions to calculate the $\Omega$-flux. While standard CADIS
 has the ability to print the full angular flux solutions as CADIS-$\Omega$, it
 is neither a requirement nor is it standard practice. The I/O demands to both write
-the angular fluxes and then read them back in is a potential bottleneck in the
-method as it is implemented now.
+the angular fluxes and then read them back in is a bottleneck in the
+current implementation and causes a negative performance impact.
 
-\begin{table}[h!]
-  \centering
-  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
-  \caption[Table of differing times used to measure $\Omega$ performance.]{
-    Table of differing times used to measure $\Omega$ performance. These times
-    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
-  \label{tab:time_defaults}
-\end{table}
-
-Each of the problems introduced in Section \ref{subsec:ProbSpecs} has a
+Each problem introduced in Section \ref{subsec:ProbSpecs} has a
 10x10x10 cm detector in which the tally response is calculated. The tallies are
 discretized in energy; the tally result and associated relative error are
 tabulated for each energy bin. Some of this information can be inferred from Table
 \ref{tab:fom_defaults},
 but seeing the distribution of the relative errors for each energy
 bin for each method is a useful way of seeing how effective each method is at
-biasing particles all of the tally bins,
+biasing particles in all of the tally bins
 without time effects. As described in the previous paragraph, CADIS-$\Omega$'s
 deterministic time will be longer than CADIS', so the FOM$_{hybrid}$ may be
 lower for the $\Omega$-methods, even if the relative errors are better.
-Presenting both the relative error distribution and the FOM will provide a clear
+Presenting both the relative error distribution and the FOMs will provide a clear
 picture of the performance of the $\Omega$-methods.
 
 The tally results and relative errors for CADIS,
-CADIS-$\Omega$, and the nonbiased analog Monte Carlo will be
-presented in figures similar to
-\ref{fig:sampleresult} and \ref{fig:sampleerror}.
+CADIS-$\Omega$, and the analog Monte Carlo will be
+plotted for comparison for each problem.
 In the case where the
-relative error of the nonbiased analog Monte Carlo far exceeds the errors
-achieved by CADIS and CADIS-$\Omega$, it will be omitted. The example given in
-Figure \ref{fig:sampleerror} shows a result where this is the case.
+relative error of the analog Monte Carlo far exceeds the errors
+achieved by CADIS and CADIS-$\Omega$, it will be omitted. %The example given in
+%Figure \ref{fig:sampleerror} shows a result where this is the case.
 The hybrid methods
-will be marked with a dashed line; the nonbiased analog Monte Carlo will be a
-solid line.
+will used dashed lines and analog a solid line.
 
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
-    \caption{Comparison between methods of the tally result.}
-    \label{fig:sampleresult}
-  \end{subfigure}
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
-    \caption{Comparison between methods of the tally relative error.}
-    \label{fig:sampleerror}
-  \end{subfigure}
-  \caption[Sample results for a characterization problem tally.]{Sample results
-  for a characterization problem tally.}
-\end{figure}
+%\begin{figure}[ht!]
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
+%    \caption{Comparison between methods of the tally result.}
+%    \label{fig:sampleresult}
+%  \end{subfigure}
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
+%    \caption{Comparison between methods of the tally relative error.}
+%    \label{fig:sampleerror}
+%  \end{subfigure}
+%  \caption[Sample results for a characterization problem tally.]{Sample results
+%  for a characterization problem tally.}
+%\end{figure}
+% Do you show these later? I don't think it makes sense to show sample results. Just show results when you show them. 
 
 Equations \eqref{eq:metric_one} through \eqref{eq:metric_six} in
-Section \ref{sec:anisotropy_quant} presented several different ways by which the
-anisotropy of each problem could be quantified. As discussed in that section,
-Each metric will show slightly differing effects. For example, the ratio of the
+Section \ref{sec:anisotropy_quant} presented several ways by which the
+anisotropy of each problem can be quantified. As discussed in that section,
+each metric will show slightly different effects. For example, the ratio of the
 $\Omega$- to adjoint-flux in metric two will differ significantly from the
 angular contributon max to average of metric three. The $\Omega$-flux
 may be larger or smaller than the adjoint scalar flux depending on the
 directionality of the adjoint and forward particles relative to one another. If
-the particles are travelling in opposite directions, this will result in a
+the particles are traveling in opposite directions, this will result in a
 larger omega flux than the adjoint flux. If they stream in the same direction
 (away from the tally detector, for example),
 then the resultant $\Omega$ flux will be smaller than the adjoint. In the case
@@ -511,6 +508,13 @@ never be lower than the average. In a isotropic problem, the majority of the
 cells in the problem will be this ratio, whereas in a strongly anisotropic
 problem this distribution will shift upwards, but will still have the same
 limiting lower value as the isotropic case.
+% is this new information? If not, cut the paragraph or only keep what is new.
+
+% I guess I should have been clearer about setting up the problems. (though perhaps it was hard to understand with just the outline
+% I think the information you provided above about times, etc. is really good. 
+% This stuff doesn't seem to fit. I think you'll have to explain the plots when you get to them. It feels weird to see examples of results that are them presented as results.
+% I'd cut everything down to the line below unless there are key pieces of information that need to be distilled out for interpreting everything. 
+% You can use the text when you explain the plots for the first time. 
 
 \begin{figure}[htb!]
   \centering
@@ -648,6 +652,10 @@ in Figure \ref{fig:sampledistros} rather than \ref{fig:samplestrips}.
   \label{fig:sampleviolinsM2}
 \end{figure}
 
+%---------------------------------------
+
+
+% This stuff seems relevant again to have before the rest of the problems.
 Beyond plotting the anisotropy metrics as a function of energy group, we are
 interested in how the relative error or FOM will respond as a function of each
 metric. However, not all cells in the problem are as important as others to
@@ -658,22 +666,23 @@ flux measures the response importance of a cell. By selectively choosing
 anisotropy metrics from cells that are likely to induce a response, some of the noise
 of less important cells can be cut out.
 
-To consistently cut out the same number of datapoints across all metrics, we
+To consistently cut out the same number of data points across all metrics, we
 have chosen to use a filtering algorithm based on the contributon flux in each
-cell. The first filter is choosing metric values from cells where the
+cell. The first filter chooses metric values from cells where the
 contributon flux is above the problem median contributon flux. This median is
 evaluated separately for each energy group to ensure that the same number of
-cells in each group is plotted. The second filter is choosing metric values from
+cells in each group is plotted. The second filter chooses metric values from
 cells where the contributon flux is above the problem mean contributon flux.
 Again, the mean is computed separately for each energy group such that energy
 groups with higher contributon fluxes do not cut out important flux values from
-a different energy group. However, unlike the median filter a different number
+a different energy group. However, unlike the median filter, a different number
 of cells for each energy group will be filtered. This is dependent on the skew
 between the contributon mean and median value for each energy group.
 Because the filter is evaluated based on the
 contributon flux, it can be applied to each metric consistently, meaning that
 the same number of cells are filtered out between different metrics.
 
+% the below paragraph again seems like it should just be in the results discussion.
 Figure \ref{fig:sampleviolinsM2} shows the effects of cutting out data from
 unimportant cells on the M$_2$ distribution. The first figure in the series,
 \ref{fig:samplefullviolinM2}, is the M$_2$ full distribution. As discussed
@@ -704,7 +713,7 @@ and for the FOM it is
   I_{FOM} = \frac{FOM_{CADIS-\Omega}}{FOM_{CADIS}}\bigg\rvert_{E_g}.
   \label{eq:I-FOM}
 \end{equation}
-These will be henceforth be referred to as the relative error and FOM
+These will be referred to as the relative error and FOM
 improvement factors.
 With this definition of the improvement in the FOM or the relative
 error from CADIS to CADIS-$\Omega$, we now have a comparison between the updated
@@ -712,58 +721,58 @@ and standard methods. By relating this metric to the anisotropy metrics, we can
 see how anisotropy of the problem influences the improvement in the relative
 error or the FOM.
 
-\begin{figure}[htb!]
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_full.pdf}
-    \caption{M$_3$ average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$}
-    \label{fig:samplestatsfullM3}
-  \end{subfigure}
-\end{figure}
-\begin{figure}[htb!]\ContinuedFloat
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_median.pdf}
-    \caption{M$_3$ data selection above the metric median for each energy group,
-      value average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$}
-    \label{fig:samplestatsmedianM3}
-  \end{subfigure}
-\end{figure}
-\begin{figure}[htb!]\ContinuedFloat
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_mean.pdf}
-    \caption{M$_3$ data selection above the mean for each energy group,
-      value average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$ }
-    \label{fig:samplestatsmeanM3}
-  \end{subfigure}
-  \caption[Sample scatterplots of M$_3$ distribution against the relative error
-  improvement factor, I$_{RE}$.]
-  {Sample scatterplots of the M$_3$ distribution against the relative error
-    improvement factor, I$_{RE}$.}
-  \label{fig:samplestats}
-\end{figure}
+%\begin{figure}[htb!]
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_full.pdf}
+%    \caption{M$_3$ average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$}
+%    \label{fig:samplestatsfullM3}
+%  \end{subfigure}
+%\end{figure}
+%\begin{figure}[htb!]\ContinuedFloat
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_median.pdf}
+%    \caption{M$_3$ data selection above the metric median for each energy group,
+%      value average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$}
+%    \label{fig:samplestatsmedianM3}
+%  \end{subfigure}
+%\end{figure}
+%\begin{figure}[htb!]\ContinuedFloat
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_mean.pdf}
+%    \caption{M$_3$ data selection above the mean for each energy group,
+%      value average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$ }
+%    \label{fig:samplestatsmeanM3}
+%  \end{subfigure}
+%  \caption[Sample scatterplots of M$_3$ distribution against the relative error
+%  improvement factor, I$_{RE}$.]
+%  {Sample scatterplots of the M$_3$ distribution against the relative error
+%    improvement factor, I$_{RE}$.}
+%  \label{fig:samplestats}
+%\end{figure}
 
+% the paragraphs down to the line also seem like they don't fit here.
 There are several ways in which the improvement
 factor I$_{RE}$ or I$_{FOM}$ may be compared against the anisotropy metrics. The
 first are against the metric mean and median values. A plot of I versus either
-of these values should look very simiar, with some shifting depending on the
+of these values should look very similar, with some shifting depending on the
 distribution. However, if the mean and median are shifted significantly, this
-would indicate a skew of the distribution. This skew may also be correlated with
+would indicate skewness of the distribution. This skewness may also be correlated with
 either
 of the I values. Last, it is possible that the spread of metric values may be
 correlated with the I factor. Figure \ref{fig:samplestatsfullM3} is an
 illustration of how I can be plotted with
 each of these measurements of the metric distribution.
 
-Similar to using the filtering algorithms in Figure
-\ref{fig:sampleviolinsM2}, the data in the statistical trend plots can also be
+The data in the statistical trend plots can also be
 filtered. The subfigures in \ref{fig:samplestats} illustrate how filtering out
 the data by the contributon flux influences the location of I$_{RE}$ for each
 energy group. Figure \ref{fig:samplestatsmedianM3} calculates the
@@ -780,6 +789,8 @@ possible because the Monte Carlo tally has been discretized to have
 the same binning as the the deterministic code. It would be far more difficult
 if the energy bin widths of the Monte Carlo tally did not match the
 deterministic code.
+%------------
+
 
 The data that will be presented for each characterization problem
 can be subdivided into three distinct
@@ -792,13 +803,13 @@ The results presented in Figure \ref{fig:samplestats} are a combination of both
 deterministic and Monte Carlo-influenced results. In studying the $\Omega$
 methods, we seek to understand how the $\Omega$ methods' performance influence
 the Monte Carlo results. Beyond observing the FOM and relative error
-distribution obtained in the Monte Carlo, the anisotropy metrics will provide
+distribution obtained in Monte Carlo, the anisotropy metrics will provide
 another avenue by which to investigate $\Omega$-method performance.
 
 One may have deduced that the results for the characterization
 problems and the subsequent angle
 sensitivity study will be substantive. Only the most
-pertinent fraction of the available data will be presented with each problem in
+pertinent of the available data will be presented with each problem in
 Sections \ref{sec:CharResults} and \ref{sec:AngleResults}. For example, in most
 cases only a single figure--and perhaps only a single metric--from the
 three presented in \ref{fig:samplestats}
