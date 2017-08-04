@@ -138,8 +138,7 @@ problems can then be used to characterize the $\Omega$-methods.
 \subsection{Problem Specifications}
 \label{subsec:ProbSpecs}
 
-% In general, add dimensions for everything so that we know how big these problems are, where the sources are located, and where the detectors are located. Right now, no one could reproduce any of this. 
-% Also, state all the materials, including if there is a type of concrete used. 
+% In general, add dimensions for everything so that we know how big these problems are, where the sources are located, and where the detectors are located. 
 
 A set of characterization problems that have
 different combinations of anisotropy-causing features have been developed.  These fall
@@ -290,18 +289,14 @@ therapy room illustrated in Figure \ref{fig:therapygeom}. This room has concrete
 walls, a water-based phantom that is being irradiated by a monodirectional
 source in the room, and a hallway where a therapy technician might walk. In a
 CADIS-run of this problem, we seek to calculate the response in the
-technician in the hallway from particles that are not absorbed by the patient in
-the room. Because this problem is primarily air with concrete
-borders, it will have strong streaming effects in the air. Particles that do
-make it to the technician will be produced by emission from the patient in the
-room, by scattering off of the problem air, or by scattering off of the problem
-walls. Because of the high fraction of air in this problem, we also anticipate
+technician in the hallway.  Particles that
+reach the technician may transport through the concrete divider wall, but it is more likely they will
+scatter off of the room walls and make it around the turn -- which adds the potential for anisotropy to play a larger role. Because of the high fraction of air in this problem, we also anticipate
 ray effects to occur. While there will be scattering in this problem, it will
 not be as strong of an effect as other characterization problems.
 
-Now that the broad subset of characterization problems have been described,
-the physics that each contains is summarized in Table \ref{tab:probphysics}.
-Upon glancing at the table, one may see that it can be difficult to separate
+The physics that of each characterization problem is summarized in Table \ref{tab:probphysics}.
+Here, one may see that it can be difficult to separate
 out one physical mechanism from another when constructing problems. This is
 especially true in generating a problem that has ray effects without streaming
 paths, and in constructing a highly scattering problem that has preferential
@@ -314,8 +309,8 @@ area that may be improved upon in future work.
   \input{./chapters/characterization_probs/figures/problem_physics}
   \caption[Anisotropy-inducing physics of each of the characterization problems.]
   {Anisotropy-inducing physics of each of the characterization problems.
-  Each identified anisotropy-inducing physical metric is used in different
-  combinations for the characterization problems. This will help to aid in
+  Each identified anisotropy-inducing physical mechanism is used in different
+  combinations for the characterization problems. This will aid in
   extrapolating to which real problems the $\Omega$-methods may be applied.}
   \label{tab:probphysics}
 \end{table}
@@ -323,6 +318,9 @@ area that may be improved upon in future work.
 % of the char problems. Some of them are monoenergetic, some are
 % monodirectional, and some are monospatial(?) (point sources). A table would be
 % a good way to summarize this information.
+
+% I don't think material heterogeneity and streaming paths are different, so you could remove that column to add source energy and write either the energy or watt-fission.
+%  Instead of an x in monodir, you could write source type and include one of mono-dir or point?
 
 \subsection{Introduction the Presented Data}
 \label{subsec:resultsintro}
