@@ -1236,7 +1236,7 @@ FOM and timing
 results are summarized in Tables
 \ref{tab:ucorridorfoms} and \ref{tab:ucorridortimes}. Figures
 \ref{fig:ucorridorresult} and \ref{fig:ucorridorerror} show the results obtained
-by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+by the track length tally in CADIS, CADIS-$\Omega$, and analog
 Monte Carlo.
 
 \begin{table}[h!]
@@ -1258,7 +1258,7 @@ Monte Carlo.
 
 Much like the single- and multiple-turn labyrinths, the U-shaped air corridor
 has a pathway of preferential movement for particles in a concrete shield. In
-this problem, the particles travel down the legs of the u-bend to a detector on
+this problem, the particles travel down the legs of the U-bend to a detector on
 the other side of the corridor. The particles should have preferential flowpaths
 through the air ducts, but it is possible for low energy particles to traverse
 the concrete barrier between the source and detector. The high energy particles
@@ -1266,17 +1266,17 @@ tallied in the detector are more likely to have traveled through the air ducts
 and the low energy particles may be supplied from the shield or from scattering
 down the air duct.
 
-The FOM table for the u-shaped corridor shows that this is a fairly difficult
-problem for CADIS, CADIS-$\Omega$, and the analog. For the tally average FOM,
-CADIS and CADIS-$\Omega$ achieve a FOM two orders of magnitude higher than the
-nonbiased analog. Both methods have comparable FOMs. In fact, CADIS and
+The FOM table for the U-shaped corridor shows that this is a fairly difficult
+problem for CADIS, CADIS-$\Omega$, and analog MC. For the tally average FOM,
+CADIS and CADIS-$\Omega$ achieve a FOM two orders of magnitude higher than 
+analog. The CADIS methods have comparable FOMs. In fact, CADIS and
 CADIS-$\Omega$ are in relative agreement for all FOMs calculated with the Monte
-Carlo runtime. Interestingly, the nonbiased analog Monte Carlo has a higher
+Carlo runtime. Interestingly, analog Monte Carlo has a higher
 maximum relative error FOM than either method. However, this analog tally for
 this problem has many
 nontallied bins (as can be gathered from the major discrepancy in results in
-Figures \ref{fig:ucorridorresult} and \ref{fig:ucorridorerror}). For the
-few bins that were tallied, the analog has a high FOM.
+Figures \ref{fig:ucorridorresult} and \ref{fig:ucorridorerror}), so the results in general are not good. For the
+few bins that were tallied, however, the analog has a high FOM.
 
 \begin{figure}[h!]
   \centering
@@ -1298,11 +1298,11 @@ few bins that were tallied, the analog has a high FOM.
   \label{fig:ucorridorerror}
 \end{figure}
 
-The tally results for the u-shaped corridor in Figure \ref{fig:ucorridorresult}
-show general agreement between CADIS and CADIS-$\Omega$. The nonbiased analog
-has no agreement with either method. Comparing their relative errors in Figure
+The tally results for the U-shaped corridor in Figure \ref{fig:ucorridorresult}
+show general agreement between CADIS and CADIS-$\Omega$. Again, the analog results
+do not agree with the CADIS-obtained results. Comparing their relative errors in Figure
 \ref{fig:ucorridorerror}, we can gather that this is a difficult problem for
-both methods. At high energies both CADIS and CADIS-$\Omega$ have very high
+both CADIS methods. At high energies, both CADIS and CADIS-$\Omega$ have very high
 relative errors, indicating untrustworthy results. To get the relative error in
 these regions for CADIS-$\Omega$ to below 0.10--a fairly standard threshold for
 Monte Carlo--it would have to run nearly 40x longer, or ~900 hours. However,
@@ -1317,7 +1317,7 @@ CADIS-$\Omega$ will achieve superior relative errors.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2adjG00.png}
-    \caption{Adjoint flux distribution, highest energy group}
+    \caption{Adjoint flux distribution, highest energy group.}
     \label{fig:ubendadjflux}
   \end{subfigure}
 \end{figure}
@@ -1325,7 +1325,7 @@ CADIS-$\Omega$ will achieve superior relative errors.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2contribG00.png}
-    \caption{Contributon flux distribution, highest energy group}
+    \caption{Contributon flux distribution, highest energy group.}
     \label{fig:ubendcontribflux}
   \end{subfigure}
 \end{figure}
@@ -1333,7 +1333,7 @@ CADIS-$\Omega$ will achieve superior relative errors.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2omegaG00.png}
-    \caption{$\Omega$ flux distribution, highest energy group}
+    \caption{$\Omega$-flux distribution, highest energy group.}
     \label{fig:ubendomegaflux}
   \end{subfigure}
   \caption[Flux distributions at problem midplane for U-shaped corridor.]{Flux
@@ -1343,9 +1343,11 @@ detector region are located in different z-plane locations.}
   \label{fig:ubendfluxes}
 \end{figure}
 
-While the u-shaped bend problem does not have FOMs for CADIS-$\Omega$ that
-significantly improve upon CADIS', CADIS-$\Omega$ still achieved lower relative
-errors than CADIS. Figure \ref{fig:ubendfluxes} shows the flux distributions in
+%While the U-shaped bend problem CADIS-$\Omega$ does not 
+%significantly improve upon CADIS in terms of FOM, CADIS-$\Omega$ still achieved lower relative
+%errors than CADIS. 
+% already stated and unrelated to the rest of the paragraph.
+Figure \ref{fig:ubendfluxes} shows the flux distributions in
 the U-bend located at the midplane containing the NaI detector. Figure
 \ref{fig:ubendadjflux} shows the adjoint scalar flux, Figure
 \ref{fig:ubendcontribflux} shows the angle-integrated contributon scalar flux,
@@ -1357,16 +1359,16 @@ in Figure \ref{fig:ubendadjflux} shows substantial ray effects
 in the air regions near the adjoint source. As
 expected, the ray effects are mitigated once the particles interact with
 concrete. The difference in flux value between the orange region and the yellow
-regions of the plot is on the order of two- to three- orders of magnitude. The
-two ray effect fingers are separated by a distance of 10-20cm, meaning that a
+regions of the plot is two- to three- orders of magnitude. The
+two ray effect fingers are separated by a distance of 10-20 cm, meaning that a
 particle traversing air in this region may experience fairly large differences
 in importance between scattering events.
 
-In this problem the forward source is offset in the z-plane from the detector by
-100cm. The effects of this on the flux are visualized well by the contributon
-flux in Figure \ref{fig:ubendcontribflux}. In the left-leg of the u-bend, the
+In this problem, the forward source is offset in the z-plane from the detector by
+100 cm. The effects of this on the flux are visualized well by the contributon
+flux in Figure \ref{fig:ubendcontribflux}. In the left-leg of the U-bend, the
 contributon flux decreases near the bottom. This is because particles are more
-biased in a deeper z-plane, towards the forward source. It is also clear from
+biased in a higher z-plane, towards the forward source. It is also clear from
 this figure that in the high energy region, the contributon flux streams
 particles through the concrete shield.
 
@@ -1374,19 +1376,19 @@ The $\Omega$-flux shown in Figure \ref{fig:ubendomegaflux} does not attempt to
 force particles through the shield like the contributon flux, nor does it have
 as substantial of ray effects as the adjoint scalar flux distribution. However,
 the ray effects in this variant are not completely mitigated. There appears to
-be a cone of particles extending into the u-bend that are of greater importance
+be a cone of particles extending into the U-bend that are of greater importance
 than the other regions near the detector. This is a clear effect of the forward
 flux distribution. However, the region just to the right of the detector
 location is of possible consequence. Between the detector and directly to the
 right, the flux decreases in magnitude more than two orders of magnitude. It is
-possible that the large gradient in importnace could be adversely affecting the
-time achieved by the $\Omega$ methods for this problem.
+possible that the large gradient in importance could be adversely affecting the
+time achieved by the $\Omega$-methods for this problem.
 
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2M3G26.png}
-    \caption{M$_3$ distribution, visualized in plane containing detector}
+    \caption{M$_3$ distribution, visualized in plane containing detector.}
     \label{fig:ubendM3}
   \end{subfigure}
 \end{figure}
@@ -1394,17 +1396,17 @@ time achieved by the $\Omega$ methods for this problem.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2M4G26.png}
-    \caption{M$_4$ distribution, visualized in plane containing detector}
+    \caption{M$_4$ distribution, visualized in plane containing detector.}
     \label{fig:ubendM4}
   \end{subfigure}
   \caption[Anisotropy metrics plotted at problem midplane for U-shaped
   corridor.]{Anisotropy metrics plotted at problem midplane for U-shaped
-    corridor. Energy group shown is for lowest energy}
+    corridor. Energy group shown is for lowest energy.}
   \label{fig:ubendmetrics}
 \end{figure}
 
-Figures \ref{fig:ubendM3} and \ref{fig:ubendM4} show the anisotropy metrics for
-the u-shaped bend. Figure \ref{fig:ubendM3} shows the M$_3$ distribution, which
+Figures \ref{fig:ubendM3} and \ref{fig:ubendM4} show some of the anisotropy metrics for
+the U-shaped bend. Figure \ref{fig:ubendM3} shows the M$_3$ distribution, which
 as one may recall is the ratio of the contributon maximum angular flux to the
 contributon average angular flux in the cell. M$_4$, which is visualized in
 Figure \ref{fig:ubendM4}, divides M$_3$ by the ratio of the maximum to average
@@ -1412,18 +1414,18 @@ adjoint angular fluxes.
 
 Comparing these two figures we can identify the effect
 of this normalization on the anisotropy metrics. Beginning with the M$_3$
-distribution plot in Figure \ref{fig:ubendM3}, it is clear that we still observe
-the secondary ray effects in the flux anisotropies that were observed in the
-labyrinth problems. On the right side of the u-bend, we observe ray effects in
+distribution plot in Figure \ref{fig:ubendM3}, it is clear that we observe
+ray effects in the flux anisotropies. 
+On the right side of the U-bend, we observe ray effects in
 the aniostropy that are likely from the adjoint flux distribution. On the left
 side of the bend we observe oblong circular distributions of anisotropy. These
-are more likely to be from particles emanating forward source distribution. The
+are more likely to be from particles emanating from the source. The
 contributon flux anisotropies are much stronger in the air channels than in the
 concrete shield, as we would expect. In the shield immediately bounding the air,
 we observe a fairly isotropic flux distribution, but as particles reach closer
-to the edges the anisotropy increases slightly.
+to the edges, the anisotropy increases slightly.
 
-The M$_4$ distributions shown in \ref{fig:ubendM4} show how certain features of
+The M$_4$ distributions shown in \ref{fig:ubendM4} illustrate how certain features of
 the anisotropy are removed when using the control adjoint angular flux. In
 particular, the shield region becomes completely normalized, meaning that the
 isotropy in the contributon flux matches that of the adjoint flux. The air
@@ -1432,11 +1434,11 @@ peaks in the anisotropy where the forward and adjoint fluxes meet. At the top of
 the bend, the adjoint and forward fluxes have scattered relatively few times and
 thus generate a high aniosotropy in the contributon flux.
 
-These anisotropy plots illustrate how in certain regions the flux anisotropy may
-be very high. Further, they show regions where the fluxes strongly interact with
-one another. In addition to helping to quantify the effectiveness of the method,
-they reveal interesting features of the solution that may not be obvious using
-standard flux figures.
+These anisotropy plots illustrate the extent of ray effects in this problem. 
+% This is where I'd add some discussion about the translation of ray effects into the VR map. 
+% that was one of the most important questions to answer, and this problem seems good for doing that. 
+% I'd focus the analysis of this problem on that a little bit more. 
+Discussion of ray effects and VR map...the results probably are meaningless b/c of the ray effects and therefore talking about them doesn't make a ton of sense. 
 
 \subsection{Shielding with Rebar}
 \label{subsec:resultrebar}
