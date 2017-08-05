@@ -1448,7 +1448,7 @@ in concrete has
 results summarized in Tables
 \ref{tab:rebarfoms} and \ref{tab:rebartimes}. Figures
 \ref{fig:rebarresult} and \ref{fig:rebarerror} show the results obtained
-by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+by the track length tally in CADIS, CADIS-$\Omega$, and analog
 Monte Carlo.
 
 \begin{table}[h!]
@@ -1469,13 +1469,13 @@ Monte Carlo.
 \end{table}
 
 The FOM results for the rebar-embedded concrete show that this is a very poor
-problem for CADIS-$\Omega$, in general. CADIS-$\Omega$ has lower FOMs than CADIS
-in all measures. CADIS-$\Omega$ spends fractionally over five--both
-deterministically and in Monte Carlo--the
-transport time that CADIS does. Further, CADIS-$\Omega$ has poorer FOMs in both
-the tally average and maximum relative error than the nonbiased analog. This is
-due to CADIS-$\Omega$ requiring nearly 30x longer to run Monte Carlo than the
-nonbiased analog.
+problem for CADIS-$\Omega$. CADIS-$\Omega$ has lower FOMs than CADIS
+in all measures. CADIS-$\Omega$ spends about 5xthe
+transport time--both in
+deterministic and Monte Carlo--that CADIS does. Further, CADIS-$\Omega$ has poorer FOMs in both
+the tally average and maximum relative error than the analog. This is
+due to CADIS-$\Omega$ requiring nearly 30x longer to run Monte Carlo than 
+analog.
 
 \begin{figure}[h!]
   \centering
@@ -1495,29 +1495,30 @@ nonbiased analog.
 
 Figure \ref{fig:rebarresult} shows that the tally results for the rebar-embedded
 concrete do not generally agree between any method. CADIS and CADIS-$\Omega$
-have better agreement with each other than with the nonbiased analog, but at
+have better agreement with each other than with the analog, but at
 high energies their results differ significantly. However, in comparing their
 relative errors in Figure \ref{fig:rebarerror}, the large discrepancy in their
 results is explained by the very high relative errors in this region. As with
-the u-shaped air corridor, neither method achieves satisfactory relative errors
-below 0.10 in high energy bins. However, both methods achieve comparitavely good
+the U-shaped air corridor, neither method achieves satisfactory relative errors
+below 0.10 in high energy bins. However, both methods achieve comparatively good
 relative error results in energy bins below $10^{-1}$ MeV.
 
 Unlike previous problems that had
-significant problem volumes filled with air, this particular problem has a thick
+significant volumes filled with air, this problem has a thick
 shield with which incident particles must interact. While this problem may
 appear similar geometrically to the beam embedded in
-concrete, this problem has far more preferential flowpaths by which particles
-might flow. Some of these flowpaths are directed perpindicularly to a path
+concrete, this problem has many more preferential flowpaths through which particles
+might transport. Some of these flowpaths are directed perpendicularly to a path
 towards the detector. It is possible that CADIS-$\Omega$ is capturing these
-flowpaths, but because they are not towards the detector CADIS-$\Omega$ spends a
+flowpaths, but because they are not towards the detector, CADIS-$\Omega$ spends a
 significant portion of its time sampling less useful regions.
+% I don't really understand what you're getting at in this sentence. Is it following particles that aren't useful just b/c they contain anisotropy? Why would it do that?
 
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_violin_mean.pdf}
-    \caption{M$_3$ distributions rebar embedded in concrete}
+    \caption{M$_3$ distributions rebar embedded in concrete.}
     \label{fig:M3violinrebar}
   \end{subfigure}
 \end{figure}
@@ -1529,12 +1530,15 @@ significant portion of its time sampling less useful regions.
     \label{fig:M3statsrebar}
   \end{subfigure}
   \caption[M$_3$ distribution and trends for rebar-embedded concrete
-  problem.]{M$_3$ distribution and I$_{RE}$ scatterplot for rebar-embedded in
+  problem.]{M$_3$ distribution and I$_{RE}$ scatterplots for rebar-embedded in
 concrete. Values of M$_3$ have been filtered to be from cells that are above the
 contributon mean value.}
   \label{fig:rebarplots}
 \end{figure}
 
+% I'd keep in mind in all problems, and especially here, it can be tricky to draw conclusions
+% for some things b/c the errors are so high. You do address it, but might want to state it
+% more strongly at the beginning of the section
 After inspecting the metric distributions against I$_{RE}$ and I$_{FOM}$, no
 distinct trends were observable with any metric and either improvement factor.
 The distribution with the best trends are included in Figure
@@ -1553,7 +1557,7 @@ average contributon angular flux in the cell.
 
 Using values that can be computed from the distributions shown in Figure
 \ref{fig:M3violinrebar}, the relative error improvement between CADIS-$\Omega$
-and CADIS can be plotted as shown in \ref{fig:M3statsrebar}. In general there
+and CADIS can be plotted as shown in \ref{fig:M3statsrebar}. In general, there
 exist many energy bins where CADIS-$\Omega$ achieves a poorer relative error
 than CADIS. The bins where the comparative error is the worst is in intermediate
 energy regions. At low energy regions the relative errors are comparable, but as
@@ -1565,12 +1569,14 @@ improvement in the relative error than the metric average or median value.
 However, these trends are not strong, and it would be difficult to predict the
 performance of a similar problem based on metric distributions.
 
-It is possible that the filter matrix is not fine enough for this particular
-problem to pull out metric
-values of high importance, but even values filtered out above the mean
-contributon flux did not have strong correlations. However, with the cutoffs
-appearing in the distributions of \ref{fig:M3violinrebar}, choosing too high of
-a filter value may also remove much of the metric distribution.
+%It is possible that the filter matrix is not fine enough for this particular
+%problem to pull out metric
+%values of high importance, but even values filtered out above the mean
+%contributon flux did not have strong correlations. However, with the cutoffs
+%appearing in the distributions of \ref{fig:M3violinrebar}, choosing too high of
+%a filter value may also remove much of the metric distribution.
+%
+% I don't think this would matter. 
 
 \subsection{Beam Problem}
 \label{subsec:resultsbeam}
