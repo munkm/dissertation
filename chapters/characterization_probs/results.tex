@@ -1578,65 +1578,64 @@ performance of a similar problem based on metric distributions.
 %
 % I don't think this would matter. 
 
-\subsection{Beam Problem}
+\subsection{Beamline Problem}
 \label{subsec:resultsbeam}
 
-The nuclear physics beamline toy problem has FOM and timing
+The beamline toy problem has FOM and timing
 results summarized in Tables
 \ref{tab:beamfoms} and \ref{tab:beamtimes}. Figures
 \ref{fig:beamresult} and \ref{fig:beamerror} show the results obtained
-by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+by the track length tally in CADIS, CADIS-$\Omega,$ and analog
 Monte Carlo.
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_foms_compare}
   \caption[Figure of Merit comparison between methods for simplified
-    experimental nuclear physics beamline.]
+    experimental beamline.]
     {Figure of Merit comparison between methods for simplified experimental
-    nuclear physics beamline.}
+    beamline.}
   \label{tab:beamfoms}
 \end{table}
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_times_compare}
-  \caption[Detailed timing results for simplified experimental nuclear physics
+  \caption[Detailed timing results for simplified experimental
   beamline.]
-  {Detailed timing results for simplified experimental nuclear physics beamline.}
+  {Detailed timing results for simplified experimental beamline.}
   \label{tab:beamtimes}
 \end{table}
 
-The experimental nuclear physics beamline problem is the most
+The experimental beamline problem is the most
 difficult of the characterization problems for both CADIS and CADIS-$\Omega$.
-There are no walls off which
+There are no walls off of which
 particles may scatter; the only places most particles will scatter is in the
-detector regions and potentially off of air. These particular problems were run
-with $1e9$ particles rather than $1e7$. Because there are so few interaction
+detector regions and potentially off of air. This problem used
+ $1e9$ particles rather than $1e7$. Because there are so few interaction
 points, the majority of particles leak out of the problem boundary so
 more source particles are required to obtain results.
 
-Table \ref{tab:beamfoms} shows that nuclear physics experimental beamline
+Table \ref{tab:beamfoms} shows that beamline
 problem has very slow convergence for
-CADIS and CADIS-$\Omega$. CADIS, CADIS-$\Omega$ and the nonbiased analog all have
-zero-scoring tally bins. These are in low energy regions, energy regions in
-which particles in the problem never reach.
+CADIS and CADIS-$\Omega$. CADIS, CADIS-$\Omega$, and analog MC all have
+zero-scoring tally bins. These are in the low energy regions that particles never reach because they don't scatter.
 The maximum relative error FOM for CADIS, CADIS-$\Omega$,
-and the nonbiased analog are all very low, indicating that the threshold for
+and analog are all very low, indicating that the threshold for
 convergence of the highest energy bin will take a long time for all three
-methods. Interestingly, CADIS performs worse than CADIS-$\Omega$ and the
-nonbiased analog with this metric. The nonbiased analog achieves the highest
+methods. Interestingly, CADIS performs worse than CADIS-$\Omega$ and 
+analog with this metric. The analog achieves the highest
 maximum relative error FOM and the highest tally average relative error FOM for all
 three methods.
 
 A notable feature of Table \ref{tab:beamtimes} is the Monte Carlo runtime of
 CADIS, CADIS-$\Omega$, and the nobiased analog. In previous characterization
-problems, CADIS-$\Omega$ and CADIS had much longer runtimes than the nonbiased
+problems, CADIS-$\Omega$ and CADIS had much longer runtimes than
 analog. In all of the previous characterization problems, CADIS-$\Omega$ had a
 longer runtime than CADIS. In this problem, CADIS-$\Omega$ has a shorter runtime
 than CADIS. The deterministic runtime of CADIS-$\Omega$ relative to CADIS
 is comparable to previous problems. A potential reason that the runtimes of
-CADIS and CADIS-$\Omega$ is so close to the nonbiased analog is because so many
+CADIS and CADIS-$\Omega$ are so close to analog is because so many
 particles leak out of the problem space.
 % Further, the reason that CADIS-$\Omega$
 % may have a shorter runtime than CADIS is because ray effects are dampened in the
@@ -1646,10 +1645,8 @@ particles leak out of the problem space.
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_result_compare.pdf}
-  \caption[Tally results comparison between methods for simplified experimental
-    nuclear physics beamline.]
-  {Tally results comparison between methods for simplified experimental
-    nuclear physics beamline.}
+  \caption[Tally results comparison between methods for the beamline.]
+  {Tally results comparison between methods for the beamline.}
   \label{fig:beamresult}
 \end{figure}
 
@@ -1657,23 +1654,22 @@ particles leak out of the problem space.
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/beam/beam_facility_tally_error_compare.pdf}
   \caption[Tally relative error comparison between methods
-    for simplified experimental nuclear physics beamline.]
-  {Tally relative error comparison between methods for simplified experimental
-    nuclear physics beamline.}
+    for the beamline.]
+  {Tally relative error comparison between methods for the beamline.}
   \label{fig:beamerror}
 \end{figure}
 
 Comparing the full tally results presented in Figures \ref{fig:beamresult} and
 \ref{fig:beamerror}, the FOM results from Table \ref{tab:beamfoms} have more
 context. Figure \ref{fig:beamresult} shows that all three methods have similar
-results in the track length tally. In a few of the bins CADIS and the nonbiased
+results in the track length tally. In a few of the bins CADIS and 
 analog appear to have closer results than CADIS and CADIS-$\Omega$.
 
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/beam/forward_anisotropy_violin_full.pdf}
-    \caption{Full forward flux anisotropy distribution}
+    \caption{Forward angular flux anisotropy distribution.}
     \label{fig:forwardbeamline}
   \end{subfigure}
 \end{figure}
@@ -1681,37 +1677,39 @@ analog appear to have closer results than CADIS and CADIS-$\Omega$.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/beam/adjoint_anisotropy_violin_full.pdf}
-    \caption{Full adjoint flux anisotropy distribution}
+    \caption{Adjoint flux anisotropy distribution.}
     \label{fig:adjointbeamline}
   \end{subfigure}
   \caption[Forward and adjoint anisotropy distributions for experimental
   nuclear physics beamline]{Forward and adjoint anisotropy distributions for
-  experimental nuclear physics beamline.}
+  the beamline.}
   \label{fig:beamlineplots}
 \end{figure}
 
 While this problem has very poor performance for the relative errors of CADIS
 and CADIS-$\Omega$, some interesting physics can be highlighted by looking at
-the distributions of the forward and adjoint anisotropy. Here the ratio of the
+the distributions of the forward and adjoint angular flux anisotropy. Here, the ratio of the
 maximum angular flux to the average angular flux is computed for each cell.
 Figure \ref{fig:forwardbeamline} shows the distribution of values for the
-forward flux, and Figure \ref{fig:adjointbeamline} shows the distribution of
-values for the adjoint flux. Because this value has extremely high leakage, we
+forward angular flux, and Figure \ref{fig:adjointbeamline} shows the distribution of
+values for the adjoint angular flux. Because this value has extremely high leakage, we
 can see the effect of moderation on the distributions. The forward flux in this
 problem is defined as a monodirectional beam aimed at a NaI cube. As a result,
 the highest energy group only exists in the problem between the source and the
 cube. This is reflected in the very different distribution for the highest
 energy group and all of the other energy groups.
+% future: use an energy cutoff for this problem, no reason that the low energy groups should be used.
 
 Because all of the highest energy particles are removed--most likely by
-downscattering to lower energies--from the problem after interacting with the
+leaking out of the problem--from the problem after interacting with the
 NaI cube, the distribution is dominated by the monodirectional beam. The
 distribution of values in this energy group are strongly peaked towards a single
-direction, which is the limiting upper value of group 0.
+direction, which is the limiting upper value of the highest energy group.
+% don't undertand that sentence
 
 Compare the forward distributions of Figure \ref{fig:forwardbeamline} to the
 adjoint distributions of Figure \ref{fig:adjointbeamline}. All energy groups
-in the adjoint variant are similar to the fastest in the forward problem. This
+in the adjoint variant are similar to the highest in the forward problem. This
 is because the adjoint source particle distribution is not angle-dependent as it
 is in the forward problem. The other NaI detector in the problem comprises a very
 small fraction of the solid angle of the adjoint source. As a result, all energy
