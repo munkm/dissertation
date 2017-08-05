@@ -1719,35 +1719,33 @@ groups are fairly monodirectional, and particles stream out of the problem.
 \label{subsec:resultstherapy}
 
 The problem with a simplified representation of a nuclear medicine therapy room
-has FOM summarized in Table
+has FOMs summarized in Table
 \ref{tab:therapyfoms}. Figures
 \ref{fig:therapyresult} and \ref{fig:therapyerror} show the results obtained
-by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
-Monte Carlo. Note that the results for this problem had issues with reported
+by the track length tally. Note that the results for this problem had issues with reported
 times for the deterministic run, so the adjusted Monte Carlo
 (FOM$_{hybrid}$) is not reported and the timing table is not reported.
 
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_foms_compare}
-  \caption[Tally results comparison between methods for simplified medical
-  therapy room.]{Tally relative error comparison between methods for simplified
-  medical therapy room.}
+  \caption[Tally results comparison between methods for 
+  therapy room.]{Tally relative error comparison between methods for therapy room.}
   \label{tab:therapyfoms}
 \end{table}
 
 The therapy room is a problem where CADIS-$\Omega$ performs fairly well when
-compared to CADIS and the nonbiased analog Monte Carlo. For the Monte Carlo
-runtime-exclusive FOMs, CADIS-$\Omega$ achieves better FOMs than CADIS and the
-nonbiased analog in both the tally average relative error and the tally maximum
+compared to CADIS and analog Monte Carlo. For the Monte Carlo
+runtime-exclusive FOMs, CADIS-$\Omega$ achieves better FOMs than CADIS and 
+analog in both the tally average relative error and the tally maximum
 relative error.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
-  \caption[Tally results comparison between methods for simplified medical
+  \caption[Tally results comparison between methods for 
   therapy room.]
-  {Tally results comparison between methods for simplified medical therapy room.}
+  {Tally results comparison between methods for therapy room.}
   \label{fig:therapyresult}
 \end{figure}
 
@@ -1762,7 +1760,7 @@ relative error.
 \end{figure}
 
 For this problem, CADIS-$\Omega$ achieved similar relative errors to CADIS for
-intermediate- and fast- energy bins. However, for low energy bins CADIS
+intermediate and fast energy bins. However, for low energy bins, CADIS
 performed poorly and CADIS-$\Omega$ achieved satisfactory relative errors. These
 low energy bins are the only ones where CADIS-$\Omega$ really substantially
 outperformed CADIS. In a similar problem it would be advantageous to use
@@ -1770,3 +1768,4 @@ CADIS-$\Omega$ as a method, but with deterministic runtime incorporated it may
 still be worthwhile to run with CADIS instead. If a user desires a tally with
 low energy bins exclusively, CADIS-$\Omega$ will be the advantageous method.
 
+% do you leave out the other analysis b/c of the runtime issue?
