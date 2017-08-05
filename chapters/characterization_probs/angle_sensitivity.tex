@@ -13,7 +13,7 @@ solver choices. Some deterministic solver choices will change the angular
 fluxes used to calculate the $\Omega$-flux. Consequently, this may affect the
 behavior of the $\Omega$-methods. This section will
 explore the effects of deterministic solver
-choices on the $\Omega$-method's performance.
+choices on the $\Omega$-methods' performance.
 
 Section \ref{sec:CharResults} showed that the $\Omega$-methods have a strong
 weakness to ``thin'' materials, as CADIS and FW-CADIS do. Recall that a
@@ -22,33 +22,39 @@ cross section, or interaction
 probability. In a pure streaming problem, the particle flux will decrease by a
 factor of $r^2$ from the source and never interact.
 In a thin material, a particle may stream
-several centimeters before interacting. As a result, the
-importance of a particle, which is related to the adjoint- or omega-flux,
+several centimeters before interacting.
+% cm? I think more than that depending on the xsec... (take air as an example and calculate mean distance to collision...)
+ As a result, the
+importance of a particle, which is related to the adjoint or $\Omega$-flux,
 may vary several orders of magnitude over a mean free
-path of travel distance. At a collision, the particle then requires
+path of travel distance. 
+% b/c 1/r^2 is the dominant affect? 
+% please use a real cross section here and show an actual example. I'd suggest air to make your point. 
+At a collision, the particle then requires
 several orders of
 magnitude of sampling events.
+% what? I don't understand what this means. 
 
-The $\Omega$-method's weakness to ``thin'' materials was confirmed by
+The $\Omega$-methods' weakness to ``thin'' materials was confirmed by
 running the steel beam problem with air and concrete in the geometric location
 of the steel beam. In
-the ``thin'' material air version, CADIS-$\Omega$ performed poorer than CADIS.
+the ``thin'' material air version, CADIS-$\Omega$ performed more poorly than CADIS.
 This was a strong contrast to the same geometric configuration with a steel
 beam, where CADIS-$\Omega$ outperformed CADIS.
 The success of CADIS-$\Omega$ in this problem also showed that
 the incorporation of the $\Omega$-flux into a problem with materials with
-very different moderating properties but both with high probabilities of
+very different moderating properties, though still with high probabilities of
 interaction, improves the performance of the $\Omega$-methods beyond CADIS or
-the nonbiased analog.
+analog MC.
 
 Due to CADIS-$\Omega$'s superior performance to CADIS
 in the problem with a steel beam in concrete, this is the problem that will be
 used to characterize CADIS-$\Omega$'s sensitivity to deterministic
 parameter choice.
 In this section, the effect of deterministic solver choices on the
-performance of the $\Omega$ methods will be investigated. In particular, we are
-interested in how parameters that influence the angular flux will affect the
-performance of the $\Omega$-methods. By using the same problem
+performance of the $\Omega$-methods will be investigated. In particular, we are
+interested in how parameters that influence the angular flux will affect 
+performance. By using the same problem
 with differing solver options, the effect of solver options can be isolated from
 the material and geometric effects. By doing so, we seek to determine how
 resilient the $\Omega$-methods may be to using low-fidelity solver options, how
@@ -56,6 +62,7 @@ different the sensitivity of the $\Omega$-methods are to solution quality when
 compared to CADIS, and how varying angular parameters may speed up or slow down
 the time to a desired solution. By quantifying these effects, we can determine
 the best parameter selection for the $\Omega$-methods for this type of problem.
+% and more than anything, we want to know if ray affects are in the VR parameters!
 
 \subsection{Parametric Study Description}
 \label{subsec:parstudy}
