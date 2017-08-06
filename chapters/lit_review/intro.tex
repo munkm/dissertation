@@ -2,30 +2,33 @@ The following literature review aims to contextualize the work described in this
 dissertation within the realm of hybrid methods for deep-penetration
 neutron transport. In doing
 so, the pertinent theoretical information that is relevant to this
-topic will be described.
-This will be supplemented by a discussion of the various efforts to implement
-these methods for applied probelms, and the degree to which those efforts
+topic is described.
+This description is supplemented by a
+discussion of the various efforts to implement
+these methods for applied problems, and the degree to which those efforts
 succeeded.
 First, a brief overview of variance reduction for Monte Carlo radiation transport
-will be described in Section \ref{sec:MCvar}.
-Then, Section \ref{subsec:AutomatedMCVR} will expand on the
+is described in Section \ref{sec:MCvar}.
+Then, Section \ref{subsec:AutomatedMCVR} expands on the
 various efforts to automate variance reduction techniques in Monte Carlo.
 Section \ref{sec:Importance} follows with an introduction of the concept of
-importance and how that relates to variance reduction. This Section will also
-focus specifically on how the adjoint solution of the neutron transport equation
+importance and how that relates to variance reduction. This section also
+focuses specifically on how the adjoint solution of the neutron transport equation
 relates to importance.
-From this point, the chapter will transition
+
+From this point, the chapter transitions
 from theory into existing implementations
 of variance reduction techniques used in modern software in the nuclear
-engineering community. This will begin in \ref{sec:CADIS} with a description of
+engineering community. Beginning in Section \ref{sec:CADIS}, a description of
 the consistent, adjoint-driven importance sampling method, or CADIS, which has
-been optimized for variance reduction of local solutions. Next, Section
-\ref{sec:GlobalVR} will discuss the methods implemented to reduce the variance
-for global solutions. This discussion will include
+been optimized for variance reduction of local solutions is presented.
+Next, Section
+\ref{sec:GlobalVR} discusses the methods implemented to reduce the variance
+for global solutions. This discussion includes a description of
 the forward-weighted CADIS (FW-CADIS) method.
-The following section, \ref{sec:AngleVR}, details the efforts to incorporate
+The last section, \ref{sec:AngleVR}, details the efforts to incorporate
 angular information into variance reduction methods for Monte Carlo.
-Sections \ref{sec:CADIS}-\ref{sec:AngleVR} will each be
-concluded with with a description of the
+Sections \ref{sec:CADIS}-\ref{sec:AngleVR} are each
+concluded with a description of the
 various software in which these methods have been implemented and the degree to
-which they improved the variance reduction for their applications.
+which they improved the variance reduction for their target applications.
