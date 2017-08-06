@@ -1,14 +1,15 @@
 \section{Theory: Angle-Informed Importance Maps for CADIS and FW-CADIS}
 \label{sec:methodtheory}
 
-Methods exist that have been developed to generate
+There exist methods to generate
 variance reduction parameters
 for deep penetration radiation transport problems with strong anisotropy in the
 flux. These methods have shown to have varying success, and may not be fully
 automated. The solution proposed in this dissertation is a formulation that we
-have named the $\Omega$-CADIS-methods. The foundational research
-on which the $\Omega$-CADIS-methods are built will be briefly described to begin this
-section. That discussion will serve as a primer for the subsequent section, which
+have named the $\Omega$-CADIS-methods. This section will commence with a brief
+discussion of the foundational research
+on which the $\Omega$-CADIS-methods are built.
+That discussion serves as a primer for the subsequent section, which
 is an introduction to the $\Omega$-CADIS-methods and a discussion on how they differ
 from their predecessors.
 
@@ -25,7 +26,7 @@ respectively. However, CADIS and FW-CADIS have only been implemented
 to perform variance reduction in
 space and energy, not angle. As a result, solutions for problems with
 strong anisotropy in the flux are not always optimized with these methods,
-resulting in slow convergence times and low Figure of Merit (FOM) values.
+resulting in slow convergence times and low FOM values.
 Problems with strong anisotropies in the flux require more than just
 space- and energy- variance reduction techniques.
 A number of angle-informed variance reduction methods have been
@@ -65,7 +66,7 @@ contributon flux, the direction of particle flow will be incorporated into the
 importance map and, consequently, the
 variance reduction parameters. By using this variant of the adjoint scalar flux,
 the method, like traditional CADIS, will show increasing importance as the
-particles near the adjoint source. However, because this variant of the adjoint
+particles travel near the adjoint source. However, because this variant of the adjoint
 flux incorporates directionality of the particle flow, not all regions near the
 adjoint source are equally important. In this way, the adjusted flux
 incorporates features from both the adjoint- and contributon- fluxes.
@@ -97,14 +98,13 @@ software handling the transport and flux-generation requires modification.
 \subsubsection{CADIS-$\Omega$}
 \label{sec:cadomega}
 
-As with CADIS, CADIS-$\Omega$ will consistently bias the problem's source and
-particle weights according to their importance. However, CADIS-$\Omega$ will
-use the
+As with CADIS, CADIS-$\Omega$ consistently biases a problem's source and
+particle weights according to their importance. However, CADIS-$\Omega$
+uses the
 $\Omega$-adjoint scalar flux rather than the standard adjoint scalar flux
 to generate the biased source distribution, weight windows,
 and the particle birth weights. Furthermore, because $\phi_{\Omega}^{\dagger}$
-is used to calculate the particle birth weights, the weight window target
-values, and the biased source distribution for CADIS-$\Omega$,
+is used to calculate these values in CADIS-$\Omega$,
 the consistent-biasing hallmark for
 which CADIS is known is maintained.
 The adjusted
@@ -158,7 +158,7 @@ portion of the calculation will remain unchanged from FW-CADIS.
 %
 \begin{subequations}
 The generalized form for the adjoint source definition is given by the fraction
-of the response in a region of phase space, P, over the total response in the
+of the response in a region of phase space, $P$, over the total response in the
 problem, or
 \begin{equation*}
   { q^{\dagger}_{\Omega}} (P) = { q^{\dagger}} (P)=\frac{\sigma_d(P)}{R} .
@@ -179,7 +179,7 @@ dE $ is
   =\frac { 1 }{ \int { \phi (\vec { r } ,E) } dE } .
 \end{equation*}
 %
-The adjoint source for the energy- and spatially- dependent flux
+The adjoint source for the energy- and spatially-dependent flux
 $\phi(\vec{r},E)$ is
 \begin{equation*}
   { q^{\dagger}_{\Omega} }(\vec { r } ,E) = { q^{\dagger} }(\vec { r } ,E)=\frac { 1 }{\phi (\vec { r } ,E) } .
