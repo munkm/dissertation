@@ -68,67 +68,68 @@ the best parameter selection for the $\Omega$-methods for this type of problem.
 \label{subsec:parstudy}
 
 The angle sensitivity parametric study will cover the subset of computational parameters
-that are most likely to influence the $\Omega$ method's solution. Because the
-$\Omega$-flux is calculated from an angular integration of the forward and adjoint
+that are most likely to influence the $\Omega$-methods' solution. Because the
+$\Omega$-flux is calculated from an angular integration of the forward and adjoint angular
 flux, calculation parameters that are most likely to influence the angular flux
-solution are the variables that will be perturbed.
-The two parameters that will be studied
-are the quadrature order and the P$_N$ order.
+solution are quadrature order and the P$_N$ order, so these are studied here. 
+% please be careful throughout about specifying angular vs. scalar flux!
 
-The quadrature used in a deterministic solver is used do discretize the
+The quadrature used in a deterministic solver is used to discretize the
 problem in angle. Quadrature options are split into two separate selections: the
-quadrature set or type, and the quadrature order. Because the $\Omega$-methods
-require rotational symmetry, only quadrature sets that have rotational
-symmetry (generally these are triangular quadrature sets)
-can be used with the $\Omega$-methods. In ADVANTG/Denovo, the triangular
+quadrature set or type, and the quadrature order. Because Denovo is currently set up to use
+quadratures that are rotationally symmetric, 
+% they do? why????????
+only quadrature sets that have rotational
+symmetry are used. In ADVANTG/Denovo, the available
 quadrature sets are: linear-discontinuous finite element, level-symmetric, and
 quadruple range. As discussed previously, quadruple range is selected as the
 ADVANTG default because it has good properties and guarantees positivity in the
-flux. Different quadrature sets have separate
-properties and are a realm of study unto their own. Thus, we will vary only
+flux. 
+% what? I am not sure that's true. Step characteristic as a spatial method does, but I'm pretty sure QR doesn't do that. 
+Different quadrature sets are a realm of study unto their own. Thus, we will vary only
 quadrature order and not quadrature type in this sensitivity study.
 
 Quadrature orders specify
-how fine of a resolution the quadrature set will be. As quadrature order
+how finely resolved the quadrature is. As quadrature order
 increases, the angular discretization becomes finer, and the
-size of the angular flux matrices increases. The $\Omega$ methods use angular
+size of the angular flux matrices increases. The $\Omega$-methods use angular
 flux values that are written to a file after a Denovo transport solve, which are
 then read into memory to compute the $\Omega$-flux. We expect to
-observe much slower deterministic recorded times in T$_{det}$--and, by
-extension, T$_{hybrid}$--for high quadrature orders
-because of the I/O demand to read and write the angular flux values. This I/O
-demand will not be as extreme for standard CADIS, as the angular flux values are
-not written in that case.
+observe much slower deterministic times  for higher quadrature orders
+because of the I/O demand. This I/O
+demand does not exist for standard CADIS, as the angular flux values are
+not written.
 Recall that the ADVANTG
 default quadrature order is 10. The quadrature orders used for the sensitivity
-study aimed to choose orders surrounding this value. This resulted in quadrature
-orders 5, 7, 10, 12, 15, 17, and 20 being chosen for variations in this
-parameter.
+study are 5, 7, 10, 12, 15, 17, and 20.
 
 The P$_N$ order determines the fidelity of the scattering expansion. The
-availability of P$_N$ orders is dependent on the cross section dataset that is
-being used. For the
+availability of P$_N$ orders is dependent on the cross section dataset being used. For the
 27G19N cross section library, the P$_N$ order extends to 5. As a result,
-P$_N$ orders of 1, 3, and 5 are chosen for variations in this parameter.
+P$_N$ orders of 1, 3, and 5 are chosen.
 
 While the P$_N$ order
 does affect angular information in the problem, it will not change the size of
 the angular flux matrices. As a result, deterministic runtimes between
 differing P$_N$ orders
-may vary, but not as significantly as they will in differing quadrature orders
-due to the lack of change in I/O requirements as P$_N$ order changes.
+may vary, but not as significantly as they will for differing quadrature orders
+because I/O requirements do not change with P$_N$ order.
 
 Other deterministic parameters may influence the variance reduction parameters
-calculated by the $\Omega$ methods.
-The spatial discretization, while not a primary factor influencing
-the angular flux, still may affect the $\Omega$-methods' performance.
+calculated by the $\Omega$-methods.
+The spatial discretization, while not the primary factor of interest here as it is unlikely to impact ray effects, 
+% what you had written is incorrect. We're looking at the impact of ray effects.
+may still affect the $\Omega$-methods' performance.
+However, it is expected that spatial discretization will have an impact on $\Omega$-CADIS that is similar to CADIS,
+and that problem has been studied elsewhere.
+% lmk if you need a citation.
+
 A finer energy group structure may also influence the $\Omega$-method solution.
 Finer energy groups will more effectively reflect resonance regions in
 scattering and absorption. Scattering effects in certain energy regions will
-have angular dependence and, thus, may have a stronger effect on the angular flux
-than a coarser energy discretization. Because these particular solution effects
-do not directly influence the angular flux and angular effects will be difficult
-to isolate, they will not be included
+have angular dependence and, thus, energy discretization could impact the $\Omega$-methods' performance. 
+However, energy also does
+not directly influence angular behavior or ray affects. Thus, neither space nor energy will be included
 in the angular sensitivity parametric study.
 
 % Add to conclusion future work.
@@ -136,11 +137,13 @@ in the angular sensitivity parametric study.
 %energy group structure, the spatial discretization, and the quadrature type
 %certainly could be an area of future work.
 
-Several factors in the deterministic calculation should not have a strong effect
-on the angular flux distribution. These include the spatial solver, the
-convergence criteria for the solvers, and the within group solver types.
-Because these factors should not influence the angular flux any more than any
-other part of the solution, they will also not be included in this parametric study.
+%Several factors in the deterministic calculation should not have a strong effect
+%on the angular flux distribution. These include the spatial solver, the
+%convergence criteria for the solvers, and the within group solver types.
+%Because these factors should not influence the angular flux any more than any
+%other part of the solution, they will also not be included in this parametric study.
+% 
+% seems unnecessary. 
 
 \subsection{Quadrature Order}
 \label{subsec:quadorder}
