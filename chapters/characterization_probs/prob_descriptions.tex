@@ -1,22 +1,22 @@
 \section{Description of the Characterization Problems}
 \label{sec:AngleProbDesc}
 
-In characterizing the $\Omega$ methods, we aim to determine in which problems
-the $\Omega$-methods perform well, and then quantify that success.
+In characterizing the $\Omega$-methods, we aim to determine in which problems
+they perform well, and then quantify that success.
 First, it must be determined how effective the
 $\Omega$-methods are in reducing the variance for a tally result in Monte Carlo.
 This will be done by assessing and comparing the FOMs between different VR methods.
-Also, the method should be investigated on a diverse set of anisotropic
+Also, the methods should be investigated on a diverse set of anisotropic
 problems. By constructing problems that have
-different mechanisms by which the flux may be or become
-anisotropic, potential strengths or weaknesses of the method can be identified.
-Another desirable metric would be to quantify the method's success given the
+different physical mechanisms causing
+anisotropy in the flux, potential strengths or weaknesses of the methods can be identified.
+
+Another desirable metric is to quantify the methods' success given the
 degree of anisotropy in the problem. Recall that different
 means of quantifying the flux
 anisotropy were presented in Section \ref{sec:anisotropy_quant}. With a diverse
 selection of characterization problems, we will obtain variation in the flux
-anisotropy in each problem as well as the resultant FOMs. This will provide us
-with a path forward with which to use the $\Omega$-methods in a deeper
+anisotropy in each problem as well as the resultant FOMs. This will provide a path forward with which to use the $\Omega$-methods in a deeper
 angular-sensitivity study, which will be discussed in Section
 \ref{sec:AngleResults}.
 
@@ -27,37 +27,35 @@ There exists a rich history of using hybrid methods in problems with strong
 angular dependence, as summarized in Chapter \ref{ch:lit_review}. Angular
 dependence may appear in a problem through several means--both physical and
 computational.
-Mosher et al. noted in their threat-detection work with ADVANTG
+Mosher et al.~\cite{mosher_automated_2009} noted in their threat-detection work with ADVANTG
 that problems with strongly directional sources and
 problems with ``thin'' materials like air were difficult for ADVANTG to effectively
-reduce the variance. The attributed this to strongly anisotropic behavior of the
-importance function that were not reflected well by the scalar flux
-\cite{mosher_automated_2009}. Sweezy also found that weight windows obtained
+reduce the variance. They attributed this to strongly anisotropic behavior of the
+importance function that were not reflected well by the scalar flux. Sweezy~\cite{sweezy_automated_2005} also found that weight windows obtained
 from a hybrid S$_N$ calculation were not good for a dogleg void problem,
-where ray effects from the $S_N$ calculation generated poorer weight windows
-than a method without ray effects \cite{sweezy_automated_2005}. Recall from
-Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary}, that ray
+where ray effects from the S$_N$ calculation generated poorer weight windows
+than a method without ray effects. \footnote{Recall from
+Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary} that ray
 effects are a nonphysical effect seen in the flux solution that arise from
 the angular discretization of the problem.
 Ray effects are common in situations where there are strong
-streaming effects or if there exists a strong source emitting particles with
-long mean free paths in the material. Though they did not observe ray effects in
+streaming effects or a strong source is emitting particles with
+long mean free paths in the material.} Though they did not observe ray effects in
 the importance map for the problem, Peplow et
-al. also found that CADIS struggled with thin material streaming in a spherical
-boat test problem \cite{peplow_consistent_2012}.
+al.~\cite{peplow_consistent_2012} also found that CADIS struggled with thin material streaming in a spherical
+boat test problem.
 
 The examples of angle-dependence in problems affecting hybrid methods' success
 illustrate that the flux can have anisotropy resulting from more than one
 mechanism. Based on these examples, we have identified several separate
 processes that affect the flux anisotropy. These processes can be grouped into
 three categories: anisotropy in the flux resulting from a strongly
-directional source; anisotropy resulting from strong differences between
+directional sources; anisotropy resulting from strong differences between
 material properties (this can be due to differences in
-materials spatially and due to changes in interaction probabilities);
+materials spatially or due to changes in interaction probabilities as a function of energy);
 and anisotropy in the flux from algorithmic limitations (ray effects).
-These processes have some parameter
-space that overlap, so this section will continue with a brief discussion about how each
-of these apply to anisotropic problems.
+These processes overlap, so this section will continue with a brief discussion about how each
+mechanism applies to anisotropic problems.
 
 A strongly directional source is one that emits particles in a very small solid
 angle of angle-space. The most extreme example of this would be a
@@ -67,58 +65,69 @@ is source-specific and does not depend on the rest of the
 problem configuration. Characterization problems will have sources of both types
 to ensure parameter space is covered.
 
-% This next paragraph is maybe a little confusing and could use rewording.
-The next subset of anisotropy-inducing processes are those that result form
-strong differences between material properties. As noted, this can be from
-the geometric configuration of the problem, or from variations in the cross
-sections within a geometric location. To illustrate the differences in the way
-the problem can physically induce anisotropy in the flux, several simple thought
-experiments will be presented. Consider first the extreme example of material
-A which has some low absorption probability,
-and material B which is a pure absorber. Only
-particles that travel through material A will eventually reach the tally
-location. This is an example of a type of problem with strong material
-heterogeneity. In constructing a set of characterization problems, creating channels
-through which particles will preferentially travel will induce anisotropy in the
-flux. These types of flow paths are also of interest in shielding application
-problems, and were discussed at length in Section
-\ref{sec:ContributonImportance}. In this type of problem, material A can either
-have a low scattering probability (airlike), or it can be highly scattering. In
-scattering events, neutral particles can either lose very little energy with a high Z
-material, like lead, or they can lose a lot of energy with a low Z material.
-These will be considered separately, because the energy spectrum of the
-particles affects the particle's interaction probability.
-Consider another example of an isotropic
-point source immersed in a pure thin material. Because particles have a very low
+It is also possible for isotropic sources to appear anisotropic from great distances. 
+Consider an isotropic
+point source in a physically large streaming material. 
+% Idk what "immersed in a pure thin material" means
+Because particles have a very low
 probability of interaction in the material, they will travel almost uniformly
-outwards away from the point source. At some distance from the point source, the
+outward away from the point source. At some distance from the point source, the
 majority of the
-particles in a cell will be traveling in the same direction. This is an example
-of a problem with streaming paths.
-To summarize, we have identified several
-sub-distinctions of this type of effect: regions with streaming where particles
+particles in a cell will be traveling in the same direction, appearing anisotropic at that location.
+% this doesnt seem to fall into the two materials category, but closer to the source category, so I moved it into the source
+
+% This next paragraph is maybe a little confusing and could use rewording.
+The next subset of anisotropy-inducing processes are those that result from
+strong differences between interaction probabilities. As noted, this can be from
+the geometric configuration of the problem, or from variations in the cross
+sections in energy within a geometric location. To illustrate these effects, several simple thought
+experiments will be presented. 
+
+Consider first the example of material
+A, which has low scattering and absorption probabilities across energy (a streaming material like air),
+and material B, which is a pure absorber. 
+Particles that travel through material A will have a much higher likelihood of reaching the tally
+location than those that travel through material B. 
+Thus, material A provides a preferential streaming path that could cause flux anisotropy. Some characterization problems, therefore, contain streaming materials in combination with materials with higher moderating and/or absorbing properties. Particles will preferentially travel through the streaming material and induce anisotropy. 
+
+% I think I've made this clearer and a little better separated? I think this is sort of the distinction you mean? I'm not completely clear though. 
+A second example is when material A has low absorption but high scattering potential. In
+scattering events, neutral particles can lose very little energy, as often happens with a high Z
+material like lead, or they can lose a lot of energy with a low Z material like hydrogen.
+When neutrons lose little energy, they tend to forward-scatter and stream through the problem. 
+Larger energy transfers tend to be more isotropic and thus diffuse particles.
+Thus, streaming can occur within a material based on the details of the scattering cross section.
+Problems emphasizing the first and second examples will be considered separately, and both types of flow paths are of interest in shielding application
+problems, and were discussed at length in Section
+\ref{sec:ContributonImportance}. 
+
+We have identified several
+ physical configurations of interest: regions with streaming where particles
 far from the source are primarily monodirectional, regions
 that are highly scattering where particles have a preferential flowpath through
 one material and are downscattered in energy, and regions with strong
 material heterogeneity where particles have preferential flowpaths but are not
 necessarily downscattered in energy. It should be noted that while streaming and
 scattering problems will almost always be subsets of problems with material
-homogeneity, it is possible to have a highly scattering or a streaming problem
+inhomogeneity, it is possible to have a highly scattering or a streaming problem
 without material heterogeneity.
 
+% What you had before wasn't really correct. 
 The last factor that can influence anisotropy in the flux solution is ray
 effects. While ray effects are a result of anisotropy in the flux solution, this
 is a nonphysical effect and can actually affect variance reduction
-performance. In the case of ray effects, we aim to see if the
-$\Omega$-methods are more robust in avoiding them in generating VR parameters.
-Because ray effects are primarily seen in large regions with low interaction
-probabilities, some of the characterization problems will need to
-incorporate these regions into their geometries.
+performance. Because the $\Omega$-methods use the angular flux as weighting
+functions, it is possible that any ray effects could be included in the scalar flux 
+used for creating VR parameters.
+We aim to see if this does in fact happen, and if so if there is an impact on performance. 
 
-In this subsection, four primary physical mechanisms by which the flux may
-be anisotropic were identified. These are streaming paths, problems with high
+In this subsection, four mechanisms by which the flux may
+become anisotropic were identified. These are streaming paths, problems with high
 scattering effects, problems with high material heterogeneity (specifically with
 materials with strong differences in scattering and absorption probabilities),
+% I don't understand the difference between what you're calling streaming paths
+% and problems with high material hetergeneity. I think it is just two differen version
+% of material hetergeneity causing streaming -- and in reality they're both low absoprtion...one just has more scattering and one doesn't. 
 and problems with monodirectional sources. As described in the preceding
 paragraphs, a few of these mechanisms may overlap
 with one another. They comprise a large subset of flux
@@ -129,23 +138,23 @@ problems can then be used to characterize the $\Omega$-methods.
 \subsection{Problem Specifications}
 \label{subsec:ProbSpecs}
 
-With the anisotropy-inducing physics described in Section
-\ref{subsec:AngleProbID}, a set of characterization problems that have
-different combinations of each of these effects can be conceptualized. With
-different anisotropy-inducing physics in the system, these problems will provide
-an overview of how the $\Omega$-methods perform in an assortment of anisotropic
-problems. The primary anisotropy-inducing features identified are: streaming
-paths, material heterogeneity, materials with highly differing scattering
-probabilities, and monodirectional sources. As previously described, these fall
+% In general, add dimensions for everything so that we know how big these problems are, where the sources are located, and where the detectors are located. 
+
+A set of characterization problems that have
+different combinations of anisotropy-causing features have been developed.  These fall
 into two broad categories: anisotropy caused by the problem materials and
-geometry, and anisotropy caused by the source definition. In the next few
+geometry, and anisotropy caused by the source definition. 
+These problems will provide
+an overview of how the $\Omega$-methods perform in an assortment of anisotropic
+problems. 
+In the next few
 paragraphs, each problem will be described and will be accompanied by
 a justification for which
 anisotropy-inducing physics is in each problem. A summary of which physics are
 in each problem is provided in Table \ref{tab:probphysics}.
 
 \subsubsection*{Experimental Beamline}
-
+% Skipping this subsubsection b/c I think you're deleting it.
 \begin{figure}[h!]
   \centering
   \includegraphics[height=8cm]{./chapters/characterization_probs/figures/geometries/beam.png}
@@ -170,23 +179,23 @@ that has strong streaming effects but does not have material heterogeneity.
 
 \subsubsection*{Labyrinths}
 
-The labyrinth problems have isotropic point sources on the left hand side of the
-problem emitting a watt spectrum of
-neutrons approximating the energy spectrum emitted by that of $^{235}$U fission.
-On the right hand side of the problem there is a NaI detector recording the flux.
-They are both composed of a concrete maze with an air channel through the maze, and
-then open air channels at either end of the channels. The first variant of the
+Two labyrinth problems are used, each has an isotropic point source emitting a $^{235}$U fission watt spectrum on the left hand side of the
+problem.
+On the right hand side of the problem, there is a NaI detector.
+The labyrinths are both composed of a concrete maze with an air channel through the maze, with open air channels at either end. The first variant of the
 labyrinth has a single turn, as illustrated in Figure \ref{fig:maze2geom}, and
 the second labyrinth has multiple turns, as illustrated in Figure
 \ref{fig:maze1geom}. These problems are both
 likely to have ray effects in the air region near the forward source. However,
-because far more scattering events will be required for a particle to exit the
-channel in the multi-turn maze, ray effects will likely be less prominent in the
-air region near the detector of that variant problem than it is in the single
-turn maze. Both problems have strong
-differences in interaction probabilities between the air and the concrete,
-thus they will have material heterogeneity. Further, because the concrete is
-composed of several lighter-mass elements, these will also be highly scattering.
+because many scattering events will be required for a particle to exit the
+channels, ray effects will likely be less prominent in the
+air region near the detectors. 
+% I can't imagine still have ray effects in either case
+These  problems have strong
+differences in interaction probabilities between the air and the concrete. 
+%Further, because the concrete is
+%composed of several lighter-mass elements, these will also be highly scattering.
+% I still don't understand how the scattering causes anisotropy?
 
 \begin{figure}[h!]
   \centering
@@ -211,64 +220,60 @@ composed of several lighter-mass elements, these will also be highly scattering.
   \label{fig:prob1geom}
 \end{figure}
 
-Figure \ref{fig:prob1geom} is a variant problem with a steel beam embedded in
-concrete. A NaI detector is located on the right hand side of the problem to
-record the response in CADIS problems. The source is a 80x80cm sheet pointed in
+Figure \ref{fig:prob1geom} shows the geometry for a steel beam embedded in
+concrete with a NaI detector located on the right hand side of the problem. The source is monodirectional, a 80x80cm sheet pointed 
 towards the steel structure in the $+x$ direction emitting 10MeV neutrons.
-Because the particles have preferential flow through the steel but do do not
-have long streaming paths, this problem has material heterogeneity and will be
-highly scattering, but it will not have streaming paths in the shielding region.
-Further, because the source is emitted from a thin plate in $+x$, it is
-monodirectional. This problem may have some ray effects occurring from
+The particles have a preferential flow path through the steel but do not
+have streaming paths as long as the problems with air. 
+This problem is likely to exhibit strongly anisotropic flux because it has both material heterogeneity and a monodirectional source. This problem may have some ray effects occurring from
 backscattering off of the steel and concrete in the left side air region, and it
-may also have some exiting the beam on the right hand side. However, because
-significantly more scattering will happen in the concrete, the ray effects on
-the right hand side will be less pronounced than in the low-density maze exits.
+may also have some exiting the beam on the right hand side. This problem is unlikely to have ray effects because it uses a plane source. 
 
 \subsubsection*{U-shaped corridor}
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm]{./chapters/characterization_probs/figures/geometries/prob-2.png}
-  \caption[U-shaped corridor in concrete]{U-shaped corridor in concrete.}
+  \caption[U-shaped corridor in concrete]{U-shaped corridor in concrete; left is a mid-height z plane and the right is a mid-problem x plane.}
   \label{fig:prob2geom}
 \end{figure}
+% what is the thing in the middle? 
+%Did I write those captions correctly? 
 
-The u-shaped corridor illustrated in Figure \ref{fig:prob2geom} is somewhat
-similar to the maze variants from Figs. \ref{fig:maze2geom} and
-\ref{fig:maze1geom}. On the left-hand side of the corridor there is a point source
-emitting a watt specturum of $^{235}$U neutrons. The right leg of the corridor
-has a NaI detector. Without the large air voids in the labyrinth variants, the
+The u-shaped corridor of air inside of concrete illustrated in Figure \ref{fig:prob2geom} is 
+similar to the labyrinth problems. On the left-hand side of the corridor there is a point source
+emitting a watt spectrum of $^{235}$U neutrons. The right leg of the corridor
+has a NaI detector. Without the large air voids present in the ends of the labyrinth problems, the
 U-shaped corridor will have
 less-prominent ray effects. The heterogeneity between
 the air and concrete will preferentially transport particles through the air,
-and particles interacting with the concrete will downscatter in energy. This
+and particles interacting with the concrete will downscatter in energy. 
 
 \subsubsection*{Concrete shielding with rebar}
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=15cm]{./chapters/characterization_probs/figures/geometries/prob-4.png}
-  \caption[Concrete shielding with rebar]{Concrete shielding with rebar.}
+  \caption[Concrete shielding with rebar]{Concrete shielding with rebar; right is a mid-height z slice and the right is a mid-geometry x-slice}
   \label{fig:prob4geom}
 \end{figure}
+% again, include actual locations of where these images are
 
-The shielding material illustrated in Figure \ref{fig:prob4geom} is built off of
-the steel structural beam problem in Figure \ref{fig:prob1geom}. However, this is a more
-realistic illustration of rebar in concrete. In this problem, a NaI detector is
+The shielding material illustrated in Figure \ref{fig:prob4geom} simulates rebar in concrete. In this problem, a NaI detector is
 used to measure the response on the right hand side of the problem in yellow.
-The source is both space- and energy-dependent, emitting a watts spectrum of
-neutrons characteristic of 235U fission, and is distributed in a 100x160cm plate
+% the beam problem is a real problem, just a different one :)
+The source is both space- and energy-dependent, emitting a $^{235}$U  fission watt spectrum, and distributed in a 100x160cm plate
 on the left hand side of the problem. The source is monodirectional in $+x$.
 The two images provided show
 different xy-plane cutaways of the shielding, with steel rebar running through
-the concrete in different directions. This problem should have angular
-dependence, but preferential flowpaths through the concrete are not directed
-towards the detector location on the other side of the shielding in some of the
-rebar. This problem has material heterogeneity both in the concrete and between
-the concrete and air. This problem is highly scattering from the concrete, and
-is unlikely to have ray effects without a strong single preferential flowpath
-through the shield.
+% this explanation seems wrong. Why are the images oriented differently? 
+% AGain, more details about the geometry.
+the concrete in different directions. This problem may have angular
+anisotropy because of the flowpaths through the horizontal steel bars that connect
+the source side to the detector side. 
+% they're not? It looks like they are...
+ This problem 
+is unlikely to have ray effects because of the plane source.
 
 \subsubsection*{Nuclear medicine therapy room}
 
@@ -284,18 +289,14 @@ therapy room illustrated in Figure \ref{fig:therapygeom}. This room has concrete
 walls, a water-based phantom that is being irradiated by a monodirectional
 source in the room, and a hallway where a therapy technician might walk. In a
 CADIS-run of this problem, we seek to calculate the response in the
-technician in the hallway from particles that are not absorbed by the patient in
-the room. Because this problem is primarily air with concrete
-borders, it will have strong streaming effects in the air. Particles that do
-make it to the technician will be produced by emission from the patient in the
-room, by scattering off of the problem air, or by scattering off of the problem
-walls. Because of the high fraction of air in this problem, we also anticipate
+technician in the hallway.  Particles that
+reach the technician may transport through the concrete divider wall, but it is more likely they will
+scatter off of the room walls and make it around the turn -- which adds the potential for anisotropy to play a larger role. Because of the high fraction of air in this problem, we also anticipate
 ray effects to occur. While there will be scattering in this problem, it will
 not be as strong of an effect as other characterization problems.
 
-Now that the broad subset of characterization problems have been described,
-the physics that each contains is summarized in Table \ref{tab:probphysics}.
-Upon glancing at the table, one may see that it can be difficult to separate
+The physics that of each characterization problem is summarized in Table \ref{tab:probphysics}.
+Here, one may see that it can be difficult to separate
 out one physical mechanism from another when constructing problems. This is
 especially true in generating a problem that has ray effects without streaming
 paths, and in constructing a highly scattering problem that has preferential
@@ -308,8 +309,8 @@ area that may be improved upon in future work.
   \input{./chapters/characterization_probs/figures/problem_physics}
   \caption[Anisotropy-inducing physics of each of the characterization problems.]
   {Anisotropy-inducing physics of each of the characterization problems.
-  Each identified anisotropy-inducing physical metric is used in different
-  combinations for the characterization problems. This will help to aid in
+  Each identified anisotropy-inducing physical mechanism is used in different
+  combinations for the characterization problems. This will aid in
   extrapolating to which real problems the $\Omega$-methods may be applied.}
   \label{tab:probphysics}
 \end{table}
@@ -318,10 +319,13 @@ area that may be improved upon in future work.
 % monodirectional, and some are monospatial(?) (point sources). A table would be
 % a good way to summarize this information.
 
-\subsection{Introduction the Presented Data}
+% I don't think material heterogeneity and streaming paths are different, so you could remove that column to add source energy and write either the energy or watt-fission.
+%  Instead of an x in monodir, you could write source type and include one of mono-dir or point?
+
+\subsection{Interpreting the Data}
 \label{subsec:resultsintro}
 
-At this point several characterization problems have been identified for their
+Several characterization problems have been identified for their
 properties in inducing anisotropy in the particle flux.
 Prior to going through the results for each of the characterization problems,
 this section will show how the data for each problem will be presented and will
@@ -334,23 +338,25 @@ relative error.
 
 In Section \ref{sec:FOMvariants} several equation variants of
 the Figure of Merit were
-presented as quantifications of method success. The FOMS for each
+presented as quantification of method success. The FOMs for each
 characterization problem will be presented in tabular form, similar to Table
 \ref{tab:fom_defaults}. As discussed in that section, the FOM is dependent on
 the relative error and the time to obtain that relative error. For the hybrid
-cases, six different FOMs will be presented: three FOMs based on the tally average
-relative error, the tally maximum relative error, and the tally minimum relative
-error, and two FOMs based on the Monte Carlo runtime and the hybrid runtime. The
+cases, two sets of three different FOMs will be presented. In each set, tally relative error will be reported three ways: minimum, maximum, and average, illustrating how the performance varies on average and at the extremes.   
+The sets are based on runtime: one set uses only the Monte Carlo runtime and the other set uses deterministic + processing + MC runtime. 
+The
 unbiased analog Monte Carlo does not have a deterministic runtime, so only the
 three FOM variants based on the relative error will be presented for those runs.
-When analyzing the results in the FOM table for each characterization problem,
-consider also that the tally average relative error is calculated from all
+Table \ref{tab:fom_defaults} summarizes the notation and which
+equations were used to calculate each FOM; each equation number is noted
+in brackets.
+
+When analyzing the FOM results for each characterization problem,
+we will consider that the tally average relative error is calculated from all
 particles contributing to all tally bins in the problem. Thus the FOM reported
 for the tally average relative error may be outside of the bounds of the tally
 minimum or the tally maximum relative error.
-Table \ref{tab:fom_defaults} summarizes which
-equations were used to calculate each FOM; each equation number is noted
-in brackets.
+% I am not sure that I understand this. How is the average outside the min and max? That doesn't make sense. 
 
 \begin{table}[h!]
   \centering
@@ -362,26 +368,34 @@ in brackets.
   \label{tab:fom_defaults}
 \end{table}
 
-Tables calculating the FOMs summarized in Table \ref{tab:fom_defaults} may also
-not have evaluated FOMS in some locations. These will be noted with a dashed
-line, or ``--''.  These values will generally be in the minimum relative error
+Not all problems will have every FOM, which will be noted with ``--''.  These missing values will generally be in the minimum relative error
 section of the FOM tables, and they represent a zero valued relative error. This
 does not mean that infinite particles have been sampled (so the relative error
 is infinitely small), but rather that no particles have been binned for that
 energy bin and result in a zero-valued relative error.
 This technically results in an infinite FOM, but in reality
-represents a bin that will never converge. Because this value will hold no
-meaning in our quantification of the $\Omega$-method's success, the infinite
-valued FOM will not included in the table.
+represents a bin that has not been sampled at all and thus 
+a problem that did not perform well.
 
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
+  \caption[Table of differing times used to measure $\Omega$ performance.]{
+    Table of differing times used to measure $\Omega$ performance. These times
+    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
+  \label{tab:time_defaults}
+\end{table}
+% add more lines. This table is very very hard to read. I'd remove the analog time column to give yourself more room and just specify it in the text.
 
-Table \ref{tab:time_defaults} further reports the times used to calculate the
-FOM values in \ref{tab:fom_defaults}. This table is split into three
+Table \ref{tab:time_defaults} details the times used to calculate the
+FOM values in Table \ref{tab:fom_defaults}. This table is split into three
 vertical regions: the MCNP time spent doing Monte Carlo transport (T$_{MC}$),
 the deterministic time spent in ADVANTG/Denovo (T$_{det}$),
 and the walltime (T$_{hybrid}$), which is the
-summation of the two. The deterministic time section of the table contains
-further segmentations of timing. This is because processes in ADVANTG are
+summation of the two. 
+% put a line between each of these regions
+The deterministic time section of the table contains
+further divisions of timing. This is because processes in ADVANTG are
 run using different computational resources. ADVANTG itself is a driver script
 that can launch a paralellized run in Exnihilo/Denovo, but it also postprocesses the
 Denovo fluxes into source biasing and weight window parameters. The processes
@@ -395,24 +409,21 @@ This quantity is summed with
 the runtimes of the other serial tasks to obtain the total deterministic runtime.
 
 Two other times are listed under the deterministic time that may or may not be
-included in T$_{hybrid}$, which are T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ is the
-reported times that are not included in the calculation of T$_{det}$ in either
-CADIS or CADIS-$\Omega$. It is a sum of time results that either are not
+included in T$_{hybrid}$, T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ contains the times that either are not
 important to comparing the methods--like calculating the anisotropy metrics--or
 times that are accounted for by other tasks in T$_{det}$. This prevents overlap
 of times and provides a more realistic comparison between the performance of
 both methods.
-
-The reported $\Omega$ time, T$_{\Omega}$, is the total
+% I understand the anisotropy thing, is the other stuff double counted for some reason? That isn't clear.
+T$_{\Omega}$, is the total
 time spent in the tasks unique to the $\Omega$ methods. This includes reading
-in the angular flux files, performing the computation of Eq.
+in the angular flux files, performing the computation of Eq.\
 \eqref{eq:omega_basic}, and writing the $\Omega$-results to a file.
 The $\Omega$ time,
-though run in Denovo, is still a serial calculation so is separated out from the
-total Denovo time. The $\Omega$ method tasks at this time are not
-parallelized, so the clock time is treated in the same way as the reported
+though run in Denovo, is still a serial calculation so is separated from the
+total Denovo time and treated the same way as the 
 ADVANTG time. Because the majority of the $\Omega$-flux generation
-infrastructure is implemented in Exnihilo rather than ADVANTG, future expansions
+infrastructure is implemented in Denovo rather than ADVANTG, future expansions
 of the method could be parallelized for faster clock times.
 
 Because the adjusted FOM (the FOMs labeled FOM$_{hybrid}$ in Table
@@ -423,81 +434,71 @@ the $\Omega$ methods and standard CADIS and FW-CADIS. For CADIS, T$_{det}$ is
 the sum of the ADVANTG runtime and the wall time of the Denovo transport. For
 CADIS-$\Omega$, this is the sum of the ADVANTG runtime, the wall time of the
 Denovo transport, and the time spent in the $\Omega$-flux calculation. How each
-time is calculated is summarized in Table \ref{tab:time_defaults}.
+time is calculated is summarized in Table \`ref{tab:time_defaults}.
 
 Beyond
 adding the $\Omega$-flux compute time, CADIS-$\Omega$ will generally have much
-longer Denovo runtimes than CADIS. This is a combination of the $\Omega$-methods'
+longer Denovo runtimes than CADIS. This come from a combination of the $\Omega$-methods'
 requirement of both a forward and adjoint calculation (recall that CADIS
 requires only the adjoint calculation), and that the $\Omega$-methods require
 full angular flux solutions to calculate the $\Omega$-flux. While standard CADIS
 has the ability to print the full angular flux solutions as CADIS-$\Omega$, it
 is neither a requirement nor is it standard practice. The I/O demands to both write
-the angular fluxes and then read them back in is a potential bottleneck in the
-method as it is implemented now.
+the angular fluxes and then read them back in is a bottleneck in the
+current implementation and causes a negative performance impact.
 
-\begin{table}[h!]
-  \centering
-  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
-  \caption[Table of differing times used to measure $\Omega$ performance.]{
-    Table of differing times used to measure $\Omega$ performance. These times
-    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
-  \label{tab:time_defaults}
-\end{table}
-
-Each of the problems introduced in Section \ref{subsec:ProbSpecs} has a
+Each problem introduced in Section \ref{subsec:ProbSpecs} has a
 10x10x10 cm detector in which the tally response is calculated. The tallies are
 discretized in energy; the tally result and associated relative error are
 tabulated for each energy bin. Some of this information can be inferred from Table
 \ref{tab:fom_defaults},
 but seeing the distribution of the relative errors for each energy
 bin for each method is a useful way of seeing how effective each method is at
-biasing particles all of the tally bins,
+biasing particles in all of the tally bins
 without time effects. As described in the previous paragraph, CADIS-$\Omega$'s
 deterministic time will be longer than CADIS', so the FOM$_{hybrid}$ may be
 lower for the $\Omega$-methods, even if the relative errors are better.
-Presenting both the relative error distribution and the FOM will provide a clear
+Presenting both the relative error distribution and the FOMs will provide a clear
 picture of the performance of the $\Omega$-methods.
 
 The tally results and relative errors for CADIS,
-CADIS-$\Omega$, and the nonbiased analog Monte Carlo will be
-presented in figures similar to
-\ref{fig:sampleresult} and \ref{fig:sampleerror}.
+CADIS-$\Omega$, and the analog Monte Carlo will be
+plotted for comparison for each problem.
 In the case where the
-relative error of the nonbiased analog Monte Carlo far exceeds the errors
-achieved by CADIS and CADIS-$\Omega$, it will be omitted. The example given in
-Figure \ref{fig:sampleerror} shows a result where this is the case.
+relative error of the analog Monte Carlo far exceeds the errors
+achieved by CADIS and CADIS-$\Omega$, it will be omitted. %The example given in
+%Figure \ref{fig:sampleerror} shows a result where this is the case.
 The hybrid methods
-will be marked with a dashed line; the nonbiased analog Monte Carlo will be a
-solid line.
+will used dashed lines and analog a solid line.
 
-\begin{figure}[ht!]
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
-    \caption{Comparison between methods of the tally result.}
-    \label{fig:sampleresult}
-  \end{subfigure}
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
-    \caption{Comparison between methods of the tally relative error.}
-    \label{fig:sampleerror}
-  \end{subfigure}
-  \caption[Sample results for a characterization problem tally.]{Sample results
-  for a characterization problem tally.}
-\end{figure}
+%\begin{figure}[ht!]
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
+%    \caption{Comparison between methods of the tally result.}
+%    \label{fig:sampleresult}
+%  \end{subfigure}
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
+%    \caption{Comparison between methods of the tally relative error.}
+%    \label{fig:sampleerror}
+%  \end{subfigure}
+%  \caption[Sample results for a characterization problem tally.]{Sample results
+%  for a characterization problem tally.}
+%\end{figure}
+% Do you show these later? I don't think it makes sense to show sample results. Just show results when you show them. 
 
 Equations \eqref{eq:metric_one} through \eqref{eq:metric_six} in
-Section \ref{sec:anisotropy_quant} presented several different ways by which the
-anisotropy of each problem could be quantified. As discussed in that section,
-Each metric will show slightly differing effects. For example, the ratio of the
+Section \ref{sec:anisotropy_quant} presented several ways by which the
+anisotropy of each problem can be quantified. As discussed in that section,
+each metric will show slightly different effects. For example, the ratio of the
 $\Omega$- to adjoint-flux in metric two will differ significantly from the
 angular contributon max to average of metric three. The $\Omega$-flux
 may be larger or smaller than the adjoint scalar flux depending on the
 directionality of the adjoint and forward particles relative to one another. If
-the particles are travelling in opposite directions, this will result in a
+the particles are traveling in opposite directions, this will result in a
 larger omega flux than the adjoint flux. If they stream in the same direction
 (away from the tally detector, for example),
 then the resultant $\Omega$ flux will be smaller than the adjoint. In the case
@@ -507,6 +508,13 @@ never be lower than the average. In a isotropic problem, the majority of the
 cells in the problem will be this ratio, whereas in a strongly anisotropic
 problem this distribution will shift upwards, but will still have the same
 limiting lower value as the isotropic case.
+% is this new information? If not, cut the paragraph or only keep what is new.
+
+% I guess I should have been clearer about setting up the problems. (though perhaps it was hard to understand with just the outline
+% I think the information you provided above about times, etc. is really good. 
+% This stuff doesn't seem to fit. I think you'll have to explain the plots when you get to them. It feels weird to see examples of results that are them presented as results.
+% I'd cut everything down to the line below unless there are key pieces of information that need to be distilled out for interpreting everything. 
+% You can use the text when you explain the plots for the first time. 
 
 \begin{figure}[htb!]
   \centering
@@ -644,6 +652,10 @@ in Figure \ref{fig:sampledistros} rather than \ref{fig:samplestrips}.
   \label{fig:sampleviolinsM2}
 \end{figure}
 
+%---------------------------------------
+
+
+% This stuff seems relevant again to have before the rest of the problems.
 Beyond plotting the anisotropy metrics as a function of energy group, we are
 interested in how the relative error or FOM will respond as a function of each
 metric. However, not all cells in the problem are as important as others to
@@ -654,22 +666,23 @@ flux measures the response importance of a cell. By selectively choosing
 anisotropy metrics from cells that are likely to induce a response, some of the noise
 of less important cells can be cut out.
 
-To consistently cut out the same number of datapoints across all metrics, we
+To consistently cut out the same number of data points across all metrics, we
 have chosen to use a filtering algorithm based on the contributon flux in each
-cell. The first filter is choosing metric values from cells where the
+cell. The first filter chooses metric values from cells where the
 contributon flux is above the problem median contributon flux. This median is
 evaluated separately for each energy group to ensure that the same number of
-cells in each group is plotted. The second filter is choosing metric values from
+cells in each group is plotted. The second filter chooses metric values from
 cells where the contributon flux is above the problem mean contributon flux.
 Again, the mean is computed separately for each energy group such that energy
 groups with higher contributon fluxes do not cut out important flux values from
-a different energy group. However, unlike the median filter a different number
+a different energy group. However, unlike the median filter, a different number
 of cells for each energy group will be filtered. This is dependent on the skew
 between the contributon mean and median value for each energy group.
 Because the filter is evaluated based on the
 contributon flux, it can be applied to each metric consistently, meaning that
 the same number of cells are filtered out between different metrics.
 
+% the below paragraph again seems like it should just be in the results discussion.
 Figure \ref{fig:sampleviolinsM2} shows the effects of cutting out data from
 unimportant cells on the M$_2$ distribution. The first figure in the series,
 \ref{fig:samplefullviolinM2}, is the M$_2$ full distribution. As discussed
@@ -700,7 +713,7 @@ and for the FOM it is
   I_{FOM} = \frac{FOM_{CADIS-\Omega}}{FOM_{CADIS}}\bigg\rvert_{E_g}.
   \label{eq:I-FOM}
 \end{equation}
-These will be henceforth be referred to as the relative error and FOM
+These will be referred to as the relative error and FOM
 improvement factors.
 With this definition of the improvement in the FOM or the relative
 error from CADIS to CADIS-$\Omega$, we now have a comparison between the updated
@@ -708,58 +721,58 @@ and standard methods. By relating this metric to the anisotropy metrics, we can
 see how anisotropy of the problem influences the improvement in the relative
 error or the FOM.
 
-\begin{figure}[htb!]
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_full.pdf}
-    \caption{M$_3$ average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$}
-    \label{fig:samplestatsfullM3}
-  \end{subfigure}
-\end{figure}
-\begin{figure}[htb!]\ContinuedFloat
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_median.pdf}
-    \caption{M$_3$ data selection above the metric median for each energy group,
-      value average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$}
-    \label{fig:samplestatsmedianM3}
-  \end{subfigure}
-\end{figure}
-\begin{figure}[htb!]\ContinuedFloat
-  \centering
-  \begin{subfigure}[t]{\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_mean.pdf}
-    \caption{M$_3$ data selection above the mean for each energy group,
-      value average, mean, skew, and variance plotted against the
-      relative error improvement I$_{RE}$ }
-    \label{fig:samplestatsmeanM3}
-  \end{subfigure}
-  \caption[Sample scatterplots of M$_3$ distribution against the relative error
-  improvement factor, I$_{RE}$.]
-  {Sample scatterplots of the M$_3$ distribution against the relative error
-    improvement factor, I$_{RE}$.}
-  \label{fig:samplestats}
-\end{figure}
+%\begin{figure}[htb!]
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_full.pdf}
+%    \caption{M$_3$ average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$}
+%    \label{fig:samplestatsfullM3}
+%  \end{subfigure}
+%\end{figure}
+%\begin{figure}[htb!]\ContinuedFloat
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_median.pdf}
+%    \caption{M$_3$ data selection above the metric median for each energy group,
+%      value average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$}
+%    \label{fig:samplestatsmedianM3}
+%  \end{subfigure}
+%\end{figure}
+%\begin{figure}[htb!]\ContinuedFloat
+%  \centering
+%  \begin{subfigure}[t]{\textwidth}
+%    \centering
+%    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/sample_data/metric_three_err_stats_mean.pdf}
+%    \caption{M$_3$ data selection above the mean for each energy group,
+%      value average, mean, skew, and variance plotted against the
+%      relative error improvement I$_{RE}$ }
+%    \label{fig:samplestatsmeanM3}
+%  \end{subfigure}
+%  \caption[Sample scatterplots of M$_3$ distribution against the relative error
+%  improvement factor, I$_{RE}$.]
+%  {Sample scatterplots of the M$_3$ distribution against the relative error
+%    improvement factor, I$_{RE}$.}
+%  \label{fig:samplestats}
+%\end{figure}
 
+% the paragraphs down to the line also seem like they don't fit here.
 There are several ways in which the improvement
 factor I$_{RE}$ or I$_{FOM}$ may be compared against the anisotropy metrics. The
 first are against the metric mean and median values. A plot of I versus either
-of these values should look very simiar, with some shifting depending on the
+of these values should look very similar, with some shifting depending on the
 distribution. However, if the mean and median are shifted significantly, this
-would indicate a skew of the distribution. This skew may also be correlated with
+would indicate skewness of the distribution. This skewness may also be correlated with
 either
 of the I values. Last, it is possible that the spread of metric values may be
 correlated with the I factor. Figure \ref{fig:samplestatsfullM3} is an
 illustration of how I can be plotted with
 each of these measurements of the metric distribution.
 
-Similar to using the filtering algorithms in Figure
-\ref{fig:sampleviolinsM2}, the data in the statistical trend plots can also be
+The data in the statistical trend plots can also be
 filtered. The subfigures in \ref{fig:samplestats} illustrate how filtering out
 the data by the contributon flux influences the location of I$_{RE}$ for each
 energy group. Figure \ref{fig:samplestatsmedianM3} calculates the
@@ -776,6 +789,8 @@ possible because the Monte Carlo tally has been discretized to have
 the same binning as the the deterministic code. It would be far more difficult
 if the energy bin widths of the Monte Carlo tally did not match the
 deterministic code.
+%------------
+
 
 The data that will be presented for each characterization problem
 can be subdivided into three distinct
@@ -788,13 +803,13 @@ The results presented in Figure \ref{fig:samplestats} are a combination of both
 deterministic and Monte Carlo-influenced results. In studying the $\Omega$
 methods, we seek to understand how the $\Omega$ methods' performance influence
 the Monte Carlo results. Beyond observing the FOM and relative error
-distribution obtained in the Monte Carlo, the anisotropy metrics will provide
+distribution obtained in Monte Carlo, the anisotropy metrics will provide
 another avenue by which to investigate $\Omega$-method performance.
 
 One may have deduced that the results for the characterization
 problems and the subsequent angle
 sensitivity study will be substantive. Only the most
-pertinent fraction of the available data will be presented with each problem in
+pertinent of the available data will be presented with each problem in
 Sections \ref{sec:CharResults} and \ref{sec:AngleResults}. For example, in most
 cases only a single figure--and perhaps only a single metric--from the
 three presented in \ref{fig:samplestats}
