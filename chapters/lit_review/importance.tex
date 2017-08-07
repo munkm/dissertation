@@ -23,11 +23,9 @@ The concept of importance is, in essence, a means of defining which regions of
 a problem that are likely to contribute to a
 response and which are less likely to contribute to a response. The regions
 that are more likely to generate a response will have a
-higher importance than those that do not. As one might imagine, this may be
-intuitively deduced for a simple problem, but in a more complex problem
-that might not be possible.
+higher importance than those that do not.
 If an importance
-function for a system can be obtained computationally, then that importance
+function for a system can be obtained computationally, that importance
 function can be
 strategically used in variance reduction techniques to speed up the Monte Carlo
 calculations.
@@ -60,7 +58,7 @@ population is higher than other cells.
 While this
 estimation of the importance requires only a Monte Carlo forward calculation of
 the problem, it was referred to as the forward-adjoint importance generator
-\cite{booth_automatic_1982, booth_deep_1982, booth_importance_1984}, because the
+\cite{booth_automatic_1982, booth_deep_1982, booth_importance_1984} because the
 bookeeping tracked by Eq. \eqref{eq:BoothImp} was a forward-approximation of the
 adjoint. Adjoint theory and how it relates to importance will be discussed in
 Section
@@ -70,18 +68,18 @@ weight window target values inversely proportional to the importance.
 In this case, the track weight times the expected score is approximately
 constant in the problem. Choosing this inverse relationship between the weight
 window and importance is common practice in variance reduction, and is often a
-good choice because it is nearly optimal over a broad range of the problem
+good choice because it is nearly optimal over a broad range of a problem
 phase-space \cite{booth_common_2012}.
 
-It should be noted that Booth's method was reliant on the statistical
+It should be noted that Booth's method is reliant on the statistical
 precision of the cells sampled to generate their importances. For
 deep-penetration problems, obtaining a ``good'' estimate of the cell importances
-many mean free paths from the forward source took several iterations. With
-large fluctuations between iterations, this had the potential to
+many mean free paths from the forward source takes several iterations. With
+large fluctuations between iterations, this has the potential to
 be a very slow and
 computationally inefficient way to calculate importance in a problem. Using a
 solution of the adjoint that is equally valid across all of the problem space
-would be more ideal for deep-penetration problems.
+is more ideal for deep-penetration problems.
 
 \subsection{The Adjoint Solution for Importance}
 \label{sec:AdjointImportance}
@@ -91,16 +89,17 @@ equation is one of the most widely recognized methods for generating
 an importance function. This subsection will begin with a brief summary of
 adjoint theory. A discussion on how
 the adjoint solution differs physically from the forward solution for a
-particular problem will follow. Last, some early investigations on how the
+particular problem follows. Last, some early investigations on how the
 adjoint
-and importance are related will be summarized.
+and importance are related are summarized.
 
 \subsubsection{Theory}
 
 In previous sections we have reviewed the statistical precision of Monte
-Carlo-based methods, and how sampled results from Monte Carlo can be sped up
-with variance reduction methods. We have also briefly addressed the forward- and
-the adjoint- solutions for a particular problem. In neutron transport, the
+Carlo-based methods, and how sampled results in Monte Carlo can be obtained
+in less time
+with variance reduction methods. We have also briefly addressed the forward and
+the adjoint solutions for a particular problem. In neutron transport, the
 integral form of the forward, steady-state, particle transport equation can be
 defined as:
 \begin{multline}
@@ -112,13 +111,13 @@ defined as:
         \:d\hat\Omega' + q_{e}(\vec { r } ,E, \:\hat\Omega),
 \label{eq:F-NTE}
 \end{multline}
-where $\vec { r }$, $E$, and $\hat\Omega$, are the direction, energy, and angle
-independent variables totalling seven dimensions in total,
+where $\vec { r }$, $E$, and $\hat\Omega$, are direction, energy, and angle,
+respectively, giving six dimensions of phase-space in total.
 $\psi$ is the neutron flux, $\Sigma$ is the neutron
 interaction (scattering, absorption, total) cross section, and $q_{e}$ is the
 external fixed source. Alternatively, this can be written in operator form,
 \begin{equation}
-  H \psi = q_{e}
+  H \psi = q_{e} \:,
 \label{eq:F-NTE2}
 \end{equation}
 where $H$ represents the streaming, scattering, and absorptive terms from Eq.
@@ -126,12 +125,12 @@ where $H$ represents the streaming, scattering, and absorptive terms from Eq.
 $q_{e}$ is the source term.
 
 The forward transport equation tells us where particles are moving
-throughout the system that we define by equation \ref{eq:F-NTE}. Of note, the
+throughout the system. Of note: the
 particles move in the scattering term from $E'$ into $E$, and from $\hat\Omega'$
-into $\hat\Omega$. Therefore for a particular problem with a given $q_{e}$,
+into $\hat\Omega$. Therefore, for a particular problem with a given $q_{e}$,
 particles start at $q_e$ and move throughout the system,
 either downscattering in energy, streaming out of the problem,
-are absorbed by the problem materials, or
+absorbed by the problem materials, or
 induce a response at the tally location.
 
 The adjoint equation of the same form, in contrast, can be expressed as:
@@ -148,9 +147,12 @@ The adjoint equation of the same form, in contrast, can be expressed as:
 \end{multline}
 or in operator form as
 \begin{equation}
-  H^{\dagger} \psi^{\dagger} = q_{e}^{\dagger}.
+  H^{\dagger} \psi^{\dagger} = q_{e}^{\dagger},
 \label{eq:A-NTE2}
 \end{equation}
+where the variables with $\dagger$ signify the adjoint-specific variables for
+the problem: the adjoint flux $\psi^{\dagger}$ and the adjoint source
+$q_{e}^{\dagger}$.
 Note here that the particles in the adjoint equation move from $E$ into $E'$, and
 from $\hat\Omega$ into $\hat\Omega'$, which indicates an upscattering in energy
 and a reversal of direction when compared to the forward problem.
@@ -159,7 +161,7 @@ from $q_{e}$ to $q_{e}^\dagger$.
 
 To solve the adjoint problem the adjoint source, $q_{e}^{\dagger}$,
 can be chosen such that it has the potential to reveal information about the
-forward problem. In Monte Carlo variance reduction, we seek to obtain
+forward problem. In MC variance reduction, we seek to obtain
 information on the
 detector or tally response for the system.
 The response for the forward problem
@@ -169,7 +171,9 @@ given a defined source distribution  $q(\vec{r}, E, \hat{\Omega})$ is
   R_{tally} = \int_{4\pi} \int_{V} \int_{E} \psi(\vec{r}, E, \hat{\Omega})
   \Sigma_{tally}(\vec{r},E, \hat\Omega) dE dV d\Omega ,
 \end{equation}
-which can be simplified using bracket notation, where the brackets indicate an
+where $dE$ $dV$ and $d\Omega$ are the differential spaces of energy, volume, and
+angle in the tally region.
+This can be simplified using bracket notation, where the brackets indicate an
 integration over all phase-space,
 \begin{equation}
   R_{tally} = \langle \psi \Sigma_{tally} \rangle .

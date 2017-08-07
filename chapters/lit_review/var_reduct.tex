@@ -149,7 +149,7 @@ Using the definition from Eq. \eqref{eq:hatx} in Eq. \eqref{eq:CLT1} results in
 This allows us to use known values for $\hat{x}$ and an approximation of
 $\sigma(x)$--using $S$--to determine the probability density function of the
 sample means
-$f_N(\hat{x})$. Because $f_N(\hat{x})$ is a normal distribution, we can find the
+$f_N(\hat{x})$. Because $f_N(\hat{x})$ is normally distributed, we can find the
 probability that $\hat{x}$ lies in $\bar{x} \pm \epsilon$ with
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
@@ -158,25 +158,31 @@ probability that $\hat{x}$ lies in $\bar{x} \pm \epsilon$ with
 \end{equation}
 Placing our definition for the distribution of $\hat{x}$, which is $f_N(\hat{x})$, into Eq.
 \eqref{eq:probmean}, changing the limits of integration, and changing the
-variables such that $t = \sqrt{N/2}*(\hat{x}-\bar{x})/\sigma(x)$, this becomes
+variables such that
+\begin{equation*}
+  t = \sqrt{N/2}\big[(\hat{x}-\bar{x})/\sigma(x)\big],
+\end{equation*}
+this becomes
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
   \frac{2}{\sqrt{\pi}} \int_0^{(\sqrt{N/2})(\varepsilon/\sigma(x))} e^{-t^2} dt
+  \:.
+  \label{eq:bigP}
 \end{equation}
-Recalling the definition of the error function, ends up as
+Recalling the definition of the error function, Eq. \eqref{eq:bigP} becomes
 \begin{equation}
   P\big\{\bar{x} - \varepsilon < \hat{x} \leq \bar{x} + \varepsilon\big\} = \
     \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big].
 \end{equation}
-Then, using the calculated estimation for $\sigma(x)$ $S$, and also from Eq.
-\eqref{eq:VarN} that $S_{\hat{x}}= S/\sqrt{N}$, the error function reduces to be
-a function of $\varepsilon$ and $S_{\hat{x}}$ only
+Then, using the calculated estimation for $\sigma(x)$ ($S$), and also recalling
+that $S_{\hat{x}}= S/\sqrt{N}$ (Eq. \eqref{eq:VarN}), the error function reduces to
+a function of $\varepsilon$ and $S_{\hat{x}}$, or:
 \begin{equation}
     \erf\Big[\sqrt{\frac{N}{2}} \frac{\varepsilon}{\sigma(x)}\Big] = \
     \erf\Big[\sqrt{\frac{1}{2}} \frac{\varepsilon}{S_{\hat{x}}}\Big] .
 \end{equation}
 Should $\varepsilon$ be chosen to be a function of $S_{\hat{x}}$, the error
-function reduces further and becomes merely an evaluation as multiples (M), of
+function reduces further and becomes merely an evaluation as multiples ($M$) of
 $S_{\hat{x}}$ and $\sqrt{1/2}$. For the first few multiples of the standard
 error, this is evaluated as
 \begin{equation}
@@ -188,26 +194,28 @@ error, this is evaluated as
   \end{cases}  .
 \end{equation}
 
-The central limit tells us that the sample mean follows a normal
+The central limit theorem tells us that the sample mean follows a normal
 distribution, regardless of the distribution of the underlying sample, as the
 number of samples approaches infinity. This
 means that no matter what distribution is being sampled, the sampled mean will
 have this expected behavior. As a result, given a calculated value for
-$\hat{x}$, and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known
+$\hat{x}$ and $S$, the probability that $\hat{x}$ is near $\bar{x}$ is known
 and calculable.
 Further, the central limit theorem shows that this distribution is approached
 very quickly as N increases, with most problems only requiring $N > 30$
 \cite{lewis_computational_1984}. Note
 that N is not the total number of samples, but the number of samples required to
 calculate each mean.
+
 However, for the central limit theorem to hold a number of
-requirements must be satisfied. Ss with all of the quantities in Section
-\ref{subsubsec:PopStat}, each $x_i$ is assumed to be randomly sampled and
+requirements must be satisfied. All of the quantities in Section
+\ref{subsubsec:PopStat} have the underlying assumption that
+each $x_i$ is assumed to be randomly sampled and
 independent of other $x_i$. If some region of phase space is omitted
 accidentally, these values will not be reflective of the true $f(x)$, and so
 $\hat{x}$ will not approximate $\bar{x}$. Further, for $S$ to be a
 good approximation of $\sigma(x)$, a large number of N samples must contribute
-to the calculation of $\hat{x}$. Further, the central limit theorem assumes that
+to the calculation of $\hat{x}$. The central limit theorem also assumes that
 $f(x)$ is a probability density function that can be sampled and has a variance
 that exists. As a result, one must be reasonably sure that all of these
 requirements are satisfied if using Monte Carlo sampling methods.
@@ -218,59 +226,58 @@ requirements are satisfied if using Monte Carlo sampling methods.
 The equations in the preceding sections describe how to estimate the statistics
 of a population given a finite number of samples. In radiation transport, a
 user seeks to estimate some response, the relative error associated with that
-response solution, and time that it takes to obtain those values. Equation
+response solution, and the time it takes to obtain those values. Equation
 \eqref{eq:S to R} described the relationship between the sample variance, the
 relative error, and the number of particles as
 \begin{equation*}
 S^2\:\propto\: R^2\:\propto\:\frac{1}{N} .
 \end{equation*}
-The relationship between the relative error $R$ and the number of particles $N$
-\begin{equation*}
-  R^2\:\propto\:\frac{1}{N}
-\end{equation*}
-will be some constant value (C)
+The relationship between the relative error, $R$, and the number of particles,
+$N$, (recall that $R^2\:\propto\:\frac{1}{N}$)
+will be some constant value (C):
 \begin{equation*}
  C_1 = R^2N .
 \end{equation*}
 As a problem is simulated, the number of particles run, $N$, will increase
-proportionally to the computational transport time run, $T$. Therefore, the
+proportionally to the computational transport time, $T$. Therefore, the
 relationship between $R$ and $T$ should also be a constant.
 \begin{equation*}
   C_2 = R^2T
 \end{equation*}
-The figure of merit (FOM) \eqref{eq:FOM}
+The figure of merit (FOM) shown in Eq. \eqref{eq:FOM}
 is the most commonly reported metric using this relationship that is reported.
 It is widely used in quantifying the effects of variance reduction methods.
 Because it uses the inverse quantity of the relative error and time, a
 ``good'' result would be obtained from a low relative error in a short amount of
-time, resulting in a high numerical value FOM.
+time, resulting in a FOM with a high numerical value.
 \begin{equation}
 FOM=\frac { 1 }{ R^{ 2 }T }
 \label{eq:FOM}
 \end{equation}
 Further, a user may desire to determine how long a problem must be run to obtain
-a desired relative error. In that case, Equation \eqref{eq:FOM} can simply be
+a desired relative error. In that case, Eq. \eqref{eq:FOM} can simply be
 rearranged to
 \begin{equation*}
   R = \frac{1}{(FOM*T)^{1/2}} .
 \end{equation*}
 
-The figure of merit is a very useful tool that can be used to easily obtain
-tally results for a specific problem, but it still is limited by statistical
+The figure of merit is a very useful tool, but it is limited by statistical
 precision in calculating $R$.
 It is worth noting that early on in a transport simulation,
-when too few N have been run to
-effectively capture $S$ or $\hat{x}$, the Figure of Merit will oscillate.
-Eventually it will converge on a relatively constant value. This behavior can
+when too few particles have been simulated to
+effectively capture $S$ or $\hat{x}$, the FOM will oscillate.
+Eventually, the FOM will converge to a relatively constant value. This behavior can
 also be used to determine whether one has sufficiently sampled the
 region in which they are quantifying the response.
 
 \subsection{Variance Reduction Methods for Monte Carlo Radiation Transport}
 \label{subsec:MCVR}
-MCNP \cite{hendricks_mcnp_1985, brown_mcnp_2002, mcnp_manual_v1}
-has a number of techniques for variance
-reduction that are accessible to users. These variance reduction
-techniques fall
+
+Now that the different parameters that affect the variance in a problem have
+been introduced, let us transition to different variance reduction techniques
+that are available in Monte Carlo radiation transport packages.
+Variance reduction
+techniques in radiation transport methods fall
 into four general categories: truncation methods, population control methods, modified
 sampling methods, and partially-deterministic methods. Of importance for this
 project are
@@ -278,12 +285,22 @@ population control methods and modified sampling methods, which are discussed in
 a number
 of the papers referenced herein. Truncation methods and partially-deterministic
 methods do not contribute to and are not the focus of this work,
-so will only be touched upon briefly. Note that while this
-discussion will tend to focus towards the variance reduction methods in MCNP,
-these
-methods are by no means limited to this single software package. A
-number of other Monte Carlo radiation transport packages also include these
-methods.
+so will only be touched upon briefly.
+
+A later section (\ref{sec:software}) of this dissertation will discuss the
+choice of software packages used
+for this project. In particular, our hybrid methods software package is designed
+to accelerate the Monte Carlo radiation transport package MCNP
+\cite{hendricks_mcnp_1985, brown_mcnp_2002, mcnp_manual_v1}. Variance reduction
+methods are available in a number of other Monte Carlo radiation transport
+packages, and are by no
+means limited to a particular code. However, the implementation of methods
+differs between software
+and the specifics may differ slightly. The discussion
+for the remainder of this subsection will be centered around the specifics of
+the code used for this project.
+
+\subsubsection*{Population Control Methods}
 
 Population control methods adjust the particle population in the problem to
 obtain better sampling in regions of interest by preferentially increasing or
@@ -296,22 +313,24 @@ Rouletting, conversely, reduces the particle population by stochastically
 killing particles. Particles that survive a rouletting routine have their weight
 adjusted higher, thereby conserving weight in the routine.
 Both splitting and roulette maintain a
-fair game by adjusting the particle weights as splitting and rouletting are
-performed; the sum of the child particle weights is the same as the parent
+fair game by adjusting the particle weights as each routine is
+performed; statistically, the sum of the child particle weights
+is the same as the parent
 weight as it entered the routine.
+
 To use population control methods effectively as a variance reduction technique,
 splitting is performed in high-importance regions to increase the particle
-count, and thus the sampling, in important regions. Conversely, roulette is
+count, and thus the sampling, in important regions. Conversely, rouletting is
 performed in
  low-importance
   regions to reduce the particle population in regions that are unimportant to
   the tally result.
-Splitting and roulette can be applied to include geometry, energy and time,
-  as well as a weight cutoff.
+Splitting and rouletting can be applied to include geometry, energy and time.
 
-Rouletting and splitting can be combined in a
-single method, generally referred to as weight windows. Figure \ref{fig:ww-mcnp}
-illustrates the different processes a particle may go through when entering a
+The weight window combines splitting and rouletting to keep particles within a
+desired weight range. Figure \ref{fig:ww-mcnp}
+illustrates the different processes a particle may go through when passing
+through a
 weight window.
 %
 \begin{figure}
@@ -322,7 +341,7 @@ weight window.
   \label{fig:ww-mcnp}
 \end{figure}
 %
-The first particle we see entering the weight window is a single, high-weight
+The top  particle entering the weight window is a single, high-weight
 particle. The weight of this particle is above the weight window bounds, so as
 it enters the weight window it is split into multiple particles whose weight is
 within the window bounds. The second particle entering the window is within the
@@ -331,24 +350,30 @@ The last two particles entering the window have weights lower than the bound.
 They undergo a rouletting routine and one particle is killed and the surviving
 particle is increased in weight. As these particles leave the window, all of
 them have weights within the range of the window. This will reduce the variance
-of the particles contributing to a tally in that region. However, the user is
+of the particles contributing to a tally in that region.
+
+While the use of weight windows in a problem helps to keep a more ideal
+distribution of particle weights, the user is
 faced with calculating a significant number of parameters to
 determine weight windows for the entire problem. In the best case with an
 experienced user, this may just take time. With an inexperienced user or a
-difficult problem this can
+complex problem this can
 be insurmountable, and may be too difficult to do without some automated
 assistance.
 
 It should be noted that
-while splitting and roulette can be performed on a single variable--energy,
-space, or time--the weight window is either energy-space
+while splitting and rouletting can be performed on a single variable--angle,
+energy, space, or time--the weight windows generally used are either energy-space
 dependent or space-time dependent. Further, the weight window will split or
 roulette depending on the particle weight entering the window. Splitting and
-roulette on their own either increase or decrease the particle weight
-proportional to $I'/I$ no matter what the entering particle weight is. As a
-result, poorly chosen splitting or roulette parameters on their own can still
+rouletting on their own either increase or decrease the particle weight
+proportional to the ratio of cell importances, or $I'/I$, no matter what
+the entering particle weight is. As a
+result, poorly chosen splitting or rouletting parameters can still
 have significant tally variance, because particle weights may still span a wide
 range.
+
+\subsubsection*{Modified Sampling Methods}
 
 Modified sampling methods adjust transport by sampling from a different probability
 distribution function than the actual distribution for the problem. This is
@@ -362,7 +387,7 @@ possible if, as with population control methods, the particle weights are adjust
 
 The exponential transform modifies particle transport from the analog problem by
 artificially modifying the macroscopic cross section, and thus the
-distrance-to-collision, to move particles in important directions. In directions
+distance-to-collision, to move particles in important directions. In directions
 of higher importance, the cross section is reduced, and particles can flow more
 freely. In directions of lower importance, the cross section is increased, and
 particles more frequently interact, thereby increasing their probability of
@@ -396,7 +421,7 @@ the cross section is altered. Because the cross section in the problem is both
 energy and material dependent (depending on the geometry), the exponential
 transform will be dependent on space and energy, and particles will be biased in
 both. While a powerful method, the exponential transform is quite difficult to
-use and if $p$ is chosen poorly, this method can perform quite poorly. Further,
+use and if $p$ is ill-chosen this method can perform quite poorly. Further,
 the user has to know quite a bit about the problem physics and material to choose an
 optimal quantity for $p$.
 
@@ -406,11 +431,11 @@ Source biasing has the option to bias particles in energy, direction, and space
 (if the source is volumetric). This allows the user to choose importance
 separately for each variable. First, the source variable (let us consider
 energy for the moment) is defined as a series of bins or a function. Second, the bins are
-assigned probabilities of occurence according to their importance. An energy bin
-with a high importance will be assigned a high probability of occurence, and a
-bin with low importance will be assigned a low probability of occurence. As
+assigned probabilities of occurrence according to their importance. An energy bin
+with a high importance will be assigned a high probability of occurrence, and a
+bin with low importance will be assigned a low probability of occurrence. As
 particles are born in the bins with higher importances, they will have their
-weights adjusted to the inverse of their probability of occurence, or $w^* =
+weights adjusted to the inverse of their probability of occurrence, or $w^* =
 p/p^*$. Here $p$ refers to the probability density function for the source
 particles; it bears no relation to the exponential transform factor.
 
@@ -419,7 +444,9 @@ significantly. However, if a user chooses bin sizes or a function that does not
 properly reflect the particles importances in the problem, the source will be
 poorly sampled. As a result, sampling may be very inefficient and the figure of
 merit will decrease. In MCNP, if poor parameters are chosen for this method, the
-user will be given a warning.
+user is given a warning.
+
+\subsubsection*{Truncation Methods}
 
 Truncation methods stop tracking particles in a region of phase-space that is of
 low-importance to the tally. These methods can be used in space (a vacuum boundary
@@ -432,11 +459,13 @@ result are
  eliminated with a truncation method, the tally will lack the contribution from
  that particle's phase-space, and will be underestimated as a result. Further,
  as discussed in Section \ref{subsubsec:CLT}, the central limit theorem only
- holds assuming that the histories tracked are random and independent.
- Truncating particles of high importance remove the independence from the
- sampling, and the estimate of the response will be wrong.
+ holds assuming that the histories tracked are independent and drawn from
+ identical distributions.
+ Truncating particles of high importance removes the independence from the
+ sampling and modifies the underlying PDF being sampled,
+ so the estimate of the response will be wrong.
 
-It is important, in using any variance reduction technique, to ensure that a
+It is important in using any variance reduction technique to ensure that a
 fair game
 is being played. The user must ensure that the fundamental nature of the problem
 is not
@@ -445,7 +474,7 @@ representative of the original problem. Automated variance reduction techniques 
 eliminate this uncertainty for the user by estimating the importance of
 particles in some
  way and then setting up variance reduction parameters automatically.
-The remainder of this literature review will focus on efforts to
+The remainder of this chapter review will focus on efforts to
 automate population
 control methods and modified sampling methods for variance reduction.
 
@@ -453,35 +482,36 @@ control methods and modified sampling methods for variance reduction.
 Transport}
 \label{subsec:AutomatedMCVR}
 
-Section \ref{subsec:MCVR} described the methods that one may use to reduce the
+Section \ref{subsec:MCVR} described some methods that one may use to reduce the
 variance in Monte Carlo radiation transport tallies. These methods, if used
 correctly, can significantly increase the transport efficiency in a Monte Carlo
 simulation. However, correct use of these methods often requires intelligent
-selection of variance reduction parameters, which is a non-trivial task. Users
-found themselves often performing several trial runs before choosing final
-quantities for the VR parameters in their problems, which was computationally
-inefficient and still required significant knowledge of Monte Carlo and variance
-reduction to do well \cite{booth_automatic_1982}.
+selection of variance reduction (VR) parameters, which is a non-trivial task. Users
+have found themselves often performing several trial runs before choosing final
+quantities for the VR
+parameters in their problems, which was computationally
+inefficient and required significant knowledge of Monte Carlo and variance
+reduction to execute well \cite{booth_automatic_1982}.
 
 This has been addressed by using Monte Carlo to sample the problem in an initial
 calculation to determine more favorable variance reduction parameters automatically.
 Booth and Hendricks,
 recognizing that choosing optimal weight window values for energy- and space-
-dependent weight windows was difficult even for experienced users proposed two
+dependent weight windows was difficult even for experienced users, proposed two
 tools for Monte Carlo variance reduction in parallel. The first was a
 Monte Carlo importance generator \cite{booth_automatic_1982} that could be used
 to make informed decisions on cell importances throughout the problem. The
 second method, a Monte Carlo generated weight window generator,
-calculated the weight window values automatically for a given problem
+calculates the weight window values automatically for a given problem
 \cite{hendricks_code-generated_1982}.
-The importance generator estimated a cell's importance
+The importance generator estimates a cell's importance
 by tracking the weights of the particles in the cell, or
 \begin{equation}
   Importance  = \frac{\text{score of particles leaving the cell}}
                      {\text{weight leaving the cell}}.
 \label{eq:BoothImp}
 \end{equation}
-The weight window generator calculated weight window values with
+The weight window generator calculates weight window values with
 \begin{subequations}
 \begin{equation}
   W_{i,low} = \frac{1}{kN}\big(\Sigma W_{i,in} + \Sigma W_{i,out} \big)
@@ -489,36 +519,41 @@ The weight window generator calculated weight window values with
 \begin{equation}
   W_{i,high} =
   \begin{cases}
-    k*W_{i,low} & \text{if } W_{i,low} \neq 0, \\
-    \infty & \text{if } W_{i,low} = 0.
-  \end{cases}  .
+    k*W_{i,low} & \text{if } W_{i,low} \neq 0 \\
+    \infty & \text{if } W_{i,low} = 0
+  \end{cases}  \:,
   \label{eq:hendricksWW}
 \end{equation}
 \end{subequations}
 where $W_{i,low}$ and $W_{i,high}$ are the weight window lower and upper weight
 bounds respectively, $W_{i,in}$ and $W_{i,out}$ are the total weight entering
 and leaving the cell, $N$ is the number of source particles, and $k$ is some weight
-window width (a constant that Hendricks set to 5). In his
+window width (a constant that Hendricks set to 5).
+
+In his
 paper, Booth notes that the weight window target value derived from the
 importance generator was chosen so that the
 track weight times the expected score in the tally region (for unit track
 weight) was approximately constant. Booth's importance generator saw
 improvements in the FOM between 1.5-8x when compared to the analog run for the
-test problem presented. Booth and Hendricks combined these two methods to
+test problem presented.
+
+Booth and Hendricks combined these two methods to
 automate weight window generation based on phase-space importance
 \cite{booth_deep_1982, booth_importance_1984}. They showed that the combination
 of the importance estimator and the weight window generator was a successful way
 to perform variance reduction in deep-penetration problems. However, their
 method depended on several iterations of importance-determining runs to obtain a
-satisfactory estimation of the importance. For a 300cm slab problem, the FOM was
+satisfactory estimation of the importance. For a 300 cm slab problem, the FOM was
 increased from 1.9 to 75, but took 10 subsequent runs to obtain the FOM of 75,
 and these runs ranged from 1.2 min (for the analog problem) to 42 minutes (for
-the 9th run \cite{booth_importance_1984}.
+the 9th run \cite{booth_importance_1984}).
 
 It should be noted that both the importance generator and the weight window
-generator use a lower-quality
+generator use a lower-fidelity
 Monte Carlo run to gain an initial estimate for a cell's importance and generate
 variance reduction parameters from them to bias a more computationally-intensive
+and higher-fidelity
 run. Naturally, the variance reduction parameters generated by using these
 techniques are limited by the statistical precision in the regions used to
 generate them. Hendricks also pointed out that the weight window generator
@@ -529,22 +564,25 @@ variance reduction parameters for low flux regions are exceedingly difficult to
 generate, resulting in unfavorable VR parameters.
 
 The MCNP \cite{mcnp_manual_v1, brown_mcnp_2002} weight window generator has been
-extended beyond the initial space- and energy- implementation described in
-booth's paper. It now has the ability to automatically generate space- energy-
-and angle- weight windows. The importance generator in MCNP also has been
-extended to time-importance, the values of which can be used for splitting or
-roulette parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
+extended beyond the initial space- and energy-implementation described in
+Booth's paper. It now has the ability to automatically generate space- energy-
+and angle-weight windows. The importance generator in MCNP also has been
+extended to time-importance; the values of which can be used for splitting or
+rouletting parameters \cite{brown_mcnp_2002}, and can be optimized on a grid
 independent from the MCNP geometry \cite{evans_enhanced_1998}.
+
 As with Booth and Hendricks'
 original implementations, this updated weight window generator still relies on
 adequate sampling to obtain sufficient weight window parameters. When additional
 degrees of freedom, like angle-dependence, are added, the time
-to converge on those parameters will take even longer. The weight window
+to converge on those parameters takes even longer. The weight window
 generator also only allows for a single tally to be optimized at once, so
-multiple tallies cannot be optimized simultaneously. Last, the weight window
+multiple tallies cannot be optimized simultaneously. Finally, the weight window
 generator still requires user input and updating to seed the weight
 window solution. The user must choose the meshing of the problem and have some
-intuition as to how the problem should be subdivided. Depending on user
+intuition as to how the problem should be subdivided. In the paper by Van Riper
+et al, it was found that depending on user
 experience, the weight window generator can have differences in the FOM from 2
-to 10 times \cite{van_riper_generation_1995}.
+to 10 times \cite{van_riper_generation_1995} for the problems that they
+investigated.
 
