@@ -10,21 +10,23 @@ generate VR parameters for local solutions in problems with strong anisotropy.
 FW-CADIS-$\Omega$ is a modification of FW-CADIS, and is designed for generating
 VR parameters for global solutions in problems with strong anisotropy.
 
-Both CADIS-$\Omega$ and FW-CADIS-$\Omega$ are implemented in highly-used,
-massively-parallel, radiation transport and hybrid methods software. The
+Both CADIS-$\Omega$ and FW-CADIS-$\Omega$ are implemented in well-used,
+well-documented, massively-parallel, state-of-the-art radiation
+transport and hybrid methods software. The
 radiation transport code suite Exnihilo is modified to generate the
 $\Omega$-fluxes. The hybrid methods package ADVANTG is modified to generate
 VR parameters for the $\Omega$-methods using the $\Omega$-fluxes.
 
 To understand the performance of the $\Omega$-methods and compare it
 consistently to existing methods, several performance metrics were proposed. First,
-several variants of the FOM were described. They include: FOM$_{MC,avg}$,
+a few variants of the FOM were described. They include: FOM$_{MC,avg}$,
 FOM$_{MC,max}$, FOM$_{hybrid,avg}$, FOM$_{hybrid,avg}$. Together, they provide
 an overall picture of the performance of the $\Omega$-method's performance with
 respect to relative error and time, rather than of a
 single criteria. Because anisotropy has the ability to affect energy groups
-differently, separating out different FOMs helps to isolate interesting behavior
-in the different methods.
+differently, resulting in different relative errors achieved in different energy
+bins, separating out different FOMs helps to isolate interesting behavior
+in the methods.
 
 The $\Omega$-methods are designed to work in problems with strong
 anisotropies in the flux. As a result, several anisotropy metrics
@@ -34,12 +36,14 @@ the relative errors or FOMs in each
 tally region, we can try to understand the effect that anisotropy has on the
 $\Omega$-method performance. Each metric quantifies the anisotropy in cells
 differently, so each has the potential to capture different information. Denovo
-was modified to output angular fluxes to generate the $\Omega$-flux for this
-method. As a result, the anisotropy metrics use data generated from the existing
+was modified to output angular fluxes to generate the $\Omega$-flux for the
+$\Omega$-methods.
+As a result, the anisotropy metrics use data generated from the existing
 $\Omega$-method calculation.
 
-Using the methodology described in this chapter, the $\Omega$-methods
-performance can be fully characterized. Further, this characterization has been
+Using the methodology described in this chapter, the $\Omega$-methods'
+performance can be fully characterized. Further, the characterization presented
+in this chapter has been
 extended from standard FOM performance metrics to include anisotropy
 quantification.
 By implementing the $\Omega$-methods into production-level software, it is
