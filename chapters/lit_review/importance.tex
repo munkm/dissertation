@@ -169,7 +169,7 @@ given a defined source distribution  $q(\vec{r}, E, \hat{\Omega})$ is
 \begin{subequations}
 \begin{equation}
   R_{tally} = \int_{4\pi} \int_{V} \int_{E} \psi(\vec{r}, E, \hat{\Omega})
-  \Sigma_{tally}(\vec{r},E, \hat\Omega) dE dV d\Omega ,
+  \Sigma_{tally}(\vec{r},E, \hat\Omega) dE dV d\hat\Omega ,
 \end{equation}
 where $dE$ $dV$ and $d\Omega$ are the differential spaces of energy, volume, and
 angle in the tally region.
@@ -180,10 +180,12 @@ integration over all phase-space,
 \end{equation}
 \end{subequations}
 $\psi$ is the angular flux and $\Sigma_{tally}$ is the effective tally
-response function. For a simple source-detector problem, we choose
-$q_{e}^{\dagger}$ to be $\Sigma_{tally}$, or that the adjoint source is the
+response function.
+
+For a simple source-detector problem, we choose
+$q_{e}^{\dagger}$ to be $\Sigma_{tally}$; or the adjoint source is the
 tally/detector response function
-for the system. Therefore the adjoint particles start at low energy at the detector
+for the system. Therefore, the adjoint particles start at low energy at the detector
 location, move away from the adjoint source (the detector location), and scatter
 up in energy. By making the choice that $q_{e}^{\dagger} = \Sigma_{tally}$, the
 response function can be written as a product for the forward flux and the
@@ -196,17 +198,17 @@ By using the adjoint identity and the same operators $H$ from Eqs. \eqref{eq:F-N
 and \eqref{eq:A-NTE2}
 \begin{equation}
   \langle \psi, H^{\dagger} \psi^{\dagger} \rangle =
-  \langle \psi^{\dagger}, H \psi \rangle ,
+  \langle \psi^{\dagger}, H \psi \rangle .
 \end{equation}
-Equation \eqref{eq:response1} can also be written to be a function of the
+Eq. \eqref{eq:response1} can be written as a function of the
 adjoint flux and the forward source distribution
 \begin{equation}
   R = \langle \psi^{\dagger} q \rangle .
   \label{eq:response2}
 \end{equation}
 
-At this point, we know that the solution to the adjoint problem has
-transported particles from the adjoint source (which is the detector or tally
+At this point, we know that the solution to the adjoint problem
+transports particles from the adjoint source (which is the detector or tally
 location) into the problem phase-space. The adjoint particles are
 upscattered in energy and are transported in $-\Omega$ relative to the forward
 problem. However, it may not be immediately obvious how this adjoint solution
@@ -223,10 +225,11 @@ Using this definition of the forward source and evaluating Eq.
   \begin{split}
     R &= \langle \psi^{\dagger} q \rangle \\
     &= \int_{V} \int_{E} \int_{\Omega} \psi^{\dagger}(\vec{r}, E, \hat{\Omega})
-       q(\vec{r}, E, \hat{\Omega}) d\Omega dE dV \\
+       q(\vec{r}, E, \hat{\Omega}) d\hat\Omega dE dV \\
        & = \psi^{\dagger}(\vec{r}_0, E_0, \hat{\Omega}_0).
 \end{split}
 \end{equation*}
+
 This result shows that the solution to the adjoint equation is the detector
 response for the forward problem. As a result, the adjoint flux can be used as
 an indicator of a particle produced in $\vec{r}, E, \hat{\Omega}$ contributing
@@ -239,15 +242,16 @@ applications, including reactor physics and perturbation theory
 \cite{lewins_importance_1965, lewins_developments_1968,
 greenspan_developments_1976, lux_monte_1991}.
 However, Goertzel and Kalos' early work recognized its
-application for deep-penetration radiation shielding applications.
+application for deep-penetration radiation shielding.
 Goertzel and Kalos \cite{goertzel_monte_1958}
 showed analytically
 that the exact adjoint solution, if used as an importance or weighting
 function for the forward Monte Carlo calculation, will result in a zero variance
 solution for the forward Monte Carlo problem. Further, Kalos
 \cite{kalos_importance_1963} showed in a 1D infinite hydrogen slab problem that
-an analytically-derived adjoint importance function significantly helped neutron
-transport for deep-penetration problems.
+an analytically-derived adjoint importance function significantly improved the
+speed to convergence for neutron
+transport in deep-penetration problems.
 
 Goertzel and Kalos' finding that an exact adjoint can lead to a zero variance
 solution means that if a single particle is transported with the adjoint
@@ -255,23 +259,24 @@ weighting function, its score will be the same as the total system response.
 Only a single particle is required to get an exact solution for the forward
 problem. This is prohibitive because obtaining
 an exact adjoint solution is just as computationally expensive as getting
-an exact forward solution. As a result, one seeks to obtain a good estimate of the
+an exact forward solution. Instead, one seeks to obtain a good, but fairly
+inexpensive, estimate of the
 adjoint solution based on computational limitations. A good importance estimate
-should help reduce the variance in a reasonable amount of time, and be
+should help reduce the variance in a reasonable amount of time and be
 relatively computationally inexpensive. A Monte Carlo solution can
 provide a continuous solution over the problem phase-space. However, as
 discussed in Section \ref{subsec:MCVR}, the quality of this adjoint solution
 relies on the number of samples used to calculate it and that may take a
 significant amount of time. A deterministic solution
-offers equal solution confidence across the entire problem, but it is
-discretized
-in space, energy, and angle. For deep-penetration importance functions, we will
+has the potential to offer equal or better solution confidence across the
+entire problem. However, it is discretized in space, energy, and angle.
+For deep-penetration importance functions, we
 opt for deterministically-obtained solutions due to the solution's equally
 distributed validity.
 
 \subsubsection{Implementation}
 
-Coveyou, Cain and Yost \cite{coveyou_adjoint_1967} expanded on Goertzel and
+Coveyou, Cain, and Yost \cite{coveyou_adjoint_1967} expanded on Goertzel and
 Kalos' work by interpreting in which ways the adjoint solution could be adapted
 for Monte Carlo variance reduction. In particular, they investigated the choice
 of biasing schemes and how effective they were at variance reduction for a
@@ -282,17 +287,17 @@ most optimal importance function; however, it is likely the closest and most
 obtainable estimate of importance that can be calculated
 \cite{coveyou_adjoint_1967}. They
 concluded that source biasing by the solution to the adjoint equation or by the
-expected response is an best choice for Monte Carlo variance reduction, as it
-can be used independently of any other variance reduction technique, and
+expected response is the best choice for Monte Carlo variance reduction, as it
+can be used independently from any other variance reduction technique, and
 provides good results.
 
 Tang and Hoffman \cite{tang_monte_1988} built off of the parameters derived by
-Coveyou et al \cite{coveyou_adjoint_1967} to generate variance reduction
+Coveyou et al.\ \cite{coveyou_adjoint_1967} to generate variance reduction
 parameters automatically for fuel cask dose rate analyses. In their work, Tang
-and Hoffman utilized a one-dimensional discrete ordinates code XSDRNPM-S to
+and Hoffman used the 1D discrete ordinates code XSDRNPM-S to
 calculate the adjoint fluxes for their shielding problems. The results from this
 calculation were then used to generate biasing parameters for Monte Carlo;
-specifically they aimed at generating parameters for energy biasing, source
+specifically, they aimed at generating parameters for energy biasing, source
 biasing, Russian roulette and splitting, and next event estimation
 probabilities. They implemented their work in the SAS4 module in SCALE
 \cite{SCALE6_1}; it was
@@ -302,32 +307,29 @@ biasing procedure for Monte Carlo.
 \subsection{The Contributon Solution for Importance}
 \label{sec:ContributonImportance}
 
-Contributon theory is another useful metric that can be used as a measure of
+Contributon theory is another useful concept that can be used as a measure of
 importance
 \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
 However, contributon theory quantifies importance differently than
-adjoint theory alone. In contributon transport, a pseudo-particle, the
+adjoint theory. In contributon transport, a pseudo-particle, the
 \textit{contributon}, is defined. The contributon carries response in the problem
-system from the radiation source to a dectector. The
+system from the radiation source to a detector. The
 total number of contributons in a system are conserved by the \textit{contributon
 conservation principle}: all contributons that are emitted from the source
 eventually arrive at the detector. Much of the work in this realm has been done
 by Williams and collaborators
 \cite{williams_generalized_1991,williams_contributorn_1992,williams_contributon_study}.
 
-We have generally introduced the concept of the contributon pseudo-particle and
-the response that it carries. This will be continued with a brief mathematical
-overview of contributon transport and contributon response.
 The contributon transport equation can be derived in a form analogous
-to the forward (Eq. \ref{eq:F-NTE}) and adjoint (Eq. \ref{eq:A-NTE}) equations.
-The derivation of Eq. \ref{eq:Cont-NTE} and its corresponding variables is
-available in a number of the sources referenced in this section and will not be
-done so here. First, the angular contributon flux is defined
-as the product of the forward- and
-adjoint- angular- fluxes:
+to the forward (Eq. \eqref{eq:F-NTE}) and adjoint (Eq. \eqref{eq:A-NTE}) equations.
+The derivation of Eq. \eqref{eq:Cont-NTE} and its corresponding variables is
+available in a number of the sources referenced in this section, so we will
+abstain from re-deriving it here. The angular contributon flux is defined
+as the product of the forward and
+adjoint angular fluxes:
 \begin{equation}
 \Psi (\vec {r} ,E,\:\hat\Omega) = \psi^{\dagger} (\vec {r} ,E,\:\hat\Omega)
-        \psi(\vec {r} ,E,\:\hat\Omega)
+        \psi(\vec {r} ,E,\:\hat\Omega) \:.
 \label{eq.Cont-Flux}
 \end{equation}
 The contributon transport equation is:
@@ -336,7 +338,7 @@ The contributon transport equation is:
 +\widetilde{\Sigma} _{ t }(\vec{r},E,\:\hat\Omega)\Psi (\vec { r } ,E,\:\hat\Omega)
      = \\
         \int _{ 4\pi  } \int _{ 0 }^{ \infty  }
-        \widetilde{p}(\vec{r}, \hat\Omega', E'\rightarrow\hat\Omega, E)
+        \widetilde{p}(\vec{r}, \hat\Omega'\rightarrow\hat\Omega, E'\rightarrow E)
         \widetilde{P}(\vec{r}, \hat\Omega',E')
         \widetilde{\Sigma} _{ t }(\vec{r}, E', \hat\Omega')
         \Psi (\vec { r } ,E',\: \hat\Omega')dE' \:d\hat\Omega'
@@ -344,7 +346,7 @@ The contributon transport equation is:
 \label{eq:Cont-NTE}
 \end{multline}
 The units of phase-space are the same as observed in the forward and adjoint
-transport equations. The symbols decorated with tildes note variables that are
+transport equations. The symbols decorated with tildes denote variables that are
 unique to the contributon equation; $\widetilde{p}$ and $\widetilde{P}$ are both
 probability functions related to scattering and $\widetilde{\Sigma}$ are
 effective cross sections.
@@ -365,24 +367,26 @@ The effective cross sections are given by:
 Note here that the effective scattering and absorption cross sections are
 adjoint flux-dependent. Where the adjoint flux becomes small, the interaction
 probabilities will become large. As a result, regions where the adjoint flux
-is high will have particles flowing freely. Conversely, regions with low adjoint
+is high interaction probabilities become low, causing fewer interactions and
+more streaming. Conversely, regions with low adjoint
 fluxes--like the problem boundary--will have a very high cross section, thus
 encouraging particle transport back towards the adjoint source. This
 increased probability of interaction in low flux regions encourages response
-transport towards the detectector or tally, thus contributing to a response.
+particle (contributon)
+transport towards the detector or tally, thus contributing to a response.
 
 The scattering probability of a contributon at position $\vec{r}$, $E'$, and
 $\hat\Omega'$ is:
 \begin{equation}
 \widetilde{P}(\vec{r}, \hat\Omega',E') =
          \frac{\widetilde{\Sigma}_{ s }(\vec{r}, E', \hat\Omega')}
-       {\widetilde{\Sigma}_{ t }(\vec{r}, E', \hat\Omega')}
+       {\widetilde{\Sigma}_{ t }(\vec{r}, E', \hat\Omega')} \:,
 \end{equation}
 and the probability that a contributon scattering at $\vec{r}$, $E'$,
 and $\hat\Omega'$ will scatter into $d\hat\Omega$ $dE$ is
 \begin{equation}
 \widetilde{p}(\vec{r}, \hat\Omega'\rightarrow\hat\Omega, E' \rightarrow E) =
-       \frac{\Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega,E'\rightarrow E)
+       \frac{\Sigma_{s}(\vec{r}, \hat\Omega'\cdot\hat\Omega, E'\rightarrow E)
        \psi^{\dagger} (\vec{r}, E, \hat\Omega)}
        {\iint \Sigma_{s}(\vec{r},\hat\Omega'\cdot\hat\Omega'',E'\rightarrow
        E'')\psi^{\dagger} (\vec{r}, E'', \hat\Omega'')d\hat\Omega'' dE''}.
@@ -403,7 +407,7 @@ is given by integral of the adjoint flux and the forward source
 R &= \int \int \int \psi^{\dagger}(\vec{r},E,\hat\Omega)Q(\vec{r},E,\hat\Omega)
     d\hat\Omega dE dV \\
   & = \langle \psi^{\dagger}Q  \rangle
-\end{split}
+\end{split} \:,
 \end{equation}
 which is recognizable as the system response described
 in Section \ref{sec:AdjointImportance}. It can also be shown by integrating Eq.
@@ -413,7 +417,7 @@ $\hat{p}$ is normalized, that
   R = \langle \widetilde{\Sigma}_a \Psi \rangle,
   \label{eq:contribprod}
 \end{equation}
-or that the rate at which contributons that die in the detector is the same as
+or the rate at which contributons die in the detector is the same as
 the rate at which they are produced by the contributon source.
 Knowing that $R$ is the contributon production rate, let us consider the
 probability that a particle will be absorbed in the detector, or $P$, given by
@@ -446,12 +450,11 @@ an exact value for R (as shown by Eq. \eqref{eq:PR}), this
 would lead to a zero variance solution. However, the nature of solving the
 contributon equation with Monte Carlo (or any other transport mechanism)
 involves knowing the exact solution to the adjoint equation, and so relies on
-the same computational obstacles as solving the adjoint transport equation and
-using that alone for an importance measure.
+the same computational obstacles as solving the adjoint transport equation.
 
 As mentioned in the previous section, the adjoint flux is an indicator of a
 particle's importance to inducing a response. Conversely, the contributon
-flux describes what the importance of a particle is to the solution.
+flux describes the importance of a particle to the solution.
 Becker's thesis \cite{becker_hybrid_2009} aptly points out that this is
 illustrated most dramatically in a source-detector problem, where the forward
 source has little importance to the adjoint source, but does have importance to
@@ -459,7 +462,7 @@ the problem solution. As a result, both the contributon solution and the adjoint
 solution can be considered importance functions for a problem, but the
 importance that they describe differs.
 
-Williams recognized the applications of the pseudo-particles, contributons, to
+Williams recognized the applications of contributons to
 shield design and optimization in an extension of contribution theory called
 spatial channel theory. In particular, Williams noted that variables
 relevant to contributon response were useful in determining transport paths
@@ -478,7 +481,7 @@ response current, and the response vorticity \cite{williams_contributorn_1992}.
 
 Contributon theory and spatial channel theory have been applied successfully to
 shielding analyses \cite{seydaliev_contributon_2008, williams_SCC_shielding} due
-to its ability to show particle flow between a source and response effectively.
+to their ability to show particle flow between a source and response effectively.
 Williams and Engle showed that
 spatial channel theory can be used in reactor shielding analyses.
 In their work, they used
@@ -503,7 +506,9 @@ As discussed in Section \ref{sec:Importance}, generating an importance function
 with Monte Carlo is limited in that the quality of the importance map is only as
 good as the regions that are sampled. For deep-penetration problems, it may be
 prohibitively difficult to obtain adequate importance sampling with traditional
-Monte Carlo methods. Deterministically-obtained importance functions
+Monte Carlo methods.
+
+Deterministically-obtained importance functions, however,
 offer the benefit of a solution that is equally valid across all of the problem
 solution-space. This is because the deterministic solution's precision is
 limited to convergence criteria, not sampling of individual particles. Using a
