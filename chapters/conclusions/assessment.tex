@@ -4,19 +4,19 @@
 The results in Chapter \ref{ch:charprobs} showed that CADIS-$\Omega$ has varied
 performance when compared to CADIS over the problem space investigated.
 Depending on the geometric configuration, the material composition, and the
-solver options used, the method can outperform CADIS by an order of magnitude or
-it can be outperformed by an order of magnitude. This underscores the difficulty
+solver options used, the method can outperform or underperform CADIS by an
+order of magnitude. This underscores the difficulty
 of developing a method that is broadly applicable to a large subset of
 application space. Further, it illustrates the necessity for further methods
 development.
 
 Several characterization problems were formulated that contained anisotropy in the
-flux as a result of physical mechanisms. These mechanisms for inducing
+flux. The mechanisms for inducing anisotropy in the
 flux anisotropy were
 either from the source, or from physical interactions with the problem materials
 and geometry. The success of the $\Omega$-methods was not directly correlated
 with any single physical mechanism, but both CADIS and CADIS-$\Omega$ struggled
-in problems comprised of primarily air.
+in problems primarily comprised of air.
 
 In the single turn labyrinth, CADIS-$\Omega$ achieved lower relative errors in
 epithermal and fast energy groups. These groups were shown to have flux
@@ -34,12 +34,12 @@ achievements.
 
 In addition to checking the limitations of the $\Omega$-methods with respect to
 geometry and material composition, the sensitivity of the methods to
-deterministic parameter selection was studied also. In particular, the effect of
-quadrature order and P$_N$ order were studied. For both CADIS and
+deterministic parameter selection was also studied. In particular, the effect of
+quadrature order and P$_N$ order on method performance were studied. For both CADIS and
 CADIS-$\Omega$, the change in quadrature order had a stronger effect on the
 change in the relative error and the FOM. CADIS showed stronger sensitivity to
-both change in P$_N$ order and quadrature order over CADIS-$\Omega$. CADIS also
-proved to have more and greater magnitude oscillations in the relative error
+changes in both P$_N$ order and quadrature order over CADIS-$\Omega$. CADIS also
+proved to have more and higher magnitude oscillations in the relative error
 between different P$_N$ and quadrature orders. Spikes in the relative error
 occurred in both methods, but more frequently in CADIS. Both
 methods showed improvement in the FOM and relative error with increasing
@@ -50,7 +50,7 @@ orders and quadrature orders.
 Chapter \ref{ch:charprobs} showed a few examples of the anisotropy metrics when
 they showed promising trends with I$_{RE}$ or I$_{FOM}$. These metrics did
 provide information on the relative distribution of anisotropy in the problem,
-and they also showed some trends with the improvement factors. However, many
+and they also showed some trends with the improvement factors. However, most
 problems did not have significant trends, so more work must be done to fully
 characterize hybrid methods using this novel analysis technique.
 
@@ -58,7 +58,8 @@ The $\Omega$-methods have been characterized with their sensitivity to
 geometric and material configuration, as well as their sensitivity to
 deterministic calculation parameter choice. It is clear from the results in
 Sections \ref{sec:CharResults} and \ref{sec:AngleResults} that the
-$\Omega$-methods are not always the best choice for variance reduction methods.
+$\Omega$-methods are not always the best choice for reducing the variance in
+problems with anisotropy.
 This is from a combination of many effects, but primarily the varied range of
 runtimes when compared to CADIS. In many problems, CADIS-$\Omega$ was able to
 obtain lower relative errors for tally bins than CADIS, but the runtimes were

@@ -8,10 +8,11 @@ and FW-CADIS to generate angle-informed variance reduction parameters. The two
 new methods proposed were CADIS-$\Omega$ and FW-CADIS-$\Omega$. Both methods use
 the $\Omega$-flux, a form of the adjoint scalar flux calculated by weighting the
 adjoint angular flux with the forward angular flux, to generate source biasing and weight window
-values. With the forward angular flux normalization, the importance map generated for the
+values. By using the forward angular flux
+normalization, the importance map generated for the
 $\Omega$-methods is adjusted to include the directionality of
 the forward and the adjoint particles without explicitly including angle
-biasing.
+in the source biasing or weight window values.
 
 The $\Omega$-methods were implemented in two software packages developed at Oak
 Ridge National Laboratory: Exnihilo and ADVANTG. The functionality to generate
@@ -24,8 +25,8 @@ $\Omega$-methods, should they have access to the software.
 In addition to the $\Omega$-methods method proposal and
 implementation, CADIS-$\Omega$ has been
 characterized on a wide variety of problems with flux anisotropies. The problems
-were designed to understand the methods' limitations and in what parameter space
-the methods should be used. To more fully understand the methods' behavior and how
+were designed to understand the method's limitations and in what parameter space
+the method can and should be used. To more fully understand the method's' behavior and how
 flux anisotropy affected its ability to perform, a number of anisotropy metrics
 were proposed. These metrics were then used
 to investigate if performance improvement could be correlated with
@@ -33,7 +34,9 @@ anisotropy in any way.
 
 The anisotropy metrics did not show significant trends with the FOM or the
 solution relative error, but their distributions did help reveal more about the
-distribution of anisotropy in the problems. Future use of these metrics may also
+distribution of anisotropy in the problems. In particular, it was easily
+observable how the distribution of anisotropy changed between energy groups for
+a particular problem. Future use of these metrics may also
 aid us in more fully understanding other hybrid methods' performance.
 
 CADIS-$\Omega$ is a promising hybrid method. If used with a well-suited problem,
@@ -43,7 +46,7 @@ $\Omega$-methods are not without their drawbacks. If used in a poorly-suited
 problem they can take substantially more time to transport particles in
 Monte Carlo. The $\Omega$-methods' characterization and performance study
 presented in this dissertation have contributed a broader understanding of these types of
-hybrid methods, and have created a broader path forward for future hybrid
+hybrid methods, and have created ample pathways forward for future hybrid
 methods analysis.
 
 
