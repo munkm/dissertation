@@ -1,0 +1,273 @@
+\section{Suggested Future Work}
+\label{sec:futurewrk}
+
+While this dissertation covered the characterization of CADIS-$\Omega$ over a
+fairly broad spectrum of anisotropy-containing problems, there are a number of
+fruitful pathways by which the method could be improved or characterization
+expanded. Broadly, these fall into three categories: improvements to the
+software implementation and algorithmic design, expansion of the
+characterization space, and application to larger, real-life problems.
+The next few
+subsections addresses each one of these categories individually.
+
+\subsection{Software Improvement}
+\label{subsec:softwareimp}
+
+This subsection addresses the improvements that could be
+made to the software and analysis methods to enhance understanding of the omega
+methods. A discussion on how improving software performance aids in
+future work will start this section.
+An explanation of how extending the breadth of analysis
+helps to understand the $\Omega$-methods further will finish the section.
+
+To calculate the $\Omega$ flux, a rotation of either the adjoint or forward
+flux matrix is
+required to ensure that the directional variable $\Omega$ is consistent between
+the forward and adjoint,
+or that $\Omega_{adjoint} = \Omega_{forward}$. Because quadrature sets
+are not always straightforward to interpolate, a rotationally symmetric
+quadrature set is currently required for computing the $\Omega$-fluxes in order
+to perform this rotation.
+Should a method
+be developed that does have interpolatable quadrature points, it would be a good
+candidate to calculate $\Omega$-fluxes for solutions that are not
+rotationally symmetric.
+
+The anisotropy metrics described in Section \ref{sec:anisotropy_quant} at this
+point have not shown significant trends with either the relative error or figure
+of merit improvement metrics (I$_{RE}$ and I$_{FOM}$). To filter out values of
+each metric to regions more important to the problem solution, two filtering
+algorithms were proposed: one that only uses values of metrics from cells with
+contributon fluxes above the mean contributon flux, and the other that uses
+values from cells that have a flux above the median contributon flux. Using
+these filtering algorithms did show interesting features in the anisotropy
+metric distributions as well as shifts in I$_{RE}$ and I$_{FOM}$. However,
+trends were not apparent for the majority of the metrics.
+A useful modification
+to the filtering algorithm would be to select certain percentages of high-valued
+contributon flux locations. For example, perhaps selecting out the cell locations
+containing the top 10\% of contributon fluxes would reveal a trend in the
+improvement metrics.
+It is possible that too many values are being
+selected from the entire problem even with the existing filters, so an even
+stricter filtering algorithm may help.
+
+To filter the anisotropy metrics, the contributon flux distribution was chosen
+as the filter base. This is an intuitively good choice
+because it will use values near both
+the forward- and adjoint- sources, and also the values between them where
+particles are most likely to flow. Further, the contributon flux is something
+that is method agnostic. That is, it can be used as a filtering
+algorithm for non-$\Omega$ methods and it will still reveal problem information.
+However, an argument could also be made to
+use the omega flux distribution as a filtering base, as that is the method in
+which we are interested. Modifying the filtering algorithms to use the
+$\Omega$-flux distribution may provide trends in the method
+improvement metrics that are not apparent using the contributon flux.
+
+The $\Omega$-methods, as currently implemented in both Exnihilo and ADVANTG, are
+entirely serial. That is, there is no parallelization in any part of the
+$\Omega$-flux calculation, or supporting code to that effect. In the results
+presented in Chapter \ref{ch:charprobs}, T$_{hybrid}$ was calculated to remove
+parallelization effects so that CADIS and CADIS-$\Omega$ were comparable. While
+the results were adjusted accordingly, this is not the best implementation for
+production software or more difficult use cases. As mentioned previously, the
+ADVANTG software is entirely serial, so parallelization is not required for
+VR parameter generation. However, Exnihilo/Denovo is parallelized. The
+parallelization of the $\Omega$-flux calculation in this code
+would significantly improve its
+usability. Parallelization would reduce the actual time to calculate the
+$\Omega$-fluxes and anisotropy metrics.
+
+Another algorithmic improvement to the $\Omega$-methods is to reduce the
+memory requirements for both the computation of the $\Omega$-fluxes and the
+anisotropy metrics. Much of this could be accomplished with parallelization.
+However, even the serial version of the $\Omega$-methods could be adjusted to
+read in the angular flux data in ``chunks'' so as to not read in datasets larger
+than the memory available on the system. As a first order approach, the angular
+fluxes could be read
+in serially by energy group. Depending on the energy group structure, this has
+the potential to
+reduce the memory load at a particular time by 20x or 200x. At present, the
+$\Omega$-methods are limited by memory requirements. Without a large computing
+cluster, there is no feasible way to calculate the $\Omega$-fluxes for a problem
+of reasonable complexity.
+
+Another alternative modification to the $\Omega$-methods is to bypass writing
+the angular flux matrices entirely. This would reduce the I/O requirements for
+the method, and also not demand as much disk space. However, this is a
+non-trivial task, as the forward and angular fluxes for a cell must both be in
+memory to compute the $\Omega$-method for that cell. To store the complete angular
+flux matrices in memory will present the same memory limitations that the $\Omega$-methods
+currently face, so some algorithmic challenges exist should this be a path of
+future work.
+
+The $\Omega$-methods are currently implemented on a localized
+development version of both Exnihilo and ADVANTG. If a larger audience wishes to
+use or access them, they would require support beyond that of a standard
+software release. Depending on the continued characterization of the
+$\Omega$-methods, integrating this software into future releases of Exnihilo and
+ADVANTG may be useful.
+
+Each of the areas proposed in the previous paragraphs are areas in which the
+$\Omega$-methods can be improved upon or areas that may improve our understanding of
+the $\Omega$-methods' behavior. Expanding the filtering algorithm
+for the anisotropy metrics may
+also help us to understand more broadly how anisotropy is distributed in
+different problems. Expanding our understanding of the $\Omega$-methods'
+strengths and deficiencies can also improve future hybrid methods.
+
+\subsection{Characterization Problem Extension}
+\label{subsec:extendcharprobs}
+
+Broadening the scope
+of the characterization problem study
+is another fruitful avenue for exploration. In this
+vein, there exits a two-pronged approach: first extending the types of problems
+(more diverse materials, less air in problems, more diverse geometries) will
+enhance knowledge of the methods. Next, extending the scope of the parametric
+studies will help to inform how resilient the $\Omega$-methods might be to
+changes in the solutions space that indirectly impacts angle.
+In this realm, the deterministic calculation specifics, like
+quadrature type will be addressed.
+
+The characterization problems studied covered a broad range of
+anisotropy-inducing physics. The geometries chosen were fairly
+simple, with very few
+materials. The majority of the problems used air in some portion of their
+geometry to have streaming-induced anisotropy of the flux. Depending on their
+geometries, this caused sampling issues and slowdown of the CADIS-$\Omega$ method.
+For example, the problem variants of the
+steel beam embedded in concrete geometry illustrated the
+CADIS-$\Omega$ method's susceptibility to air. In the air-filled beam
+variant of the problem, the $\Omega$-method had the lowest improvement margin
+when compared to CADIS of the three matierial variants. A
+beneficial extension of the characterization problem study would be to replace
+the
+air in this geometry with a high atomic mass
+material that maintains scattering anisotropy but includes more
+sampling interaction points. Using problems with greater material diversity
+and more problems
+with preferential flowpaths (that are not air),
+would be an interesting extension
+to the characterization problem materials.
+
+While the characterization problems are fairly simple
+geometrically, it may be advantageous to
+investigate simpler problem geometries with even less
+geometric complexity. In
+comparing the single- and multiple-turn labyrinths, we observed that with too
+little anisotropy in the problem, the $\Omega$ method's performance suffers.
+However, a simpler
+geometry of the labyrinth (perhaps an elbow bend), or a hallway in concrete with
+no air rooms, can show if there is a turnover in labyrinth anisotropy in which
+the $\Omega$ methods perform the best.
+
+The results presented in Section \ref{sec:AngleResults} showed that
+CADIS-$\Omega$ is generally more resilient than CADIS to changes in
+quadrature and P$_N$ discretization.
+As a result, CADIS-$\Omega$ can use a coarser problem
+discretization to obtain variance reduction parameters, saving
+computational cost in terms of both runtime and memory.
+The results in Section \ref{sec:AngleResults} also
+showed that CADIS-$\Omega$ was less
+susceptible to large fluctuations in the relative
+errors in intermediate energy energy bins.
+
+Beyond sensitivity to quadrature order and P$_N$ order, it may be worth
+investigating the sensitivity of each method to other deterministic calculation
+parameters. If, like quadrature order and P$_N$ order, CADIS-$\Omega$ generates
+better importance maps with lower-fidelity solutions in other deterministic
+parameters, then even more
+computational time could be saved.
+For something like
+mesh refinement, the number of mesh cells can significantly alter the
+speed at which the deterministic solution converges.
+
+Investigating the impact of quadrature type may also be an area of future work.
+In Section \ref{sec:AngleResults}, it was observed that both CADIS and
+CADIS-$\Omega$ showed greater sensitivity to changes in quadrature order than
+P$_N$ order. CADIS showed a greater sensitivity to changes in quadrature order
+than CADIS-$\Omega$. We expect that the behavior of other quadrature sets will
+be similar, but this may be worth verifying in future use cases. It is possible
+that the different properties of different quadrature sets may more strongly
+affect the $\Omega$-methods' performance.
+
+In addition to characterizing the performance of CADIS-$\Omega$, it will be
+important to characterize FW-CADIS-$\Omega$. In Chapter \ref{ch:methodology},
+the $\Omega$-method theory for both CADIS and FW-CADIS were presented. Indeed,
+FW-CADIS-$\Omega$ has also been implemented in Exnihilo and ADVANTG. The scope
+of this project did not extend to the characterization of FW-CADIS-$\Omega$,
+though
+it could prove useful to characterize for large, global calculations. A similar
+set of characterization problems can be designed for FW-CADIS-$\Omega$, but with
+global mesh tallies rather than small detectors.
+
+It would also be beneficial to
+perform a thorough investigation into the $\Omega$-methods' mitigation or
+multiplication of ray effects. Both the forward and the adjoint angular fluxes
+will have ray effects in problems with long mean free paths. As discussed in
+Section \ref{sec:CharResults},
+the ray effects may also be multiplied depending on the geometric
+configuration of the problem. The degree to which the $\Omega$-flux exacerbates
+or minimizes ray effects as a function of these locations would be an
+interesting study and may help in further specifying to which problems the
+$\Omega$-methods is suited. Further, the difference in the construction of the
+adjoint between CADIS and FW-CADIS means that CADIS-$\Omega$ and
+FW-CADIS-$\Omega$ will have different sensitivities to ray effects.
+
+Further characterization of the $\Omega$ methods' performance with different
+problem geometry and material configurations will deepen our understanding for
+which applications the methods may be best suited. For large scale, high-impact,
+high-complexity problems, issues observed in the characterization problem
+studies may be exacerbated. Before applying this method to application problems,
+it will be important to have confidence that the methods will achieve better
+results than other methods.
+
+\subsection{Application Problems}
+\label{subsec:appprobs}
+
+Based on the data presented in Sections \ref{sec:CharResults} and
+\ref{sec:AngleResults} we believe that the
+CADIS-$\Omega$-method has
+the potential to be applied to a number of application problems.
+These
+problems include, but are not limited to: detectors near dry cask nuclear waste
+storage, dry cask storage beds, nuclear containment buildings, and nuclear spent fuel
+cooling pools.
+
+The dry casks are a promising use case for the CADIS-$\Omega$-method because
+they have small air
+channels for ventilation, but their body is primarily metal tubes containing
+nuclear fuel surrounded by concrete.
+These rods are pointed towards the ventilation ducts, and so the
+results from the steel bar embedded in concrete suggest that this may be a more
+complex application of the physics it represents.
+
+Further, a bed of dry cask storage containers will have several spaces through
+which particles may travel. A use case of this may be to calculate the dose rate
+standing at the boundary of such a facility, or to consider if the cask loading
+matches the owner-provided loading list. Because this problem has so much
+air, it may be more difficult for the $\Omega$-methods. However, with the thick
+soil boundary in the $z-$plane the $\Omega$-methods may still perform well.
+
+Nuclear spent cooling pools have used fuel rods clustered in assemblies arranged
+in rows submerged in water. These rods emit a range of
+highly energetic particles. Spent fuel cooling
+pools will be an interesting extension of the steel beam in concrete, as water
+is a highly moderating material not dissimilar to the concrete from the
+characterization problem. The fuel rods act as both a source and a preferential
+flowpath, so the differing source distribution in this
+problem may yield interesting results.
+
+Each of these application problems uses the physics modeled in the
+characterization problems but applies them to a more geometrically and
+materially complex problem. In extending the
+$\Omega$-methods to these problems and comparing them to CADIS and FW-CADIS, we
+can also understand how sensitive the $\Omega$-methods are to more difficult
+problems. If, as noted in the characterization problems subsection, the
+$\Omega$-methods are more resilient to deterministic problem solution fidelity
+in larger more complex problems,
+these problems will benefit significantly from the decreased deterministic
+solution time and the lower computational burden demanded by the
+$\Omega$-methods.
