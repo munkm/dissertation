@@ -1,24 +1,25 @@
 \section{Description of the Characterization Problems}
 \label{sec:AngleProbDesc}
 
-In characterizing the $\Omega$ methods, we aim to determine in which problems
-the $\Omega$-methods perform well, and then quantify that success.
-First, it must be determined how effective the
+In characterizing the $\Omega$-methods, we aim to determine in which problems
+they perform well, and then quantify that success.
+First, we must determine how effective the
 $\Omega$-methods are in reducing the variance for a tally result in Monte Carlo.
-This will be done by assessing and comparing the FOMs between different VR methods.
-Also, the method should be investigated on a diverse set of anisotropic
+This is done by assessing and comparing the FOMs between different VR methods.
+Also, the method must be investigated using a diverse set of anisotropic
 problems. By constructing problems that have
-different mechanisms by which the flux may be or become
-anisotropic, potential strengths or weaknesses of the method can be identified.
-Another desirable metric would be to quantify the method's success given the
+different mechanisms causing or inducing anisotropy in the flux,
+potential strengths or weaknesses of the method can be isolated as
+a function of these mechanisms.
+In addition to comparing the FOMs or REs between methods,
+another desirable metric by which to measure the method's success given the
 degree of anisotropy in the problem. Recall that different
 means of quantifying the flux
-anisotropy were presented in Section \ref{sec:anisotropy_quant}. With a diverse
-selection of characterization problems, we will obtain variation in the flux
-anisotropy in each problem as well as the resultant FOMs. This will provide us
+anisotropy are described in Section \ref{sec:anisotropy_quant}. With a diverse
+selection of characterization problems, we obtain variation in the flux
+anisotropy in each problem as well as the resultant FOMs. This provides us
 with a path forward with which to use the $\Omega$-methods in a deeper
-angular-sensitivity study, which will be discussed in Section
-\ref{sec:AngleResults}.
+angular-sensitivity study.
 
 \subsection{Identification of Anisotropy-Inducing Physics}
 \label{subsec:AngleProbID}
@@ -27,45 +28,51 @@ There exists a rich history of using hybrid methods in problems with strong
 angular dependence, as summarized in Chapter \ref{ch:lit_review}. Angular
 dependence may appear in a problem through several means--both physical and
 computational.
-Mosher et al. noted in their threat-detection work with ADVANTG
+Mosher et al.\ \cite{mosher_automated_2009} noted in their
+threat-detection work with ADVANTG
 that problems with strongly directional sources and
 problems with ``thin'' materials like air were difficult for ADVANTG to effectively
-reduce the variance. The attributed this to strongly anisotropic behavior of the
-importance function that were not reflected well by the scalar flux
-\cite{mosher_automated_2009}. Sweezy also found that weight windows obtained
+reduce the variance. They attributed this to strongly anisotropic behavior of the
+importance function that were not reflected well by the scalar flux.
+Sweezy~\cite{sweezy_automated_2005} also found that weight windows obtained
 from a hybrid S$_N$ calculation were not good for a dogleg void problem,
-where ray effects from the $S_N$ calculation generated poorer weight windows
-than a method without ray effects \cite{sweezy_automated_2005}. Recall from
-Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary}, that ray
+where ray effects from the S$_N$ calculation generated poorer weight windows
+than a method without ray effects \footnote{Recall from
+Sections \ref{sec:ContributonImportance} and \ref{sec:litsummary} that ray
 effects are a nonphysical effect seen in the flux solution that arise from
 the angular discretization of the problem.
 Ray effects are common in situations where there are strong
-streaming effects or if there exists a strong source emitting particles with
-long mean free paths in the material. Though they did not observe ray effects in
+streaming effects or if a strong source is emitting particles with
+long mean free paths in the material.}. Though they did not observe ray effects in
 the importance map for the problem, Peplow et
-al. also found that CADIS struggled with thin material streaming in a spherical
-boat test problem \cite{peplow_consistent_2012}.
+al.~\cite{peplow_consistent_2012} also found that CADIS struggled with thin
+material streaming in a spherical boat test problem.
 
 The examples of angle-dependence in problems affecting hybrid methods' success
 illustrate that the flux can have anisotropy resulting from more than one
 mechanism. Based on these examples, we have identified several separate
 processes that affect the flux anisotropy. These processes can be grouped into
-three categories: anisotropy in the flux resulting from a strongly
-directional source; anisotropy resulting from strong differences between
+three categories:
+\begin{itemize}
+  \itemsep0em
+  \item anisotropy in the flux resulting from strongly directional sources,
+  \item anisotropy resulting from strong differences between
 material properties (this can be due to differences in
-materials spatially and due to changes in interaction probabilities);
-and anisotropy in the flux from algorithmic limitations (ray effects).
-These processes have some parameter
-space that overlap, so this section will continue with a brief discussion about how each
-of these apply to anisotropic problems.
+materials spatially or due to changes in interaction probabilities as a function
+of energy),
+  \item anisotropy in the flux from algorithmic limitations (ray effects).
+\end{itemize}
+These processes overlap. Consequently, this section continues
+with a brief discussion about how each
+mechanism applies to anisotropic problems.
 
 A strongly directional source is one that emits particles in a very small solid
 angle of angle-space. The most extreme example of this would be a
 monodirectional source, while an extreme opposite would be an isotropic source.
 This particular anisotropy-creating process
 is source-specific and does not depend on the rest of the
-problem configuration. Characterization problems will have sources of both types
-to ensure parameter space is covered.
+problem configuration. Our characterization problems will have sources of both types
+to ensure the full parameter space is covered.
 
 % This next paragraph is maybe a little confusing and could use rewording.
 The next subset of anisotropy-inducing processes are those that result form
@@ -73,7 +80,9 @@ strong differences between material properties. As noted, this can be from
 the geometric configuration of the problem, or from variations in the cross
 sections within a geometric location. To illustrate the differences in the way
 the problem can physically induce anisotropy in the flux, several simple thought
-experiments will be presented. Consider first the extreme example of material
+experiments will be presented.
+
+Consider first the extreme example of material
 A which has some low absorption probability,
 and material B which is a pure absorber. Only
 particles that travel through material A will eventually reach the tally
@@ -86,8 +95,9 @@ problems, and were discussed at length in Section
 have a low scattering probability (airlike), or it can be highly scattering. In
 scattering events, neutral particles can either lose very little energy with a high Z
 material, like lead, or they can lose a lot of energy with a low Z material.
-These will be considered separately, because the energy spectrum of the
+These are  considered separately, because the energy spectrum of the
 particles affects the particle's interaction probability.
+
 Consider another example of an isotropic
 point source immersed in a pure thin material. Because particles have a very low
 probability of interaction in the material, they will travel almost uniformly
@@ -112,45 +122,44 @@ is a nonphysical effect and can actually affect variance reduction
 performance. In the case of ray effects, we aim to see if the
 $\Omega$-methods are more robust in avoiding them in generating VR parameters.
 Because ray effects are primarily seen in large regions with low interaction
-probabilities, some of the characterization problems will need to
-incorporate these regions into their geometries.
+probabilities, some of the characterization problems must
+incorporate these types of regions into their geometries.
 
 In this subsection, four primary physical mechanisms by which the flux may
-be anisotropic were identified. These are streaming paths, problems with high
+be anisotropic were identified. These are: streaming paths, problems with high
 scattering effects, problems with high material heterogeneity (specifically with
 materials with strong differences in scattering and absorption probabilities),
 and problems with monodirectional sources. As described in the preceding
 paragraphs, a few of these mechanisms may overlap
-with one another. They comprise a large subset of flux
-anisotropy-inducing physics, and combined with different geometric arrangements
-in sample problems a diverse group anisotropic problems can be formulated. These
-problems can then be used to characterize the $\Omega$-methods.
+with one another. Together, they compose an assortment of anisotropy-inducing
+physics. Combined with different geometric arrangements
+a diverse group of anisotropic problems can be formulated.
 
 \subsection{Problem Specifications}
 \label{subsec:ProbSpecs}
 
 With the anisotropy-inducing physics described in Section
 \ref{subsec:AngleProbID}, a set of characterization problems that have
-different combinations of each of these effects can be conceptualized. With
-different anisotropy-inducing physics in the system, these problems will provide
+different combinations of each of these effects can be conceptualized.
+These problems provide
 an overview of how the $\Omega$-methods perform in an assortment of anisotropic
-problems. The primary anisotropy-inducing features identified are: streaming
-paths, material heterogeneity, materials with highly differing scattering
-probabilities, and monodirectional sources. As previously described, these fall
+problems. As previously described, these fall
 into two broad categories: anisotropy caused by the problem materials and
-geometry, and anisotropy caused by the source definition. In the next few
-paragraphs, each problem will be described and will be accompanied by
-a justification for which
-anisotropy-inducing physics is in each problem. A summary of which physics are
+geometry, and anisotropy caused by the source definition. In the next several
+paragraphs, the material and geometric configuration of each
+problem will be described. This will be supplemented with an explanation of
+which
+anisotropy-inducing physics are contained in each problem.
+A summary of which physics are
 in each problem is provided in Table \ref{tab:probphysics}.
 
 \subsubsection*{Labyrinths}
 
 The labyrinth problems have isotropic point sources on the left hand side of the
-problem emitting a watt spectrum of
+problem emitting a Watt spectrum of
 neutrons approximating the energy spectrum emitted by that of $^{235}$U fission.
 On the right hand side of the problem there is a NaI detector recording the flux.
-They are both composed of a concrete maze with an air channel through the maze, and
+They are composed of a concrete maze with an air channel through the maze, and
 then open air channels at either end of the channels. The first variant of the
 labyrinth has a single turn, as illustrated in Figure \ref{fig:maze2geom}, and
 the second labyrinth has multiple turns, as illustrated in Figure
@@ -158,7 +167,7 @@ the second labyrinth has multiple turns, as illustrated in Figure
 likely to have ray effects in the air region near the forward source. However,
 because far more scattering events will be required for a particle to exit the
 channel in the multi-turn maze, ray effects will likely be less prominent in the
-air region near the detector of that variant problem than it is in the single
+air region near the detector of that variant problem than in the single
 turn maze. Both problems have strong
 differences in interaction probabilities between the air and the concrete,
 thus they will have material heterogeneity. Further, because the concrete is
@@ -189,17 +198,20 @@ composed of several lighter-mass elements, these will also be highly scattering.
 
 Figure \ref{fig:prob1geom} is a variant problem with a steel beam embedded in
 concrete. A NaI detector is located on the right hand side of the problem to
-record the response in CADIS problems. The source is a 80x80cm sheet pointed in
-towards the steel structure in the $+x$ direction emitting 10MeV neutrons.
+record the response in CADIS problems. The source is a 80x80 centimeter
+sheet pointed in
+towards the steel structure in the $+x$ direction emitting 10 MeV neutrons.
 Because the particles have preferential flow through the steel but do do not
 have long streaming paths, this problem has material heterogeneity and will be
-highly scattering, but it will not have streaming paths in the shielding region.
+highly scattering, but will not have streaming paths in the shielding region.
 Further, because the source is emitted from a thin plate in $+x$, it is
 monodirectional. This problem may have some ray effects occurring from
-backscattering off of the steel and concrete in the left side air region, and it
-may also have some exiting the beam on the right hand side. However, because
+backscattering off of the steel and concrete in the left side air region.
+It
+may also have ray effects exiting the beam on the right hand side. However, because
 significantly more scattering will happen in the concrete, the ray effects on
-the right hand side will be less pronounced than in the low-density maze exits.
+the right hand side will be less pronounced than in the air exits of the
+labyrinths.
 
 \subsubsection*{U-shaped corridor}
 
@@ -210,15 +222,15 @@ the right hand side will be less pronounced than in the low-density maze exits.
   \label{fig:prob2geom}
 \end{figure}
 
-The u-shaped corridor illustrated in Figure \ref{fig:prob2geom} is somewhat
+The U-shaped corridor illustrated in Figure \ref{fig:prob2geom} is somewhat
 similar to the maze variants from Figs. \ref{fig:maze2geom} and
 \ref{fig:maze1geom}. On the left-hand side of the corridor there is a point source
-emitting a watt specturum of $^{235}$U neutrons. The right leg of the corridor
+emitting a Watt spectrum of $^{235}$U neutrons. The right leg of the corridor
 has a NaI detector. Without the large air voids in the labyrinth variants, the
 U-shaped corridor will have
-less-prominent ray effects. The heterogeneity between
+less prominent ray effects. The heterogeneity between
 the air and concrete will preferentially transport particles through the air,
-and particles interacting with the concrete will downscatter in energy. This
+and particles interacting with the concrete will downscatter in energy.
 
 \subsubsection*{Concrete shielding with rebar}
 
@@ -233,12 +245,13 @@ The shielding material illustrated in Figure \ref{fig:prob4geom} is built off of
 the steel structural beam problem in Figure \ref{fig:prob1geom}. However, this is a more
 realistic illustration of rebar in concrete. In this problem, a NaI detector is
 used to measure the response on the right hand side of the problem in yellow.
-The source is both space- and energy-dependent, emitting a watts spectrum of
-neutrons characteristic of 235U fission, and is distributed in a 100x160cm plate
+The source is both space- and energy-dependent, emitting a Watt spectrum of
+neutrons characteristic of $^{235}$U fission, and is distributed in a 100x160
+centimeter plate
 on the left hand side of the problem. The source is monodirectional in $+x$.
 The two images provided show
 different xy-plane cutaways of the shielding, with steel rebar running through
-the concrete in different directions. This problem should have angular
+the concrete in different directions. This problem will have angular
 dependence, but preferential flowpaths through the concrete are not directed
 towards the detector location on the other side of the shielding in some of the
 rebar. This problem has material heterogeneity both in the concrete and between
@@ -259,20 +272,20 @@ A small application problem relevant to the interests of this project is the
 therapy room illustrated in Figure \ref{fig:therapygeom}. This room has concrete
 walls, a water-based phantom that is being irradiated by a monodirectional
 source in the room, and a hallway where a therapy technician might walk. In a
-CADIS-run of this problem, we seek to calculate the response in the
+CADIS run of this problem, we seek to calculate the response in the
 technician in the hallway from particles that are not absorbed by the patient in
 the room. Because this problem is primarily air with concrete
 borders, it will have strong streaming effects in the air. Particles that do
 make it to the technician will be produced by emission from the patient in the
-room, by scattering off of the problem air, or by scattering off of the problem
-walls. Because of the high fraction of air in this problem, we also anticipate
+room, by scattering off air or by scattering off walls.
+Because of the high fraction of air in this problem, we also anticipate
 ray effects to occur. While there will be scattering in this problem, it will
 not be as strong of an effect as other characterization problems.
 
 Now that the broad subset of characterization problems have been described,
 the physics that each contains is summarized in Table \ref{tab:probphysics}.
-Upon glancing at the table, one may see that it can be difficult to separate
-out one physical mechanism from another when constructing problems. This is
+The table illustrates that it is difficult to separate one cause of flux
+anisotropy from another in a characterization problem. This is
 especially true in generating a problem that has ray effects without streaming
 paths, and in constructing a highly scattering problem that has preferential
 flow paths but does not have material heterogeneity. This is a
@@ -294,33 +307,35 @@ area that may be improved upon in future work.
 % monodirectional, and some are monospatial(?) (point sources). A table would be
 % a good way to summarize this information.
 
-\subsection{Introduction the Presented Data}
+\subsection{Introduction to Data Visualization and Analysis}
 \label{subsec:resultsintro}
 
 At this point several characterization problems have been identified for their
 properties in inducing anisotropy in the particle flux.
 Prior to going through the results for each of the characterization problems,
-this section will show how the data for each problem will be presented and will
-walk through the reasoning behind this approach to the analysis. First, this
-section will start with example tables and figures of the FOM and tally results.
-Then, plots explaining the anisotropy metrics will follow. This will be
+this section shows how the data for each problem is presented and
+walks through the reasoning behind this approach to the analysis. This
+starts with example tables and figures of the FOM and tally results.
+Then, plots explaining the anisotropy metrics follow. This is
 accompanied by a
-discussion about how the anisotropy metrics will be related to the FOM and the
-relative error.
+discussion about how the anisotropy metrics can be
+related to the FOM and the relative error.
+
+\subsubsection*{Figure of Merit and Timing Tables}
 
 In Section \ref{sec:FOMvariants} several equation variants of
-the Figure of Merit were
-presented as quantifications of method success. The FOMS for each
-characterization problem will be presented in tabular form, similar to Table
+the FOM were
+presented as quantifications of method success. The FOMs for each
+characterization problem are presented in tabular form, similar to Table
 \ref{tab:fom_defaults}. As discussed in that section, the FOM is dependent on
 the relative error and the time to obtain that relative error. For the hybrid
 cases, six different FOMs will be presented: three FOMs based on the tally average
 relative error, the tally maximum relative error, and the tally minimum relative
 error, and two FOMs based on the Monte Carlo runtime and the hybrid runtime. The
 unbiased analog Monte Carlo does not have a deterministic runtime, so only the
-three FOM variants based on the relative error will be presented for those runs.
+three FOM variants based on the relative error are presented for those runs.
 When analyzing the results in the FOM table for each characterization problem,
-consider also that the tally average relative error is calculated from all
+consider that the tally average relative error is calculated from all
 particles contributing to all tally bins in the problem. Thus the FOM reported
 for the tally average relative error may be outside of the bounds of the tally
 minimum or the tally maximum relative error.
@@ -331,32 +346,34 @@ in brackets.
 \begin{table}[h!]
   \centering
   \input{./chapters/characterization_probs/figures/sample_data/fom_defaults}
-  \caption[Table of FOM variants used to measure $\Omega$ performance.]{
-  Table of FOM variants used to measure $\Omega$ performance. Relevant Eqs. can
+  \caption[Table of FOM variants used to measure $\Omega$-method performance.]{
+  Table of FOM variants used to measure $\Omega$ performance. Relevant equations
+  can
   be found in Section \ref{sec:FOMvariants} and are referenced in the table in
-  brackets.}
+  parentheses.}
   \label{tab:fom_defaults}
 \end{table}
 
-Tables calculating the FOMs summarized in Table \ref{tab:fom_defaults} may also
+Tables calculating the FOMs summarized in Table \ref{tab:fom_defaults} may
 not have evaluated FOMS in some locations. These will be noted with a dashed
 line, or ``--''.  These values will generally be in the minimum relative error
-section of the FOM tables, and they represent a zero valued relative error. This
+section of the FOM tables, and they represent a zero relative error. This
 does not mean that infinite particles have been sampled (so the relative error
 is infinitely small), but rather that no particles have been binned for that
-energy bin and result in a zero-valued relative error.
+energy bin.
 This technically results in an infinite FOM, but in reality
 represents a bin that will never converge. Because this value will hold no
-meaning in our quantification of the $\Omega$-method's success, the infinite
-valued FOM will not included in the table.
+meaning in our quantification of the $\Omega$-methods' success, the infinite
+valued FOM is not included.
 
 
-Table \ref{tab:time_defaults} further reports the times used to calculate the
-FOM values in \ref{tab:fom_defaults}. This table is split into three
+Table \ref{tab:time_defaults} reports the times used to calculate the
+FOM values in Table \ref{tab:fom_defaults} more detail. This table is
+split into three
 vertical regions: the MCNP time spent doing Monte Carlo transport (T$_{MC}$),
 the deterministic time spent in ADVANTG/Denovo (T$_{det}$),
 and the walltime (T$_{hybrid}$), which is the
-summation of the two. The deterministic time section of the table contains
+summation of the two. The deterministic time section contains
 further segmentations of timing. This is because processes in ADVANTG are
 run using different computational resources. ADVANTG itself is a driver script
 that can launch a paralellized run in Exnihilo/Denovo, but it also postprocesses the
@@ -370,6 +387,15 @@ clock time is multiplied by the total number of cores to obtain T$_{denovo}$.
 This quantity is summed with
 the runtimes of the other serial tasks to obtain the total deterministic runtime.
 
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
+  \caption[Table of differing times used to measure $\Omega$ performance.]{
+    Table of differing times used to measure $\Omega$ performance. These times
+    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
+  \label{tab:time_defaults}
+\end{table}
+
 Two other times are listed under the deterministic time that may or may not be
 included in T$_{hybrid}$, which are T$_{\Omega}$ and T$_{dispose}$. T$_{dispose}$ is the
 reported times that are not included in the calculation of T$_{det}$ in either
@@ -380,12 +406,12 @@ of times and provides a more realistic comparison between the performance of
 both methods.
 
 The reported $\Omega$ time, T$_{\Omega}$, is the total
-time spent in the tasks unique to the $\Omega$ methods. This includes reading
+time spent in the tasks unique to the $\Omega$-methods. This includes reading
 in the angular flux files, performing the computation of Eq.
 \eqref{eq:omega_basic}, and writing the $\Omega$-results to a file.
 The $\Omega$ time,
 though run in Denovo, is still a serial calculation so is separated out from the
-total Denovo time. The $\Omega$ method tasks at this time are not
+total Denovo time. The $\Omega$-method tasks at this time are not
 parallelized, so the clock time is treated in the same way as the reported
 ADVANTG time. Because the majority of the $\Omega$-flux generation
 infrastructure is implemented in Exnihilo rather than ADVANTG, future expansions
@@ -395,7 +421,8 @@ Because the adjusted FOM (the FOMs labeled FOM$_{hybrid}$ in Table
 \ref{tab:fom_defaults}) uses T$_{Hybrid}$, which is the total runtime of the
 Monte Carlo calculation (T$_{MC}$) and the hybrid/deterministic run preceding it
 (T$_{det}$), it will differ between
-the $\Omega$ methods and standard CADIS and FW-CADIS. For CADIS, T$_{det}$ is
+the $\Omega$-methods, standard CADIS, and standard FW-CADIS.
+For CADIS, T$_{det}$ is
 the sum of the ADVANTG runtime and the wall time of the Denovo transport. For
 CADIS-$\Omega$, this is the sum of the ADVANTG runtime, the wall time of the
 Denovo transport, and the time spent in the $\Omega$-flux calculation. How each
@@ -410,16 +437,9 @@ full angular flux solutions to calculate the $\Omega$-flux. While standard CADIS
 has the ability to print the full angular flux solutions as CADIS-$\Omega$, it
 is neither a requirement nor is it standard practice. The I/O demands to both write
 the angular fluxes and then read them back in is a potential bottleneck in the
-method as it is implemented now.
+method based on the current implementation.
 
-\begin{table}[h!]
-  \centering
-  \input{./chapters/characterization_probs/figures/sample_data/time_defaults}
-  \caption[Table of differing times used to measure $\Omega$ performance.]{
-    Table of differing times used to measure $\Omega$ performance. These times
-    are used to calculate the FOMS in Table \ref{tab:fom_defaults}. }
-  \label{tab:time_defaults}
-\end{table}
+\subsubsection*{Tally Result and Relative Error Plots}
 
 Each of the problems introduced in Section \ref{subsec:ProbSpecs} has a
 10x10x10 cm detector in which the tally response is calculated. The tallies are
@@ -464,6 +484,8 @@ solid line.
   \caption[Sample results for a characterization problem tally.]{Sample results
   for a characterization problem tally.}
 \end{figure}
+
+\subsubsection*{Anisotropy Metrics}
 
 Equations \eqref{eq:metric_one} through \eqref{eq:metric_six} in
 Section \ref{sec:anisotropy_quant} presented several different ways by which the
@@ -587,6 +609,8 @@ but with all metrics. As a result,
 future plots of the metrics will be in the style of those
 in Figure \ref{fig:sampledistros} rather than \ref{fig:samplestrips}.
 
+\subsubsection*{Filtered Anisotropy Metrics}
+
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
@@ -661,6 +685,8 @@ been removed. Applying the second filter results in Figure
 removed from the M$_2$ distributions. Further, features in the metric
 distribution once obviscated by the
 tails are now visible.
+
+\subsubsection*{Improvement Factor Correlations with Anisotropy}
 
 Now that a way of visualizing the metric distributions has been presented,
 we seek to find
