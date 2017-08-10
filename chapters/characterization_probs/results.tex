@@ -1454,20 +1454,53 @@ the tally average and maximum relative error than the nonbiased analog. This is
 due to CADIS-$\Omega$ requiring nearly 30x longer to run Monte Carlo than the
 nonbiased analog.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \centering
-  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
+    \caption[Tally results comparison between methods for rebar-embedded concrete.]
+    {Tally results comparison between methods for rebar-embedded concrete.}
+    \label{fig:rebarresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_error_compare.pdf}
+    \caption[Tally relative error comparison between methods for rebar-embedded concrete.]
+    {Tally relative error comparison between methods for rebar-embedded concrete.}
+    \label{fig:rebarerror}
+  \end{subfigure}
+\caption[Tally result and error for rebar-embedded concrete, monodirectional
+Monte Carlo source]{Tally result and error for rebar-embedded concrete, monodirectional
+  Monte Carlo source}
+\label{fig:monorebarresults}
+\end{figure}
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_result_compare.pdf}
   \caption[Tally results comparison between methods for rebar-embedded concrete.]
   {Tally results comparison between methods for rebar-embedded concrete.}
   \label{fig:rebarresult}
+  \end{subfigure}
 \end{figure}
-
-\begin{figure}[h!]
+\begin{figure}[htb!]\ContinuedFloat
   \centering
-  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_error_compare.pdf}
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+  \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_error_compare.pdf}
   \caption[Tally relative error comparison between methods for rebar-embedded concrete.]
   {Tally relative error comparison between methods for rebar-embedded concrete.}
   \label{fig:rebarerror}
+  \end{subfigure}
+\caption[Tally result and error for rebar-embedded concrete, isotropic Monte
+  Carlo source]{Tally result and error for rebar-embedded concrete, isotropic
+    Monte Carlo source}
+\label{fig:monorebarresults}
 \end{figure}
 
 Figure \ref{fig:rebarresult} shows that the tally results for the rebar-embedded
@@ -1502,7 +1535,17 @@ significant portion of its time sampling less useful regions.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_err_stats_mean.pdf}
-    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete.}
+    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, monodirectional
+  source.}
+    \label{fig:M3statsrebar}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/metric_three_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, isotropic
+  source.}
     \label{fig:M3statsrebar}
   \end{subfigure}
   \caption[M$_3$ distribution and trends for rebar-embedded concrete
