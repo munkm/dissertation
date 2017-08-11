@@ -1,0 +1,16 @@
+\begin{tabular}{L{2.5cm}L{3cm}C{3cm}C{4cm}C{2cm}}
+\toprule
+          &              &          CADIS &   CADIS-$\Omega$ &         analog \\
+          &              & time (minutes) & time (minutes)   & time (minutes) \\
+\midrule
+MCNP time &  total (T$_{MC}$) &         T$_{MC,cad}$ &     T$_{MC,cad-\Omega}$ & T$_{MC,analog}$  \\
+deterministic time & advantg time (T$_{adv}$) &           0.18 &           0.18 &            -- \\
+    & denovo time (T$_{denovo}$) &           5.69   &          25.64 &            -- \\
+                   & dispose time &           0.00  &           0.16 &            -- \\
+                   & omega time (T$_{\Omega}$)&    --      &           0.66 &            -- \\
+                   & total (T$_{det}$) &  T$_{adv}$+T$_{denovo}$  &
+                   T$_{adv}$+T$_{denovo}$+T$_{\Omega}$ &            -- \\
+wall time & total (T$_{hybrid}$) &  T$_{MC,cad}$ + T$_{det,cad}$ &  T$_{MC,cad-\Omega}$ + T$_{det,
+cad-\Omega}$ &  T$_{MC,analog}$  \\
+\bottomrule
+\end{tabular}

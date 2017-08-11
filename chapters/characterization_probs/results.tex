@@ -1,0 +1,2070 @@
+\section{Characterization Problem Results}
+\label{sec:CharResults}
+
+To quantify the $\Omega$-method success for a variety of anisotropy-inducing
+physics, we will present various forms of the Figure of Merit, as described in
+Section \ref{sec:successmetrics}.
+In the preceding subsections, a
+subset of flux anisotropy-inducing physics have been identified
+and a subset of problems that contain these physics have been conceived.
+In this section, the results for CADIS-$\Omega$, CADIS, and nonbiased Monte Carlo
+will be presented for each of these problems. Explanations on the performance of
+the $\Omega$ methods will accompany the results for each problem. In some cases,
+variants of problems were run to confirm or refute observations seen
+in other problems.
+
+\subsection{Computational Specifications}
+\label{subsec:comp_specs}
+
+As noted in a number of the previous sections, hybrid methods require both a
+deterministic and a Monte Carlo calculation to obtain a problem result. These
+transport codes require different computational parameters to obtain an answer.
+For the characterization problems the computational parameters are summarized in
+Table \ref{tab:simulation_defaults}; the parameters for the deterministic and
+Monte Carlo calculations are demarcated in the table.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/simulation_defaults}
+  \caption[Default simulation values for characterization problems.]{
+    Default simulation values for the characterization problems. The values for
+    ADVANTG primarily signify parameters used to run Denovo, with exceptions for
+    calculating biasing parameters, which is done exclusively in ADVANTG.
+    MCNP-specific values are those used for Monte Carlo runs.
+  }
+  \label{tab:simulation_defaults}
+\end{table}
+
+The first portion of the table summarizes the values used by ADVANTG. Note that
+these values all pertain to the Denovo deterministic solver, which is set up by
+ADVANTG. The parameter types marked with a dagger have no default in ADVANTG.
+We have chosen to use a relatively course 27 group energy group library.
+Because the characterization problems are meant to identify the method's
+performance pertaining to flux anisotropy, and we expect the energy group
+structure to have less of an effect on anisotropy conditions than other
+parameters, we opted for a
+computationally inexpensive energy group mesh for the deterministic solver.
+Further, this group library was designed for radiation shielding applications,
+so it applies to the majority of the characterization problems.
+
+The boundary conditions for all of the characterization problems will be vacuum.
+At this time, ADVANTG does not support reflective or mirror boundary conditions
+so this is a limitation in application space that we cannot address at this
+time. The Monte Carlo code we use does support vacuum boundary conditions, but a
+discrepancy in boundary conditions between deterministic and Monte Carlo
+calculations would result in the simulation of a fundamentally different problem.
+
+Unless noted, the values in this subsection of the table are ADVANTG
+default values. They are a good initial choice for characterization of the
+method because they are often chosen as the parameters for hybrid methods studies
+by experienced and inexperienced ADAVANTG users.
+Further, these values are defaults in ADVANTG for their
+computational stability, such as not having negative valued weights or fluxes,
+stable convergence, a relatively fast time to a solution, et cetera. Due to
+the good properties exhibited by the solver options and because users first
+using the $\Omega$-methods are likely to choose these values, the values in
+Table \ref{tab:simulation_defaults} will be used for the characterization of the
+$\Omega$-methods.
+
+The latter section of the table summarizes the Monte Carlo code MCNP values for
+each of the problems. The value of $1e7$ particles as a particle cutoff
+was chosen because it made the
+error bins in the majority of the nonbiased Monte Carlo
+characterization problems less than 100\%. In some problems that are
+extraordinarily difficult for Monte Carlo to solve without biasing, there were
+tally bins with very high errors. In the following subsections they will be
+clearly indicated and their results will not be plotted so as to not obfuscate
+the CADIS and CADIS-$\Omega$ results. Time cutoffs were not chosen because
+we decided to measure how effective the $\Omega$ methods were at reducing the
+variance per particle. Depending on the flux maps generated from CADIS and
+CADIS-$\Omega$, the time to transport a finite amount of particles may vary. As
+a result, the reported times from a simulation can tell us whether the method
+requires more sampling than other methods in addition to how fast it takes to
+reach a desired relative error.
+
+The responses in the NaI detectors of each of
+the problems was measured with an MCNP track length tally (f4). The tally was
+energetically binned to match the dataset of the multigroup dataset provided in
+ADVANTG, and the entire volume of the detectors were used with no spatial
+binning. It should be noted that while the tally is energetically binned, Monte
+Carlo transport is not discretized in space or energy like deterministic
+transport. In a nonbiased analog Monte Carlo calculation, transport is
+completely continuous in space, energy, and angle. In a hybrid calculation using
+VR parameters from a deterministic solution, the VR parameters will be
+discretized to reflect the solution obtained from the determinstic solver. As a
+result, the particle's transit throughout the
+problem will be a combination of sampling both continuous and discretized-energy
+dependent factors. Consider a particle that goes through a scattering event
+in shielding material. In this scattering event, the particle samples from a
+continuous-energy cross section and changes direction based on its energy.
+However, depending on how much energy it loses in the scattering event it may
+cross into the energy range of a lower-energy weight window and will require
+further sampling.
+
+All characterization problems were run on Remus, a machine operated and
+maintained by the Radiation Transport and Nuclear Systems Division at Oak Ridge
+National Laboratory. The ADVANTG runs were run on 16 cores of a 32 core node,
+with 256Gb of memory. The MCNP runs were run on the same machine, with 256Gb of
+memory but using all 32 cores of the node.
+
+Each problem presented in Section \ref{sec:CharResults} will
+use the values specified in Table \ref{tab:simulation_defaults}
+unless otherwise noted.
+Times to transport the Monte Carlo particle quantity varies between methods
+due to differences in sampling. Monte Carlo and ADVANTG
+inputs and directions on how to acquire them are
+provided in Appendix \ref{sec:github_codes}.
+
+\subsection{Single Turn Labyrinth}
+\label{subsec:maze2}
+
+The analysis of the characterization problems begins with the single turn
+labyrinth.
+The single turn labyrinth FOM results are summarized in Table \ref{tab:maze2foms},
+and are illustrated in Figures \ref{fig:maze2result} and \ref{fig:maze2error}.
+The table has six FOM values for CADIS and CADIS-$\Omega$ results, and three FOM
+values for the analog (nonbiased) Monte Carlo results. The equations to
+calculate each of these FOMS is summarized in Table \ref{tab:fom_defaults}.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_foms_compare}
+  \caption[Figure of Merit comparison for single turn maze.]{Figure of Merit
+    comparison for single turn maze.
+    The relative errors used are the tally average relative error, the tally maximum relative
+  error, and the tally minimum relative error; the times are total walltimes for
+  the Monte Carlo calculation and the sum of the hybrid method software, the
+  deterministic transport time, and the Monte Carlo calculation time.}
+  \label{tab:maze2foms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_times_compare}
+  \caption[Detailed timing results for single turn maze.]
+  {Detailed timing results for single turn maze.}
+  \label{tab:maze2times}
+\end{table}
+
+In Table \ref{tab:maze2foms} the FOM results for CADIS, CADIS-$\Omega$, and
+nonbiased Monte Carlo for the single turn maze are presented. In all cases, the
+CADIS FOMs are better than those obtained by CADIS-$\Omega$. The FOMS
+calculated using the tally average relative error are better in the nonbiased
+analog Monte Carlo than CADIS-$\Omega$ as well. However, this is a product of
+two effects: the time for the analog to run the same particle count is far
+shorter than either CADIS or CADIS-$\Omega$. As a result, to obtain the same
+FOM, CADIS-$\Omega$ needs to have $R_1/R_2 = \sqrt{T_2/T_1}$ (this is from
+taking a ratio of the FOMs) the tally average
+relative error, or ~$0.27$. Because this problem is highly scattering and many
+low-energy particles can make it through the concrete labyrinth, even the analog
+can have good sampling at low energies, resulting in a tally average FOM that
+reaches this threshold.
+
+Table \ref{tab:maze2times} contains more detailed timing information spent in
+each of the codes for each type of problem. We can see that the Monte Carlo
+runtime for CADIS-$\Omega$ is more than twice that of CADIS, and almost fifteen
+times that of the nonbiased analog Monte Carlo. The time to run just the
+hybrid/deterministic portion of the calculation is also four times longer for
+CADIS-$\Omega$ than it is for CADIS. These disparities in runtimes have a strong
+negative impact on the CADIS-$\Omega$ FOMs, which was observed in the FOM
+results in Table \ref{tab:maze2foms}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for single turn labyrinth.]
+  {Tally results comparison between methods for single turn labyrinth.}
+  \label{fig:maze2result}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze2/maze_2_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for single turn
+  labyrinth]{Tally relative error comparison between methods for a single turn
+  labyrinth.}
+  \label{fig:maze2error}
+\end{figure}
+
+Figures \ref{fig:maze2result} and \ref{fig:maze2error} show the tally result and
+the relative errors for each result in the single turn maze, respectively.
+This particular relative error plot,
+Figure \ref{fig:maze2error}, does not include the
+relative error bins of the analog result because they are significantly higher
+than the CADIS and CADIS-$\Omega$ results. This is further confirmed in Table
+\ref{tab:maze2foms}, where the minimum relative error FOM is a non-tallied bin.
+
+By inspecting Figure \ref{fig:maze2result}, one can observe that the CADIS and
+CADIS-$\Omega$ results are in agreement in bins greater that $10^{-7}$ MeV. At
+lower energy bins, CADIS-$\Omega$ generally has a higher value for the tally
+result than standard CADIS. However, in comparing the errors for these low energy
+bins in Figure $\ref{fig:maze2error}$, CADIS has a lower relative error. This
+indicates that CADIS sampled many more low-weight particles than CADIS-$\Omega$
+in these regions. Conversely, CADIS-$\Omega$ has a lower calculated relative
+error than CADIS for bins greater than ~$5*10^{-6}$ MeV. This is expected, as
+higher energy particles generally exhibit a stronger angular dependence than
+low-energy particles. In geometric and energetic regions
+where the angular dependence is stronger,
+the importance map generated by CADIS-$\Omega$ may show more of an effect in
+improving the relative error.
+
+To aid in our understanding of how the $\Omega$-method's importance map differs
+from the standard adjoint flux map, let us compare the flux distributions
+obtained by different deterministic solutions of the single turn labyrinth.
+Figure \ref{fig:maze2fluxmaps} shows several different flux distributions that
+represent the single turn labyrinth geometry. This figure is of the highest
+energy group for each flux type.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2MfwdG00.png}
+    \caption{Forward flux map for highest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2fwd}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2MadjG00.png}
+    \caption{Adjoint flux map for highest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2adj}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2McontribG00.png}
+    \caption{Contributon flux map for highest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2contrib}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2MomegaG00.png}
+    \caption{$\Omega$-flux flux map for highest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2omega}
+  \end{subfigure}
+  \caption[Flux map slice of single turn labyrinth.]{Flux map slice of single
+  turn labyrinth. Flux maps have scales normalized to maximum and minimum values
+  for each slice; between plots the scales are not consistent. These plots show
+  the highest energy group, group 000, for each cell in the problem midplane.}
+  \label{fig:maze2fluxmaps}
+\end{figure}
+
+Figure \ref{fig:maze2fwd} shows the forward flux for the labyrinth. It is
+clear that in this problem, particles emenate isotropically outwards from the
+source on the left side of the problem. Some particles travel towards the
+shield and enter the labyrinth. These particles travel 50cm and hit the wall in
+the first turn of the labyrinth. Many high energy particles reach fairly deep
+into the concrete past this turn, as indicated by the green channel partway
+through the concrete.
+
+Figure \ref{fig:maze2adj} complements Figure \ref{fig:maze2fwd} by showing the
+adjoint flux distribution for the fastest energy group. Recall that this
+distribution is what is used by CADIS to generate VR parameters. Particles are
+generated throughout the NaI detector and exit the detector in all directions.
+Because the source is not in line with the labyrinth entrance, particles end up
+colliding much closer to the labyrinth edge than in the forward distribution.
+There also exist some prominent ray effects in this distribution on the right
+hand side of the problem. In particular, the contrasting orange and green
+fingers of the ray effects show at least an order of magnitude change in the
+flux for forward particles exiting the maze in this region. In reality, the
+importance in this region should be close to a spherical surface some distance
+away from the adjoint source.
+
+Recall that the $\Omega$-flux is computed using the angle-integrated contributon
+flux in the numerator. For this problem, the contributon flux will be used to
+illustrate how the $\Omega$-flux is a combination of the adjoint and the
+contributon flux. Figure \ref{fig:maze2contrib} shows the distribution of
+angle-integrated contributon flux values for the single turn labyrinth.
+Interestingly, because so many forward particles penetrated deeply into the
+shield, the contributon flux points directly into this section of the shield. It
+is also clear that near the forward source, only particles moving in the
+direction towards the labyrinth entrance contribute to a high contributon flux.
+In the left-side of the labyrinth, we can observe directional importance in the
+labyrinth channels, but in the first turn this directional importance is no
+different than the concrete barriers surrounding the channels.
+
+Figure \ref{fig:maze2omega} shows how the $\Omega$-flux is built off of the
+adjoint and contributon fluxes by showing the $\Omega$-flux distribution for the
+single turn labyrinth. Comparing this figure to \ref{fig:maze2contrib}, the
+majority of high flux regions are pushed back towards the NaI detector. The
+flux gradient exiting the maze does not span as many orders of magnitude as it
+did in the contributon flux plot, too. Further, the importance of particles does
+not remain as high or go as deep into the concrete shield as the contributon
+flux plot. This is because the $\Omega$ flux normalizes by the forward flux,
+resulting in reducing importance in regions where only the forward flux is
+strong. As with the contributon flux, the $\Omega$-flux strongly reduces
+particle importance near the problem boundaries. Recall from Section
+\ref{sec:ContributonImportance} that in the contributon transport equation that
+the cross section becomes very high near problem boundaries, thus encouraging
+particles back towards the problem source and sink. Because the $\Omega$-flux
+uses standard forward and adjoint transport, the cross section is not
+manipulated. However, the flux magnitude reflects importance consistent with
+contributon theory.
+
+Both the $\Omega$- and the contributon fluxes show a mitigation of ray effects
+on the right hand side of the problem. Note that there are no ``fingers'' of
+flux magnitude at distances several cm away from the NaI detector on the right
+side of the problem in either Figure \ref{fig:maze2contrib} or
+\ref{fig:maze2omega}. Reducing these numerical appiritions is a positivie effect
+of the method. However, there exists a fairly strong gradient in flux magnitude
+for a particle travelling directly out of the maze exit. As a result, a particle
+traveling several cm of distance across this strong gradient line may move from
+a region of very low importance to very high importance, causing very
+significant sampling requirements for the $\Omega$-importance that may not exist
+with the standard adjoint.
+
+A description of filtering algorithms accompanied
+the discussion of the anisotropy metrics in Section
+\ref{subsec:resultsintro}. The filtering algorithms are based on the contributon
+flux distribution in the problem, or \ref{fig:maze2contrib}. Recall that the two
+filter matrices discussed included those from cells where the contributon flux
+is above the average contributon flux value, and where values are above the mean
+contributon flux value. For the single-turn labyrinth, the filter matrix in the
+highest energy group (Figure \ref{fig:maze2contrib}) will use values in the
+orange and pink region of the figure and exclude values from the blue and green
+regions of the figure. As a result, only anisotropy metric values from within
+the maze will be used. The very anisotropic values near the edge of the problem
+(where significant particle streaming exists), will not be included because they
+are likely to be inconsequential to the tally response.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2MomegaG26.png}
+    \caption{$\Omega$-flux flux map for lowest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2omega26}
+\end{figure}
+
+Figure \ref{fig:maze2omega26} shows the $\Omega$-flux distribution for the
+lowest energy group. This differs quite a bit from \ref{fig:maze2omega} in that
+the flux in the labyrinth has a much stronger gradient once entering concrete
+than the higher energy group. This is expected, as the mean free path of a low
+energy neutron is much shorter than a high energy one, especially in a dense,
+hydrogenous material like concrete. As a result of the stronger flux gradient in
+concrete, low energy particles entering
+the concrete shield will be rouletted at a much greater frequency than high
+energy particles. Particles exiting the labyrinth also have a lower gradient of
+importance that they may cross than in the high energy flux map. As a result,
+particle splitting and rouletting in this air region will be less extreme at low
+energies than at high energies.
+
+Comparing the figures of $\Omega$-fluxes in \ref{fig:maze2omega} and
+\ref{fig:maze2omega26}, we can start to explain some of the timing behavior
+observed in Tables \ref{tab:maze2foms} and \ref{tab:maze2times}.
+High energy particles exiting the maze towards the tally
+detector have much longer mean free paths than the low energy particles, and
+will generally show a much stronger effect in the $\Omega$-flux in those
+regions. This is illustrated in Figure \ref{fig:maze2omega}.
+The shape of the $\Omega$
+flux around the detector region is much more strongly dependent on direction in
+the high energy group 000 flux than it is for the lower energy group 026 flux.
+Despite having lower relative errors than CADIS at higher energies,
+CADIS-$\Omega$ has lower FOMs than CADIS for the FOMS calculated with the
+minimum relative error. As discussed previously, this is due to the long runtime
+of CADIS-$\Omega$, which is more than twice as long as CADIS. From this, we can
+conclude that while CADIS-$\Omega$ is better at transporting particles in high
+energy regions than CADIS, achieving lower relative errors, the length of time
+to do so is prohibitive and achievable by CADIS should the runtimes be the same
+for both.
+
+\subsection{Multiple Turn Labyrinth}
+\label{subsec:maze1}
+
+The multiple turn labyrinth is built off of the single turn labyrinth geometry.
+The labyrinth materials are much the same, but the geometry differs. Table
+\ref{tab:maze1foms} summarizes the Figure of Merit results for CADIS,
+CADIS-$\Omega$ and nonbiased Monte Carlo. Figures \ref{fig:maze1result} and
+\ref{fig:maze1error} show the results obtained by the track length tally in each
+method.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for multiple turn maze.]{Figure of Merit
+    comparison for multiple turn maze.}
+  \label{tab:maze1foms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_times_compare}
+  \caption[Detailed timing results for multiple turn maze.]
+  {Detailed timing results for multiple turn maze.}
+  \label{tab:maze1times}
+\end{table}
+
+In Tables \ref{tab:maze1foms} and \ref{tab:maze1times}
+it is notable that the CADIS-$\Omega$ runtime is
+shorter in the Monte Carlo simulation than CADIS. This differs most of the other
+cases presented in this section. However, it is also notable that because the
+deterministic time is so much longer for CADIS-$\Omega$, T$_{hybrid}$ ends up
+being greater for CADIS-$\Omega$ than CADIS.
+
+Table \ref{tab:maze1foms} shows that both CADIS and CADIS-$\Omega$ outperform the
+analog by a factor of $10^2$ or $10^3$, indicating the necessity of variance
+reduction for a problem like this. In comparing the FOMs, CADIS slightly outperforms
+CADIS-$\Omega$ for all relative errors, meaning that the time
+to reach any relative error will be achieved faster by CADIS.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for multiple turn labyrinth.]
+  {Tally results comparison between methods for multiple turn labyrinth. }
+  \label{fig:maze1result}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/maze1/maze_1_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for multiple turn labyrinth]
+  {Tally relative error comparison between methods for a multiple turn
+  labyrinth. }
+  \label{fig:maze1error}
+\end{figure}
+
+Looking at Figures \ref{fig:maze1result} and \ref{fig:maze1error}, we can see
+that the analog Monte Carlo results differ significantly from either CADIS or
+CADIS-$\Omega$. Two distinct regions of tally bins have been recorded in the
+analog case: a high energy region comprised of particles that have scattered
+very few times before reaching the detector, and a much smaller low energy
+region, comprised of particles that are very thermal. These thermal particles
+have a very small mean free path in the concrete labyrinth, thus the majority of them were
+absorbed in the shield. However, given the errors on this result, these results are
+not trustworthy. In the case of this problem, some of what was discussed in the
+single-turn labyrinth is confirmed. This particular case requires that particles
+scatter several more times if they are to exit the labyrinth from the air duct.
+As a result, the spectrum is more thermal than the first case and the problem
+has less anisotropy from the scattering effects.
+As discussed in the single-turn labyrinth subsection, CADIS
+outperformed CADIS-$\Omega$ in problems in energy bins that had less angular
+dependence. Because this problem has far more scattering event, it overall has
+less angular dependence and CADIS outperforms CADIS-$\Omega$ in all energy bins.
+This problem is poorly suited to CADIS-$\Omega$.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze1/maze1adjG26.png}
+    \caption{Adjoint flux map for lowest energy group, multiple turn
+    labyrinth.}
+    \label{fig:maze1adj}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze1/maze1omegaG26.png}
+    \caption{$\Omega$-flux flux map for lowest energy group, multiple turn
+    labyrinth.}
+    \label{fig:maze1omega}
+  \end{subfigure}
+  \caption[Flux map slice of multiple turn labyrinth.]{Flux map slice of
+    multiple turn
+  turn labyrinth. Flux maps have scales normalized to maximum and minimum values
+  for each slice; between plots the scales are not consistent. These plots show
+  the lowest energy group, group 026, for each cell in the problem midplane.}
+  \label{fig:maze1fluxmaps}
+\end{figure}
+
+Figure \ref{fig:maze1fluxmaps} shows the adjoint and $\Omega$ flux maps for the
+lowest energy group at the problem midplane for the multiple turn labyrinth.
+These figures look remarkably similar, showing that this problem does not have
+significant anisotropy to capture. The region that does differ is near the
+detector region, where the region of high importance is focused towards the
+labyrinth and the laybrinth exit. The other region with noticeable difference is
+located at the entrance to the maze. These figures show the lowest energy group
+particles, so for forward particles of this energy to go the same direction as
+adjoint particles, they must have gone into the labyrinth, scattered back out,
+and then scattered again. As a result, we do not see a strong directional
+dependence in the $\Omega$-flux plot in the region near the forward source. The
+adjoint flux plot shows more of a streaming effect from the adjoint particles
+that exit the maze.
+
+In Section \ref{subsec:maze2}, it was discussed that higher energy regions that
+contribute to the tally are more anisotropic, and that these regions benefit
+more from the $\Omega$-flux map than they do with standard CADIS' importance
+map. Using the anisotropy metrics from Section \ref{sec:anisotropy_quant}, let
+us compare the anisotropy distributions of the single turn and multiple-turn
+labyrinth problems. Figure \ref{fig:labyrinthviolins} are violin plots of the
+M$_{3}$ distributions of the labyrinth problems. To filter out values of the
+metric distribtuion that do not have a strong importance to contributing to the
+tally, only values from cells above the contributon flux mean value are included
+in the violins.
+
+First, looking at the metric three distributions for both the single-
+(\ref{fig:maze2M3violins})and
+multiple-turn (\ref{fig:maze1M3violins}) labyrinths, we can see that the violins
+in both plots shift from a fairly small grouping of values at high enrgies to a
+broad range of values at low energies. The bottom of the violin in each
+group also tells us a
+bit about the metric distribution. Because only values from ``more important''
+cells have been included in these distributions, the bottom cutoff tells us how
+anisotropic the cells of median importance might be. It also tells us how many
+cells have high-valued anisotropy metrics. For both the single- and
+multi-turn labyrinths, we see higher-valued cutoff point in high energies than
+in low energies. This indicates that more cells in high energies have higher
+values of M$_3$.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_violin_mean.pdf}
+    \caption{M$_{3}$ distribution for single turn labyrinth}
+    \label{fig:maze2M3violins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_violin_mean.pdf}
+    \caption{M$_3$ distribution for multi-turn labyrinth}
+    \label{fig:maze1M3violins}
+  \end{subfigure}
+  \caption[Violin plots of M$_{3}$ distribution using values above the mean
+  contributon flux for labyrinth problems.]
+  {Violin plots of M$_{3}$ distribution using values above the mean
+  contributon flux for labyrinth problems. Low energy group numbers correspond
+  to high energies or fast particles, and are marked in red.}
+  \label{fig:labyrinthviolins}
+\end{figure}
+
+The violin plots of the multi-turn labyrinth (Fig. \ref{fig:maze1M3violins})
+tend to span a larger range of values. That is, the violins tend to be longer.
+All of the violins in both plots have a bounding upper limit, meaning that in
+every energy group there are some very anisotropic cells. Interestingly, it
+appears that for the multi-turn labyrinth the distribution of anisotropies at
+low energies has no distinctive bunching, as observed in the single-turn
+labyrinth. This means that in important cells, there is an even distribution of
+very anisotropic, slightly anisotropic, and isotropic cells.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze2/maze2M4G26.png}
+    \caption{M$_4$ lowest energy group, single turn
+    labyrinth.}
+    \label{fig:maze2M4}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/maze1/maze1M4G026.png}
+    \caption{M$_4$ for lowest energy group, multiple turn labyrinth }
+    \label{fig:maze1M4}
+  \end{subfigure}
+  \caption[M$_4$ distributions at problem midplane for labyrinth problems]{M$_4$
+  distributions at problem midplane for labyrinth problems.}
+  \label{fig:labyrinthM4}
+\end{figure}
+
+While the violin plots of Figure \ref{fig:labyrinthviolins} are useful in seeing
+the overall distribution of metrics for the whole problem, it is also possible
+to plot them similarly to the flux maps shown previously. Figure
+\ref{fig:labyrinthM4} shows the M$_4$ distribution for the single and multiple
+turn labyrinth problems. Recall that this metric is the ratio of the contributon
+anisotropy to the standard adjoint anisotropy. Cells that have blue coloring
+are those where the contributon max to average flux is lower than the adjoint.
+As a result, the forward and adjoint fluxes to not synergitically combine in
+angle. This
+generally means this is a region of lower importance. Values of unity mean that
+the contributon anisotropy is comparable to the adjoint anisotropy. In figure
+\ref{fig:maze2M4}, it is clear that the concrete body of the maze is a region
+where the anisotropies are similar.
+
+Figure \ref{fig:maze2M4} shows that the region where the anisotropy of the
+contributon flux differs the most from the adjoint flux is in the air region
+near the detector, and also in the air regions of the maze. Specifically, the
+anisotropy of the contributon flux is greater in the air region between the
+detector and the maze, and the anisotropy of the contributon flux is lower in
+regions behind the detector. Conceptually, we expect this anisotropy behavior
+in the region just past the detector, as the contributon flux will combine
+positively if the forward and adjoint fluxes are travelling in opposite
+directions, and will combine negatively if they are travelling in the same
+direction. As a result, the anisotropy of the contributon flux behind the
+detector will be minimized when compared to the original adjoint angular flux.
+
+Figure \ref{fig:maze1M4} shows, like Figure \ref{fig:maze2M4}, the M$_4$
+distribution at the problem midplane for the lowest energy group for
+the multiple turn labyrinth. In this problem we similarly see the strongest
+anisotropy in the flux near the NaI detector. However, the range of values is
+different. The concrete region of the maze still shows similar anisotropies
+between the contributon and adjoint angular fluxes. The maze edge next to the
+NaI detector also has some fairly anisotropic regions, but overall the
+anisotropies are less different in this problem than in the single turn
+labyrinth. As a result, CADIS-$\Omega$ does not have as much angular information
+to capture, and its importance map is less effective. This was also illustrated
+in the flux map comparison of Figure \ref{fig:maze1fluxmaps}.
+
+Both figures have interesting secondary features in the anisotropy in the air
+regions. These regions look similar to ray effects, but are not always reflected
+in the flux maps themselves. The author is not sure how to explain these
+effects, but they are worth future study.
+
+It must be noted that while
+the trends in these violins are interesting, we must also be wary of using comparing
+the violins directly. The filtering algorithm used to pull values out is dependent only
+on the contributon flux solution for that problem, so the average contributon
+flux cutoff for the single-turn labyrinth and multiple-turn labyrinth are
+different. Using a raw value from the violin plot in Figure
+\ref{fig:maze1M3violins} and directly comparing it to one from Figure
+\ref{fig:maze2M3violins} may be misleading. Instead, this analysis will focus on
+the general behavior of the metrics in each problem, not specific metric values.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_err_stats_mean.pdf}
+    \caption{RE improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \label{fig:maze2M3errs}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_err_stats_mean.pdf}
+    \caption{RE improvement factor as a function of M$_3$ statistics for multi-turn labyrinth}
+    \label{fig:maze1M3errs}
+  \end{subfigure}
+  \caption[Relative error improvement factor as a function of M$_3$
+  distribution statistics.]
+  {Relative error improvement factor as a function of M$_3$
+  distribution statistics. Metric distribution statistics are calculated using
+  values of M$_3$ in cells with contributon flux values above the mean. Colors
+  of datapoints correspond to the energy group to which they belong.}
+  \label{fig:labyrinthIREs}
+\end{figure}
+
+Figure \ref{fig:labyrinthIREs} shows the improvement factors of the relative
+errors between CADIS-$\Omega$ and CADIS for the labyrinth problems. The x-axes
+of the plots in Figures \ref{fig:maze2M3errs} and \ref{fig:maze1M3errs} use the
+distribution statistics from the violins in Figures \ref{fig:maze2M3violins} and
+\ref{fig:maze1M3violins}, respectively. Recall that because I$_{RE}$ is the
+ratio of the relative error between CADIS-$\Omega$ and CADIS--and we seek a low
+relative error--that values of I$_{RE}$ below 1.0 indicate method improvement
+for CADIS-$\Omega$.
+
+Looking at the differences between Figures \ref{fig:maze2M3errs} and
+\ref{fig:maze1M3errs}, some interesting effects can be observed. Recall from the
+relative error distribution plots for each problem (Figures \ref{fig:maze1error} and
+\ref{fig:maze2error}) that CADIS-$\Omega$ had higher relative errors in all
+energy bins than CADIS for the multi-turn labyrinth, and a higher relative
+error in thermal energy groups in the single-turn labyrinth.
+Figure
+\ref{fig:maze2M3errs} shows the isolated grouping of poorer results for low
+energy bins in the single turn labyrinth. The rest of the values in this figure
+all show improvement in the relative error, while the low-energy group show
+better performance for CADIS. There is no distinct grouping in Figure
+\ref{fig:maze1M3errs} because all of the CADIS-$\Omega$ relative errors are
+higher than CADIS, so a distinct turnover in I$_{RE}$ does not occur.
+
+There does not seem to be a tight
+trend
+observable for any measurement of the M$_3$ distribution and I$_{RE}$ in Figure
+\ref{fig:maze2M3errs}, but the higher values of I$_{RE}$ generally occur in high
+mean values of M$_3$ and higer variances of M$_3$. Figure \ref{fig:maze1M3errs}
+also shows this trend in the metric mean and variance subplots, with a single
+outlier in an intermediate energy group. It also appears that the spread of
+I$_{RE}$ values does not change as a function of any of the metric values.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze2/metric_three_fom_stats_mean.pdf}
+    \caption{FOM improvement factor as a function of M$_{3}$ statistics for single turn labyrinth}
+    \label{fig:maze2M3FOMs}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/maze1/metric_three_fom_stats_mean.pdf}
+    \caption{FOM improvement factor as a function of M$_3$ statistics for multi-turn labyrinth}
+    \label{fig:maze1M3FOMs}
+  \end{subfigure}
+  \caption[Figure of Merit improvement factor as a function of M$_3$
+  distribution statistics.]
+  {Figure of Merit improvement factor as a function of M$_3$
+  distribution statistics. Metric distribution statistics are calculated using
+  values of M$_3$ in cells with contributon flux values above the mean. Colors
+  of datapoints correspond to the energy group to which they belong.}
+  \label{fig:labyrinthIFOMs}
+\end{figure}
+
+Figure \ref{fig:labyrinthIFOMs} builds off of what we've already observed in Figure
+\ref{fig:labyrinthIREs}. In this series of figures, I$_{FOM}$ is plotted rather
+than I$_{RE}$. If CADIS-$\Omega$ has better FOM performance than CADIS, the
+resulting value of I$_{FOM}$ will be above 1.0.
+
+Many features from Figure \ref{fig:labyrinthIREs} continue in Figure
+\ref{fig:labyrinthIFOMs}. The distinct grouping of low-energy results for the
+single turn labyrinth are also observable in \ref{fig:maze2M3FOMs}. The intermediate
+energy outlier for the multiple turn labyrinth is located at the bottom of
+all of the subplots in Figure \ref{fig:maze1M3FOMs}. By adjusting our results to
+include timing, even less of a trend with metric distribution measurements is
+seen in the improvement metric for the single turn labyrinth. However, for the
+multiple turn labyrinth it does appear that as the metric mean value increases,
+I$_{FOM}$ decreases.
+
+\subsection{Steel Beam}
+\label{subsec:resultbeam}
+
+The steel beam embedded in concrete FOM and timing
+results are summarized in Tables
+\ref{tab:steelbeamfoms} and \ref{tab:steelbeamtimes}. Figures
+\ref{fig:steelbeamresult} and \ref{fig:steelbeamerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for steel bar embedded in concrete.]
+  {Figure of Merit comparison for steel bar embedded in concrete. }
+  \label{tab:steelbeamfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_times_compare}
+  \caption[Detailed timing results for steel bar embedded in concrete.]
+  {Detailed timing results for steel bar embedded in concrete.}
+  \label{tab:steelbeamtimes}
+\end{table}
+
+Tables \ref{tab:steelbeamfoms} and
+\ref{tab:steelbeamtimes} show that this problem is very difficult for
+analog Monte Carlo and that CADIS-$\Omega$ generally performs better than CADIS.
+In fact, CADIS-$\Omega$ has the best performance
+in this problem of all of the characterization problems.
+
+For both CADIS and CADIS-$\Omega$, this problem has a huge disparity in the FOMs
+calculated with the maximum and minimum relative error. As a result, depending
+on the convergence requirements that a user might require, the time to achieve
+a desired solution could vary significantly in applications. However, both CADIS
+and CADIS-$\Omega$ improve on the unbiased analog Monte Carlo's FOM by a factor
+of $10^{2}$ or more.
+
+CADIS-$\Omega$ outperforms CADIS for
+the FOMS calculated with the tally average relative error and the tally maxmimum
+relative error. This indicates that giving a limiting relative error to which
+all energy bins must converge, CADIS-$\Omega$ will achieve it in $1/3$rd the time
+that CADIS will. Further, CADIS-$\Omega$ has a better FOM than CADIS when the
+deterministic runtimes are added. As shown in the timing table, the time to run
+and generate the variance reduction parameters for CADIS-$\Omega$ will always be
+longer than CADIS due to the addition of the forward transport run. The addition of
+deterministic runtimes has the potential to lower the FOM of CADIS-$\Omega$ more than
+that of CADIS, so CADIS-$\Omega$'s achievement of a FOM higher FOM with much
+longer runtimes in both Monte Carlo and ADVANTG illustrates just how much lower
+the relative error it achieves is. CADIS-$\Omega$ is very well-suited to a
+problem with these conditions.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for steel bar embedded in
+  concrete.]
+  {Tally results comparison between methods for steel bar embedded in concrete.}
+  \label{fig:steelbeamresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_1/problem_1_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for steel bar
+  embedded in concrete.]
+  {Tally relative error comparison between methods for steel bar embedded in
+  concrete.}
+  \label{fig:steelbeamerror}
+\end{figure}
+
+Figure \ref{fig:steelbeamresult} shows that CADIS and CADIS-$\Omega$ are in
+agreement for the tally results in all energy bins. The nonbiased Monte Carlo
+calculation differs from both of the hybrid methods. This supports what was
+observed in the nonbiased analog FOM values of Table \ref{tab:steelbeamfoms}.
+Figure
+\ref{fig:steelbeamerror} shows that CADIS-$\Omega$ achieves a
+consistently lower relative error than CADIS for all energy bins. For most
+energy bins, CADIS-$\Omega$'s relative errors are shifted a consistent fraction
+below CADIS'. In the energy regions between $10^{-4}$ and $10^{-1}$ MeV, this is
+not the case. For these energy regions CADIS' relative errors spike while
+CADIS-$\Omega$'s do not.
+
+% [add anisotropy plots here]
+%
+% [describe why anisotropy might have happened in this region]
+%
+% [make visit plot of problematic energy group in adjoint flux and omega flux.
+% compare and discuss differences.]
+
+From the FOM results presented in Table \ref{tab:steelbeamfoms} and the tally
+results and error in Figures \ref{fig:steelbeamresult} and
+\ref{fig:steelbeamerror}, we can conclude that
+CADIS-$\Omega$'s source biasing parameters consistently move more particles in
+all tally energy bins more effectively than CADIS.
+The importance map generated by CADIS-$\Omega$
+better reflects the problem physics and more efficiently transports particles to
+the desired tally location.
+
+\subsubsection{Air Channel Variant}
+\label{subsubsec:airbeam}
+
+The characterization problems have been designed to induce anisotropy in
+the flux. Most of these problems do so, in some part, by using air to induce
+particle streaming. The steel beam in concrete problem requires that particles
+interact with a high density material (either steel or concrete) before reaching
+the detector to induce a response. These next two variant problems explore
+whether the material choice of steel strongly affects the $\Omega$-method's
+ability to generate variance reduction parameters. This first variant keeps the
+geometric configuration of the steel beam problem the same, but the steel is
+replaced with air. If the $\Omega$-methods are more sensitive to air, then this
+change in the materials composition should affect the results.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob1v1/problem_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for the air variant of the steel beam
+  problem geometry.]
+  {Figure of Merit comparison for air variant of the steel beam problem geometry. In this
+  variant problem, the steel bar volume region is replaced with air to
+exacerbate the suggested splitting issues encountered in other hybrid problems. }
+  \label{tab:airbeamfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob1v1/problem_1_tally_times_compare}
+  \caption[Detailed timing results for steel beam geometry air variant.]
+  {Detailed timing results for steel beam geometry air variant.}
+  \label{tab:airbeamtimes}
+\end{table}
+
+Tables \ref{tab:airbeamfoms} and \ref{tab:airbeamtimes} summarize the FOM and timing
+results for the air variant of the steel beam problem. Comparing the FOMs for
+this variant and for the steel variant (Table \ref{tab:steelbeamfoms}), it is
+clear that CADIS-$\Omega$ performs more poorly than CADIS with air.
+Interestingly, CADIS-$\Omega$'s minimum relative error FOM is better than
+CADIS', which is opposite to the results for the standard steel problem. For the
+maximum relative error, CADIS-$\Omega$'s FOM is 1/5th that of CADIS'. However,
+for this problem CADIS-$\Omega$'s runtime is almost five times that of CADIS.
+Considering this time difference, it appears that CADIS-$\Omega$ requires far
+more sampling with its importance map than CADIS. These sampling requirements
+also exist with the original steel problem, but the importance map reduces the
+tally variance enough to offset the time addition. This is not the case for the
+air variant. From this, we can conclude that the addition of air into this
+problem geometry reduces the sampling interaction points enough to negatively
+affect the $\Omega$-method. Further, it lowers the FOMs achieved by both CADIS
+and CADIS-$\Omega$ substantially that their improvement over the nonbiased
+analog reduces almost an order of magnitude.
+
+The runtimes in Table \ref{tab:airbeamtimes} are also worth comparing with the
+original steel variant. In particular, the deterministic runtime in both of the
+promblems is on the same order of magnitude. However, the Monte Carlo runtime is
+far longer in the original steel version. The runtimes in the air variant are
+generally much shorter for CADIS and CADIS-$\Omega$, but comparable for the
+nonbiased analog. In this problem, the fraction of time spent in the
+deterministic solve is much higher than in the steel version.
+
+\subsubsection{Concrete Channel Variant}
+\label{subsubsec:concretebeam}
+
+In addition to the air variant of the steel beam geometry, we can see if having
+non-preferential flowpaths might affect the $\Omega$-method's performance.
+Recall that the $\Omega$-methods have been designed to incorporate angular
+information into the importance map. If no preferential flowpaths exist through
+the problem geometry, then the $\Omega$-importance map may have less of an
+impact on improving the tally convergence. However, because the entire shield is
+composed of concrete, then the distance to smapling location should still be
+quite small as with the original steel version of the problem. As a result, there
+should be some positive effects on the $\Omega$-methods due to sampling
+interaction frequency. Tables \ref{tab:concretebeamfoms} and
+\ref{tab:concretebeamtimes} show the FOM and timing results for this material
+variant of the steel beam geometry.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob1v2/problem_1_tally_foms_compare}
+  \caption[Figure of Merit comparison for concrete variant of steel bar geometry.]
+  {Figure of Merit comparison for concrete variant of steel bar geometry. In this
+  variant problem, the steel bar volume region is replaced with concrete to
+  eliminate the preferential particle travel through the beam region.}
+  \label{tab:concretebeamfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob1v2/problem_1_tally_times_compare}
+  \caption[Detailed timing results for concrete variant of steel bar.]
+  {Detailed timing results for concrete variant of steel bar.}
+  \label{tab:concretebeamtimes}
+\end{table}
+
+Tables \ref{tab:concretebeamfoms} and \ref{tab:concretebeamtimes} show the
+results of the concrete variant of the steel beam problem. As with the original
+steel and air versions described previously, the runtimes for CADIS-$\Omega$ are quite
+long when compared to CADIS. In each variant, the runtimes are about five times
+longer than those observed for CADIS. Similarly to the steel variant, in this
+version CADIS-$\Omega$ achieves a superior FOM for the tally average FOM.
+However, CADIS-$\Omega$'s FOMS for the maximum and minimum relative error FOMs
+are both lower than CADIS'. Both CADIS and CADIS-$\Omega$ far outperform the
+nonbiased analog Monte Carlo.
+
+To compare the performance of each of the variants of this problem, let us first
+compare the differences in the flux distributions for the $\Omega$ and CADIS
+versions of the problem. Figure \ref{fig:steelbeamfluxes} shows the
+adjoint and $\Omega$ fluxes for
+the steel beam in concrete version of this geometry. It is clear from both of
+these two figures that there is a preferential flowpath through the steel beam
+for both the standard adjoint and for the $\Omega$-fluxes.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_1/prob1adjG26.png}
+    \caption{Adjoint flux distribution, lowest energy group}
+    \label{fig:steelbeamadj}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_1/prob1omegaG26.png}
+    \caption{$\Omega$-flux distribution, lowest energy group}
+    \label{fig:steelbeamomega}
+  \end{subfigure}
+  \caption[Flux maps for steel beam in concrete.]{Flux maps for steel beam in
+  concrete. Fluxes shown are at problem midplane, and energy group 026. The
+  colormap for each has been scaled to the data in the plane.}
+  \label{fig:steelbeamfluxes}
+\end{figure}
+
+As with the multiple-turn
+labyrinth, the flux maps are very similar between the adjoint and $\Omega$-flux
+plots in this figure. Recall that M$_2$ is the ratio of the scalar $\Omega$-flux
+to the scalar adjoint flux in each cell. Figure \ref{fig:M2beamplots} shows the
+$M_2$ distributions for each of the material variants of the steel beam problem.
+Figure \ref{fig:M2steel} contains the distribution of M$_2$ for the original
+steel variant, Figure \ref{fig:M2air} is of the variant with air replacing the
+steel, and Figure \ref{fig:M2concrete}. Note that Figure \ref{fig:M2air} has the
+colormap scaled to a log scale, while the other two figures do not. This is
+because the range is much larger in this figure, and a linear scale obscures the
+data.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_1/prob1M2G26.png}
+    \caption{M$_2$ distribution for steel beam in concrete.}
+    \label{fig:M2steel}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/prob1v1M2G026log.png}
+    \caption{M$_2$ distribution for steel beam in concrete, air variant.}
+    \label{fig:M2air}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/prob1v2M2G26.png}
+    \caption{M$_2$ distribution for steel beam in concrete, concrete variant.}
+    \label{fig:M2concrete}
+  \end{subfigure}
+  \caption[M$_2$ distribution plots for material variants of steel beam in
+  concrete.]{M$_2$ distribution plots for material variants of steel beam in
+  concrete. Distribution shown is for lowest energy group. Scales adjusted to
+  match dataset of each figure.}
+  \label{fig:M2beamplots}
+\end{figure}
+
+By comparing the ratio of the $\Omega$- to adjoint-fluxes in each of the figures
+in \ref{fig:M2beamplots}, the effect that material choice has on changing the
+$\Omega$-flux becomes more apparent. First, all three plots show a constant
+value of M$_2$ within the concrete shield itself. As a result, we can conclude
+that materials in which the particles have a small mean free path of travel, the
+flux isotropy is fairly constant and does not differ between the $\Omega$- and
+adjoint fluxes. Next, having a preferential flowpath through the shield does
+change the resultant $\Omega$-flux. Depending on material, the flux may be very
+different (as with the air in Figure \ref{fig:M2air}) or fairly similar (as with
+the flux ratio in the steel in Figure \ref{fig:M2steel}). All three problems
+show a very different distribution of fluxes near the adjoint source. This is
+the case with both of the labyrinth variants previously discussed.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_1/prob1M4G26.png}
+    \caption{M$_4$ distribution for steel beam in concrete.}
+    \label{fig:M4steel}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/prob1v1M4G26.png}
+    \caption{M$_4$ distribution for steel beam in concrete, air variant.}
+    \label{fig:M4air}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/prob1v2M4G26.png}
+    \caption{M$_4$ distribution for steel beam in concrete, concrete variant.}
+    \label{fig:M4concrete}
+  \end{subfigure}
+  \caption[M$_4$ distribution plots for material variants of steel beam in
+  concrete.]{M$_4$ distribution plots for material variants of steel beam in
+  concrete. Distribution shown is for lowest energy group. Scales adjusted to
+  match dataset of each figure.}
+  \label{fig:M4beamplots}
+\end{figure}
+
+The subfigures of Figure \ref{fig:M4beamplots} complement those presented in
+Figure \ref{fig:M2beamplots}. As with Figure \ref{fig:M2beamplots}, the
+subfigures here are normalized by the adjoint problem. Rather than comparing the
+adjoint scalar fluxes, here the contributon anisotropy in each
+cell is compared to the adjoint. Similar features can be observed between the
+subfigures in \ref{fig:M4beamplots} and their counterparts in
+\ref{fig:M2beamplots}. For exmaple, the anisotropies in the cells in the shield
+are the same as the adjoint. As a result, we see little- to no- difference
+between the $\Omega$-method aniosotropy or the standard adjoint anisotropy.
+Figure \ref{fig:M4air} shows some interesting streaming effects on the
+anisotropy in the air channel within the shield. In particular, the contributon
+anisotropy is larger for the majority of the air channel than the adjoint
+anisotropy. There is an exception to this observation at the M$_4$ values marked
+with dark blue in the air channel.
+
+All three subfigures in \ref{fig:M4beamplots} show that there exist differences
+in the anisotropy near the adjoint source and near the forward source in all
+material variants of this problem. Unlike the subfigures of
+\ref{fig:M2beamplots}, the anisotropies extend all the way to the problem
+boundaries in the air regions of the problem. However,
+the anisotropy in the area of each
+problem near the detector is generally larger than the anisotropy in the area
+neaer the forward source.
+
+With an intuition of how the $\Omega$ and adjoint-scalar fluxes differ both on
+the cell-scale, and how their anisotropies differ on the cell scale, we can
+now look at the effectiveness of each at predicting the $\Omega$-method's
+success (or lack thereof). Recall that Figures \ref{fig:M2beamplots} and
+\ref{fig:M4beamplots} show the anisotropy distributions for the lowest energy
+group. On the next several figures, the data illustrated by these figures will
+correspond with the
+darkest blue violin and the darkest blue scatterplot data point, respectively.
+The next several figures attempt to collapse the substantial quantity of data
+available in Figures \ref{fig:M2beamplots} and \ref{fig:M4beamplots} to
+values with which we can correlate with $\Omega$- relative error or FOM
+improvement.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_1/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for steel beam geometry}
+    \label{fig:beamsteelviolins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for air beam geometry}
+    \label{fig:beamairviolins}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/metric_four_violin_mean.pdf}
+    \caption{M$_4$ distribution for concrete beam geometry}
+    \label{fig:beamconcreteviolins}
+  \end{subfigure}
+  \caption[Distribution plots of M$_4$ for the steel beam problem geometry
+  material variants.]{Distribution plots of M$_4$ for the steel beam problem
+  geometry material variants. Distributions have been filtered from cells that
+  are in bins above the contributon average flux in each problem. Coloring
+corresponds to energy group, red indicates a higher energy group and blue a
+lower energy group. }
+  \label{fig:beamviolins}
+\end{figure}
+
+The beam problem material variants provide a very interesting opportunity to see
+the effect of material properties on I$_{RE}$ and on the anisotropy metric
+distributions. Based on observations, the distributions for M$_4$ will be shown
+for these problem variants in \ref{fig:beamviolins} and \ref{fig:beamIREs}.
+Figure \ref{fig:beamsteelviolins} shows the M$_4$ distribution for each energy
+group as a violin plot for the original steel version of the problem.
+Figures \ref{fig:beamairviolins} and \ref{fig:beamconcreteviolins} show the air
+and concrete variants of the problem, respectively. Note the similarity between
+the metric distributions for the steel and concrete variants of the problem
+(Figs. \ref{fig:beamsteelviolins} and \ref{fig:beamconcreteviolins}). The metric
+distributions have similar ranges, similar distributions, and similar mean
+values. The only energy groups where there are noticeable differences are in the
+highest energy groups, where the local minimum values differ, and in energy
+group three, where the distribution between the two problems differs.
+
+Compare
+what was observed in the concrete and steel variations of the problem
+to Figure \ref{fig:beamairviolins}, which contains the M$_4$ distributions
+for air. The range in values for each of these violins is much larger than
+either \ref{fig:beamsteelviolins} or \ref{fig:beamconcreteviolins}. Energy group
+11 does not bottom out as it does in the previous two problems. The fastest
+energy group is strongly peaked upwards, as are many low energy groups. While
+the distribution of each of the metrics for this problem are much broader, the
+main body of the distributions are centered around lower values than either
+\ref{fig:beamsteelviolins} and \ref{fig:beamconcreteviolins}.
+
+The differences in the violin plots are purely due to differences in the
+sampling physics of the problem. Despite different materials in the concrete and
+steel variants of the problem,
+\ref{fig:beamconcreteviolins} and \ref{fig:beamsteelviolins} have similar violin
+distributions. This tells us that while the overall energy spectrum of the
+problem may be different, the distribution of anisotropy within the problem may
+be more dependent on how likely particles are to collide. That is, because both
+steel and concrete have higher interaction probabilities than air, their
+anisotropy distributions will be closer to each other than air.
+
+Because the problem geometries and mesh sizes are identical between each of
+these problems, it is likely that the selection of values is at similar
+locations in each of the problems. However, because the filter matrix described
+in Section \ref{subsec:resultsintro} is based on the contributon flux, which is
+problem specific, these will still differ between problems. Further, the number
+of cells selected from each energy group will differ between problems.
+
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_1/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for steel beam geometry}
+    \label{fig:beamsteelIRE}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v1/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for air beam geometry}
+    \label{fig:beamairIRE}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob1v2/metric_four_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_4$ for concrete beam geometry}
+    \label{fig:beamconcreteIRE}
+  \end{subfigure}
+  \caption[Scatterplots of values describing M$_4$ distribution against I$_{RE}$
+  for steel beam problem geometry material variants.]{Scatterplots of values
+    describing M$_4$ distribution against I$_{RE}$ for steel beam problem
+    geometry material variants. As with the distributions in
+    \ref{fig:beamviolins}, M$_4$ is based on values filtered out in cells
+  located above the contributon flux average value. The values on the x-axes of
+the figures are evaluated based on the subset of M$_4$ values. Coloring of
+datapoints correspond to the energy groups.}
+  \label{fig:beamIREs}
+\end{figure}
+
+Based on the violin plots in \ref{fig:beamviolins}, it was observed that
+the M$_4$ distribution was far different in the air variant of this problem
+geometry than the steel or concrete variants. This is also observable in Figure
+\ref{fig:beamIREs}, which plots the relative error improvement metric, I$_{RE}$
+with different metric distribution values. Recall that a low I$_{RE}$ means that
+the $\Omega$ method achieved a superior relative error to standard CADIS.
+
+Figures \ref{fig:beamsteelIRE} through \ref{fig:beamconcreteIRE} shows the
+relative error improvement factors for each of the steel beam material variants
+described in \ref{fig:beamviolins}. For both the steel and concrete problems,
+CADIS-$\Omega$ has favorable values for I$_{RE}$ in most energy bins. In Figures
+\ref{fig:beamsteelIRE} and \ref{fig:beamconcreteIRE} there appears to be a trend
+in I$_{RE}$ with both the metric variance and the metric skew--the ratio of the
+mean to the median values--which indicates that the metric distribution rather
+than the metric average are more likely to be related to the improvement in the
+relative error for these problems. This trend is not observable for the air
+variant in Figure \ref{fig:beamairIRE}. In fact, the metric mean and median
+values are better indicators for I$_{RE}$ than the distribution values.
+
+Looking at the distributions of I$_{RE}$ it is clear that despite the similar
+metric distribution values, the concrete and steel variants of this problem do
+have different performances. Disregarding energy group 11, which is an outlier
+in all three problem figures, the two problems have similar ranges of I$_{RE}$.
+However, the highest energy groups have the lowest I$_{RE}$ for the concrete
+problem, while the lowest values in the steel problem occur in in intermediate
+energy groups.
+
+
+\subsection{U-Shaped Corridor}
+\label{subsec:resultsucorridor}
+
+The U-shaped air corridor embedded in concrete
+FOM and timing
+results are summarized in Tables
+\ref{tab:ucorridorfoms} and \ref{tab:ucorridortimes}. Figures
+\ref{fig:ucorridorresult} and \ref{fig:ucorridorerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for U-shaped air corridor in concrete.]
+  {Figure of Merit comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{tab:ucorridorfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_times_compare}
+  \caption[Detailed timing results for U-shaped air corridor in concrete.]
+  {Detailed timing results for U-shaped air corridor in concrete.}
+  \label{tab:ucorridortimes}
+\end{table}
+
+Much like the single- and multiple-turn labyrinths, the U-shaped air corridor
+has a pathway of preferential movement for particles in a concrete shield. In
+this problem, the particles travel down the legs of the u-bend to a detector on
+the other side of the corridor. The particles should have preferential flowpaths
+through the air ducts, but it is possible for low energy particles to traverse
+the concrete barrier between the source and detector. The high energy particles
+tallied in the detector are more likely to have traveled through the air ducts
+and the low energy particles may be supplied from the shield or from scattering
+down the air duct.
+
+The FOM table for the u-shaped corridor shows that this is a fairly difficult
+problem for CADIS, CADIS-$\Omega$, and the analog. For the tally average FOM,
+CADIS and CADIS-$\Omega$ achieve a FOM two orders of magnitude higher than the
+nonbiased analog. Both methods have comparable FOMs. In fact, CADIS and
+CADIS-$\Omega$ are in relative agreement for all FOMs calculated with the Monte
+Carlo runtime. Interestingly, the nonbiased analog Monte Carlo has a higher
+maximum relative error FOM than either method. However, this analog tally for
+this problem has many
+nontallied bins (as can be gathered from the major discrepancy in results in
+Figures \ref{fig:ucorridorresult} and \ref{fig:ucorridorerror}). For the
+few bins that were tallied, the analog has a high FOM.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_result_compare.pdf}
+  \caption[Tally results comparison between methods for U-shaped air corridor in
+  concrete.]
+  {Tally results comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{fig:ucorridorresult}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/prob_2/problem_2_tally_error_compare.pdf}
+  \caption[Tally relative error comparison between methods for U-shaped air
+  corridor in concrete.]
+  {Tally relative error comparison between methods for U-shaped air corridor in
+  concrete.}
+  \label{fig:ucorridorerror}
+\end{figure}
+
+The tally results for the u-shaped corridor in Figure \ref{fig:ucorridorresult}
+show general agreement between CADIS and CADIS-$\Omega$. The nonbiased analog
+has no agreement with either method. Comparing their relative errors in Figure
+\ref{fig:ucorridorerror}, we can gather that this is a difficult problem for
+both methods. At high energies both CADIS and CADIS-$\Omega$ have very high
+relative errors, indicating untrustworthy results. To get the relative error in
+these regions for CADIS-$\Omega$ to below 0.10--a fairly standard threshold for
+Monte Carlo--it would have to run nearly 40x longer, or ~900 hours. However,
+CADIS-$\Omega$ achieves a uniformly lower relative error than CADIS for all
+energy bins. Because the time to run CADIS-$\Omega$ is so much longer, the FOM
+is impacted and appears worse than CADIS. Therefore, should CADIS-$\Omega$ use
+the same runtime as CADIS, CADIS will achieve superior relative errors.
+Conversely, if CADIS-$\Omega$ uses the same particle count as CADIS,
+CADIS-$\Omega$ will achieve superior relative errors.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=0.7\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2adjG00.png}
+    \caption{Adjoint flux distribution, highest energy group}
+    \label{fig:ubendadjflux}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=0.7\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2contribG00.png}
+    \caption{Contributon flux distribution, highest energy group}
+    \label{fig:ubendcontribflux}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=0.7\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2omegaG00.png}
+    \caption{$\Omega$ flux distribution, highest energy group}
+    \label{fig:ubendomegaflux}
+  \end{subfigure}
+  \caption[Flux distributions at problem midplane for U-shaped corridor.]{Flux
+  distributions at problem midplane for U-shaped corridor. Distributions shown
+are for the highest energy group. In this problem the forward source and
+detector region are located in different z-plane locations.}
+  \label{fig:ubendfluxes}
+\end{figure}
+
+While the u-shaped bend problem does not have FOMs for CADIS-$\Omega$ that
+significantly improve upon CADIS', CADIS-$\Omega$ still achieved lower relative
+errors than CADIS. Figure \ref{fig:ubendfluxes} shows the flux distributions in
+the U-bend located at the midplane containing the NaI detector. Figure
+\ref{fig:ubendadjflux} shows the adjoint scalar flux, Figure
+\ref{fig:ubendcontribflux} shows the angle-integrated contributon scalar flux,
+and Figure \ref{fig:ubendomegaflux} shows the $\Omega$-flux, all at the same
+problem midplane.
+
+As with the single-turn labyrinth, the adjoint scalar flux
+in Figure \ref{fig:ubendadjflux} shows substantial ray effects
+in the air regions near the adjoint source. As
+expected, the ray effects are mitigated once the particles interact with
+concrete. The difference in flux value between the orange region and the yellow
+regions of the plot is on the order of two- to three- orders of magnitude. The
+two ray effect fingers are separated by a distance of 10-20cm, meaning that a
+particle traversing air in this region may experience fairly large differences
+in importance between scattering events.
+
+In this problem the forward source is offset in the z-plane from the detector by
+100cm. The effects of this on the flux are visualized well by the contributon
+flux in Figure \ref{fig:ubendcontribflux}. In the left-leg of the u-bend, the
+contributon flux decreases near the bottom. This is because particles are more
+biased in a deeper z-plane, towards the forward source. It is also clear from
+this figure that in the high energy region, the contributon flux streams
+particles through the concrete shield.
+
+The $\Omega$-flux shown in Figure \ref{fig:ubendomegaflux} does not attempt to
+force particles through the shield like the contributon flux, nor does it have
+as substantial of ray effects as the adjoint scalar flux distribution. However,
+the ray effects in this variant are not completely mitigated. There appears to
+be a cone of particles extending into the u-bend that are of greater importance
+than the other regions near the detector. This is a clear effect of the forward
+flux distribution. However, the region just to the right of the detector
+location is of possible consequence. Between the detector and directly to the
+right, the flux decreases in magnitude more than two orders of magnitude. It is
+possible that the large gradient in importnace could be adversely affecting the
+time achieved by the $\Omega$ methods for this problem.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=0.7\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2M3G26.png}
+    \caption{M$_3$ distribution, visualized in plane containing detector}
+    \label{fig:ubendM3}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=0.7\linewidth]{./chapters/characterization_probs/figures/char/prob_2/prob2M4G26.png}
+    \caption{M$_4$ distribution, visualized in plane containing detector}
+    \label{fig:ubendM4}
+  \end{subfigure}
+  \caption[Anisotropy metrics plotted at problem midplane ($z=55$) for U-shaped
+  corridor.]{Anisotropy metrics plotted at problem midplane ($z=55$) for U-shaped
+    corridor. Energy group shown is for lowest energy.}
+  \label{fig:ubendmetrics}
+\end{figure}
+
+Figures \ref{fig:ubendM3} and \ref{fig:ubendM4} show the anisotropy metrics for
+the u-shaped bend. Figure \ref{fig:ubendM3} shows the M$_3$ distribution, which
+as one may recall is the ratio of the contributon maximum angular flux to the
+contributon average angular flux in the cell. M$_4$, which is visualized in
+Figure \ref{fig:ubendM4}, divides M$_3$ by the ratio of the maximum to average
+adjoint angular fluxes.
+
+Comparing these two figures we can identify the effect
+of this normalization on the anisotropy metrics. Beginning with the M$_3$
+distribution plot in Figure \ref{fig:ubendM3}, it is clear that we still observe
+the secondary ray effects in the flux anisotropies that were observed in the
+labyrinth problems. On the right side of the u-bend, we observe ray effects in
+the aniostropy that are likely from the adjoint flux distribution. On the left
+side of the bend we observe oblong circular distributions of anisotropy. These
+are more likely to be from particles emanating forward source distribution. The
+contributon flux anisotropies are much stronger in the air channels than in the
+concrete shield, as we would expect. In the shield immediately bounding the air,
+we observe a fairly isotropic flux distribution, but as particles reach closer
+to the edges the anisotropy increases slightly.
+
+The M$_4$ distributions shown in \ref{fig:ubendM4} show how certain features of
+the anisotropy are removed when using the control adjoint angular flux. In
+particular, the shield region becomes completely normalized, meaning that the
+isotropy in the contributon flux matches that of the adjoint flux. The air
+regions are where real and substantial differences occur. In particular, we see
+peaks in the anisotropy where the forward and adjoint fluxes meet. At the top of
+the bend, the adjoint and forward fluxes have scattered relatively few times and
+thus generate a high aniosotropy in the contributon flux.
+
+These anisotropy plots illustrate how in certain regions the flux anisotropy may
+be very high. Further, they show regions where the fluxes strongly interact with
+one another. In addition to helping to quantify the effectiveness of the method,
+they reveal interesting features of the solution that may not be obvious using
+standard flux figures.
+
+\subsection{Shielding with Rebar}
+\label{subsec:resultrebar}
+
+The problem with rebar embedded both in the x- and y- directions
+in concrete has
+results summarized in Tables
+\ref{tab:rebarfoms} and \ref{tab:rebartimes}. Figures
+\ref{fig:rebarresult} and \ref{fig:rebarerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for rebar-embedded
+  concrete.]{Figure of Merit comparison between methods for rebar-embedded
+  concrete.}
+  \label{tab:rebarfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_times_compare}
+  \caption[Detailed timing results for rebar-embedded concrete]
+  {Detailed timing results for rebar-embedded concrete.}
+  \label{tab:rebartimes}
+\end{table}
+
+The FOM results for the rebar-embedded concrete show that this is a very poor
+problem for CADIS-$\Omega$, in general. CADIS-$\Omega$ has lower FOMs than CADIS
+in all measures. CADIS-$\Omega$ spends fractionally over five--both
+deterministically and in Monte Carlo--the
+transport time that CADIS does. Further, CADIS-$\Omega$ has poorer FOMs in both
+the tally average and maximum relative error than the nonbiased analog. This is
+due to CADIS-$\Omega$ requiring nearly 30x longer to run Monte Carlo than the
+nonbiased analog.
+
+\begin{figure}[ht!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
+  \caption[Tally results comparison.]
+  {Tally results comparison.}
+    \label{fig:rebarresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_error_compare.pdf}
+  \caption[Tally relative error comparison.]
+  {Tally relative error comparison.}
+    \label{fig:rebarerror}
+  \end{subfigure}
+\caption[Tally result and error for rebar-embedded concrete, monodirectional
+Monte Carlo source]{Tally result and error for rebar-embedded concrete, monodirectional
+  Monte Carlo source}
+\label{fig:monorebarresults}
+\end{figure}
+
+Figure \ref{fig:rebarresult} shows that the tally results for the rebar-embedded
+concrete do not generally agree between any method. CADIS and CADIS-$\Omega$
+have better agreement with each other than with the nonbiased analog, but at
+high energies their results differ significantly. However, in comparing their
+relative errors in Figure \ref{fig:rebarerror}, the large discrepancy in their
+results is explained by the very high relative errors in this region. As with
+the U-shaped air corridor, neither method achieves satisfactory relative errors
+below 0.10 in high energy bins. However, both methods achieve comparatively good
+relative error results in energy bins below $10^{-1}$ MeV.
+
+It is interesting that this problem appears to perform far more poorly than the
+steel beam in concrete. At this point, we must ask ourselves why a similar, but
+slightly more complex problem would have such substantively different results
+in the FOMs. This problem is undoubtedly difficult for both CADIS and FW-CADIS,
+but why does CADIS-$\Omega$ have such a poor performance in high energy bins
+which are usually more anisotropic than lower energy bins.
+
+Section \ref{subsec:ProbSpecs} described that flux anisotropy can be induced by
+the problem materials, geometry, or the source definition. Three of the
+characterization problem have monodirectional sources: the steel beam in
+concrete, the rebar-embedded concrete, and the nuclear medicine therapy room.
+At this point in the work it was discovered that ADVANTG does not support
+monodirectional sources, though it has in the past. As a result, the importance
+maps generated by ADVANTG/Denovo automatically use an isotropic source
+distribution. However, the Monte Carlo input is not edited to reflect an
+isotropic source. As a result, the importance map does not match the physics in
+the problem.
+
+This difference in the source definition did not affect the steel
+bar in concrete problem (Section \ref{subsec:resultbeam}) because
+the source comprises the entire wall at $x=0$.
+However, both the rebar and the medical therapy room will have importance maps
+that do not match the physics of the defined Monte Carlo input. The results
+presented in Tables \ref{tab:rebarfoms} and \ref{tab:rebartimes},
+as well as Figures \ref{fig:rebarresult} and \ref{fig:rebarerror} reflect a
+Monte Carlo simulation
+with a monodirectional source and a deterministic solver providing
+an importance map with an isotropic source. This, though unexpected, issue
+provides an opportunity for us to investigate the $\Omega$-method's sensitivity
+to incorrect importance maps.
+
+Tables \ref{tab:isorebarfoms} and \ref{tab:isorebartimes} show the FOM and
+timing results for a Monte Carlo simulation with an isotropic source defined.
+Note that the deterministic times in Table \ref{tab:isorebartimes} match those
+in Table \ref{tab:rebartimes}. This is because the lack of support for
+monodirectional sources results in a deterministic solution that is
+agnostic to the defined Monte Carlo source. Figures \ref{fig:isorebarresult} and
+\ref{fig:isorebarerror} show the tally results and relative error for the case
+where the Monte Carlo and deterministic sources are consistent.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for rebar-embedded
+  concrete, isotropic Monte Carlo source.]{Figure of Merit comparison between methods for rebar-embedded
+  concrete, isotropic Monte Carlo source.}
+  \label{tab:isorebarfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_times_compare}
+  \caption[Detailed timing results for rebar-embedded concrete, isotropic Monte
+  Carlo source.]
+  {Detailed timing results for rebar-embedded concrete, isotropic Monte Carlo
+  source.}
+  \label{tab:isorebartimes}
+\end{table}
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+  \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_result_compare.pdf}
+  \caption[Tally results comparison.]
+  {Tally results comparison.}
+  \label{fig:isorebarresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+  \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_error_compare.pdf}
+  \caption[Tally relative error comparison.]
+  {Tally relative error comparison.}
+  \label{fig:isorebarerror}
+  \end{subfigure}
+\caption[Tally result and error for rebar-embedded concrete, isotropic Monte
+  Carlo source]{Tally result and error for rebar-embedded concrete, isotropic
+    Monte Carlo source}
+\label{fig:isorebarresults}
+\end{figure}
+
+The results in Table \ref{tab:isorebarfoms} are quite different than those in
+Table \ref{tab:rebarfoms}. The time for both CADIS and CADIS-$\Omega$ is reduced
+by more than an order of mangitude. In the original run of this problem,
+CADIS-$\Omega$ took 1,500 minutes to converge. Here that time is reduced to 111
+minutes. Further, the tally average and tally maximum
+RE FOMs change between the tables by several orders of magnitude.  This means
+that in addition to the shortened time reducing the FOMs,
+the relative errors also improved
+between the monodirectional and isotropic point source variants.
+
+The tally results between Figs. \ref{fig:isorebarresult} and
+\ref{fig:rebarresult}, show that having a consistently defined source between
+deterministic and Monte Carlo transport results in a closer tally result between
+CADIS and CADIS-$\Omega$. This is also confirmed in Figs.
+\ref{fig:isorebarerror} and \ref{fig:rebarerror}. In the origianl version of ths
+problem CADIS-$\Omega$'s relative errors at energy bins $> 10^{-1}$ were more
+than twice that of the REs achieved by CADIS. Interestingly, we see the opposite
+occur in the isotropic source definition. In figure \ref{fig:isorebarerror},
+CADIS has some energy bins with relative errors almost 9x thos of CADIS-$\Omega$
+in the same bin. However, it is worth noting that the scales between these two
+problems is very different. The highest RE achieved by CADIS in Figure
+\ref{fig:isorebarerror} is lower than either CADIS or CADIS-$\Omega$'s RE in the
+monodirectional problem.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_4/prob4fwdG00.png}
+    \caption{Forward flux distribution, highest energy group}
+    \label{fig:rebarfwdflux}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_4/prob4omegaG26.png}
+    \caption{$\Omega$ flux distribution, lowest energy group}
+    \label{fig:rebaromegaflux}
+  \end{subfigure}
+  \caption[Forward and $\Omega$-flux distributions, rebar embedded in
+  concrete.]{Forward and $\Omega$-flux distributions, rebar embedded in
+  concrete. Slice is located at $y=100$ centimeters}
+  \label{fig:rebarfluxes}
+\end{figure}
+
+The plots in Figure \ref{fig:rebarfluxes} show the highest energy flux for the
+foward problem in Fig. \ref{fig:rebarfwdflux} and the lowest energy
+$\Omega$-flux distribution for the $\Omega$-method in Figure
+\ref{fig:rebaromegaflux}. Figure
+\ref{fig:rebarfwdflux} clearly shows that the plate source on the left side of
+the problem is isotropically emitting particles. The $\Omega$-flux in Figure
+\ref{fig:rebaromegaflux} shows the preferential flowpaths for particles through
+the steel at low energies. Recall that the deterministic flux distributions
+will not change between the
+isotropic and monodirectional source definitions in Monte Carlo, so these
+figures and any map of the metric distributions in the problem
+are the same regardless of the Monte Carlo source definition.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_4/prob4M2G26.png}
+    \caption{M$_2$ distribution, lowest energy group.}
+    \label{fig:rebarM2}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_4/prob4M3G26.png}
+    \caption{M$_3$ distribution, lowest energy group.}
+    \label{fig:rebarM3}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/prob_4/prob4M4G26.png}
+    \caption{M$_4$ distribution, lowest energy group.}
+    \label{fig:rebarM4}
+  \end{subfigure}
+  \caption[Metric distributions for rebar-embedded concrete.]{Metric
+  distributions for rebar-embedded concrete. Slice at $y=100$ centimeters.
+Lowest energy group distributions shown.}
+  \label{fig:rebarmetrics}
+\end{figure}
+
+The subfigures of \ref{fig:rebarmetrics} show the M$_2$, M$_3$, and M$_4$
+distributions for the lowest energy group for the rebar problem. Recall that the
+M$_2$ distribution directly compares the $\Omega$ and adjoint scalar fluxes.
+Figure \ref{fig:rebarM2} shows that the biggest deviations of the $\Omega$-flux
+from the adjoint are near the adjoint source. This was similarly observed in the
+steel beam problem variants. The regions of concrete are the same between CADIS
+and CADIS-$\Omega$, but the rebar support structure shows that the $\Omega$ flux
+has a slightly higher importance for these regions. Glancing back towards the
+adjoint source region, the flux importances can be seen separating into fingers
+that line up with the concrete blocks in the problem.
+
+The M$_3$ distribution of \ref{fig:rebarM3} shows the anisotropy of the
+contributon flux for this problem, and the M$_4$ distribution in Figure
+\ref{fig:rebarM4} shows the result of normalizing this anisotropy by the adjoint
+anisotropy. In the concrete blocks of Figure \ref{fig:rebarM3} some interesting
+anisotropy distributions occur closer tot he forward source. As with Figure
+\ref{fig:rebarM2}, we can see the anisotropies separate into fingers that line
+up with the concrete blocks. On the adjoint source side of the shield, the
+anisotropies are the highest right next to the concrete blocks. On the forward
+source side of the shield, the areas next to the blocks are the least
+aniosotropic. When the metric is normalized by the adjoint in Figure
+\ref{fig:rebarM4}, some of the anisotropy effects are mitigated, meaning that
+the adjoint angular flux is the driving force behind the features that we
+observed in Figure \ref{fig:rebarM3}. However, on the forward source side of the
+shield there are strong anisotropies that line up with each of the metal rebar
+strucutres.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_violin_mean.pdf}
+    \caption{M$_3$ distributions rebar embedded in concrete, filtered above the
+    mean contributon flux.}
+    \label{fig:M3violinrebar}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, monodirectional
+  Monte Carlo source.}
+    \label{fig:M3monostatsrebar}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/metric_three_err_stats_mean.pdf}
+    \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, isotropic
+  Monte Carlo source.}
+    \label{fig:M3isostatsrebar}
+  \end{subfigure}
+  \caption[M$_3$ distribution and trends for rebar-embedded concrete
+  problem.]{M$_3$ distribution and I$_{RE}$ scatterplot for rebar-embedded in
+concrete. Values of M$_3$ have been filtered to be from cells that are above the
+contributon mean value.}
+  \label{fig:rebarplots}
+\end{figure}
+
+While the metric distributions and the flux maps do not differ between the Monte
+Carlo source types, the scatterplots of I$_{RE}$ and I$_{FOM}$ will. Figure
+\ref{fig:M3violinrebar} shows a violin plot of the M$_{3}$ distributions for
+this problem. Figure \ref{fig:M3monostatsrebar} shows I$_{RE}$ for the problem
+with a
+monodirectional Monte Carlo source trended against
+several metric values for M$_3$ values using the mean contributon flux filtering
+algorithm. Figure \ref{fig:M3isostastsrebar} shows these trends for the problem
+with an isotropic Monte Carlo source using the mean contributon flux filtering
+algorithm.
+
+After inspecting the metric distributions against I$_{RE}$ and I$_{FOM}$, no
+distinct trends were observable with any metric and either improvement factor.
+Because M$_3$ had the best trends, it is included in the plots of Figure
+\ref{fig:rebarplots}.
+
+Figure \ref{fig:M3violinrebar} shows that low energy cells have
+a large spread but no centering value. There exist some very anisotropic cells
+at low energy groups, but there exist also exist some very isotropic cells.
+Conversely, in high energy groups the metric distribution has a very clumped
+distribution of values where the contributon max angular flux is higher than the
+average contributon angular flux in the cell.
+
+Using values that can be computed from the distributions shown in Figure
+\ref{fig:M3violinrebar}, the relative error improvement between CADIS-$\Omega$
+and CADIS can be plotted as shown in Figs. \ref{fig:M3monostatsrebar} and
+\ref{fig:M3isoststsrebar}. The x-values between each of these figures will be the
+same, but the y-ordinate values will differ as a result of their differing Monte
+Carlo source distributions.
+
+In general Figure \ref{fig:M3monostatsrebar} shows there
+exist many energy bins where CADIS-$\Omega$ achieves a poorer relative error
+than CADIS. The bins where the comparative error is the worst is in intermediate
+energy regions. At low energy regions the relative errors are comparable, but as
+shown in the timing table, the FOM will be much lower for CADIS-$\Omega$. There
+does appear to be a slight trend in I$_{RE}$ with the ratio of the metric mean
+to the metric median and with the metric variance. As with the steel beam
+problem, this shows that the metric distribution is a better predictor of the
+improvement in the relative error than the metric average or median value.
+However, these trends are not strong, and it would be difficult to predict the
+performance of a similar problem based on metric distributions. Comparing the
+results of Figure \ref{fig:M3isostatsrebar} to Figure
+\ref{fig:M3monostatsrebar}, some of these observations change with the isotropic
+source definition. First, CADIS-$\Omega$ performs better than CADIS uniformly in
+all energy bins. Next, there exists no trend in the metric distribution and
+I$_{RE}$. We cannot conclude that any version of the M$_3$ distribution can
+predict whether the $\Omega$ method will improve convergence for this problem.
+
+It is possible that the filter matrix is not fine enough for this particular
+problem to pull out metric
+values of high importance, but even values filtered out above the mean
+contributon flux did not have strong correlations. However, with the cutoffs
+appearing in the distributions of \ref{fig:M3violinrebar}, choosing too high of
+a filter value may also remove much of the metric distribution.
+
+Both CADIS and CADIS-$\Omega$ improve in the relative errors that they achieve
+as a resulf of having a source distribution that matches between the Monte Carlo
+and deterministic runs. As a result, the comparison between isotropic and
+monodirectional sources in this problem shows that having an importance map that
+does not match the problem will slow down convergence. Further, we can conclude
+that CADIS-$\Omega$ is more sensitive to having an importance map that doesn't
+match the Monte Carlo. This may be because the larger gradients in importance
+exacerbate splitting and rouletting from an unexpected source.
+
+\subsection{Therapy Room}
+\label{subsec:resultstherapy}
+
+The problem with a simplified representation of a nuclear medicine therapy room
+has FOM summarized in Table
+\ref{tab:monotherapyfoms}. Figures
+\ref{fig:monotherapyresult} and \ref{fig:monotherapyerror} show the results obtained
+by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
+Monte Carlo. Note that the results for this problem had issues with reported
+times for the deterministic run, so the adjusted Monte Carlo
+(FOM$_{hybrid}$) is not reported and the timing table is not reported.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_foms_compare}
+  \caption[Tally results comparison between methods for simplified medical
+  therapy room, Monte Carlo monodirectional source.]{Tally relative error comparison between methods for simplified
+  medical therapy room, Monte Carlo monodirectional source.}
+  \label{tab:monotherapyfoms}
+\end{table}
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
+    \caption[Tally results comparison.]
+    {Tally results comparison.}
+    \label{fig:monotherapyresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_error_compare.pdf}
+    \caption[Tally relative error comparison.]
+    {Tally relative error comparison.}
+    \label{fig:monotherapyerror}
+  \end{subfigure}
+\caption[Tally result and error for simplified medical therapy room,
+  monodirectional Monte Carlo source]
+  {Tally result and error for simplified medical therapy room, monodirectional
+  Monte Carlo source.}
+\label{fig:monotherapyresults}
+\end{figure}
+
+The therapy room with a monodirectional Monte Carlo source
+is a problem where CADIS-$\Omega$ performs fairly well when
+compared to CADIS and the nonbiased analog Monte Carlo. For the Monte Carlo
+runtime-exclusive FOMs, CADIS-$\Omega$ achieves better FOMs than CADIS and the
+nonbiased analog in both the tally average relative error and the tally maximum
+relative error. This is likely due to a softening of the importance map as a
+result of the concrete walls surrounding the therapy room. As a result,
+reflecting forward and adjoint particles decrease the strong gradient that
+exists in other problems, like the exit of the single turn labyrinth.
+
+For this problem, CADIS-$\Omega$ achieved similar relative errors to CADIS for
+intermediate- and fast- energy bins. However, for low energy bins CADIS
+performed poorly and CADIS-$\Omega$ achieved satisfactory relative errors. These
+low energy bins are the only ones where CADIS-$\Omega$ really substantially
+outperformed CADIS. In a similar problem it would be advantageous to use
+CADIS-$\Omega$ as a method, but with deterministic runtime incorporated it may
+still be worthwhile to run with CADIS instead. If a user desires a tally with
+low energy bins exclusively, CADIS-$\Omega$ will be the advantageous method.
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_foms_compare}
+  \caption[Tally results comparison between methods for simplified medical
+  therapy room, Monte Carlo isotropic source.]{Tally relative error comparison between methods for simplified
+  medical therapy room, Monte Carlo isotropic source.}
+  \label{tab:isotherapyfoms}
+\end{table}
+
+As discussed in Section \ref{subsec:resultrebar}, the monodirectional source
+distribution in Monte Carlo is not actually reflected in the importance map
+generated by ADVANTG. As a result, the results for the isotropic source are
+shown in Table \ref{tab:isotherapyfoms} and Figure \ref{fig:isotherapyresults}.
+
+Comparing the results from Tables \ref{tab:isotherapyfoms} and
+\ref{tab:monotherapyfoms}, the isotropic source definition does improve the FOMS
+achieved by CADIS, CADIS-$\Omega$, and the analog Monte Carlo. The minimum
+relative error FOMs see a factor of 10 improvement for both CADIS and
+CADIS-$\Omega$. The time to run the biased problems is quite a bit longer, which is
+likely due to the placement of the source in the problem. Because the
+monodirectional source forced particles into the water phantom, they were sent
+into a region with relatively little variation in the flux. The $\Omega$-method,
+in particular, avoids a region with very strong preferential flow. Avoiding
+splitting and rouletting as a result of crossing paths with large variations in
+the flux would allow the problem to run faster.
+
+Despite the longer runtimes, CADIS and CADIS-$\Omega$ both achieve better FOMS
+in every measure by changing the source definition. Again, the effects of using
+the wrong importance map are reflected in longer runtimes for both problems.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_result_compare.pdf}
+    \caption[Tally results comparison.]
+    {Tally results comparison.}
+    \label{fig:isotherapyresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_error_compare.pdf}
+    \caption[Tally relative error comparison.]
+    {Tally relative error comparison.}
+    \label{fig:isotherapyerror}
+  \end{subfigure}
+\caption[Tally result and error for simplified medical therapy room,
+  isotropic Monte Carlo source]
+  {Tally result and error for simplified medical therapy room, isotropic
+  Monte Carlo source.}
+\label{fig:isotherapyresults}
+\end{figure}
+
+Figure \ref{fig:isotherapyresults} shows the tally result and relative error for
+the isotropic source defined in Monte Carlo. Comparing the tally results of
+the isotropic source in Figure \ref{fig:isotherapyresult} to the monodirectional in Figure
+\ref{fig:monotherapyresult}, we can see that the results between all three
+methods agree better for the isotropic source distribution. The shapes of the
+relative error compare similarly between Figs. \ref{fig:isotherapyerror} and
+\ref{fig:monotherapyerror}, however the relative errors achieved by CADIS and
+CADIS-$\Omega$ are far smaller in the isotropic case. In both source definitions,
+CADIS struggles transporting low energy particles more than intermediate- or
+high-energy particles. CADIS-$\Omega$ handles these energies better, but it
+struggles in the lower-energy resonance regions slightly more than CADIS. As a
+result, there is some tradeoff with effectiveness for each method.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/therapy/therapyfwdG00.png}
+    \caption{Forward flux distribution, highest energy group}
+    \label{fig:therapyfwdflux}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/therapy/therapyadjG00.png}
+    \caption{Adjoint flux distribution, highest energy group}
+    \label{fig:therapyadjflux}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{./chapters/characterization_probs/figures/char/therapy/therapyomegaG00.png}
+    \caption{$\Omega$-flux distribution, highest energy group}
+    \label{fig:therapyomegaflux}
+  \end{subfigure}
+  \caption[Flux distributions at slice located at $z=150$ centimeters for
+  radiation therapy room. ]{Flux distributions at $z=150$ centimeters for
+  radiation therapy room.}
+  \label{fig:therapyfluxes}
+\end{figure}
+
+The flux maps for the therapy room are shown in Figure \ref{fig:therapyfluxes}.
+Figure \ref{fig:therapyfwdflux} shows the forward flux for the highest energy
+group. This figure has very strong ray effects that dominate the flux behavior
+near the water cell and near the forward source. Over just a few centimeters,
+the forward flux varies two- to three- orders of magnitude. The wall to the
+bottom right of the figure shows some secondary ray effects
+that occur after scattering. This is much more subtle than near the forward
+source, but there are three groupings of flux direction after this scatter,
+which may be magnified in the $\Omega$-flux by the adjoint.
+
+Figures \ref{fig:therapyadjflux} and \ref{fig:therapyomegaflux} show the adjoint
+and $\Omega$-fluxes for the therapy room problem. Unlike the labyrinth variants,
+where the $\Omega$ methods softened ray effects, there exist much stronger ray
+effects in the $\Omega$-flux map for the therapy room. This is because the ray
+effects are primarily from the forward flux, which does not affect the standard
+adjoint flux whatsoever. However, the integration of the forward and adjoint in
+the $\Omega$ calculation causes some of the forward ray effects to be carried
+over into the adjusted adjoint. A compounding factor to this is that the adjoint
+particles travel in exactly the opposite direction to the forward particles at
+the region where the hallway meets with the room. It was discussed previously
+that the contributon flux will be magnified if forward and adjoint particles are
+travelling in opposite directions. Not only is this the case in the therapy
+room, but they are travelling in oppoiste directions down a ray effect. This
+magnifies the ray effect in the problem, so there is a tight band of particle
+travel diagonally across the $\Omega$ problem.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy_iso/metric_four_violin_full.pdf}
+    \caption{Unfiltered M$_4$ distributions medical therapy room.}
+    \label{fig:M4violintherapy}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy/metric_four_err_stats_full.pdf}
+    \caption{I$_{RE}$ for M$_4$ for therapy room, monodirectional Monte Carlo
+  source.}
+    \label{fig:M4statsmonotherapy}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+  \centering
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy_iso/metric_four_err_stats_full.pdf}
+    \caption{I$_{RE}$ for M$_4$ for therapy room, isotropic Monte
+    Carlo
+  source.}
+    \label{fig:M4statsisotherapy}
+  \end{subfigure}
+  \caption[M$_4$ distribution and trends, unfiltered, for medical therapy room.]
+  {M$_4$ distribution and I$_{RE}$ scatterplot for
+  medical therapy room.. Values of M$_4$ have not been filtered with a filtering
+algorithm.}
+  \label{fig:therapyplots}
+\end{figure}
+
+Figure \ref{fig:therapyplots} shows the M$_4$ distribution and the trends of
+I$_{RE}$ for different values of the M$_4$ distribution for both the isotropic
+and monodirectional variants of the therapy room. These figures do not use a
+filtering algorithm. This is because this particular problem was run on a
+slightly earlier version of ADVANTG that did not output the angle-integrated
+contributon fluxes. As a result, the values used for the filter matrix are not
+accessible, and filtering cannot be used in this analysis.
+Future studies of this particular problem should compare the
+effects of the filtering algorithms of the distributions of Figs.
+\ref{fig:M4statsmonotherapy} and \ref{fig:M4statsmonotherapy}.
+
+Figure \ref{fig:M4violintherapy} shows the full violin plots by energy group for
+the therapy room. Here we see that the lower energy groups have values clustered
+around a value slightly above 1. Violins in intermediate to high-intermediate
+energy groups have a lower mean value than the low energy violins, but their
+distribution tends to broaden. The broadening of the distribution is
+particualrly evident for energy group violins valued $\leq$ 8.
+
+Figures \ref{fig:M4statsmonotherapy} and \ref{fig:M4statsisotherapy} show the
+effect that this distribution has on I$_{RE}$ for both the monodirectional and
+isotropic variants of the problem. Again, non of the anisotropy metrics showed a
+strong trend for I$_{RE}$ or I$_{FOM}$ with any distribution, so the best figure
+was included here. Recall that a value below unity for these figures indicates
+that CADIS-$\Omega$ achieved a lower relative error in that bin. In both
+figures CADIS-$\Omega$ has roughly half of its values above unity and half
+below. There are some very low energy bins in which CADIS-$\Omega$ far
+outperforms CADIS, but then there are intermediate energy groups that
+CADIS-$\Omega$'s performance falters. Neither figure shows a particular trend,
+but the metric skew does appear to be the subplot most closely resembling a
+trend.
+
+In comparing Figure \ref{fig:therapyplots} to \ref{fig:rebarplots}, this problem
+does not show as significant of a change in I$_{RE}$ with respect to changing
+source definitions. This means that the ratio of relative errors between CADIS
+and CADIS-$\Omega$ remains the same, despite both achieving far lower relative
+errors overall in the isotropic case. That means, for this problem, CADIS and
+CADIS-$\Omega$ are both equally sensitive to a mismatch in importance map. This
+could be a result of the large fraction of air in the problem, which dominates
+the behavior of both methods. Conversely, the rebar problem required both CADIS
+and CADIS-$\Omega$ to sample frequently in the center of the problem, so the
+effects of mismatching maps was more isolated from other effects.
+
