@@ -1459,8 +1459,8 @@ nonbiased analog.
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_result_compare.pdf}
-    \caption[Tally results comparison between methods for rebar-embedded concrete.]
-    {Tally results comparison between methods for rebar-embedded concrete.}
+  \caption[Tally results comparison.]
+  {Tally results comparison.}
     \label{fig:rebarresult}
   \end{subfigure}
 \end{figure}
@@ -1469,8 +1469,8 @@ nonbiased analog.
   \begin{subfigure}[t]{\textwidth}
     \centering
     \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4/problem_4_tally_error_compare.pdf}
-    \caption[Tally relative error comparison between methods for rebar-embedded concrete.]
-    {Tally relative error comparison between methods for rebar-embedded concrete.}
+  \caption[Tally relative error comparison.]
+  {Tally relative error comparison.}
     \label{fig:rebarerror}
   \end{subfigure}
 \caption[Tally result and error for rebar-embedded concrete, monodirectional
@@ -1479,28 +1479,48 @@ Monte Carlo source]{Tally result and error for rebar-embedded concrete, monodire
 \label{fig:monorebarresults}
 \end{figure}
 
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_foms_compare}
+  \caption[Figure of Merit comparison between methods for rebar-embedded
+  concrete, isotropic Monte Carlo source.]{Figure of Merit comparison between methods for rebar-embedded
+  concrete, isotropic Monte Carlo source.}
+  \label{tab:isorebarfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_times_compare}
+  \caption[Detailed timing results for rebar-embedded concrete, isotropic Monte
+  Carlo source.]
+  {Detailed timing results for rebar-embedded concrete, isotropic Monte Carlo
+  source.}
+  \label{tab:isorebartimes}
+\end{table}
+
 \begin{figure}[htb!]
   \centering
   \begin{subfigure}[t]{\textwidth}
-  \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_result_compare.pdf}
-  \caption[Tally results comparison between methods for rebar-embedded concrete.]
-  {Tally results comparison between methods for rebar-embedded concrete.}
-  \label{fig:rebarresult}
+    \centering
+  \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_result_compare.pdf}
+  \caption[Tally results comparison.]
+  {Tally results comparison.}
+  \label{fig:isorebarresult}
   \end{subfigure}
 \end{figure}
 \begin{figure}[htb!]\ContinuedFloat
   \centering
   \begin{subfigure}[t]{\textwidth}
   \centering
-  \includegraphics[width=0.8\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_error_compare.pdf}
-  \caption[Tally relative error comparison between methods for rebar-embedded concrete.]
-  {Tally relative error comparison between methods for rebar-embedded concrete.}
-  \label{fig:rebarerror}
+  \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/prob_4_iso/problem_4_tally_error_compare.pdf}
+  \caption[Tally relative error comparison.]
+  {Tally relative error comparison.}
+  \label{fig:isorebarerror}
   \end{subfigure}
 \caption[Tally result and error for rebar-embedded concrete, isotropic Monte
   Carlo source]{Tally result and error for rebar-embedded concrete, isotropic
     Monte Carlo source}
-\label{fig:monorebarresults}
+\label{fig:isorebarresults}
 \end{figure}
 
 Figure \ref{fig:rebarresult} shows that the tally results for the rebar-embedded
@@ -1509,7 +1529,7 @@ have better agreement with each other than with the nonbiased analog, but at
 high energies their results differ significantly. However, in comparing their
 relative errors in Figure \ref{fig:rebarerror}, the large discrepancy in their
 results is explained by the very high relative errors in this region. As with
-the u-shaped air corridor, neither method achieves satisfactory relative errors
+the U-shaped air corridor, neither method achieves satisfactory relative errors
 below 0.10 in high energy bins. However, both methods achieve comparitavely good
 relative error results in energy bins below $10^{-1}$ MeV.
 
@@ -1527,7 +1547,8 @@ significant portion of its time sampling less useful regions.
   \centering
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_violin_mean.pdf}
-    \caption{M$_3$ distributions rebar embedded in concrete}
+    \caption{M$_3$ distributions rebar embedded in concrete, filtered above the
+    mean contributon flux.}
     \label{fig:M3violinrebar}
   \end{subfigure}
 \end{figure}
@@ -1536,7 +1557,7 @@ significant portion of its time sampling less useful regions.
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4/metric_three_err_stats_mean.pdf}
     \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, monodirectional
-  source.}
+  Monte Carlo source.}
     \label{fig:M3statsrebar}
   \end{subfigure}
 \end{figure}
@@ -1545,7 +1566,7 @@ significant portion of its time sampling less useful regions.
   \begin{subfigure}[t]{\textwidth}
     \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/prob_4_iso/metric_three_err_stats_mean.pdf}
     \caption{I$_{RE}$ for M$_3$ for rebar embedded in concrete, isotropic
-  source.}
+  Monte Carlo source.}
     \label{fig:M3statsrebar}
   \end{subfigure}
   \caption[M$_3$ distribution and trends for rebar-embedded concrete
@@ -1597,8 +1618,8 @@ a filter value may also remove much of the metric distribution.
 
 The problem with a simplified representation of a nuclear medicine therapy room
 has FOM summarized in Table
-\ref{tab:therapyfoms}. Figures
-\ref{fig:therapyresult} and \ref{fig:therapyerror} show the results obtained
+\ref{tab:monotherapyfoms}. Figures
+\ref{fig:monotherapyresult} and \ref{fig:monotherapyerror} show the results obtained
 by the track length tally in CADIS, CADIS-$\Omega$ and the nonbiased analog
 Monte Carlo. Note that the results for this problem had issues with reported
 times for the deterministic run, so the adjusted Monte Carlo
@@ -1608,9 +1629,18 @@ times for the deterministic run, so the adjusted Monte Carlo
   \centering
   \input{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_foms_compare}
   \caption[Tally results comparison between methods for simplified medical
-  therapy room.]{Tally relative error comparison between methods for simplified
-  medical therapy room.}
-  \label{tab:therapyfoms}
+  therapy room, Monte Carlo monodirectional source.]{Tally relative error comparison between methods for simplified
+  medical therapy room, Monte Carlo monodirectional source.}
+  \label{tab:monotherapyfoms}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \input{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_foms_compare}
+  \caption[Tally results comparison between methods for simplified medical
+  therapy room, Monte Carlo isotropic source.]{Tally relative error comparison between methods for simplified
+  medical therapy room, Monte Carlo isotropic source.}
+  \label{tab:isotherapyfoms}
 \end{table}
 
 The therapy room is a problem where CADIS-$\Omega$ performs fairly well when
@@ -1619,23 +1649,56 @@ runtime-exclusive FOMs, CADIS-$\Omega$ achieves better FOMs than CADIS and the
 nonbiased analog in both the tally average relative error and the tally maximum
 relative error.
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
   \centering
-  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
-  \caption[Tally results comparison between methods for simplified medical
-  therapy room.]
-  {Tally results comparison between methods for simplified medical therapy room.}
-  \label{fig:therapyresult}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_result_compare.pdf}
+    \caption[Tally results comparison.]
+    {Tally results comparison.}
+    \label{fig:monotherapyresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_error_compare.pdf}
+    \caption[Tally relative error comparison.]
+    {Tally relative error comparison.}
+    \label{fig:monotherapyerror}
+  \end{subfigure}
+\caption[Tally result and error for simplified medical therapy room,
+  monodirectional Monte Carlo source]
+  {Tally result and error for simplified medical therapy room, monodirectional
+  Monte Carlo source.}
+\label{fig:monotherapyresults}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
   \centering
-  \includegraphics[height=10cm]{./chapters/characterization_probs/figures/char/therapy/therapy_room_tally_error_compare.pdf}
-  \caption[Tally relative error comparison between methods for simplified
-  medical therapy room.]
-  {Tally relative error comparison between methods for simplified medical
-  therapy room.}
-  \label{fig:therapyerror}
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_result_compare.pdf}
+    \caption[Tally results comparison.]
+    {Tally results comparison.}
+    \label{fig:isotherapyresult}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \centering
+    \includegraphics[height=8.5cm]{./chapters/characterization_probs/figures/char/therapy_iso/therapy_room_tally_error_compare.pdf}
+    \caption[Tally relative error comparison.]
+    {Tally relative error comparison.}
+    \label{fig:isotherapyerror}
+  \end{subfigure}
+\caption[Tally result and error for simplified medical therapy room,
+  isotropic Monte Carlo source]
+  {Tally result and error for simplified medical therapy room, isotropic
+  Monte Carlo source.}
+\label{fig:isotherapyresults}
 \end{figure}
 
 For this problem, CADIS-$\Omega$ achieved similar relative errors to CADIS for
@@ -1646,4 +1709,37 @@ outperformed CADIS. In a similar problem it would be advantageous to use
 CADIS-$\Omega$ as a method, but with deterministic runtime incorporated it may
 still be worthwhile to run with CADIS instead. If a user desires a tally with
 low energy bins exclusively, CADIS-$\Omega$ will be the advantageous method.
+
+\begin{figure}[htb!]
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy_iso/metric_four_violin_full.pdf}
+    \caption{Unfiltered M$_4$ distributions medical therapy room.}
+    \label{fig:M4violintherapy}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy/metric_four_err_stats_full.pdf}
+    \caption{I$_{RE}$ for M$_4$ for therapy room, monodirectional Monte Carlo
+  source.}
+    \label{fig:M4statsmonotherapy}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[htb!]\ContinuedFloat
+  \centering
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\linewidth]{./chapters/characterization_probs/figures/char/therapy_iso/metric_four_err_stats_full.pdf}
+    \caption{I$_{RE}$ for M$_4$ for therapy room, isotropic Monte
+    Carlo
+  source.}
+    \label{fig:M4statsisotherapy}
+  \end{subfigure}
+  \caption[M$_4$ distribution and trends, unfiltered, for medical therapy room.]
+  {M$_4$ distribution and I$_{RE}$ scatterplot for
+  medical therapy room.. Values of M$_4$ have not been filtered with a filtering
+algorithm.}
+  \label{fig:therapyplots}
+\end{figure}
 
