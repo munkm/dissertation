@@ -1,14 +1,63 @@
-% (This file is included by thesis.tex; you do not latex it by itself.)
-
 \begin{abstract}
 
-% The text of the abstract goes here.  If you need to use a \section
-% command you will need to use \section*, \subsection*, etc. so that
-% you don't get any numbering.  You probably won't be using any of
-% these commands in the abstract anyway.
+The development of methods for deep-penetration radiation transport is of continued
+importance for radiation shielding, nonproliferation, nuclear threat reduction,
+and medical applications. As these applications become more ubiquitous, the need
+for transport methods that can accurately and reliably model the systems' behavior
+will persist. For these types of systems, hybrid methods are often the best
+choice to obtain a reliable answer in a short amount of time.
+Hybrid methods leverage
+the speed and uniform uncertainty distribution of a deterministic solution to
+bias Monte Carlo transport to reduce the variance in the solution.
+At present, the Consistent Adjoint-Driven Importance Sampling
+(CADIS) and Forward-Weighted CADIS (FW-CADIS) hybrid
+methods are the gold standard by
+which to model systems that have deeply-penetrating radiation. They use an
+adjoint scalar flux to generate variance reduction parameters for Monte Carlo.
+However, in
+problems where there exists strong anisotropy in the flux, CADIS and FW-CADIS
+are not as effective at reducing the problem variance as isotropic
+problems.
 
-An abstract is not where I describe my work in the abstract; rather,
-I will describe it in a descriptive and condensed manner. Let's call it
-my mini thesis.
+This dissertation covers the theoretical background, implementation of, and
+characterization of a set of angle-informed hybrid methods
+that can be applied to
+strongly anisotropic deep-penetration radiation transport problems. These methods
+use a forward-weighted adjoint angular flux to generate variance
+reduction parameters for Monte Carlo. As a result, they leverage both adjoint
+and contributon theory for variance reduction. They have been named
+CADIS-$\Omega$ and FW-CADIS-$\Omega$.
+
+To characterize CADIS-$\Omega$, several characterization problems with flux
+anisotropies were devised. These problems contain different physical
+mechanisms by which flux anisotropy is induced. Additionally, a series of novel
+anisotropy metrics by which to quantify flux anisotropy are used
+to characterize the
+methods beyond standard Figure of Merit (FOM) and relative error metrics. As a
+result, a more thorough investigation into the effects of anisotropy and the
+degree of anisotropy on Monte Carlo convergence is possible.
+
+The results from the characterization of CADIS-$\Omega$ show that it performs
+best in strongly anisotropic problems that have preferential particle flowpaths,
+but only if the flowpaths are not comprised of air.
+Further, the characterization of
+the method's sensitivity to deterministic angular discretization showed that
+CADIS-$\Omega$ has less sensitivity to discretization than CADIS for both
+quadrature order and P$_{N}$ order. However, more variation in the results were
+observed in response to changing quadrature order than P$_N$ order. Further, as
+a result of the forward-normalization in the $\Omega$-methods, ray effect
+mitigation was observed in many of the characterization problems.
+
+The characterization of the CADIS-$\Omega$-method in this dissertation serves to
+outline a path forward for further hybrid methods development. In particular,
+the response that the $\Omega$-method has with changes in quadrature order,
+P$_{N}$ order, and on ray effect mitigation are strong indicators that the
+method is more resilient than its predecessors to strong anisotropies in the
+flux.
+With further method characterization, the full potential of the $\Omega$-methods
+can be realized.
+The method can then be applied to geometrically complex, materially
+diverse problems and help to advance system modelling in deep-penetration
+radiation transport problems with strong anisotropies in the flux.
 
 \end{abstract}

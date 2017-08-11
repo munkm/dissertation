@@ -7,17 +7,17 @@
 \subsection{Anisotropy Quantification}
 \label{sec:anisotropy_quant}
 
-As the $\Omega$-methods are analyzed, it will be important to determine the
+As the $\Omega$-methods are analyzed, it is important to determine the
 types of problems in which the methods are successful. In addition to describing
 the physics that induce anisotropy in the flux, quantifying the degree of
-anisotropy of the problem will be useful in characterizing the method. In this
+anisotropy of the problem is useful in characterizing the method. In this
 section, a number
 of methods by which the anisotropy can be quantified in these problems are
 proposed. A brief description of how these methods capture anisotropy in the
 problem is also included. While each metric proposes an avenue by which the
-problem can be analyzed, there are certainly other methods that one may propose
-that could be used as an alternative. The methods described in the following
-subsections were proposed because they use data generated from the existing
+problem can be analyzed, there are certainly other methods that one may propose.
+The methods described in the following
+subsections are proposed because they use data generated from the existing
 method. The degree to which they impose a computational burden will be addressed
 in their analysis.
 
@@ -29,12 +29,11 @@ interacts with other pieces of software
 and how they were modified to execute this method.
 The standard release of ADVANTG provides the contributon flux as an output
 option, which can then be used to analyze problem physics by a user.
-If this option selected as an output, a silo file containing
+If this option is selected as an output, a SILO file containing
 the contributon fluxes for each discretized cell in space and energy  is
-created after
-a run. This is useful for problem analysis as the user may see
+created. This is useful for problem analysis as the user may see
 preferential streaming paths for particles in the problem using this metric.
-However, the contributon flux generated in this process is given by the product
+The contributon flux generated in this process is given by the product
 of the scalar adjoint and forward fluxes (Eq. \eqref{eq:adv_contributon}).
 
 As mentioned in Section \ref{sec:ContributonImportance}, the
@@ -61,14 +60,14 @@ integrating the angular contributon flux over all angle, as
 \label{eq:full_contributon}
 \end{equation}
 
-Both equations \eqref{eq:adv_contributon} and \eqref{eq:full_contributon} calculate
+Both Eqs. \eqref{eq:adv_contributon} and \eqref{eq:full_contributon} calculate
 the contributon flux as a function of space and energy, but the
 differences in their calculation is addressed in their notation, namely using
 $\phi^{c}$ or $\Phi^{c}$. The standard release of ADVANTG only has
 access to the scalar
 fluxes, so Eq. \eqref{eq:full_contributon} is not an accessible option for a
-user. Because the $\Omega$ calculations require full angular flux maps for the
-problems, the scalar contributon flux can be calculated with the latter
+user. Because the $\Omega$ calculations require full angular flux map,
+the scalar contributon flux can be calculated with the latter
 formulation, rather than the former in the modified version developed to support
 this work.
 
@@ -91,11 +90,11 @@ values will be and the quantity will approach unity.
 
 \subsubsection{The Ratio of Adjoint Fluxes}
 
-As discussed in previous sections, the $\Omega$-methods use the omega- scalar
+As discussed in previous sections, the $\Omega$-methods use the $\Omega$-scalar
 flux in place of the standard adjoint scalar flux. Therefore the ratio between
 these two quantities would also provide a useful metric for comparing which
 regions have significantly differing bias parameters in standard-adjoint and
-omega-adjoint situations. This metric will deviate from unity if the forward
+$\Omega$-adjoint situations. This metric will deviate from unity if the forward
 flux is anisotropic. This metric is calculated for
 every cell and every energy group in the problem, as shown in Eq.
 \eqref{eq:metric_two}.
@@ -107,7 +106,7 @@ every cell and every energy group in the problem, as shown in Eq.
 %
 Metrics one and two both reasonably appear to compute the anisotropy in the flux
 using versions of the contributon and adjoint fluxes, respectively. However, by
-expanding the $\Omega$-adjoint scalar flux in Metric two,
+expanding the $\Omega$-adjoint scalar flux in metric two,
 %
 \begin{align*}
 % \begin{equation*}
@@ -115,11 +114,11 @@ expanding the $\Omega$-adjoint scalar flux in Metric two,
   M_{2} & = \frac{\phi^{\dagger}_{\Omega}}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
   & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
       d\hat{\Omega}}{\int_{\Omega}{\psi(\hat\Omega) d\hat{\Omega}}}
-           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
+           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars}, \\
 \intertext{integrating the forward angular flux over all angle,} \\
   & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
       d\hat{\Omega}}{\phi}
-           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars} \\
+           \frac{1}{\phi^{\dagger}}\bigg\rvert_{\scalarvars}, \\
 \intertext{and rearranging the terms,}\\
   & = \frac{\int_{\Omega}{\psi^{\dagger}(\hat\Omega) \psi(\hat\Omega)}
       d\hat{\Omega}}{\phi \phi^{\dagger}}\bigg\rvert_{\scalarvars}\\
@@ -139,12 +138,12 @@ the characterization problems.
 An alternative metric to quantify anisotropy is to calculate the ratio between
 the maximum and average angular contributon flux in each $\vec{r} , E$ voxel.
 The higher this quantity, the more peaked the contributon flux is in $\Omega$.
-Note here that while using the $\Omega$-flux would seem like the natural choice,
+Note that while using the $\Omega$-flux would seem like the natural choice,
 no angular information is directly accessible once the $\Omega$ scalar flux has
-been calculated. One can compare the standard adjoint scalar flux and the omega
-adjoint scalar flux and infer how anisotropic the flux in the cell might be, but
+been calculated. One can compare the standard adjoint scalar flux and the
+$\Omega$-adjoint scalar flux and infer how anisotropic the flux in the cell might be, but
 due to the normalization that occurs in Eq. \eqref{eq:omega_basic}, the
-variation of angular omega fluxes throughout $\Omega$ for a cell
+variation of angular $\Omega$ fluxes throughout $\Omega$ for a cell
 in $\scalarvars$ is not
 calculated. As such, the contributon flux must be relied
 upon as a next-best evaluator of that metric:
@@ -155,7 +154,7 @@ upon as a next-best evaluator of that metric:
   \label{eq:metric_three}
 \end{equation}
 
-While \eqref{eq:metric_three} directly measures the anisotropy in the problem using
+While Eq. \eqref{eq:metric_three} directly measures the anisotropy in the problem using
 the angular contributon fluxes, it doesn't compare the difference
 between the fluxes used
 in the $\Omega$-  and the standard adjoint methods. Metric three
@@ -168,7 +167,7 @@ reformulated to incorporate this information using
                   Avg}}}{\frac{\psi^{\dagger}_{
                   Max}}{\psi^{\dagger}_{Avg}}} \Bigg\rvert_{\scalarvars} \\
           & = \frac{M_{3}}{\frac{\psi^{\dagger}_{Max}}
-                  {\psi^{\dagger}_{Avg}}} \Bigg\rvert_{\scalarvars}
+                  {\psi^{\dagger}_{Avg}}} \Bigg\rvert_{\scalarvars},
   \end{split}
   \label{eq:metric_four}
 \end{equation}
@@ -183,26 +182,26 @@ forward flux, the forward flux  would significantly
 change the distribution of the contributon
 fluxes in a cell, but it would not affect the flux distribution of the standard
 adjoint angular fluxes. By comparing the anisotropy in the contributon
-fluxes to those in the standard adjoint, the perturbation of the omega flux by
+fluxes to those in the standard adjoint, the perturbation of the $\Omega$ flux by
 the forward flux
 in the cell can be evaluated. In regions where the forward flux is
-not anisotropic, then the contributon anisotropy ratio should approximately be
+not anisotropic, then the contributon anisotropy ratio should be approximately
 the same as the standard adjoint anisotropy ratio.
 
-Further, becuase the
+Further, because the
 contributon flux incorporates directionality of the forward and adjoint fluxes,
 the maximum to average ratio of the contributon flux can differ from the adjoint
 flux. In regions where the adjoint
 angular flux and the forward angular flux are traveling in the same direction,
 the contributon ratio should be greater than the adjoint ratio, and this metric
 will be greater than one. In regions where they are travelling in opposite or
-perpindicular directions, the contributon flux will evaluate to a more isotropic
+perpendicular directions, the contributon flux will evaluate to a more isotropic
 state, and metric four will be less than unity. This metric
 provides substantially more information than metric two because
 it compares the behavior of the directional contributon and adjoint fluxes,
 rather than comparing the overall behavior of the flux in the cell.
 
-Both equations \eqref{eq:metric_three} and \eqref{eq:metric_four} compare the maximum
+Both Eqs. \eqref{eq:metric_three} and \eqref{eq:metric_four} compare the maximum
 angular flux in a cell to the average flux in the same cell. Because the average
 angular flux is the normalization factor, the maximum flux in the cell is
 compared to some relative measure of the total flux behavior in that cell. If,
@@ -219,21 +218,21 @@ not be worth the computational cost when compared to metrics two and three.
 An additional metric to quantify anisotropy in the contributon flux distribution
 is to calculate the ratio between the maximum and minimum angular fluxes for
 each region of $\scalarvars$ phase-space, as described in metric
-four, or Eq. \eqref{eq:metric_five}. This
+five, or Eq. \eqref{eq:metric_five}. This
 quantity incorporates information about the
 behavior of the local maximum relative to the local
 minimum angular flux in each cell.
 
 \begin{equation}
   M_{5} = \frac{\psi^{c}_{Max}}{\psi^{c}_{
-          Min}}\bigg\rvert_{\scalarvars}  .
+          Min}}\bigg\rvert_{\scalarvars}
   \label{eq:metric_five}
 \end{equation}
 
 This metric may be more appropriate to describe the anisotropy of the flux in
 cells where the distribution of flux values in the cell are not well
-reflected by the average flux in the cell. As with metric three \eqref{eq:metric_three}, metric five
-\eqref{eq:metric_five} only quantifies
+reflected by the average flux in the cell. As with metric three (Eq.
+\eqref{eq:metric_three}), metric five (Eq. \eqref{eq:metric_five}) only quantifies
 the anisotropy of the contributon flux in the cell. There is no comparison or
 normalization to compare the anisotropy with respect to another method. To
 compare it to the anisotropy of the flux in the standard adjoint
@@ -253,18 +252,18 @@ formulated:
 
 As with Eq. \eqref{eq:metric_four}, Eq. \eqref{eq:metric_six} uses a ratio from
 the standard adjoint formulation to normalize the anisotropy of the
-contributon flux. However, Eq. \eqref{eq:metric_six} is consistent with Eq.
+contributon flux. Equation \eqref{eq:metric_six} is consistent with Eq.
 \eqref{eq:metric_five} and normalizes using the maximum to minimum
 ratio of angular fluxes of the adjoint. These two
-metrics will show the relative behavior of the flux in the cell, but because it
-does not incorporate any information about the total flux behavior within the
-cell, it may be very sensitive to the variance of the angular flux within the
+metrics will show the relative behavior of the flux in the cell, but because
+neither incorporates information about the total flux behavior within the cell,
+they may be very sensitive to the variance of the angular flux within the
 cell. Using the ratio of both the contributon and adjoint fluxes may
 help to smooth this if the variance of flux distributions within the contributon
-and standard adjoint is similar a particular cell. However, if these two
-differ significantly, then metric six \eqref{eq:metric_six} may have a
+and standard adjoint is similar in a particular cell. However, if these two
+differ significantly, then metric six (Eq. \eqref{eq:metric_six}) may have a
 synergistic effect
-and will over emphasize the variance when quantifying the anisotropy of the
+and will over-emphasize the variance when quantifying the anisotropy of the
 cell.
 
 Metrics one through six quantify anisotropy
@@ -275,8 +274,8 @@ user may want to know if the $\Omega$-method will effectively generate variance
 reduction parameters for a Monte Carlo simulation, and this may be a
 prescriptive solution for that issue. However, all of these metrics do require
 full angular flux solutions for both the forward- and adjoint- problem, so some
-computational burden will be required to generate this solution metric for the
-problem. The analysis of using these metrics will include some information of
+computational burden will be required.
+The analysis of using these metrics will include some information of
 benefit to burden, which likely will come at the cost of time.
 That said, because the Monte Carlo solution is more computationally
 demanding, generating these metrics from the deterministic solution should be
@@ -285,10 +284,10 @@ substantially less of an obstacle.
 \subsection{Figure of Merit}
 \label{sec:FOMvariants}
 
-The figure of merit (FOM) is a commonly used metric to measure Monte Carlo
+The FOM is a commonly used metric to measure Monte Carlo
 runtimes and to gauge the effectiveness of various hybrid methods. As discussed
 in Section \ref{sec:MCvar}, the FOM relates the relative error of a solution to the
-time required required to achieve that variance. This was introduced in Eq.
+time required to achieve that variance. This was introduced in Eq.
 \eqref{eq:FOM} as:
 \begin{equation*}
   \text{FOM} = \frac{1}{R^{2}T} ,
@@ -297,7 +296,7 @@ where $T$ is the time and $R^{2}$ is the square of the relative error.
 
 \subsubsection{Relative Error}
 
-In tallies with multiple regions and/or energy bins, the FOM is normally calculated
+In tallies with multiple regions and/or energy bins, the FOM is usually calculated
 from the tally average relative error, or $R_{avg}$. This value is meaningful as
 it reflects the overall tally behavior. However, it is often desirable that all
 portions of the tally lie below a desired relative error threshold. A region
@@ -308,7 +307,7 @@ the tally average. In the results presented in later chapters, both relative
 errors will be used to calculate different FOMs, respectively
 \begin{subequations}
   \begin{equation}
-    \text{FOM}_{avg} = \frac{1}{R_{avg}^{2}T}
+    \text{FOM}_{avg} = \frac{1}{R_{avg}^{2}T},
   \label{eq:FOMavg}
   \end{equation}
 and
@@ -321,10 +320,10 @@ and
 
 In addition to reporting both FOMs for the entire problem, comparing the
 distribution of values of the relative error for problems will be a useful
-metric in method characterization. If, for example, FW-CADIS works successfully
-in a problem then the problem should have a relatively even uncertainty
+metric in method characterization. If, for example, FW-CADIS acquires desirable
+results in a calculation, then the problem should have a relatively even uncertainty
 distribution for all cells. Comparing the distribution of relative errors
-between the analog case and the hybrid cases reveals whether the method is
+between the analog case and the hybrid case reveals whether the method is
 effectively generating variance reduction parameters for the entire problem or
 if it is more effective in particular regions.
 
@@ -337,7 +336,7 @@ calculate the FOM? In an analog Monte Carlo simulation, this time is the runtime
 of the Monte Carlo simulation, $T = T_{MC}$. In a hybrid method, one could choose
 either
 \begin{equation}
-  T_{Hybrid} = T_{MC} + T_{Deterministic}
+  T_{Hybrid} = T_{MC} + T_{Deterministic},
 \label{eq:hybridtime}
 \end{equation}
 or
@@ -349,7 +348,7 @@ The FOM should remain a constant--with the exception of very early on in an MC
 calculation where statistics are very poor--for a problem. The issue with using
 Eq. \eqref{eq:hybridtime} to calculate the FOM is that the deterministic runtime
 does not change the relative error of the Monte Carlo simulation. Thus, the FOM
-is not a constant throughout the Monte Carlo Simulation when using Eq.
+is not a constant throughout the Monte Carlo simulation when using Eq.
 \eqref{eq:hybridtime} as the time.
 However, it would be disingenuous to not include the deterministic runtime into
 reports for the hybrid method, as the total computational time required to
@@ -357,7 +356,7 @@ achieve some desired relative error is ultimately what the user is seeking. As
 such, two reports of the FOM are included with the results for each simulation:
 \begin{subequations}
   \begin{equation}
-    \text{FOM}_{MC} = \frac{1}{R^{2}T_{MC}}
+    \text{FOM}_{MC} = \frac{1}{R^{2}T_{MC}},
   \label{eq:FOMMC}
   \end{equation}
 and
@@ -367,20 +366,22 @@ and
   \end{equation}
   \label{eq:FOMtime}
 \end{subequations}
-Note that the deterministic time used in Eq. \eqref{eq:FOMHybrid} is the time only
+
+Note that the deterministic time used in Eq. \eqref{eq:FOMHybrid} is the time
 to run the transport and generate source biasing and weight window values for
 each problem. It will not include the time used to quantify the anisotropy as
 outlined in Section \ref{sec:anisotropy_quant}, as those parameters will be
 computationally demanding but not normally included in a hybrid method
 computation.
 
-In this section four different equations calculate the figure of merit were presented: two
+In this section, four different equations to calculate the FOM were presented: two
 using different relative errors, and two using different quantities
-for time. In analyzing the method, all four will be presented as FOM$_{MC,avg}$,
-FOM$_{MC,max}$, FOM$_{Hybrid,avg}$, and FOM$_{Hybrid,max}$. Further, the improvement
+for time. In analyzing the method, all four will be presented: FOM$_{MC,avg}$,
+FOM$_{MC,max}$, FOM$_{Det,avg}$, and FOM$_{Det,max}$. Further, the improvement
 in the FOM for each problem will be reported as those values normalized by
 FOM$_{analog,avg}$ for the two FOMs calculated with the tally average relative
 error and FOM$_{analog,max}$ for the FOMs calculated with the tally maximum
-relative error. The success of the method will depend on its ability to improve
+relative error. The success of the $\Omega$-method will depend on its ability
+to improve
 each one of these FOM values.
 

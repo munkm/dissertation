@@ -54,6 +54,11 @@
       linkcolor=black,
       urlcolor=black
                     }
+%
+%
+%  Add math definitions
+\DeclareMathOperator\erf{erf}
+
 
 % To compile this file, run "latex thesis", then "biber thesis"
 % (or "bibtex thesis", if the output from latex asks for that instead),
@@ -116,8 +121,13 @@
 \begin{dedication}
 \null\vfil
 \begin{center}
-To Lakshana's Mom\\\vspace{12pt}
-The one, the only, the greatest woman in the world.
+This dissertation is dedicated to the internet of cats: a series of
+interconnected paws, tails, fur, space, and autotune. \\
+
+\vspace{15mm}
+
+Thanks also to the human family, friends, and mentors for the support and
+assistance that, sometimes, only opposable thumbs can provide.
 \end{center}
 \vfil\null
 \end{dedication}
@@ -133,10 +143,7 @@ The one, the only, the greatest woman in the world.
 \clearpage
 \listoftables
 
-\begin{acknowledgements}
-This is where I will acknowledge some people that are important to
-my work and helping me not explode during graduate school.
-\end{acknowledgements}
+\input{frontmatter/acknowledgements}
 
 \end{frontmatter}
 
