@@ -1,5 +1,5 @@
 ############################################################################
-# File  : Denovo/tools/integrator.py
+# File  : omnibus/postprocess/integrator.py
 # Author: Madicken
 # Date  : Tue Mar 17 16:41:55 2015
 #
