@@ -5,7 +5,11 @@
 % The Current Maintainer of this work is Paul Vojta.
 
 \documentclass{ucbthesis}
-\usepackage[sorting=none]{biblatex}
+\usepackage[sorting=none,
+            backend=biber,
+           ]{biblatex}
+% \addbibresource{references}
+\bibliography{references}
 % \usepackage[backend=bibtex]{biblatex}
 \usepackage[english]{babel}
 \usepackage{setspace}
@@ -74,7 +78,7 @@
 
 \newtheorem{theorem}{Jibberish}
 
-\bibliography{references}
+% \bibliography{references}
 
 \hyphenation{mar-gin-al-ia}
 \hyphenation{bra-va-do}
@@ -151,19 +155,20 @@ assistance that, sometimes, only opposable thumbs can provide.
 
 % (Optional) \part{First Part}
 
-\input{chapters/intro/introduction}
-\input{chapters/lit_review/lit_review}
-\input{chapters/methodology/methodology}
-\input{chapters/characterization_probs/char_probs}
-\input{chapters/conclusions/conclusions}
+\include{chapters/intro/introduction}
+\include{chapters/lit_review/lit_review}
+\include{chapters/methodology/methodology}
+\include{chapters/characterization_probs/char_probs}
+\include{chapters/conclusions/conclusions}
 
 % \chapter{More Monticello Candidates}
 
+% \bibliography{references}
 \nocite{*}
 \printbibliography
-% \bibliographystyle{ucbthesis}
+% \bibstyle{ucbthesis}
 
 \begin{appendix}
-  \input{appendix/code/code}
+  \include{appendix/code/code}
 \end{appendix}
 \end{document}

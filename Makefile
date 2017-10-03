@@ -1,19 +1,14 @@
 ###################################################################
 # Name of master .tex file for thesis 
 manuscript = thesis
-# Ch1 = "\includeonly{lit_review}\input{thesis}"
-Ch1a = "\includeonly{chapters/lit_review/$(Ch1)}\input{$(manuscript)}"
-Ch1 = lit_review
-outline = outline
-# \input{chapters/methodology/methodology}
-# \input{chapters/characterization_tests/char_tests}
-# \input{chapters/scaling_tests/scale_tests}
-# \input{chapters/conclusions/conclusions}
-# Name of master .bib file for bibliography
 bibliography = references
 
 # name of build directory for thesis
 bdir = compile
+
+# user-acquired lengths for front and backmatter
+front_length = 13
+back_length = 9
 
 # compilation options
 latexopt = -halt-on-error -file-line-error -output-directory=$(bdir)
@@ -34,6 +29,20 @@ $(manuscript).pdf: $(manuscript).tex $(bibliography).bib
 
 
 #	biber -terse $(bdir)/$(manuscript)
+###################################################################
+#     make intro
+###################################################################
+chapter = "\includeonly{chapters/intro/introduction}"
+
+intro:
+	mkdir -p $(bdir)
+	pdflatex -jobname=int $(latexopt) $(chapter)"\input{thesis}"
+	biber $(bdir)/int
+	pdflatex -jobname=int $(latexopt) $(chapter)"\input{thesis}"
+	pdflatex -jobname=int $(latexopt) $(chapter)"\input{thesis}"
+	./pdfsplit.sh $(bdir)/int.pdf 14 16 $(bdir)/intro.pdf 
+	rm $(bdir)/int.*
+
 ###################################################################
 #     make lit_review
 ###################################################################
